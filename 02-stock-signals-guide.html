@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ภาค 2: สังเกตก่อนเกิด — อ่านสัญญาณจากชาร์ต</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+  :root {
+    --bg-primary: #0a0e1a; --bg-secondary: #111827; --bg-card: #1a2235; --bg-code: #0d1321;
+    --border-primary: #2a3550; --text-primary: #e8edf5; --text-secondary: #94a3b8; --text-muted: #64748b;
+    --accent-blue: #3b82f6; --accent-blue-light: #60a5fa; --accent-cyan: #22d3ee;
+    --accent-green: #34d399; --accent-emerald: #10b981; --accent-yellow: #fbbf24;
+    --accent-orange: #f97316; --accent-red: #ef4444; --accent-purple: #a78bfa; --accent-pink: #f472b6;
+    --gradient-blue: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    --gradient-green: linear-gradient(135deg, #10b981, #22d3ee);
+    --gradient-warm: linear-gradient(135deg, #f97316, #fbbf24);
+    --gradient-red: linear-gradient(135deg, #ef4444, #f97316);
+    --gradient-hero: linear-gradient(135deg, #0a0e2a 0%, #1a1040 30%, #1e1b4b 60%, #0f172a 100%);
+    --shadow-lg: 0 8px 30px rgba(0,0,0,0.5);
+    --shadow-glow-blue: 0 0 20px rgba(59,130,246,0.15);
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px; --radius-xl: 24px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body { font-family: 'IBM Plex Sans Thai', 'Noto Sans Thai', sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.8; -webkit-font-smoothing: antialiased; }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: var(--border-primary); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent-blue); }
+  .top-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(10,14,26,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-primary); padding: 0 2rem; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-brand { font-weight: 700; font-size: 1.1rem; background: var(--gradient-blue); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .nav-links { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.75rem; padding: 0.3rem 0.6rem; border-radius: 6px; transition: all 0.2s; white-space: nowrap; }
+  .nav-links a:hover { color: var(--accent-blue-light); background: rgba(59,130,246,0.1); }
+  .sidebar { position: fixed; left: 0; top: 60px; bottom: 0; width: 290px; background: var(--bg-secondary); border-right: 1px solid var(--border-primary); overflow-y: auto; padding: 1.5rem 0; z-index: 100; }
+  .sidebar-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); padding: 0 1.5rem; margin-bottom: 1rem; }
+  .toc-list { list-style: none; }
+  .toc-list li a { display: block; padding: 0.3rem 1.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.78rem; border-left: 3px solid transparent; transition: all 0.2s; }
+  .toc-list li a:hover { color: var(--accent-blue-light); background: rgba(59,130,246,0.05); border-left-color: var(--accent-blue); }
+  .toc-list li.sub a { padding-left: 2.5rem; font-size: 0.74rem; }
+  .toc-divider { height: 1px; background: var(--border-primary); margin: 0.5rem 1.5rem; }
+  .main-content { margin-left: 290px; margin-top: 60px; max-width: 920px; padding: 2rem 3rem 6rem; }
+  .hero { background: var(--gradient-hero); border-radius: var(--radius-xl); padding: 4rem 3rem; margin-bottom: 3rem; border: 1px solid rgba(59,130,246,0.2); position: relative; overflow: hidden; text-align: center; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 50%, rgba(59,130,246,0.06) 0%, transparent 60%), radial-gradient(circle at 70% 50%, rgba(139,92,246,0.06) 0%, transparent 60%); }
+  .hero-badge { display: inline-block; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); color: var(--accent-blue-light); font-size: 0.8rem; font-weight: 600; padding: 0.4rem 1.2rem; border-radius: 50px; margin-bottom: 1.5rem; position: relative; }
+  .hero h1 { font-family: 'Noto Sans Thai', sans-serif; font-size: 2.5rem; font-weight: 800; line-height: 1.3; margin-bottom: 1rem; position: relative; }
+  .hero h1 .grad { background: linear-gradient(135deg, #3b82f6, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-sub { font-size: 1.05rem; color: var(--text-secondary); max-width: 650px; margin: 0 auto; position: relative; }
+  .hero-stats { display: flex; justify-content: center; gap: 2.5rem; margin-top: 2rem; position: relative; }
+  .hero-stat { text-align: center; }
+  .hero-stat .num { font-size: 1.8rem; font-weight: 800; background: var(--gradient-blue); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-stat .lbl { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem; }
+  .section-header { margin: 4rem 0 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--border-primary); }
+  .section-header h2 { font-family: 'Noto Sans Thai', sans-serif; font-size: 1.7rem; font-weight: 800; display: flex; align-items: center; gap: 0.8rem; line-height: 1.4; }
+  .sn { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 12px; font-size: 1rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .sn.red { background: var(--gradient-red); } .sn.blue { background: var(--gradient-blue); } .sn.green { background: var(--gradient-green); } .sn.warm { background: var(--gradient-warm); } .sn.purple { background: linear-gradient(135deg, #8b5cf6, #a78bfa); } .sn.cyan { background: linear-gradient(135deg, #06b6d4, #22d3ee); } .sn.pink { background: linear-gradient(135deg, #ec4899, #f472b6); }
+  h3 { font-family: 'Noto Sans Thai', sans-serif; font-size: 1.25rem; font-weight: 700; margin: 2.5rem 0 1rem; color: var(--accent-blue-light); }
+  h4 { font-size: 1.02rem; font-weight: 600; margin: 1.8rem 0 0.8rem; color: var(--accent-cyan); }
+  h5 { font-size: 0.92rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent-purple); }
+  p { margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.92rem; }
+  strong { color: var(--text-primary); font-weight: 600; }
+  ul, ol { margin: 0.5rem 0 1rem 1.5rem; color: var(--text-secondary); }
+  li { margin-bottom: 0.4rem; font-size: 0.88rem; }
+  .quote-block { background: var(--bg-card); border-left: 4px solid var(--accent-purple); border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 1.5rem 2rem; margin: 2rem 0; font-style: italic; color: var(--text-secondary); font-size: 0.92rem; }
+  .card { background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: var(--radius-lg); padding: 1.8rem; margin: 1.5rem 0; transition: all 0.3s; }
+  .card:hover { border-color: rgba(59,130,246,0.3); box-shadow: var(--shadow-glow-blue); }
+  .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.6rem; }
+  .two-col { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin: 1.5rem 0; }
+  .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 1.5rem 0; }
+  .diagram-block { background: var(--bg-code); border: 1px solid var(--border-primary); border-radius: var(--radius-md); padding: 1.5rem 2rem; margin: 1.5rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; line-height: 1.7; color: var(--text-secondary); overflow-x: auto; position: relative; white-space: pre; }
+  .diagram-block .tag { position: absolute; top: 0.8rem; right: 1rem; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 0.2rem 0.6rem; border-radius: 4px; font-family: 'IBM Plex Sans Thai', sans-serif; }
+  .diagram-block .tag.diagram { background: rgba(59,130,246,0.15); color: var(--accent-blue-light); }
+  .diagram-block .tag.signal { background: rgba(239,68,68,0.15); color: var(--accent-red); }
+  .diagram-block .tag.structure { background: rgba(167,139,250,0.15); color: var(--accent-purple); }
+  .diagram-block .tag.candle { background: rgba(16,185,129,0.15); color: var(--accent-green); }
+  .diagram-block .tag.volume { background: rgba(34,211,238,0.15); color: var(--accent-cyan); }
+  .diagram-block .tag.pattern { background: rgba(244,114,182,0.15); color: var(--accent-pink); }
+  .diagram-block .tag.flow { background: rgba(249,115,22,0.15); color: var(--accent-orange); }
+  .diagram-block .hl { color: var(--accent-cyan); } .diagram-block .val { color: var(--accent-yellow); } .diagram-block .ok { color: var(--accent-green); } .diagram-block .warn { color: var(--accent-orange); } .diagram-block .bad { color: var(--accent-red); }
+  .info-box { border-radius: var(--radius-md); padding: 1.2rem 1.5rem; margin: 1.5rem 0; font-size: 0.88rem; }
+  .info-box.tip { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); color: var(--accent-green); }
+  .info-box.warning { background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2); color: var(--accent-orange); }
+  .info-box.danger { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); color: var(--accent-red); }
+  .info-box.info { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); color: var(--accent-blue-light); }
+  .info-box.observe { background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); color: var(--accent-purple); }
+  .info-box .bt { font-weight: 700; margin-bottom: 0.5rem; }
+  .table-wrapper { overflow-x: auto; margin: 1.5rem 0; border-radius: var(--radius-md); border: 1px solid var(--border-primary); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  thead { background: rgba(59,130,246,0.1); }
+  th { padding: 0.7rem 0.8rem; text-align: left; font-weight: 600; color: var(--accent-blue-light); border-bottom: 2px solid var(--border-primary); }
+  td { padding: 0.6rem 0.8rem; border-bottom: 1px solid rgba(42,53,80,0.5); color: var(--text-secondary); }
+  tbody tr:hover { background: rgba(59,130,246,0.03); }
+  thead.red-head { background: rgba(239,68,68,0.1); }
+  thead.red-head th { color: #f87171; }
+  thead.green-head { background: rgba(16,185,129,0.1); }
+  thead.green-head th { color: var(--accent-green); }
+  .indicator-card { background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: var(--radius-lg); padding: 2rem; margin: 1.5rem 0; }
+  .indicator-card .ic-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; }
+  .indicator-card .ic-badge { padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.72rem; font-weight: 600; }
+  .indicator-card .ic-title { font-size: 1.05rem; font-weight: 700; }
+  .indicator-card .formula { background: var(--bg-code); border: 1px solid var(--border-primary); border-radius: 8px; padding: 0.8rem 1.2rem; margin: 0.8rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--accent-cyan); line-height: 1.6; }
+  .step-flow { display: flex; gap: 0; margin: 2rem 0; overflow-x: auto; }
+  .step-item { flex: 1; min-width: 90px; text-align: center; position: relative; padding: 1rem 0.2rem; }
+  .step-item::after { content: '→'; position: absolute; top: 22px; right: -6px; font-size: 1rem; color: var(--text-muted); z-index: 1; }
+  .step-item:last-child::after { display: none; }
+  .step-circle { width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.75rem; color: #fff; margin-bottom: 0.3rem; }
+  .step-label { font-size: 0.68rem; color: var(--text-secondary); font-weight: 500; line-height: 1.4; }
+  .star { color: var(--accent-yellow); }
+  .back-to-top { position: fixed; bottom: 2rem; right: 2rem; width: 44px; height: 44px; border-radius: 50%; background: var(--gradient-blue); color: #fff; border: none; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-lg); opacity: 0; transition: opacity 0.3s; z-index: 1000; }
+  .back-to-top.visible { opacity: 1; }
+  @media (max-width: 1024px) {
+    .sidebar { transform: translateX(-100%); }
+    .main-content { margin-left: 0; padding: 1.5rem; }
+    .two-col, .three-col { grid-template-columns: 1fr; }
+    .hero { padding: 2.5rem 1.5rem; }
+    .hero h1 { font-size: 1.8rem; }
+    .hero-stats { flex-direction: column; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-brand">📊 ภาค 2 — สังเกตก่อนเกิด</div>
+  <div class="nav-links">
+    <a href="#ch5">บทที่ 5</a><a href="#ch6">บทที่ 6</a><a href="#ch7">บทที่ 7</a><a href="#ch8">บทที่ 8</a><a href="#ch9">บทที่ 9</a><a href="#ch10">บทที่ 10</a><a href="#ch11">บทที่ 11</a>
+  </div>
+</nav>
+
+<aside class="sidebar">
+  <div class="sidebar-title">สารบัญ</div>
+  <ul class="toc-list">
+    <li><a href="#ch5">บทที่ 5: หุ้นเป้าหมาย</a></li>
+    <li class="sub"><a href="#target-criteria">คุณสมบัติหุ้นเป้าหมาย</a></li>
+    <li class="sub"><a href="#deep-check">ตรวจสอบเชิงลึก</a></li>
+    <li class="sub"><a href="#risk-checklist">Checklist เสี่ยงถูกปั่น</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#ch6">บทที่ 6: Accumulation</a></li>
+    <li class="sub"><a href="#accum-methods">วิธีสะสมของ</a></li>
+    <li class="sub"><a href="#accum-signals">สัญญาณบนชาร์ต</a></li>
+    <li class="sub"><a href="#accum-vs-dead">สะสม vs หุ้นตาย</a></li>
+    <li class="sub"><a href="#wyckoff-accum">Wyckoff Accumulation</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#ch7">บทที่ 7: Pre-Pump</a></li>
+    <li class="sub"><a href="#prepump-chart">สัญญาณจากชาร์ต</a></li>
+    <li class="sub"><a href="#prepump-news">สัญญาณจากข่าว</a></li>
+    <li class="sub"><a href="#prepump-timeline">ลำดับเหตุการณ์</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#ch8">บทที่ 8: Distribution</a></li>
+    <li class="sub"><a href="#dist-chart">สัญญาณจากชาร์ต</a></li>
+    <li class="sub"><a href="#dist-data">สัญญาณจากข้อมูล</a></li>
+    <li class="sub"><a href="#dist-timeline">ระยะเวลาการทิ้ง</a></li>
+    <li class="sub"><a href="#wyckoff-dist">Wyckoff Distribution</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#ch9">บทที่ 9: เครื่องมือ TA</a></li>
+    <li class="sub"><a href="#volume-analysis">Volume Analysis</a></li>
+    <li class="sub"><a href="#rsi">RSI</a></li>
+    <li class="sub"><a href="#macd">MACD</a></li>
+    <li class="sub"><a href="#bollinger">Bollinger Bands</a></li>
+    <li class="sub"><a href="#turnover">Turnover Ratio</a></li>
+    <li class="sub"><a href="#mfi">MFI</a></li>
+    <li class="sub"><a href="#vwap">VWAP</a></li>
+    <li class="sub"><a href="#alerts">Alert Setup</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#ch10">บทที่ 10: Candlestick</a></li>
+    <li class="sub"><a href="#candle-bullish">Bullish Reversal</a></li>
+    <li class="sub"><a href="#candle-bearish">Bearish Reversal</a></li>
+    <li class="sub"><a href="#candle-multi">รูปแบบหลายแท่ง</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#ch11">บทที่ 11: Price Action</a></li>
+    <li class="sub"><a href="#support-resistance">แนวรับ-แนวต้าน</a></li>
+    <li class="sub"><a href="#chart-patterns">Chart Patterns</a></li>
+    <li class="sub"><a href="#pa-principles">หลักการ Price Action</a></li>
+    <li class="sub"><a href="#master-checklist">Checklist รวม</a></li>
+  </ul>
+</aside>
+
+<main class="main-content">
+
+<section class="hero">
+  <div class="hero-badge">ภาค 2 — Signal Detection Playbook</div>
+  <h1>สังเกตก่อนเกิด<br><span class="grad">อ่านสัญญาณจากชาร์ต</span></h1>
+  <p class="hero-sub">เรียนรู้การจับสัญญาณตั้งแต่ช่วงสะสมของ ก่อนดันราคา จนถึงช่วงทิ้ง — ด้วยเครื่องมือทางเทคนิค แท่งเทียน และ Price Action</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">7</div><div class="lbl">บท</div></div>
+    <div class="hero-stat"><div class="num">8</div><div class="lbl">Indicators</div></div>
+    <div class="hero-stat"><div class="num">13</div><div class="lbl">Candlestick</div></div>
+    <div class="hero-stat"><div class="num">7</div><div class="lbl">Chart Patterns</div></div>
+  </div>
+</section>
+
+<div class="quote-block">
+  "ข่าวดีไม่ได้ทำให้ราคาขึ้น — ราคาขึ้นก่อนข่าวดีออกมาเสมอ ถ้าคุณเห็นข่าวดีแล้วราคาก็ขึ้นมาเยอะแล้ว แปลว่าคนที่รู้ก่อนซื้อไปหมดแล้ว คุณกำลังจะเป็นคนที่เขาขายของให้"
+</div>
+
+  "ข่าวดีไม่ได้ทำให้ราคาขึ้น — ราคาขึ้นก่อนข่าวดีออกมาเสมอ ถ้าคุณเห็นข่าวดีแล้วราคาก็ขึ้นมาเยอะแล้ว แปลว่าคนที่รู้ก่อนซื้อไปหมดแล้ว คุณกำลังจะเป็นคนที่เขาขายของให้"
+</div>
+
+<!-- ==================== CHAPTER 5 ==================== -->
+<div class="section-header" id="ch5">
+  <h2><span class="sn blue">5</span> บทที่ 5: หุ้นแบบไหนมักถูกเลือกเป็นเป้า</h2>
+</div>
+<p>ผู้ปั่นไม่ได้เลือกหุ้นมั่วๆ พวกเขามีเกณฑ์ชัดเจน และกระบวนการคัดเลือกมักเริ่มต้นหลายเดือนก่อนที่จะเริ่มลงมือ การเข้าใจเกณฑ์เหล่านี้จะช่วยให้คุณ "เห็น" เป้าหมายก่อนที่เกมจะเริ่ม</p>
+
+<h3 id="target-criteria">คุณสมบัติของหุ้นที่ถูกเลือก</h3>
+
+<div class="card" style="border-left:4px solid var(--accent-red);">
+  <div class="card-title" style="color:var(--accent-red);">💰 1. Market Cap เล็ก (ต่ำกว่า 3,000-5,000 ล้านบาท)</div>
+  <p style="font-size:0.86rem;">ใช้เงินไม่มากในการขยับราคา หุ้นตัวใหญ่ Market Cap หมื่นล้านขึ้นไป ปั่นยากมาก ต้องใช้เงินมหาศาล</p>
+  <div class="info-box danger" style="margin:0.8rem 0 0;">
+    <div class="bt">⚠️ เป้าหมายยอดนิยม</div>
+    หุ้นที่ Market Cap ต่ำกว่า 1,000 ล้านบาท ใช้เงินเพียง 50-100 ล้านบาทก็สามารถขยับราคาได้ 20-30% ภายในไม่กี่วัน<br>
+    <strong>วิธีคำนวณ:</strong> Market Cap = ราคาหุ้น × จำนวนหุ้นทั้งหมด — ดูได้จาก settrade.com หรือ set.or.th
+  </div>
+</div>
+
+<div class="card" style="border-left:4px solid var(--accent-orange);">
+  <div class="card-title" style="color:var(--accent-orange);">📊 2. Free Float ต่ำ</div>
+  <p style="font-size:0.86rem;">หุ้นที่หมุนเวียนในตลาดน้อย ควบคุมราคาง่าย ถ้า Free Float ต่ำกว่า 30% ยิ่งเสี่ยง</p>
+  <div class="info-box observe" style="margin:0.8rem 0 0;">
+    <div class="bt">🔎 ตัวอย่าง</div>
+    สมมติหุ้นมี 100 ล้านหุ้น แต่ Free Float แค่ 20% = มีหุ้นหมุนเวียนจริงแค่ 20 ล้านหุ้น ถ้าผู้ปั่นกว้านซื้อไป 10 ล้านหุ้น เท่ากับควบคุม 50% ของหุ้นที่ซื้อขายได้ ทำให้ Supply เหลือน้อยมาก ราคาจึงวิ่งง่าย<br>
+    Free Float ที่ต่ำผิดปกติ (&lt; 15%) อาจเป็นสัญญาณว่ามีกลุ่มทุนกำลังกว้านซื้อหุ้นออกจากตลาดอยู่แล้ว
+  </div>
+</div>
+
+<div class="card" style="border-left:4px solid var(--accent-yellow);">
+  <div class="card-title" style="color:var(--accent-yellow);">📉 3. วอลุ่มซื้อขายเบาบาง</div>
+  <p style="font-size:0.86rem;">ปกติแทบไม่มีคนเทรด วันละไม่กี่ล้านบาท ทำให้ออเดอร์ไม่กี่รายการก็ขยับราคาได้</p>
+  <div class="info-box info" style="margin:0.8rem 0 0;">
+    <div class="bt">💡 ตัวอย่างเชิงตัวเลข</div>
+    หุ้นที่มีวอลุ่มเฉลี่ย 2 ล้านบาท/วัน ถ้ามีคนเข้ามาซื้อ 5 ล้านบาทในวันเดียว ราคาอาจขยับขึ้น 5-10% ได้ง่ายๆ เทียบกับหุ้นที่มีวอลุ่ม 500 ล้านบาท/วัน ซึ่ง 5 ล้านบาทแทบไม่มีผลอะไร<br>
+    <strong>ดู Bid-Offer Spread ด้วย</strong> — หุ้นที่ Spread กว้าง (เช่น Bid 1.00 / Offer 1.05 = Spread 5%) แสดงว่าสภาพคล่องต่ำมาก เหมาะกับการปั่น
+  </div>
+</div>
+
+<div class="card" style="border-left:4px solid var(--accent-purple);">
+  <div class="card-title" style="color:var(--accent-purple);">📖 4. มี "Story" ที่ขายได้</div>
+  <p style="font-size:0.86rem;">ธุรกิจที่กำลังเป็นกระแส: AI, EV, พลังงานสะอาด, กัญชา, คริปโต — ยิ่งเป็นเรื่องที่คนทั่วไปเข้าใจยาก ยิ่งปั่นง่าย เพราะตรวจสอบยาก</p>
+  <p style="font-size:0.86rem;"><strong>กลไกทางจิตวิทยา:</strong> Story ทำหน้าที่เป็น "เหตุผล" ให้คนซื้อหุ้นโดยไม่ต้องวิเคราะห์ลึก คนมักคิดว่า "AI กำลังมา หุ้น AI ต้องขึ้น" โดยไม่ได้ตรวจสอบว่าบริษัทนั้นทำ AI จริงหรือแค่ประกาศว่าจะทำ</p>
+  <div class="info-box warning" style="margin:0.8rem 0 0;">
+    <div class="bt">⚠️ รูปแบบที่พบบ่อย</div>
+    • บริษัทประกาศ "เข้าสู่ธุรกิจ X" แต่ยังไม่มีรายได้จริง<br>
+    • ลงนาม MOU ซึ่งไม่มีผลผูกพันทางกฎหมาย<br>
+    • ตั้งบริษัทย่อยชื่อเกี่ยวกับกระแส แต่ทุนจดทะเบียนแค่ไม่กี่ล้านบาท<br>
+    • เปลี่ยนชื่อบริษัทให้ดูทันสมัย (เช่น เติมคำว่า "Tech" หรือ "Digital")<br>
+    <strong>วิธีตรวจสอบ:</strong> ดูสัดส่วนรายได้จริงจากธุรกิจใหม่ในงบการเงิน ถ้ารายได้จากธุรกิจใหม่ยังไม่ถึง 5% ของรายได้รวม แสดงว่ายังเป็นแค่ "Story" ไม่ใช่ "Reality"
+  </div>
+</div>
+
+<div class="two-col">
+<div class="card" style="border-left:4px solid var(--accent-cyan);">
+  <div class="card-title" style="color:var(--accent-cyan);">📋 5. งบการเงินอ่อนแอ</div>
+  <p style="font-size:0.86rem;">ขาดทุนต่อเนื่อง หรือกำไรน้อยมาก มีรายการพิเศษเยอะ อ่านงบยาก ไม่มี Fundamental รองรับราคา</p>
+  <p style="font-size:0.84rem;"><strong>สัญญาณเตือนในงบ:</strong></p>
+  <ul style="font-size:0.82rem;">
+    <li>กำไรมาจากรายการพิเศษ ไม่ใช่จากการดำเนินงานปกติ</li>
+    <li>ลูกหนี้การค้าเพิ่มขึ้นเร็วกว่ารายได้ → อาจสร้างรายได้ปลอม</li>
+    <li>สินค้าคงเหลือพุ่งสูงผิดปกติ</li>
+    <li>เปลี่ยนผู้สอบบัญชีบ่อย</li>
+    <li>งบการเงินออกล่าช้า</li>
+  </ul>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-pink);">
+  <div class="card-title" style="color:var(--accent-pink);">👥 6. ผู้ถือหุ้นใหญ่กระจุกตัว</div>
+  <p style="font-size:0.86rem;">ผู้ถือหุ้นใหญ่ไม่กี่รายถือรวมกันเกิน 60-70% ง่ายต่อการประสานงานกันเพื่อควบคุมราคา</p>
+  <p style="font-size:0.84rem;"><strong>ข้อสังเกต:</strong></p>
+  <ul style="font-size:0.82rem;">
+    <li>ดูว่าผู้ถือหุ้นใหญ่มีความสัมพันธ์กันหรือไม่</li>
+    <li>นิติบุคคลจดทะเบียนต่างประเทศ (BVI, Cayman) ถือหุ้นมาก → ตรวจสอบยาก</li>
+    <li>ไม่มีกองทุนสถาบันถือเลย → นักวิเคราะห์มืออาชีพไม่สนใจ</li>
+  </ul>
+</div>
+</div>
+
+<h3 id="deep-check">วิธีตรวจสอบเชิงลึก</h3>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-blue-light);">🔍 ตรวจสอบโครงสร้างผู้ถือหุ้น</div>
+  <ol style="font-size:0.85rem;">
+    <li>เข้า settrade.com → ค้นหาหุ้น → ดูหน้า "ผู้ถือหุ้นรายใหญ่"</li>
+    <li>เปรียบเทียบรายชื่อผู้ถือหุ้นย้อนหลัง 3-4 ไตรมาส</li>
+    <li>ค้นหาชื่อผู้ถือหุ้นใหญ่ใน Google ดูว่าเกี่ยวข้องกับบริษัทอื่นหรือไม่</li>
+    <li>ตรวจสอบว่าผู้ถือหุ้นใหญ่เป็นกรรมการบริษัทอื่นที่เคยมีปัญหาหรือไม่</li>
+  </ol>
+  <div class="info-box danger" style="margin-top:0.8rem;">
+    <div class="bt">🚨 สัญญาณเตือน</div>
+    ถ้าเห็นชื่อบุคคลธรรมดาที่ไม่เคยปรากฏมาก่อน เข้ามาถือหุ้นจำนวนมากอย่างกะทันหัน → อาจเป็นตัวแทน (Nominee) ของกลุ่มผู้ปั่น
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-cyan);">📊 ตรวจสอบงบการเงิน</div>
+  <ul style="font-size:0.85rem;">
+    <li>เปรียบเทียบ <strong>Operating Cash Flow</strong> กับ <strong>Net Income</strong> ย้อนหลัง 3-5 ปี ถ้า Cash Flow ต่ำกว่า Net Income ตลอด → กำไรอาจเป็น "กำไรกระดาษ"</li>
+    <li><strong>Accrual Ratio</strong> = (Net Income - Operating Cash Flow) / Total Assets ถ้าค่าสูง (&gt; 10%) → คุณภาพกำไรต่ำ</li>
+    <li>ตรวจสอบว่ามีการเปลี่ยนนโยบายบัญชีหรือไม่ → อาจเป็นการ "แต่งงบ"</li>
+    <li>ดูรายการระหว่างกัน (Related Party Transactions) ถ้ามีเยอะผิดปกติ → ระวัง</li>
+    <li>ดูหมายเหตุประกอบงบการเงิน โดยเฉพาะรายการที่ผู้สอบบัญชีตั้งข้อสังเกต</li>
+  </ul>
+</div>
+
+<div class="two-col">
+<div class="card">
+  <div class="card-title" style="color:var(--accent-green);">👤 ตรวจสอบประวัติผู้บริหาร</div>
+  <ul style="font-size:0.84rem;">
+    <li>ค้นหาชื่อผู้บริหารใน Google</li>
+    <li>ดูว่าเคยถูก ก.ล.ต. ลงโทษหรือไม่ (sec.or.th)</li>
+    <li>ผู้บริหารนั่งเป็นกรรมการ &gt; 5 บริษัท → อาจเป็น "กรรมการอาชีพ"</li>
+    <li>ดูรายงาน 59-2 — ถ้าขายตลอดแต่ปากบอกว่าบริษัทดี → ไม่น่าเชื่อถือ</li>
+  </ul>
+</div>
+<div class="card">
+  <div class="card-title" style="color:var(--accent-orange);">📋 ตรวจสอบ Corporate Action</div>
+  <ul style="font-size:0.84rem;">
+    <li>เพิ่มทุนบ่อยโดยไม่มีแผนชัดเจน → อาจเป็นการ "ดูดเงิน"</li>
+    <li>เคย Reverse Split → มักทำเพื่อดันราคาหลังตกต่ำ</li>
+    <li>เปลี่ยนชื่อ/ธุรกิจบ่อย (อสังหาฯ → EV → AI) → สัญญาณเตือนชัดเจน</li>
+  </ul>
+</div>
+</div>
+
+<h3 id="risk-checklist">Checklist: หุ้นเสี่ยงถูกปั่น</h3>
+
+<div class="table-wrapper">
+<table>
+<thead class="red-head"><tr><th>เกณฑ์</th><th style="color:var(--accent-red);">⚠️ เสี่ยงสูง</th><th style="color:var(--accent-green);">✅ เสี่ยงต่ำ</th></tr></thead>
+<tbody>
+<tr><td><strong>Market Cap</strong></td><td style="color:var(--accent-red);">&lt; 3,000 ล้าน</td><td style="color:var(--accent-green);">&gt; 30,000 ล้าน</td></tr>
+<tr><td><strong>Free Float</strong></td><td style="color:var(--accent-red);">&lt; 30%</td><td style="color:var(--accent-green);">&gt; 50%</td></tr>
+<tr><td><strong>วอลุ่มเฉลี่ย</strong></td><td style="color:var(--accent-red);">&lt; 5 ล้านบาท/วัน</td><td style="color:var(--accent-green);">&gt; 100 ล้านบาท/วัน</td></tr>
+<tr><td><strong>P/E Ratio</strong></td><td style="color:var(--accent-red);">ติดลบ หรือ &gt; 100</td><td style="color:var(--accent-green);">5-25</td></tr>
+<tr><td><strong>ข่าว/กระแส</strong></td><td style="color:var(--accent-red);">มีข่าวลือเยอะ</td><td style="color:var(--accent-green);">ข่าวจากแหล่งน่าเชื่อถือ</td></tr>
+<tr><td><strong>ผู้ถือหุ้นใหญ่</strong></td><td style="color:var(--accent-red);">กระจุกตัว</td><td style="color:var(--accent-green);">กระจายตัว</td></tr>
+<tr><td><strong>สถาบันถือหุ้น</strong></td><td style="color:var(--accent-red);">ไม่มีเลย</td><td style="color:var(--accent-green);">มีกองทุนหลายแห่งถือ</td></tr>
+<tr><td><strong>ผู้สอบบัญชี</strong></td><td style="color:var(--accent-red);">เปลี่ยนบ่อย / สำนักงานเล็ก</td><td style="color:var(--accent-green);">Big 4 (EY, KPMG, Deloitte, PwC)</td></tr>
+<tr><td><strong>Bid-Offer Spread</strong></td><td style="color:var(--accent-red);">&gt; 3%</td><td style="color:var(--accent-green);">&lt; 0.5%</td></tr>
+<tr><td><strong>Operating Cash Flow</strong></td><td style="color:var(--accent-red);">ติดลบต่อเนื่อง</td><td style="color:var(--accent-green);">เป็นบวกสม่ำเสมอ</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="info-box danger">
+  <div class="bt">🚨 วิธีใช้ Checklist</div>
+  ให้คะแนนแต่ละข้อ ถ้าหุ้นตัวไหนเข้าเกณฑ์ "เสี่ยงสูง" ตั้งแต่ <strong>5 ข้อขึ้นไป</strong> จาก 10 ข้อ → ควรระวังเป็นพิเศษ ถ้าเข้า <strong>7 ข้อขึ้นไป</strong> → หลีกเลี่ยงเลยดีกว่า
+</div>
+
+
+
+<!-- ==================== CHAPTER 6 ==================== -->
+<div class="section-header" id="ch6">
+  <h2><span class="sn purple">6</span> บทที่ 6: ช่วงสะสมของ (Accumulation) — จุดเริ่มต้นของทุกอย่าง</h2>
+</div>
+<p>นี่คือช่วงที่สำคัญที่สุด ถ้าอ่านออก คุณจะรู้ล่วงหน้าว่าอะไรกำลังจะเกิดขึ้น ผู้ปั่นทุกรายต้องผ่านขั้นตอนนี้ — ไม่มีทางลัด เพราะถ้าไม่สะสมของก่อน จะไม่มีของให้ขาย</p>
+
+<div class="info-box info">
+  <div class="bt">&#x1F4A1; เป้าหมายของการสะสม</div>
+  &#x2022; ซื้อหุ้นให้ได้มากที่สุดในราคาต่ำที่สุด<br>
+  &#x2022; ลด Supply ในตลาด (ยิ่งซื้อเก็บมาก หุ้นที่เหลือในตลาดยิ่งน้อย ราคายิ่งวิ่งง่ายตอนดัน)<br>
+  &#x2022; สร้าง "ต้นทุนเฉลี่ย" ที่ต่ำพอที่จะมีกำไรเมื่อดันราคาขึ้น
+</div>
+
+<h3 id="accum-methods">วิธีสะสมของโดยไม่ให้ราคาวิ่ง</h3>
+
+<div class="card" style="border-left:4px solid var(--accent-blue);">
+  <div class="card-title" style="color:var(--accent-blue-light);">1. ซื้อทีละน้อย — กระจายการซื้อออกเป็นหลายวัน หลายสัปดาห์</div>
+  <p style="font-size:0.86rem;">ดู Bid Queue จะเห็นออเดอร์ซื้อเล็กๆ กระจายหลายราคา แทนที่จะเป็นออเดอร์ใหญ่ก้อนเดียว</p>
+  <p style="font-size:0.84rem;color:var(--accent-cyan);"><strong>เทคนิค:</strong> ตั้ง Algorithm ให้ซื้ออัตโนมัติทีละ 1,000-5,000 หุ้น ทุก 5-10 นาที</p>
+</div>
+
+<div class="card" style="border-left:4px solid var(--accent-green);">
+  <div class="card-title" style="color:var(--accent-green);">2. ซื้อตอนราคาอ่อน — รอให้มีแรงขายแล้วค่อยรับ</div>
+  <p style="font-size:0.86rem;">ทุกครั้งที่มีข่าวร้ายเล็กๆ หรือตลาดรวมลง หุ้นตัวนี้จะมีแรงซื้อรับทันที ราคาไม่ค่อยลงตามตลาด</p>
+  <p style="font-size:0.84rem;color:var(--accent-cyan);"><strong>เทคนิค:</strong> บางครั้งผู้ปั่นจะ "สร้าง" แรงขายเองโดยเทขายเล็กน้อยตอนเช้า ทำให้คนกลัวขายตาม แล้วค่อยรับซื้อคืนในราคาถูกกว่าตอนบ่าย</p>
+</div>
+
+<div class="card" style="border-left:4px solid var(--accent-orange);">
+  <div class="card-title" style="color:var(--accent-orange);">3. ใช้หลายบัญชี — กระจายการซื้อผ่านหลายโบรกเกอร์</div>
+  <p style="font-size:0.86rem;">ใช้ชื่อญาติ เพื่อน หรือ Nominee เปิดบัญชีหลายโบรกเกอร์ แต่ละบัญชีซื้อไม่เกินเกณฑ์ที่ต้องรายงาน ก.ล.ต.</p>
+</div>
+
+<div class="card" style="border-left:4px solid var(--accent-red);">
+  <div class="card-title" style="color:var(--accent-red);">4. กดราคาเป็นระยะ — เทขายเล็กน้อยเพื่อกดราคาลง แล้วซื้อคืนถูกกว่า</div>
+  <p style="font-size:0.86rem;">เทขาย 50,000 หุ้นในราคาต่ำเพื่อกดราคาลง 2-3% ทำให้คนที่ตั้ง Stop Loss ถูก Trigger ขายออกมา แล้วรับซื้อคืน 100,000 หุ้นในราคาที่ต่ำลง — ได้หุ้นเพิ่ม 50,000 หุ้นในราคาถูก</p>
+</div>
+
+<div class="card" style="border-left:4px solid var(--accent-purple);">
+  <div class="card-title" style="color:var(--accent-purple);">5. ใช้ Dark Pool หรือ Block Trade — ซื้อขายนอกกระดานหลัก</div>
+  <p style="font-size:0.86rem;">ตกลงซื้อขายกับผู้ถือหุ้นรายใหญ่โดยตรง ไม่ผ่านกระดานปกติ ทำให้ราคาในตลาดไม่ขยับ</p>
+</div>
+
+<h3 id="accum-signals">สัญญาณบนชาร์ต</h3>
+
+<div class="diagram-block"><span class="tag diagram">Accumulation Pattern</span>
+&#x0E23;&#x0E32;&#x0E04;&#x0E32;
+  &#x2502;
+  &#x2502;   &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+  &#x2502;   &#x2502;  <span class="hl">Sideway &#x0E43;&#x0E19;&#x0E01;&#x0E23;&#x0E2D;&#x0E1A;</span>     &#x2502;  &#x2190; &#x0E23;&#x0E32;&#x0E04;&#x0E32;&#x0E41;&#x0E01;&#x0E27;&#x0E48;&#x0E07;&#x0E41;&#x0E04;&#x0E1A;&#x0E46; &#x0E19;&#x0E32;&#x0E19;&#x0E1C;&#x0E34;&#x0E14;&#x0E1B;&#x0E01;&#x0E15;&#x0E34;
+  &#x2502;   &#x2502;  <span class="hl">&#x0E41;&#x0E04;&#x0E1A;&#x0E46; &#x0E19;&#x0E32;&#x0E19;&#x0E46;</span>          &#x2502;
+  &#x2502;   &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+  &#x2502;
+  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; &#x0E40;&#x0E27;&#x0E25;&#x0E32;
+
+<span class="val">&#x0E27;&#x0E2D;&#x0E25;&#x0E38;&#x0E48;&#x0E21;</span>
+  &#x2502;   _   _     _   _
+  &#x2502;  | | | |   | | | |  &#x2190; <span class="ok">&#x0E27;&#x0E2D;&#x0E25;&#x0E38;&#x0E48;&#x0E21;&#x0E04;&#x0E48;&#x0E2D;&#x0E22;&#x0E46; &#x0E40;&#x0E1E;&#x0E34;&#x0E48;&#x0E21;&#x0E02;&#x0E36;&#x0E49;&#x0E19;&#x0E17;&#x0E35;&#x0E25;&#x0E30;&#x0E19;&#x0E34;&#x0E14;</span>
+  &#x2502; _| |_| |_ _| |_| |_
+  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; &#x0E40;&#x0E27;&#x0E25;&#x0E32;</div>
+
+<div class="two-col">
+<div class="card">
+  <div class="card-title" style="color:var(--accent-cyan);">1. ราคา Sideway กรอบแคบนานผิดปกติ</div>
+  <p style="font-size:0.85rem;"><strong>วิธีวัด:</strong> ใช้ Bollinger Bands &#x2014; ถ้า Band แคบลงจนเหลือ &lt; 5% ของราคา ติดต่อกันนานกว่า 3 สัปดาห์ &#x2192; ผิดปกติ เรียกว่า <strong>"Bollinger Squeeze"</strong> ยิ่ง Squeeze นาน ยิ่งมีโอกาสที่ราคาจะวิ่งแรงเมื่อ Breakout</p>
+</div>
+<div class="card">
+  <div class="card-title" style="color:var(--accent-green);">2. วอลุ่มค่อยๆ เพิ่มขึ้นสม่ำเสมอ</div>
+  <p style="font-size:0.85rem;"><strong>วิธีตรวจสอบ:</strong> เปรียบเทียบ VMA5 กับ VMA20 ถ้า VMA5 &gt; VMA20 ต่อเนื่องหลายสัปดาห์ โดยที่ราคาไม่ขยับ &#x2192; มีคนสะสม ดูวอลุ่มแยกฝั่ง (Buy vs Sell) ถ้า Buy Volume มากกว่าต่อเนื่อง แต่ราคาไม่ขึ้น &#x2192; มีคนรับซื้ออย่างมีระบบ</p>
+</div>
+<div class="card">
+  <div class="card-title" style="color:var(--accent-yellow);">3. มี Bid รองพื้นตลอด</div>
+  <p style="font-size:0.85rem;">เปิดดู Bid-Offer Queue จะเห็นว่าฝั่ง Bid มีจำนวนหุ้นรอซื้อมากกว่าฝั่ง Offer อย่างชัดเจน ระวัง "Spoofing" &#x2014; Bid ใหญ่ที่ถูกดึงออกเมื่อราคาใกล้ถึง</p>
+</div>
+<div class="card">
+  <div class="card-title" style="color:var(--accent-orange);">4. แท่งเทียนหางล่างยาว (Hammer)</div>
+  <p style="font-size:0.85rem;">ถ้าเห็น Hammer ซ้ำๆ ที่ระดับราคาเดิม 3-4 ครั้ง &#x2192; มีคนตั้งใจรับซื้อที่ราคานั้นอย่างชัดเจน ราคานั้นคือ <strong>"ต้นทุนเฉลี่ย"</strong> ที่ผู้ปั่นต้องการ</p>
+</div>
+<div class="card">
+  <div class="card-title" style="color:var(--accent-blue-light);">5. Higher Lows (จุดต่ำสุดยกขึ้น)</div>
+  <p style="font-size:0.85rem;">Higher Lows ที่เกิดพร้อมกับวอลุ่มที่เพิ่มขึ้น เป็นสัญญาณที่แข็งแกร่งที่สุดของการสะสม เพราะแสดงว่าผู้ซื้อยอมซื้อในราคาที่สูงขึ้นเรื่อยๆ</p>
+</div>
+<div class="card">
+  <div class="card-title" style="color:var(--accent-purple);">6. OBV ไต่ขึ้นขณะราคา Sideway</div>
+  <p style="font-size:0.85rem;">ถ้า OBV ทำ New High ขณะที่ราคายังไม่ทำ &#x2192; มีคนสะสมของอย่างชัดเจน <strong>นี่คือ Indicator ที่ดีที่สุดในการจับช่วงสะสม</strong> เพราะมันบอกว่า "เงิน" ไหลเข้าหรือออก แม้ราคาจะยังไม่ขยับ</p>
+</div>
+</div>
+
+<h4>ระยะเวลาของการสะสม</h4>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>ขนาดแผน</th><th>ระยะเวลาสะสม</th><th>เงินทุนที่ใช้</th><th>% ของ Free Float</th></tr></thead>
+<tbody>
+<tr><td><strong>ปั่นเล็ก</strong> (ดันราคา 30-50%)</td><td>2-4 สัปดาห์</td><td>หลักสิบล้าน</td><td>10-20%</td></tr>
+<tr><td><strong>ปั่นกลาง</strong> (ดันราคา 100-200%)</td><td>1-3 เดือน</td><td>หลักร้อยล้าน</td><td>20-40%</td></tr>
+<tr><td><strong>ปั่นใหญ่</strong> (ดันราคา 300%+)</td><td>3-6 เดือน</td><td>หลักพันล้าน</td><td>40-60%</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3 id="accum-vs-dead">วิธีแยก "สะสมของ" กับ "หุ้นตาย"</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>ลักษณะ</th><th style="color:var(--accent-green);">&#x2705; สะสมของ</th><th style="color:var(--accent-red);">&#x274C; หุ้นตาย</th></tr></thead>
+<tbody>
+<tr><td><strong>วอลุ่ม</strong></td><td style="color:var(--accent-green);">ค่อยๆ เพิ่มขึ้น</td><td style="color:var(--accent-red);">น้อยลงเรื่อยๆ</td></tr>
+<tr><td><strong>Bid Queue</strong></td><td style="color:var(--accent-green);">มีออเดอร์ใหญ่รอรับ</td><td style="color:var(--accent-red);">Bid เบาบาง</td></tr>
+<tr><td><strong>จุดต่ำสุด</strong></td><td style="color:var(--accent-green);">Higher Lows</td><td style="color:var(--accent-red);">เท่าเดิมหรือไหลลง</td></tr>
+<tr><td><strong>OBV</strong></td><td style="color:var(--accent-green);">ไต่ขึ้น</td><td style="color:var(--accent-red);">แบนหรือไหลลง</td></tr>
+<tr><td><strong>แท่งเทียน</strong></td><td style="color:var(--accent-green);">Hammer ซ้ำๆ ที่แนวรับ</td><td style="color:var(--accent-red);">แท่งเล็กๆ ไม่มีนัยสำคัญ</td></tr>
+<tr><td><strong>Spread</strong></td><td style="color:var(--accent-green);">เริ่มแคบลง</td><td style="color:var(--accent-red);">กว้าง</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="info-box tip">
+  <div class="bt">&#x1F4A1; ข้อสังเกตสำคัญ</div>
+  ถ้าไม่แน่ใจ ให้รอดู Breakout ก่อน อย่ารีบเข้า การรอ Breakout อาจทำให้พลาดกำไร 10-20% แรก แต่ดีกว่าเสี่ยงติดดอยในหุ้นที่ไม่มีใครสนใจ
+</div>
+
+<h3 id="wyckoff-accum">Wyckoff Accumulation Schematic</h3>
+<div class="diagram-block"><span class="tag structure">Wyckoff Accumulation</span>
+&#x0E23;&#x0E32;&#x0E04;&#x0E32;
+  &#x2502;
+  &#x2502;  <span class="val">PS</span>  <span class="bad">SC</span>    <span class="ok">AR</span>     <span class="hl">ST</span>        <span class="ok">SOS</span>    <span class="hl">LPS</span>   <span class="ok">BU</span>
+  &#x2502;   \  &#x2502;    /&#x2502;\     &#x2502;    &#x250C;&#x2500;&#x2500;&#x2500;&#x2500; /      &#x2502;    /
+  &#x2502;    \ &#x2502;   / &#x2502; \    &#x2502;   /&#x2502;   /       &#x2502;   /
+  &#x2502;     \&#x2502;  /  &#x2502;  \   &#x2502;  / &#x2502;  /        &#x2502;  /
+  &#x2502;      \/   &#x2502;   \  &#x2502; /  &#x2502; /    &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2502;&#x2500;/&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; <span class="ok">Breakout</span>
+  &#x2502;           &#x2502;    \ &#x2502;/   &#x2502;/     &#x2502;    &#x2502;/
+  &#x2502;           &#x2502;     \&#x2502;    &#x2502;      &#x2502;    &#x2502;
+  &#x2502;           &#x2502;      &#x2502;  <span class="warn">Spring</span>   &#x2502;    &#x2502;
+  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500; &#x0E40;&#x0E27;&#x0E25;&#x0E32;
+  <span class="hl">Phase A</span>      <span class="hl">Phase B</span>           <span class="hl">Phase C</span>  <span class="hl">D</span>   <span class="hl">E</span></div>
+
+<div class="two-col">
+<div class="card" style="border-top:3px solid var(--accent-red);">
+  <h4 style="margin-top:0;color:var(--accent-red);">Phase A: หยุดขาลง</h4>
+  <ul style="font-size:0.84rem;">
+    <li><strong>PS</strong> (Preliminary Support): แรงซื้อเริ่มเข้ามา</li>
+    <li><strong>SC</strong> (Selling Climax): ขายทิ้งรุนแรงครั้งสุดท้าย &#x2014; จุดต่ำสุด</li>
+    <li><strong>AR</strong> (Automatic Rally): ดีดกลับอัตโนมัติหลัง SC</li>
+    <li><strong>ST</strong> (Secondary Test): ทดสอบจุดต่ำสุดอีกครั้ง</li>
+  </ul>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-blue);">
+  <h4 style="margin-top:0;color:var(--accent-blue-light);">Phase B: สร้างฐาน (สะสมของ)</h4>
+  <ul style="font-size:0.84rem;">
+    <li>ราคาแกว่งในกรอบ AR-SC เป็นเวลานาน</li>
+    <li>ผู้ปั่นค่อยๆ ซื้อสะสมในช่วงนี้</li>
+    <li>วอลุ่มเพิ่มขึ้นวันราคาขึ้น ลดลงวันราคาลง</li>
+  </ul>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-orange);">
+  <h4 style="margin-top:0;color:var(--accent-orange);">Phase C: Spring</h4>
+  <ul style="font-size:0.84rem;">
+    <li>ราคาหลุดแนวรับลงไปเล็กน้อย &#x2192; "Shakeout"</li>
+    <li>ไล่คนที่ตั้ง Stop Loss ให้ขายออกมา</li>
+    <li><strong>Spring วอลุ่มน้อย = ดี</strong> / <strong>วอลุ่มมาก = อาจเป็นขาลงจริง</strong></li>
+  </ul>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-green);">
+  <h4 style="margin-top:0;color:var(--accent-green);">Phase D-E: Breakout</h4>
+  <ul style="font-size:0.84rem;">
+    <li><strong>SOS</strong>: ราคาวิ่งขึ้นพร้อมวอลุ่มสูง ทะลุกรอบ</li>
+    <li><strong>LPS</strong>: ย่อตัวกลับมาทดสอบแนวรับใหม่</li>
+    <li><strong>BU</strong>: อาจย่อกลับมาทดสอบจุด Breakout อีกครั้ง</li>
+  </ul>
+</div>
+</div>
+
+
+<!-- ==================== CHAPTER 7 ==================== -->
+<div class="section-header" id="ch7">
+  <h2><span class="sn warm">7</span> บทที่ 7: สัญญาณก่อนดันราคา (Pre-Pump)</h2>
+</div>
+<p>เมื่อสะสมของเสร็จ ผู้ปั่นจะเริ่มดันราคา ช่วงนี้จะเห็นสัญญาณชัดขึ้น แต่ต้องเข้าใจว่าสัญญาณเหล่านี้ถูก <strong>"ออกแบบ"</strong> มาให้คุณเห็น &#x2014; ผู้ปั่นต้องการให้คนเข้ามาซื้อตาม เพื่อช่วยดันราคาและเป็นคนที่จะรับซื้อของจากเขาในภายหลัง</p>
+
+<h3 id="prepump-chart">สัญญาณจากชาร์ต</h3>
+
+<div class="diagram-block"><span class="tag signal">Breakout Pattern</span>
+&#x0E23;&#x0E32;&#x0E04;&#x0E32;
+  &#x2502;            /
+  &#x2502;           / &#x2190; <span class="ok">Breakout!</span>
+  &#x2502;  ________/
+  &#x2502; |         | &#x2190; &#x0E01;&#x0E23;&#x0E2D;&#x0E1A; Sideway &#x0E40;&#x0E14;&#x0E34;&#x0E21;
+  &#x2502; |_________|
+  &#x2502;
+  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; &#x0E40;&#x0E27;&#x0E25;&#x0E32;</div>
+
+<div class="card" style="border-left:4px solid var(--accent-green);">
+  <div class="card-title" style="color:var(--accent-green);">1. Breakout จากกรอบ Sideway</div>
+  <p style="font-size:0.86rem;">ราคาทะลุแนวต้านที่เคยไปไม่ได้ วอลุ่มพุ่งขึ้น &gt; 2-3 เท่าของค่าเฉลี่ย</p>
+  <p style="font-size:0.84rem;"><strong>Breakout จริง vs หลอก:</strong> Breakout จริงมักเกิดพร้อมวอลุ่ม 3 เท่าขึ้นไป และราคาปิดเหนือแนวต้านอย่างชัดเจน ถ้าเกิดตอนเปิดตลาด (9:30-10:00) มักเป็นการจงใจดันราคา ถ้าเกิดตอนบ่าย มักเป็นแรงซื้อจริงมากกว่า</p>
+</div>
+
+<div class="two-col">
+<div class="card" style="border-left:4px solid var(--accent-cyan);">
+  <div class="card-title" style="color:var(--accent-cyan);">2. Gap Up (เปิดกระโดดขึ้น)</div>
+  <p style="font-size:0.85rem;"><strong>Breakaway Gap:</strong> เกิดตอน Breakout &#x2192; สัญญาณแข็งแกร่ง<br>
+  <strong>Continuation Gap:</strong> เกิดระหว่างขาขึ้น &#x2192; แรงซื้อยังแข็ง<br>
+  <strong>Exhaustion Gap:</strong> เกิดหลังราคาวิ่งนาน &#x2192; &#x26A0;&#xFE0F; สัญญาณสุดท้ายก่อนกลับตัว</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-orange);">
+  <div class="card-title" style="color:var(--accent-orange);">3. Offer บางลง</div>
+  <p style="font-size:0.85rem;">ฝั่งขายเบาบาง ออเดอร์ขายน้อย ราคาวิ่งขึ้นง่ายเพราะไม่มีแรงต้าน ดู Offer Queue &#x2014; ถ้าออเดอร์ขายแต่ละช่องราคามีแค่หลักพันหุ้น (ปกติหลักหมื่น) &#x2192; Supply ถูกดูดออกไปแล้ว</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-blue-light);">
+  <div class="card-title" style="color:var(--accent-blue-light);">4. ราคาปิดใกล้จุดสูงสุดของวัน</div>
+  <p style="font-size:0.85rem;">แท่งเทียนเป็นแท่งยาวสีเขียว แทบไม่มีหางบน แท่ง <strong>Marubozu</strong> (ไม่มีหางเลย) เป็นสัญญาณที่แข็งแกร่งที่สุด ถ้าเห็นติดต่อกัน 3-5 วัน &#x2192; ขาขึ้นแข็งแกร่ง</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-red);">
+  <div class="card-title" style="color:var(--accent-red);">5. ราคาชนซิลลิ่ง (Limit Up)</div>
+  <p style="font-size:0.85rem;">ในตลาดหุ้นไทย ราคาขึ้นได้สูงสุด 30% ต่อวัน ถ้าหุ้นตัวเล็กชนซิลลิ่ง &#x2192; มักเป็นสัญญาณของการปั่น เพราะหุ้นปกติไม่ค่อยชนซิลลิ่ง</p>
+</div>
+</div>
+
+<h3 id="prepump-news">สัญญาณจากข่าวและโซเชียล</h3>
+
+<div class="card" style="border-left:4px solid var(--accent-red);">
+  <div class="card-title" style="color:var(--accent-red);">&#x1F4E2; 1. ข่าวลือเริ่มแพร่</div>
+  <p style="font-size:0.86rem;">กลุ่มไลน์หุ้นเริ่มพูดถึง มีคนมาแนะนำว่า "หุ้นเด็ด" "ได้ข่าวจากวงใน" ถ้ามาจากหลายกลุ่มพร้อมกัน ด้วยข้อความคล้ายๆ กัน &#x2192; มีคนจงใจปล่อยข่าว</p>
+  <div class="info-box danger" style="margin-top:0.8rem;">
+    <div class="bt">&#x1F6A8; กฎง่ายๆ</div>
+    ถ้าข่าวดีจริง คนที่รู้จะซื้อเงียบๆ ไม่มาบอกคนอื่น เพราะยิ่งบอกคนเยอะ ราคายิ่งขึ้นเร็ว ต้นทุนยิ่งสูง &#x2014; การที่มีคนมาบอกคุณ แปลว่าเขาต้องการให้คุณซื้อ เพื่อดันราคาให้เขาขาย
+  </div>
+</div>
+
+<div class="card" style="border-left:4px solid var(--accent-orange);">
+  <div class="card-title" style="color:var(--accent-orange);">&#x1F4F0; 2. ข่าวดีออกมาทีละข่าว</div>
+  <p style="font-size:0.86rem;">MOU กับพาร์ทเนอร์ใหม่ &#x2192; ขยายธุรกิจใหม่ &#x2192; ผู้ถือหุ้นใหญ่รายใหม่เข้ามา ข่าวออกมาจังหวะพอดีกับที่ราคาเริ่มวิ่ง &#x2014; ไม่ใช่เรื่องบังเอิญ</p>
+  <div class="info-box warning" style="margin-top:0.8rem;">
+    <div class="bt">&#x26A0;&#xFE0F; ตรวจสอบ "สาระ" ของข่าว</div>
+    &#x2022; MOU &#x2260; สัญญา &#x2014; ไม่มีผลผูกพันทางกฎหมาย<br>
+    &#x2022; "ศึกษาความเป็นไปได้" &#x2260; ลงทุนจริง<br>
+    &#x2022; "คาดว่ารายได้จะเพิ่ม" &#x2260; รายได้เพิ่มจริง &#x2014; ต้องรอดูงบการเงินจริง
+  </div>
+</div>
+
+<div class="two-col">
+<div class="card" style="border-left:4px solid var(--accent-purple);">
+  <div class="card-title" style="color:var(--accent-purple);">&#x1F4CA; 3. บทวิเคราะห์เริ่มออก</div>
+  <p style="font-size:0.85rem;">มีโบรกเกอร์ออกบทวิเคราะห์แนะนำซื้อ ให้ราคาเป้าหมายสูงกว่าราคาปัจจุบันมาก ถ้าบทวิเคราะห์ออกมาพร้อมกับที่ราคาวิ่งขึ้นแล้ว 50-100% &#x2192; อาจถูกใช้เป็นเครื่องมือให้คนไล่ซื้อตาม</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-pink);">
+  <div class="card-title" style="color:var(--accent-pink);">&#x1F3A4; 4. Influencer/KOL เริ่มพูดถึง</div>
+  <p style="font-size:0.85rem;">มีคนดังในวงการหุ้นเริ่มพูดถึงหุ้นตัวนี้ในโซเชียลมีเดีย ถ้า KOL หลายคนพูดถึงหุ้นตัวเดียวกันในช่วงเวลาใกล้เคียงกัน &#x2192; มีโอกาสสูงที่เป็นการประสานงาน</p>
+</div>
+</div>
+
+<h3 id="prepump-timeline">ลำดับเหตุการณ์ที่มักเกิดขึ้น</h3>
+
+<div class="diagram-block"><span class="tag flow">Pre-Pump Timeline</span>
+<span class="hl">&#x0E40;&#x0E14;&#x0E37;&#x0E2D;&#x0E19;&#x0E17;&#x0E35;&#x0E48; 1-3:</span>  &#x0E2A;&#x0E30;&#x0E2A;&#x0E21;&#x0E02;&#x0E2D;&#x0E07;&#x0E40;&#x0E07;&#x0E35;&#x0E22;&#x0E1A;&#x0E46; &#x0E23;&#x0E32;&#x0E04;&#x0E32; Sideway &#x0E27;&#x0E2D;&#x0E25;&#x0E38;&#x0E48;&#x0E21;&#x0E04;&#x0E48;&#x0E2D;&#x0E22;&#x0E46; &#x0E40;&#x0E1E;&#x0E34;&#x0E48;&#x0E21;
+               &#x2190; <span class="warn">&#x26A0;&#xFE0F; &#x0E16;&#x0E49;&#x0E32;&#x0E2A;&#x0E31;&#x0E07;&#x0E40;&#x0E01;&#x0E15;&#x0E40;&#x0E2B;&#x0E47;&#x0E19;&#x0E15;&#x0E2D;&#x0E19;&#x0E19;&#x0E35;&#x0E49; &#x0E04;&#x0E38;&#x0E13;&#x0E40;&#x0E1B;&#x0E47;&#x0E19; "&#x0E04;&#x0E19;&#x0E23;&#x0E39;&#x0E49;&#x0E01;&#x0E48;&#x0E2D;&#x0E19;" (&#x0E41;&#x0E15;&#x0E48;&#x0E22;&#x0E31;&#x0E07;&#x0E44;&#x0E21;&#x0E48;&#x0E04;&#x0E27;&#x0E23;&#x0E40;&#x0E02;&#x0E49;&#x0E32;)</span>
+
+<span class="hl">&#x0E2A;&#x0E31;&#x0E1B;&#x0E14;&#x0E32;&#x0E2B;&#x0E4C;&#x0E17;&#x0E35;&#x0E48; 1:</span> &#x0E23;&#x0E32;&#x0E04;&#x0E32; Breakout + &#x0E27;&#x0E2D;&#x0E25;&#x0E38;&#x0E48;&#x0E21;&#x0E40;&#x0E1E;&#x0E34;&#x0E48;&#x0E21; 2-3 &#x0E40;&#x0E17;&#x0E48;&#x0E32;
+              &#x2190; <span class="ok">&#x0E08;&#x0E38;&#x0E14;&#x0E17;&#x0E35;&#x0E48;&#x0E1B;&#x0E25;&#x0E2D;&#x0E14;&#x0E20;&#x0E31;&#x0E22;&#x0E17;&#x0E35;&#x0E48;&#x0E2A;&#x0E38;&#x0E14;&#x0E43;&#x0E19;&#x0E01;&#x0E32;&#x0E23;&#x0E40;&#x0E02;&#x0E49;&#x0E32; &#x0E04;&#x0E37;&#x0E2D; Retest &#x0E2B;&#x0E25;&#x0E31;&#x0E07; Breakout</span>
+
+<span class="hl">&#x0E2A;&#x0E31;&#x0E1B;&#x0E14;&#x0E32;&#x0E2B;&#x0E4C;&#x0E17;&#x0E35;&#x0E48; 2:</span> &#x0E40;&#x0E23;&#x0E34;&#x0E48;&#x0E21;&#x0E21;&#x0E35;&#x0E04;&#x0E19;&#x0E1E;&#x0E39;&#x0E14;&#x0E16;&#x0E36;&#x0E07;&#x0E43;&#x0E19;&#x0E01;&#x0E25;&#x0E38;&#x0E48;&#x0E21;&#x0E44;&#x0E25;&#x0E19;&#x0E4C; + &#x0E23;&#x0E32;&#x0E04;&#x0E32;&#x0E02;&#x0E36;&#x0E49;&#x0E19;&#x0E15;&#x0E48;&#x0E2D; 20-30%
+              &#x2190; <span class="val">&#x0E04;&#x0E19;&#x0E2A;&#x0E48;&#x0E27;&#x0E19;&#x0E43;&#x0E2B;&#x0E0D;&#x0E48;&#x0E40;&#x0E23;&#x0E34;&#x0E48;&#x0E21;&#x0E23;&#x0E39;&#x0E49;&#x0E08;&#x0E31;&#x0E01;&#x0E2B;&#x0E38;&#x0E49;&#x0E19;&#x0E15;&#x0E31;&#x0E27;&#x0E19;&#x0E35;&#x0E49;</span>
+
+<span class="hl">&#x0E2A;&#x0E31;&#x0E1B;&#x0E14;&#x0E32;&#x0E2B;&#x0E4C;&#x0E17;&#x0E35;&#x0E48; 3:</span> &#x0E02;&#x0E48;&#x0E32;&#x0E27; MOU + &#x0E1A;&#x0E17;&#x0E27;&#x0E34;&#x0E40;&#x0E04;&#x0E23;&#x0E32;&#x0E30;&#x0E2B;&#x0E4C;&#x0E41;&#x0E19;&#x0E30;&#x0E19;&#x0E33;&#x0E0B;&#x0E37;&#x0E49;&#x0E2D; + &#x0E23;&#x0E32;&#x0E04;&#x0E32;&#x0E02;&#x0E36;&#x0E49;&#x0E19;&#x0E2D;&#x0E35;&#x0E01; 30-50%
+              &#x2190; <span class="warn">&#x0E04;&#x0E19;&#x0E40;&#x0E23;&#x0E34;&#x0E48;&#x0E21;&#x0E40;&#x0E0A;&#x0E37;&#x0E48;&#x0E2D;&#x0E27;&#x0E48;&#x0E32; "&#x0E2B;&#x0E38;&#x0E49;&#x0E19;&#x0E15;&#x0E31;&#x0E27;&#x0E19;&#x0E35;&#x0E49;&#x0E14;&#x0E35;&#x0E08;&#x0E23;&#x0E34;&#x0E07;"</span>
+
+<span class="hl">&#x0E2A;&#x0E31;&#x0E1B;&#x0E14;&#x0E32;&#x0E2B;&#x0E4C;&#x0E17;&#x0E35;&#x0E48; 4:</span> &#x0E23;&#x0E32;&#x0E04;&#x0E32;&#x0E0A;&#x0E19;&#x0E0B;&#x0E34;&#x0E25;&#x0E25;&#x0E34;&#x0E48;&#x0E07; + &#x0E02;&#x0E48;&#x0E32;&#x0E27;&#x0E02;&#x0E36;&#x0E49;&#x0E19;&#x0E2B;&#x0E19;&#x0E49;&#x0E32;&#x0E2B;&#x0E19;&#x0E36;&#x0E48;&#x0E07; + &#x0E04;&#x0E19;&#x0E41;&#x0E2B;&#x0E48;&#x0E40;&#x0E02;&#x0E49;&#x0E32;&#x0E0B;&#x0E37;&#x0E49;&#x0E2D;
+              &#x2190; <span class="bad">&#x26A0;&#xFE0F; &#x0E16;&#x0E49;&#x0E32;&#x0E04;&#x0E38;&#x0E13;&#x0E40;&#x0E1E;&#x0E34;&#x0E48;&#x0E07;&#x0E23;&#x0E39;&#x0E49;&#x0E02;&#x0E48;&#x0E32;&#x0E27;&#x0E15;&#x0E2D;&#x0E19;&#x0E19;&#x0E35;&#x0E49; &#x0E04;&#x0E38;&#x0E13;&#x0E2A;&#x0E32;&#x0E22;&#x0E40;&#x0E01;&#x0E34;&#x0E19;&#x0E44;&#x0E1B;&#x0E41;&#x0E25;&#x0E49;&#x0E27; / &#x0E1C;&#x0E39;&#x0E49;&#x0E1B;&#x0E31;&#x0E48;&#x0E19;&#x0E40;&#x0E23;&#x0E34;&#x0E48;&#x0E21;&#x0E02;&#x0E32;&#x0E22;&#x0E02;&#x0E2D;&#x0E07;&#x0E2D;&#x0E2D;&#x0E01;&#x0E41;&#x0E25;&#x0E49;&#x0E27;</span>
+
+<span class="hl">&#x0E2A;&#x0E31;&#x0E1B;&#x0E14;&#x0E32;&#x0E2B;&#x0E4C;&#x0E17;&#x0E35;&#x0E48; 5-6:</span> &#x0E23;&#x0E32;&#x0E04;&#x0E32;&#x0E41;&#x0E01;&#x0E27;&#x0E48;&#x0E07;&#x0E23;&#x0E38;&#x0E19;&#x0E41;&#x0E23;&#x0E07; + &#x0E02;&#x0E48;&#x0E32;&#x0E27;&#x0E14;&#x0E35;&#x0E2D;&#x0E2D;&#x0E01;&#x0E21;&#x0E32;&#x0E2D;&#x0E35;&#x0E01;&#x0E41;&#x0E15;&#x0E48;&#x0E23;&#x0E32;&#x0E04;&#x0E32;&#x0E44;&#x0E21;&#x0E48;&#x0E44;&#x0E1B;
+              &#x2190; <span class="bad">&#x26A0;&#xFE0F; &#x0E16;&#x0E49;&#x0E32;&#x0E22;&#x0E31;&#x0E07;&#x0E16;&#x0E37;&#x0E2D;&#x0E2D;&#x0E22;&#x0E39;&#x0E48; &#x0E04;&#x0E27;&#x0E23;&#x0E2D;&#x0E2D;&#x0E01;&#x0E41;&#x0E25;&#x0E49;&#x0E27;</span>
+
+<span class="hl">&#x0E2A;&#x0E31;&#x0E1B;&#x0E14;&#x0E32;&#x0E2B;&#x0E4C;&#x0E17;&#x0E35;&#x0E48; 7+:</span> &#x0E23;&#x0E32;&#x0E04;&#x0E32;&#x0E23;&#x0E48;&#x0E27;&#x0E07; 50-80% &#x0E08;&#x0E32;&#x0E01;&#x0E08;&#x0E38;&#x0E14;&#x0E2A;&#x0E39;&#x0E07;&#x0E2A;&#x0E38;&#x0E14;
+              &#x2190; <span class="bad">&#x0E04;&#x0E19;&#x0E17;&#x0E35;&#x0E48;&#x0E40;&#x0E02;&#x0E49;&#x0E32;&#x0E0A;&#x0E49;&#x0E32;&#x0E02;&#x0E32;&#x0E14;&#x0E17;&#x0E38;&#x0E19;&#x0E2B;&#x0E19;&#x0E31;&#x0E01;</span></div>
+
+<h4 id="too-late">วิธีประเมินว่า "สายเกินไป" หรือยัง</h4>
+<div class="table-wrapper">
+<table>
+<thead class="red-head"><tr><th>ราคาขึ้นจากจุดต่ำสุด</th><th>ระดับความเสี่ยง</th><th>คำแนะนำ</th></tr></thead>
+<tbody>
+<tr><td><strong>0-30%</strong></td><td style="color:var(--accent-green);">ต่ำ-ปานกลาง</td><td>ถ้ามีสัญญาณสะสมชัดเจน อาจพิจารณาเข้าได้</td></tr>
+<tr><td><strong>30-100%</strong></td><td style="color:var(--accent-orange);">ปานกลาง-สูง</td><td>ถ้าจะเข้า ต้องมี Stop Loss ชัดเจน ซื้อน้อย</td></tr>
+<tr><td><strong>100-200%</strong></td><td style="color:var(--accent-red);">สูงมาก</td><td>ไม่ควรเข้าใหม่ ถ้าถืออยู่ควรเริ่มขายทำกำไร</td></tr>
+<tr><td><strong>&gt; 200%</strong></td><td style="color:var(--accent-red);font-weight:700;">&#x1F480; อันตราย</td><td>ห้ามเข้า ถ้าถืออยู่ควรขายทันที</td></tr>
+</tbody>
+</table>
+</div>
+
+
+<!-- ==================== CHAPTER 8 ==================== -->
+<div class="section-header" id="ch8">
+  <h2><span class="sn red">8</span> บทที่ 8: สัญญาณว่ากำลังจะทิ้ง (Distribution)</h2>
+</div>
+<p>นี่คือช่วงที่อันตรายที่สุด ผู้ปั่นกำลังขายของออก ถ้าอ่านสัญญาณไม่ออก คุณจะกลายเป็นคนสุดท้ายที่ถือหุ้น การทิ้งเป็นศิลปะ — ผู้ปั่นต้องขายของออกให้ได้มากที่สุด โดยไม่ทำให้ราคาร่วงก่อนที่จะขายหมด</p>
+
+<h3 id="dist-chart">สัญญาณจากชาร์ต</h3>
+
+<div class="card" style="border-left:4px solid var(--accent-red);">
+  <div class="card-title" style="color:var(--accent-red);">1. Volume Divergence — ราคาขึ้นแต่วอลุ่มลดลง</div>
+  <p style="font-size:0.86rem;">ราคายังทำ New High แต่วอลุ่มน้อยลงเรื่อยๆ แปลว่าคนซื้อน้อยลง แต่ราคายังถูกดันอยู่ — ไม่ยั่งยืน</p>
+  <div class="diagram-block" style="margin:0.8rem 0 0;"><span class="tag signal">Volume Divergence</span>
+<span class="ok">ราคา:</span>    /  /  /   ← ราคายังขึ้น
+<span class="bad">วอลุ่ม:</span>  █ ▄ ▂    ← แต่วอลุ่มลดลง ⚠️</div>
+  <p style="font-size:0.84rem;"><strong>สัญญาณเตือนล่วงหน้าที่ดีที่สุด</strong> มักเกิดก่อนราคากลับตัว 1-2 สัปดาห์</p>
+</div>
+
+<div class="two-col">
+<div class="card" style="border-left:4px solid var(--accent-orange);">
+  <div class="card-title" style="color:var(--accent-orange);">2. หางบนยาว (Long Upper Shadow)</div>
+  <p style="font-size:0.85rem;">ราคาวิ่งขึ้นไประหว่างวัน แต่ถูกเทขายลงมาปิดต่ำ ถ้าเห็นหางบนยาวติดต่อกัน 2-3 วัน → แรงขายด้านบนหนักมาก ผู้ปั่นดันราคาขึ้นไปตอนเช้าเพื่อดึงดูดคนซื้อตาม แล้วค่อยๆ เทขายออกตลอดทั้งวัน</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-purple);">
+  <div class="card-title" style="color:var(--accent-purple);">3. Doji / Spinning Top ที่ยอดสูง</div>
+  <p style="font-size:0.85rem;">แท่งเทียนตัวเล็กๆ ที่ราคาเปิดกับปิดใกล้กัน แสดงความลังเล เมื่อเกิดหลังขาขึ้นยาว = สัญญาณกลับตัว Doji ที่เกิดพร้อมวอลุ่มสูงมาก → อันตรายกว่า เพราะมีการซื้อขายหนักแต่ราคาไม่ไปไหน</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-red);">
+  <div class="card-title" style="color:var(--accent-red);">4. Bearish Engulfing — เปิด Gap Up แล้วปิดลบ</div>
+  <p style="font-size:0.85rem;">เปิดสูงแต่ถูกเทขายจนปิดต่ำกว่าเปิด สัญญาณที่ชัดเจนที่สุดว่าผู้ปั่นกำลังทิ้ง — เขาดันราคาเปิดให้สูง (Gap Up) เพื่อดึงดูดคนซื้อตาม แล้วเทขายทั้งวัน ถ้าวอลุ่มสูง 3-5 เท่า → ผู้ปั่นเทขายหนัก</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-yellow);">
+  <div class="card-title" style="color:var(--accent-yellow);">5. High Volatility — ราคาแกว่งรุนแรง</div>
+  <p style="font-size:0.85rem;">วันหนึ่งขึ้น 10% วันถัดมาลง 8% ผู้ปั่นกำลังขายของ สลับกับดันราคาเพื่อหลอก รูปแบบที่พบบ่อย: ดันขึ้นแรงวันจันทร์-อังคาร แล้วเทขายวันพุธ-พฤหัส วันศุกร์ดันกลับขึ้นเล็กน้อย</p>
+</div>
+</div>
+
+<div class="card" style="border-left:4px solid var(--accent-cyan);border-width:4px;">
+  <div class="card-title" style="color:var(--accent-cyan);">6. Churning — วอลุ่มสูงผิดปกติแต่ราคาขึ้นน้อย</div>
+  <p style="font-size:0.86rem;">วอลุ่มพุ่งสูงมาก (5-10 เท่าของค่าเฉลี่ย) แต่ราคาขยับขึ้นแค่ 1-2% หรือไม่ขยับเลย แสดงว่ามีการ "เปลี่ยนมือ" หนักมาก — ผู้ปั่นกำลังขายให้รายย่อยที่แห่เข้ามาซื้อ</p>
+  <div class="info-box danger" style="margin-top:0.8rem;">
+    <div class="bt">🚨 Churning เป็นสัญญาณที่อันตรายที่สุด</div>
+    คนส่วนใหญ่เห็นวอลุ่มสูงแล้วคิดว่า "หุ้นกำลังร้อน" จึงเข้าซื้อตาม แต่จริงๆ แล้วเป็นช่วงที่ผู้ปั่นกำลังถ่ายของออก
+  </div>
+</div>
+
+<h3 id="dist-data">สัญญาณจากข้อมูลอื่น</h3>
+
+<div class="two-col">
+<div class="card" style="border-left:4px solid var(--accent-red);">
+  <div class="card-title" style="color:var(--accent-red);">📰 ข่าวดีออกมาแต่ราคาไม่ขึ้น</div>
+  <p style="font-size:0.85rem;">"Buy on rumor, sell on fact" — ถ้าข่าวดีที่ดีที่สุดออกมาแล้วราคาไม่ขึ้น → ไม่มีอะไรจะดันราคาได้อีกแล้ว</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-orange);">
+  <div class="card-title" style="color:var(--accent-orange);">📋 ผู้บริหาร/ผู้ถือหุ้นใหญ่ขายหุ้น</div>
+  <p style="font-size:0.85rem;">ดูรายงาน ก.ล.ต. (แบบ 59-2) ถ้าผู้บริหารหลายคนขายหุ้นในช่วงเวลาใกล้เคียงกัน → พวกเขารู้อะไรที่คุณไม่รู้</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-purple);">
+  <div class="card-title" style="color:var(--accent-purple);">⚠️ มีการขึ้นเครื่องหมาย</div>
+  <p style="font-size:0.85rem;"><strong>H</strong> (Halt): หยุดซื้อขายชั่วคราว | <strong>SP</strong> (Suspension): ห้ามซื้อขาย | <strong>C</strong> (Caution): เตือนให้ระวัง | <strong>NP</strong>: รอชี้แจง — ถ้าถูกขึ้นเครื่องหมาย H/SP ขณะที่คุณถืออยู่ → คุณจะขายไม่ได้</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-cyan);">
+  <div class="card-title" style="color:var(--accent-cyan);">📉 Short Selling เพิ่มขึ้น</div>
+  <p style="font-size:0.85rem;">ในหุ้นตัวเล็ก Short Selling มักทำได้ยาก ถ้ามี Short Selling เพิ่มขึ้น → แม้แต่คนที่ต้องจ่ายค่ายืมหุ้นก็ยังเชื่อว่าราคาจะลง</p>
+</div>
+</div>
+
+<h3 id="dist-timeline">ระยะเวลาของการทิ้ง (Distribution Timeline)</h3>
+
+<div class="step-flow">
+  <div class="step-item"><div class="step-circle" style="background:var(--gradient-warm);">1</div><div class="step-label">ขายเงียบๆ<br>1-2 สัปดาห์</div></div>
+  <div class="step-item"><div class="step-circle" style="background:var(--gradient-red);">2</div><div class="step-label">สร้างความผันผวน<br>1-2 สัปดาห์</div></div>
+  <div class="step-item"><div class="step-circle" style="background:linear-gradient(135deg,#991b1b,#ef4444);">3</div><div class="step-label">ทิ้งจริง<br>1-3 วัน</div></div>
+  <div class="step-item"><div class="step-circle" style="background:linear-gradient(135deg,#64748b,#475569);">4</div><div class="step-label">Dead Cat Bounce<br>2-5 วัน</div></div>
+  <div class="step-item"><div class="step-circle" style="background:linear-gradient(135deg,#1e293b,#334155);">5</div><div class="step-label">ไหลลงต่อเนื่อง<br>หลายสัปดาห์</div></div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-orange);">ระยะที่ 1: ขายเงียบๆ — Churning</div>
+  <p style="font-size:0.85rem;">ราคายังขึ้นอยู่ แต่ช้าลง ผู้ปั่นขายทีละน้อยในวันที่ราคาขึ้น ข่าวดียังออกมาเรื่อยๆ ดู "Effort vs Result" — ถ้าวอลุ่มสูง (Effort มาก) แต่ราคาขึ้นน้อย (Result น้อย) → มีแรงขายซ่อนอยู่</p>
+</div>
+<div class="card">
+  <div class="card-title" style="color:var(--accent-red);">ระยะที่ 2: สร้างความผันผวน — Lower Highs</div>
+  <p style="font-size:0.85rem;">ราคาแกว่งรุนแรง ขึ้นๆ ลงๆ ดันราคาขึ้นแรงวันหนึ่ง (ทำให้คนคิดว่า "กลับมาแล้ว") แล้วเทขายวันถัดไป ทำซ้ำหลายรอบ แต่ละรอบจุดสูงสุดจะต่ำลงเรื่อยๆ (Lower Highs)</p>
+</div>
+<div class="card" style="border:2px solid rgba(239,68,68,0.4);">
+  <div class="card-title" style="color:var(--accent-red);">ระยะที่ 3: ทิ้งจริง — Gap Down + Floor</div>
+  <p style="font-size:0.85rem;">ราคาร่วงแรง วอลุ่มพุ่งสูงมาก ผู้ปั่นเทขายทั้งหมดที่เหลือ Bid Queue หายหมด — ออเดอร์ซื้อที่เคยรอรับด้านล่างถูกดึงออกทั้งหมด ทำให้ราคาร่วงแบบไม่มีแนวรับ</p>
+</div>
+
+<div class="quote-block">
+  <strong>"Dead Cat Bounce"</strong> — "แม้แต่แมวตาย ถ้าตกจากที่สูงพอ ก็ยังเด้งได้" อย่าสับสนระหว่างการดีดกลับชั่วคราวกับการกลับตัวจริง Dead Cat Bounce: วอลุ่มน้อย ดีดขึ้นเร็วแล้วลงเร็ว | กลับตัวจริง: วอลุ่มค่อยๆ เพิ่ม ราคาค่อยๆ ยกขึ้น มี Higher Lows
+</div>
+
+<h3 id="wyckoff-dist">Wyckoff Distribution Schematic</h3>
+<div class="diagram-block"><span class="tag structure">Wyckoff Distribution</span>
+ราคา
+  │        <span class="val">PSY</span>  <span class="bad">BC</span>    <span class="ok">AR</span>    <span class="hl">ST</span>    <span class="warn">UT/UTAD</span>
+  │         │  /│\    │     │    /│
+  │         │ / │ \   │     │   / │
+  │         │/  │  \  │     │  /  │
+  │         │   │   \ │     │ /   │
+  │              │    \│     │/    │
+  │              │     │   <span class="hl">LPSY</span>    │
+  │              │     │     │     │\
+  │              │     │     │     │ \
+  │              │     │     │     │  \  <span class="bad">SOW</span>
+  │              │     │     │     │   \/
+  └──────────────┴─────┴─────┴─────┴────── เวลา
+  <span class="hl">Phase A</span>         <span class="hl">Phase B</span>          <span class="hl">Phase C</span>  <span class="hl">D</span>  <span class="hl">E</span></div>
+
+<div class="two-col">
+<div class="card" style="border-top:3px solid var(--accent-red);">
+  <h4 style="margin-top:0;color:var(--accent-red);">Phase A: หยุดขาขึ้น</h4>
+  <p style="font-size:0.84rem;"><strong>BC</strong> (Buying Climax): ซื้อรุนแรงครั้งสุดท้าย — จุดสูงสุด<br><strong>AR</strong> (Automatic Reaction): ร่วงลงอัตโนมัติ<br><strong>ST</strong>: ทดสอบจุดสูงสุดอีกครั้ง ถ้าไม่ผ่าน → ขาขึ้นจบ</p>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-orange);">
+  <h4 style="margin-top:0;color:var(--accent-orange);">Phase B-C: กระจายของ</h4>
+  <p style="font-size:0.84rem;"><strong>UT</strong> (Upthrust): ราคาทะลุ BC ขึ้นไปเล็กน้อยแล้วกลับลง → หลอกให้คนซื้อตาม<br><strong>UTAD</strong>: หลอกครั้งสุดท้าย<br><strong>LPSY</strong>: จุดสุดท้ายที่ผู้ปั่นขายของออก</p>
+</div>
+</div>
+
+<h3 id="compare-all">ตารางเปรียบเทียบทุกช่วง</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>สัญญาณ</th><th style="color:var(--accent-blue-light);">สะสม</th><th style="color:var(--accent-green);">Pump</th><th style="color:var(--accent-red);">Dump</th></tr></thead>
+<tbody>
+<tr><td><strong>ราคา</strong></td><td>Sideway แคบ</td><td>วิ่งขึ้นแรง</td><td>แกว่งรุนแรง/เริ่มลง</td></tr>
+<tr><td><strong>วอลุ่ม</strong></td><td>ค่อยๆ เพิ่ม</td><td>พุ่งสูงมาก</td><td>สูงแต่เริ่มลด (Churning)</td></tr>
+<tr><td><strong>ข่าว</strong></td><td>เงียบ</td><td>ข่าวดีรัวๆ</td><td>ข่าวดีแต่ราคาไม่ไป</td></tr>
+<tr><td><strong>แท่งเทียน</strong></td><td>หางล่างยาว</td><td>แท่งยาวสีเขียว</td><td>หางบนยาว, Doji</td></tr>
+<tr><td><strong>Insider</strong></td><td>ซื้อเงียบๆ</td><td>ไม่มีรายงาน</td><td>เริ่มขาย (ดู 59-2)</td></tr>
+<tr><td><strong>OBV</strong></td><td>ไต่ขึ้น</td><td>พุ่งขึ้นแรง</td><td>เริ่มลดลง (Divergence)</td></tr>
+<tr><td><strong>RSI</strong></td><td>30-50</td><td>70-90</td><td>Bearish Divergence</td></tr>
+<tr><td><strong>Bid-Offer</strong></td><td>Bid หนา Offer บาง</td><td>Offer หายหมด</td><td>Offer เริ่มหนาขึ้น</td></tr>
+<tr><td><strong>โซเชียล</strong></td><td>ไม่มีคนพูดถึง</td><td>ทุกคนพูดถึง</td><td>คนเริ่มทะเลาะกัน</td></tr>
+</tbody>
+</table>
+</div>
+
+
+<!-- ==================== CHAPTER 9 ==================== -->
+<div class="section-header" id="ch9">
+  <h2><span class="sn cyan">9</span> บทที่ 9: เครื่องมือทางเทคนิคที่ช่วยจับสัญญาณ</h2>
+</div>
+<p>เครื่องมือทางเทคนิค (Technical Indicators) เป็นตัวช่วยในการวิเคราะห์ แต่ต้องเข้าใจว่ามันเป็นแค่ "เครื่องมือ" ไม่ใช่ "คำตอบ" — ไม่มี Indicator ตัวไหนที่ถูกต้อง 100% ต้องใช้หลายตัวประกอบกันและดูบริบทเสมอ</p>
+
+<h3 id="volume-analysis">9.1 Volume Analysis</h3>
+
+<div class="indicator-card">
+  <div class="ic-header">
+    <span class="ic-badge" style="background:rgba(34,211,238,0.15);color:var(--accent-cyan);">VOLUME</span>
+    <span class="ic-title">Volume Moving Average (VMA)</span>
+  </div>
+  <p style="font-size:0.86rem;">ใช้ค่าเฉลี่ยวอลุ่ม 20 วัน เป็นเกณฑ์</p>
+  <ul style="font-size:0.84rem;">
+    <li>วอลุ่มวันนี้ &gt; 2 เท่าของ VMA20 โดยไม่มีข่าว → ระวัง</li>
+    <li>วอลุ่ม &gt; 5 เท่า → สัญญาณเตือนระดับสูง</li>
+    <li><strong>วอลุ่มสูง + ราคาขึ้น</strong> → แรงซื้อจริง (อาจเป็นช่วงปั่นขึ้น)</li>
+    <li><strong>วอลุ่มสูง + ราคาไม่ขยับ</strong> → Churning (ผู้ปั่นกำลังขาย)</li>
+    <li><strong>วอลุ่มสูง + ราคาลง</strong> → แรงขายหนัก (อาจเป็นช่วงทิ้ง)</li>
+  </ul>
+</div>
+
+<div class="indicator-card">
+  <div class="ic-header">
+    <span class="ic-badge" style="background:rgba(16,185,129,0.15);color:var(--accent-green);">OBV</span>
+    <span class="ic-title">On Balance Volume</span>
+  </div>
+  <p style="font-size:0.86rem;">รวมวอลุ่มสะสม: วันที่ราคาขึ้น +วอลุ่ม, วันที่ราคาลง -วอลุ่ม</p>
+  <ul style="font-size:0.84rem;">
+    <li><strong>OBV ทำ New High ก่อนราคา</strong> → สัญญาณว่าราคาจะตามขึ้น (Bullish)</li>
+    <li><strong>OBV ทำ New Low ก่อนราคา</strong> → สัญญาณว่าราคาจะตามลง (Bearish)</li>
+    <li><strong>OBV แบน ขณะราคาขึ้น</strong> → แรงซื้อไม่จริง ราคาอาจกลับตัว</li>
+  </ul>
+  <div class="info-box observe" style="margin-top:0.8rem;">
+    <div class="bt">🔎 OBV เป็น Indicator ที่ดีที่สุดในการจับ "Smart Money"</div>
+    เพราะมันบอกว่าเงินไหลเข้าหรือออก แม้ราคาจะยังไม่ขยับ
+  </div>
+</div>
+
+<h3 id="rsi">9.2 RSI (Relative Strength Index)</h3>
+
+<div class="indicator-card">
+  <div class="ic-header">
+    <span class="ic-badge" style="background:rgba(167,139,250,0.15);color:var(--accent-purple);">RSI</span>
+    <span class="ic-title">Relative Strength Index</span>
+  </div>
+  <div class="formula">RSI = 100 - (100 / (1 + RS))<br>RS = Average Gain / Average Loss (ปกติใช้ 14 วัน)</div>
+  <ul style="font-size:0.84rem;">
+    <li><strong>RSI &gt; 70</strong> = Overbought | <strong>RSI &gt; 80</strong> ในหุ้นตัวเล็ก = อันตรายมาก</li>
+    <li><strong>RSI &lt; 30</strong> = Oversold</li>
+    <li><strong>Bearish Divergence:</strong> ราคาทำ New High แต่ RSI ไม่ทำตาม → แรงซื้อเริ่มอ่อน</li>
+  </ul>
+  <div class="diagram-block" style="margin:0.8rem 0;"><span class="tag signal">RSI Divergence</span>
+<span class="ok">ราคา:</span>  /  /\    ← ราคาทำ New High
+<span class="bad">RSI:</span>   /\ /     ← RSI ไม่ทำ New High ⚠️ Divergence!</div>
+  <p style="font-size:0.84rem;"><strong>ข้อควรระวัง:</strong> ในหุ้นที่ถูกปั่น RSI อาจอยู่ในโซน Overbought (&gt; 70) นานกว่าปกติ อย่ารีบ Short แค่เพราะ RSI สูง — ต้องรอสัญญาณ Divergence ยืนยัน</p>
+</div>
+
+<h3 id="macd">9.3 MACD</h3>
+
+<div class="indicator-card">
+  <div class="ic-header">
+    <span class="ic-badge" style="background:rgba(59,130,246,0.15);color:var(--accent-blue-light);">MACD</span>
+    <span class="ic-title">Moving Average Convergence Divergence</span>
+  </div>
+  <div class="formula">MACD Line = EMA12 - EMA26<br>Signal Line = EMA9 ของ MACD Line<br>Histogram = MACD Line - Signal Line</div>
+  <ul style="font-size:0.84rem;">
+    <li>MACD ตัดลงต่ำกว่า Signal Line หลังขาขึ้นยาว → สัญญาณขาย</li>
+    <li>Histogram เริ่มสั้นลง (แม้ยังเป็นบวก) → แรงซื้อเริ่มอ่อน</li>
+    <li>MACD ตัดลงต่ำกว่าเส้น 0 → ยืนยันว่าเทรนด์เปลี่ยนเป็นขาลง</li>
+  </ul>
+  <div class="info-box warning" style="margin-top:0.8rem;">
+    <div class="bt">⚠️ ข้อจำกัด</div>
+    MACD เป็น Lagging Indicator (ช้ากว่าราคา) ในหุ้นที่ถูกปั่น ราคาอาจร่วงไปแล้ว 20-30% ก่อนที่ MACD จะให้สัญญาณขาย
+  </div>
+</div>
+
+<h3 id="bollinger">9.4 Bollinger Bands</h3>
+
+<div class="indicator-card">
+  <div class="ic-header">
+    <span class="ic-badge" style="background:rgba(249,115,22,0.15);color:var(--accent-orange);">BB</span>
+    <span class="ic-title">Bollinger Bands</span>
+  </div>
+  <div class="formula">Upper Band = MA20 + (2 × Standard Deviation)<br>Middle Band = MA20<br>Lower Band = MA20 - (2 × Standard Deviation)</div>
+  <ul style="font-size:0.84rem;">
+    <li><strong>Bollinger Squeeze</strong> (Band แคบมาก): เกิดในช่วงสะสม — เมื่อ Breakout จาก Squeeze ราคามักวิ่งแรง</li>
+    <li><strong>Band Walk</strong> (ราคาเดินตาม Upper Band): เกิดในช่วงปั่นขึ้น</li>
+    <li><strong>Band Expansion</strong> (Band กว้างขึ้นรวดเร็ว): เกิดในช่วงทิ้ง — Volatility พุ่งสูง</li>
+    <li>Bandwidth ต่ำสุดในรอบ 6 เดือน → กำลังจะมี Breakout</li>
+  </ul>
+</div>
+
+<h3 id="turnover">9.5 Turnover Ratio</h3>
+
+<div class="indicator-card">
+  <div class="ic-header">
+    <span class="ic-badge" style="background:rgba(244,114,182,0.15);color:var(--accent-pink);">TR</span>
+    <span class="ic-title">Turnover Ratio</span>
+  </div>
+  <div class="formula">Turnover Ratio = วอลุ่มซื้อขาย (จำนวนหุ้น) / Free Float × 100%</div>
+  <ul style="font-size:0.84rem;">
+    <li>ปกติ: 0.5-3% ต่อวัน | <strong>&gt; 20-30% ต่อวัน</strong> → มีการเปลี่ยนมือหนักมาก</li>
+    <li>ช่วงสะสม: 0.5% → 2-5% | ช่วงปั่นขึ้น: 10-30% | ช่วงทิ้ง: 30-50%+</li>
+    <li><strong>Turnover สะสม 5 วัน &gt; 100%</strong> → หุ้นเปลี่ยนมือหมดแล้ว คนที่ถือตอนนี้ส่วนใหญ่เป็นคนที่เพิ่งซื้อ (ต้นทุนสูง)</li>
+  </ul>
+</div>
+
+<h3 id="mfi">9.6 Money Flow Index (MFI)</h3>
+
+<div class="indicator-card">
+  <div class="ic-header">
+    <span class="ic-badge" style="background:rgba(16,185,129,0.15);color:var(--accent-green);">MFI</span>
+    <span class="ic-title">Money Flow Index</span>
+  </div>
+  <div class="formula">Typical Price = (High + Low + Close) / 3<br>Raw Money Flow = Typical Price × Volume<br>MFI = 100 - (100 / (1 + Money Flow Ratio))</div>
+  <p style="font-size:0.86rem;">MFI คล้ายกับ RSI แต่รวมวอลุ่มเข้าไปด้วย ทำให้เห็นภาพ "เงิน" ที่ไหลเข้าออกชัดเจนกว่า</p>
+  <ul style="font-size:0.84rem;">
+    <li><strong>MFI &gt; 80</strong> = เงินไหลเข้ามากเกินไป | <strong>MFI &lt; 20</strong> = เงินไหลออกมากเกินไป</li>
+    <li>MFI ที่อยู่เหนือ 80 นานกว่า 5 วันติดต่อกัน ในหุ้นตัวเล็ก → ผิดปกติมาก</li>
+    <li><strong>เทคนิคขั้นสูง:</strong> RSI สูง (&gt; 70) แต่ MFI เริ่มลดลง → ราคายังขึ้นแต่เงินเริ่มไหลออก (สัญญาณเตือนที่แข็งแกร่งมาก)</li>
+  </ul>
+</div>
+
+<h3 id="vwap">9.7 VWAP</h3>
+
+<div class="indicator-card">
+  <div class="ic-header">
+    <span class="ic-badge" style="background:rgba(59,130,246,0.15);color:var(--accent-blue-light);">VWAP</span>
+    <span class="ic-title">Volume Weighted Average Price</span>
+  </div>
+  <div class="formula">VWAP = Σ(Typical Price × Volume) / Σ(Volume)</div>
+  <p style="font-size:0.86rem;">VWAP บอกว่า "ราคาเฉลี่ยที่คนส่วนใหญ่ซื้อ" อยู่ที่เท่าไหร่</p>
+  <ul style="font-size:0.84rem;">
+    <li>ราคาอยู่เหนือ VWAP → คนส่วนใหญ่กำลังมีกำไร → Bullish</li>
+    <li>ราคาอยู่ต่ำกว่า VWAP → คนส่วนใหญ่กำลังขาดทุน → Bearish</li>
+    <li>ช่วงเริ่มทิ้ง: ราคาจะเริ่มหลุด VWAP ระหว่างวัน แม้จะเปิดสูง</li>
+  </ul>
+</div>
+
+<h3 id="alerts">9.8 วิธีตั้งค่า Alert</h3>
+
+<div class="three-col">
+<div class="card" style="border-top:3px solid var(--accent-blue);">
+  <h4 style="margin-top:0;color:var(--accent-blue-light);font-size:0.9rem;">🔍 จับช่วงสะสม</h4>
+  <ul style="font-size:0.82rem;">
+    <li>วอลุ่มเกิน 2x ของ VMA20</li>
+    <li>Bollinger Bandwidth ต่ำสุด 6 เดือน</li>
+    <li>OBV ทำ New High ขณะราคาไม่ทำ</li>
+  </ul>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-green);">
+  <h4 style="margin-top:0;color:var(--accent-green);font-size:0.9rem;">📈 จับช่วง Breakout</h4>
+  <ul style="font-size:0.82rem;">
+    <li>ราคาทะลุ High 20 วัน + วอลุ่ม 3x</li>
+    <li>ราคาทะลุ Bollinger Band บน</li>
+    <li>RSI ข้าม 70 ขึ้นไป</li>
+  </ul>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-red);">
+  <h4 style="margin-top:0;color:var(--accent-red);font-size:0.9rem;">⚠️ จับช่วง Distribution</h4>
+  <ul style="font-size:0.82rem;">
+    <li>RSI เกิน 80</li>
+    <li>วอลุ่ม 5x แต่ราคาขึ้น &lt; 2% (Churning)</li>
+    <li>ราคาลงต่ำกว่า MA20 / MA50</li>
+  </ul>
+</div>
+</div>
+
+<h4>วิธีใช้เครื่องมือร่วมกัน — จับสัญญาณ Distribution</h4>
+<div class="table-wrapper">
+<table>
+<thead class="red-head"><tr><th>#</th><th>สิ่งที่ตรวจสอบ</th><th>สัญญาณเตือน</th><th>น้ำหนัก</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><strong>Volume Divergence</strong></td><td>ราคา New High แต่วอลุ่มลดลง</td><td><span class="star">★★★★★</span></td></tr>
+<tr><td>2</td><td><strong>RSI Divergence</strong></td><td>ราคา New High แต่ RSI ไม่ทำตาม</td><td><span class="star">★★★★</span></td></tr>
+<tr><td>3</td><td><strong>MACD</strong></td><td>Histogram สั้นลง หรือ MACD ตัดลง</td><td><span class="star">★★★</span></td></tr>
+<tr><td>4</td><td><strong>Bollinger Bands</strong></td><td>ราคาเริ่มหลุด Upper Band</td><td><span class="star">★★★</span></td></tr>
+<tr><td>5</td><td><strong>Turnover Ratio</strong></td><td>สูงผิดปกติ (&gt; 20%)</td><td><span class="star">★★★★</span></td></tr>
+<tr><td>6</td><td><strong>OBV</strong></td><td>เริ่มลดลงขณะราคายังสูง</td><td><span class="star">★★★★★</span></td></tr>
+<tr><td>7</td><td><strong>Candlestick</strong></td><td>Shooting Star, Bearish Engulfing</td><td><span class="star">★★★</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="info-box danger">
+  <div class="bt">🚨 กฎ</div>
+  ถ้าเห็นสัญญาณเตือน <strong>3 ข้อขึ้นไป</strong> พร้อมกัน → ควรเริ่มขายทำกำไร ถ้าเห็น <strong>5 ข้อขึ้นไป</strong> → ควรขายทั้งหมดทันที
+</div>
+
+
+<!-- ==================== CHAPTER 10 ==================== -->
+<div class="section-header" id="ch10">
+  <h2><span class="sn green">10</span> บทที่ 10: Candlestick — อ่านแท่งเทียนให้เป็น</h2>
+</div>
+<p>แท่งเทียน (Candlestick) คือภาษาของตลาด แต่ละแท่งบอกเรื่องราวการต่อสู้ระหว่างแรงซื้อกับแรงขาย การอ่านแท่งเทียนไม่ใช่แค่จำรูปแบบ แต่ต้องเข้าใจ "เรื่องราว" ที่แท่งเทียนกำลังเล่า</p>
+
+<div id="candle-structure" class="diagram-block"><span class="tag candle">โครงสร้างแท่งเทียน</span>
+    │  ← หางบน (Upper Shadow)
+    │     ราคาสูงสุดระหว่างวัน
+  ┌───┐
+  │   │ ← ตัวแท่ง (Body)
+  │   │    <span class="ok">สีเขียว: ปิด > เปิด (ขึ้น)</span>
+  │   │    <span class="bad">สีแดง: ปิด < เปิด (ลง)</span>
+  └───┘
+    │  ← หางล่าง (Lower Shadow)
+    │     ราคาต่ำสุดระหว่างวัน
+
+<span class="hl">หลักการอ่าน:</span>
+  ตัวแท่งยาว = แรงซื้อ/ขายเด็ดขาด
+  ตัวแท่งสั้น = ตลาดลังเล
+  หางยาว    = มีการต่อสู้รุนแรง
+  ไม่มีหาง   = ฝ่ายชนะควบคุมตลอดทั้งวัน</div>
+
+<h3 id="candle-bullish">สัญญาณกลับตัวขึ้น (Bullish Reversal)</h3>
+
+<div class="two-col">
+<div class="card" style="border-left:4px solid var(--accent-green);">
+  <div class="card-title" style="color:var(--accent-green);">🔨 1. Hammer (ค้อน)</div>
+  <div class="diagram-block" style="margin:0.5rem 0;font-size:0.75rem;padding:0.8rem;">    ┌─┐
+    └─┘
+     │
+     │   ← หางล่างยาว ≥ 2x ตัวแท่ง
+     │</div>
+  <p style="font-size:0.84rem;">เกิดหลังขาลง → แรงขายเริ่มหมด ผู้ขายพยายามกดราคาลงแต่ผู้ซื้อดึงกลับขึ้นมาได้ ในหุ้นปั่น: มักเป็นจุดที่ผู้ปั่นรับซื้อ</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-green);">
+  <div class="card-title" style="color:var(--accent-green);">📊 2. Bullish Engulfing</div>
+  <p style="font-size:0.84rem;">แท่งเขียวตัวใหญ่กลืนแท่งแดงตัวก่อนหน้าทั้งแท่ง แสดงว่าแรงซื้อเข้ามาอย่างรุนแรง พลิกสถานการณ์ ยิ่งแท่งเขียวใหญ่กว่าแท่งแดงมากเท่าไหร่ ยิ่งมีนัยสำคัญ ดูวอลุ่มประกอบ: ถ้าวอลุ่มสูง &gt; 2x → น่าเชื่อถือมาก</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-green);">
+  <div class="card-title" style="color:var(--accent-green);">⭐ 3. Morning Star (ดาวรุ่ง)</div>
+  <p style="font-size:0.84rem;">3 แท่ง: แดงยาว → ตัวเล็ก (Doji) → เขียวยาว สัญญาณกลับตัวที่น่าเชื่อถือมาก แสดงการเปลี่ยนอำนาจจากผู้ขายไปผู้ซื้อ</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-green);">
+  <div class="card-title" style="color:var(--accent-green);">🪰 4. Dragonfly Doji</div>
+  <p style="font-size:0.84rem;">ราคาเปิดและปิดเท่ากัน แต่ระหว่างวันราคาลงไปมาก แรงซื้อดึงกลับมาได้ทั้งหมด → สัญญาณ Bullish ที่แนวรับ</p>
+</div>
+</div>
+
+<h3 id="candle-bearish">สัญญาณกลับตัวลง (Bearish Reversal)</h3>
+
+<div class="two-col">
+<div class="card" style="border-left:4px solid var(--accent-red);">
+  <div class="card-title" style="color:var(--accent-red);">💫 5. Shooting Star (ดาวตก)</div>
+  <div class="diagram-block" style="margin:0.5rem 0;font-size:0.75rem;padding:0.8rem;">     │
+     │   ← หางบนยาว ≥ 2x ตัวแท่ง
+     │
+    ┌─┐
+    └─┘</div>
+  <p style="font-size:0.84rem;">ตรงข้ามกับ Hammer — เกิดหลังขาขึ้น <strong>สัญญาณสำคัญในหุ้นที่กำลังถูกปั่น</strong> ผู้ปั่นดันราคาขึ้นไปตอนเช้าเพื่อดึงดูดคนซื้อ แล้วเทขายตลอดทั้งวัน ถ้าเกิดพร้อมวอลุ่มสูง &gt; 3x → ควรออกทันที</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-red);">
+  <div class="card-title" style="color:var(--accent-red);">📉 6. Bearish Engulfing</div>
+  <p style="font-size:0.84rem;">แท่งแดงตัวใหญ่กลืนแท่งเขียวตัวก่อนหน้า ถ้าเกิดหลังราคาชนซิลลิ่ง (Limit Up) วันก่อน → สัญญาณว่าผู้ปั่นเทขายหนัก เพราะวันก่อนดันราคาขึ้นสุดเพื่อดึงดูดคนซื้อ วันนี้เทขายทั้งหมด</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-red);">
+  <div class="card-title" style="color:var(--accent-red);">🌙 7. Evening Star (ดาวค่ำ)</div>
+  <p style="font-size:0.84rem;">ตรงข้ามกับ Morning Star: เขียวยาว → ตัวเล็ก → แดงยาว ถ้าเกิดหลังราคาวิ่งขึ้นมา 200%+ → ออกทันที</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-red);">
+  <div class="card-title" style="color:var(--accent-red);">🪦 8. Gravestone Doji</div>
+  <p style="font-size:0.84rem;">ราคาวิ่งขึ้นไปมากแต่ถูกเทกลับลงมาหมด ผู้ขายมีอำนาจเหนือกว่าอย่างชัดเจน เกิดที่ยอดสูง → สัญญาณ Bearish ที่ชัดเจน</p>
+</div>
+</div>
+
+<h3 id="candle-multi">รูปแบบหลายแท่งเพิ่มเติม</h3>
+
+<div class="two-col">
+<div class="card" style="border-left:4px solid var(--accent-green);">
+  <div class="card-title" style="color:var(--accent-green);">⬆️ Three White Soldiers</div>
+  <p style="font-size:0.84rem;">3 แท่งเขียวยาวติดต่อกัน สัญญาณขาขึ้นที่แข็งแกร่ง ถ้าวอลุ่มลดลงในแท่งที่ 3 → แรงซื้อเริ่มอ่อน</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-red);">
+  <div class="card-title" style="color:var(--accent-red);">⬇️ Three Black Crows</div>
+  <p style="font-size:0.84rem;">3 แท่งแดงยาวติดต่อกัน สัญญาณขาลงที่แข็งแกร่ง หลังจากราคาวิ่งขึ้นมานาน → สัญญาณว่าการทิ้งเริ่มแล้ว</p>
+</div>
+</div>
+
+<h4>ตารางสรุป Candlestick</h4>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>รูปแบบ</th><th>เกิดหลัง</th><th>สัญญาณ</th><th>น่าเชื่อถือ</th><th>ในหุ้นปั่น</th></tr></thead>
+<tbody>
+<tr><td><strong>Hammer</strong></td><td>ขาลง</td><td style="color:var(--accent-green);">กลับตัวขึ้น</td><td><span class="star">★★★</span></td><td>ผู้ปั่นรับซื้อที่แนวรับ</td></tr>
+<tr><td><strong>Bullish Engulfing</strong></td><td>ขาลง</td><td style="color:var(--accent-green);">กลับตัวขึ้น</td><td><span class="star">★★★★</span></td><td>แรงซื้อเข้ามาหนัก</td></tr>
+<tr><td><strong>Morning Star</strong></td><td>ขาลง</td><td style="color:var(--accent-green);">กลับตัวขึ้น</td><td><span class="star">★★★★★</span></td><td>จุดเปลี่ยนอำนาจ</td></tr>
+<tr><td><strong>Shooting Star</strong></td><td>ขาขึ้น</td><td style="color:var(--accent-red);">กลับตัวลง</td><td><span class="star">★★★</span></td><td>ผู้ปั่นเริ่มเทขาย</td></tr>
+<tr><td><strong>Bearish Engulfing</strong></td><td>ขาขึ้น</td><td style="color:var(--accent-red);">กลับตัวลง</td><td><span class="star">★★★★</span></td><td>ผู้ปั่นเทขายหนัก</td></tr>
+<tr><td><strong>Evening Star</strong></td><td>ขาขึ้น</td><td style="color:var(--accent-red);">กลับตัวลง</td><td><span class="star">★★★★★</span></td><td>จุดสุดท้ายก่อนร่วง</td></tr>
+<tr><td><strong>Doji</strong></td><td>ทั้งสอง</td><td>ลังเล/กลับตัว</td><td><span class="star">★★</span></td><td>ดูวอลุ่มประกอบ</td></tr>
+<tr><td><strong>Three White Soldiers</strong></td><td>ขาลง</td><td style="color:var(--accent-green);">กลับตัวขึ้นแรง</td><td><span class="star">★★★★</span></td><td>เริ่มช่วงปั่นขึ้น</td></tr>
+<tr><td><strong>Three Black Crows</strong></td><td>ขาขึ้น</td><td style="color:var(--accent-red);">กลับตัวลงแรง</td><td><span class="star">★★★★</span></td><td>เริ่มช่วงทิ้ง</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="info-box tip">
+  <div class="bt">💡 ข้อควรจำ 6 ข้อ</div>
+  1. แท่งเทียนเดี่ยวไม่เพียงพอ — ต้องดูบริบทและแท่งถัดไปยืนยัน<br>
+  2. ตำแหน่งสำคัญกว่ารูปแบบ — Hammer ที่แนวรับสำคัญมีน้ำหนักมากกว่า Hammer กลางทาง<br>
+  3. วอลุ่มเป็นตัวยืนยัน — สัญญาณกลับตัวที่มีวอลุ่มสูงน่าเชื่อถือกว่า<br>
+  4. Timeframe ใหญ่น่าเชื่อถือกว่า — รายสัปดาห์มีน้ำหนักมากกว่ารายชั่วโมง<br>
+  5. ดูแท่งเทียน 3-5 แท่งก่อนหน้าเสมอ<br>
+  6. ในหุ้นปั่น แท่งเทียนอาจถูก "สร้าง" ขึ้นมา — ต้องดูวอลุ่มและข้อมูลอื่นประกอบ
+</div>
+
+
+<!-- ==================== CHAPTER 11 ==================== -->
+<div class="section-header" id="ch11">
+  <h2><span class="sn pink">11</span> บทที่ 11: Price Action — อ่านพฤติกรรมราคาโดยไม่พึ่ง Indicator</h2>
+</div>
+<p>Price Action คือการวิเคราะห์การเคลื่อนไหวของราคา "เปล่าๆ" โดยไม่ใช้ Indicator ใดๆ เน้นอ่านพฤติกรรมของผู้ซื้อและผู้ขายจากกราฟราคาโดยตรง นักเทรดมืออาชีพหลายคนใช้ Price Action เป็นหลัก เพราะมันให้สัญญาณเร็วกว่า Indicator</p>
+
+<h3 id="support-resistance">แนวรับ-แนวต้าน (Support &amp; Resistance)</h3>
+
+<div class="diagram-block"><span class="tag pattern">Support &amp; Resistance</span>
+ราคา
+  │
+  │  ─ ─ ─ ─ ─ ─ ─ ─ ─  <span class="bad">แนวต้าน</span>
+  │     /\    /\    /
+  │    /  \  /  \  /
+  │   /    \/    \/
+  │  ─ ─ ─ ─ ─ ─ ─ ─ ─  <span class="ok">แนวรับ</span>
+  │
+  └──────────────────────── เวลา</div>
+
+<div class="info-box info">
+  <div class="bt">💡 Role Reversal — หลักการที่สำคัญมาก</div>
+  เมื่อราคาทะลุแนวต้านขึ้นไป แนวต้านเดิมจะกลายเป็นแนวรับใหม่ เพราะคนที่ขายไปตอนราคาชนแนวต้าน จะเสียดายเมื่อเห็นราคาทะลุขึ้นไป ถ้าราคาย่อกลับมา พวกเขาจะรีบซื้อคืน<br>
+  <strong>ในหุ้นปั่น:</strong> ผู้ปั่นมักใช้หลักการนี้ — ดันราคาทะลุแนวต้าน แล้วรอให้ราคาย่อกลับมาทดสอบ (Retest) ก่อนดันราคาขึ้นต่อ
+</div>
+
+<h3 id="chart-patterns">รูปแบบราคาสำคัญ (Chart Patterns)</h3>
+
+<h4>รูปแบบกลับตัว (Reversal Patterns)</h4>
+
+<div class="two-col">
+<div class="card" style="border-left:4px solid var(--accent-red);">
+  <div class="card-title" style="color:var(--accent-red);">📉 Double Top (ยอดคู่)</div>
+  <div class="diagram-block" style="margin:0.5rem 0;font-size:0.72rem;padding:0.8rem;"><span class="tag pattern">Double Top</span>
+ราคา
+  │    /\      /\
+  │   /  \    /  \
+  │  /    \  /    \
+  │ /      \/      \
+  │         <span class="hl">Neckline</span>  \___
+  └──────────────────── เวลา</div>
+  <p style="font-size:0.84rem;">ราคาขึ้นไปทดสอบจุดสูงสุดเดิม 2 ครั้ง แต่ผ่านไม่ได้ เมื่อหลุด Neckline → สัญญาณขาย ยอดที่ 2 มักมีวอลุ่มน้อยกว่ายอดที่ 1</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-red);">
+  <div class="card-title" style="color:var(--accent-red);">📉 Head and Shoulders</div>
+  <div class="diagram-block" style="margin:0.5rem 0;font-size:0.72rem;padding:0.8rem;"><span class="tag pattern">H&amp;S</span>
+ราคา
+  │         /\
+  │   /\   /  \   /\
+  │  /  \ /    \ /  \
+  │ /    \/      \/    \
+  │  <span class="hl">LS</span>   <span class="hl">Neckline</span>  <span class="hl">RS</span>   \___
+  └──────────────────────── เวลา</div>
+  <p style="font-size:0.84rem;">ยอด 3 ยอด: ไหล่ซ้าย → ศีรษะ (สูงสุด) → ไหล่ขวา เมื่อหลุด Neckline → สัญญาณขายที่แข็งแกร่งมาก วอลุ่มมักลดลงจากไหล่ซ้าย → ศีรษะ → ไหล่ขวา</p>
+</div>
+</div>
+
+<h4>รูปแบบต่อเนื่อง (Continuation Patterns)</h4>
+
+<div class="two-col">
+<div class="card" style="border-left:4px solid var(--accent-green);">
+  <div class="card-title" style="color:var(--accent-green);">🚩 Flag (ธง)</div>
+  <div class="diagram-block" style="margin:0.5rem 0;font-size:0.72rem;padding:0.8rem;"><span class="tag pattern">Flag</span>
+ราคา
+  │              /
+  │        ____/
+  │       /\  /   ← <span class="hl">ธง (พักตัว)</span>
+  │      /  \/
+  │     /
+  │    / ← <span class="val">เสาธง (วิ่งแรง)</span>
+  │   /
+  └──────────────────── เวลา</div>
+  <p style="font-size:0.84rem;">ราคาวิ่งแรง (เสาธง) แล้วพักตัวในกรอบแคบ (ธง) เมื่อ Breakout → ไปต่อ วอลุ่มในช่วง Flag ควรลดลง ถ้าสูง → อาจเป็น Distribution</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-green);">
+  <div class="card-title" style="color:var(--accent-green);">📐 Triangle (สามเหลี่ยม)</div>
+  <p style="font-size:0.84rem;"><strong>Ascending Triangle:</strong> แนวต้านแบน + จุดต่ำสุดยกขึ้น → มักทะลุขึ้น ในช่วงสะสม เป็นสัญญาณที่ดีมาก<br>
+  <strong>Descending Triangle:</strong> แนวรับแบน + จุดสูงสุดลดลง → มักทะลุลง หลังช่วงปั่นขึ้น → ผู้ปั่นกำลังขายของออก<br>
+  <strong>Symmetrical Triangle:</strong> กรอบแคบลงเรื่อยๆ → Breakout มักรุนแรง</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-cyan);">
+  <div class="card-title" style="color:var(--accent-cyan);">☕ Cup and Handle</div>
+  <div class="diagram-block" style="margin:0.5rem 0;font-size:0.72rem;padding:0.8rem;"><span class="tag pattern">Cup &amp; Handle</span>
+ราคา
+  │ \                    /─\  /
+  │  \                  /   \/  ← <span class="hl">Handle</span>
+  │   \               /
+  │    \             /
+  │     \           /
+  │      \_______/  ← <span class="val">Cup</span>
+  └──────────────────────── เวลา</div>
+  <p style="font-size:0.84rem;">สัญญาณ Bullish ที่แข็งแกร่ง ในหุ้นปั่น: ผู้ปั่นกดราคาลง (ด้านซ้าย) ซื้อสะสม (ก้นถ้วย) แล้วค่อยๆ ดันราคาขึ้น (ด้านขวา)</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-green);">
+  <div class="card-title" style="color:var(--accent-green);">📊 Double Bottom (ก้นคู่)</div>
+  <p style="font-size:0.84rem;">ราคาลงไปทดสอบจุดต่ำสุดเดิม 2 ครั้ง แต่ไม่หลุด เมื่อทะลุ Neckline ขึ้นไป → สัญญาณซื้อ ก้นที่ 2 ที่มีวอลุ่มน้อยกว่าก้นที่ 1 → แรงขายเริ่มหมด</p>
+</div>
+</div>
+
+<h3 id="pa-principles">หลักการ Price Action ที่ต้องจำ</h3>
+
+<div class="three-col">
+<div class="card" style="border-top:3px solid var(--accent-blue);padding:1.5rem;">
+  <h5 style="margin-top:0;color:var(--accent-blue-light);">1. Trend is your friend</h5>
+  <p style="font-size:0.82rem;">ขาขึ้น: Higher Highs + Higher Lows<br>ขาลง: Lower Highs + Lower Lows<br>อย่าสวนเทรนด์ ในหุ้นปั่น เทรนด์มักรุนแรงกว่าปกติ</p>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-orange);padding:1.5rem;">
+  <h5 style="margin-top:0;color:var(--accent-orange);">2. แนวรับที่ทดสอบบ่อยจะอ่อนแอลง</h5>
+  <p style="font-size:0.82rem;">ทดสอบ 2-3 ครั้ง = แข็งแกร่ง<br>ทดสอบ 5-6 ครั้ง = เริ่มอ่อนแอ<br>ทุกครั้งที่ทดสอบ แรงซื้อที่รอรับจะถูกใช้ไป</p>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-green);padding:1.5rem;">
+  <h5 style="margin-top:0;color:var(--accent-green);">3. Breakout ต้องมีวอลุ่มยืนยัน</h5>
+  <p style="font-size:0.82rem;">วอลุ่มวัน Breakout ควร &gt; 2x ของ VMA20<br>ถ้า &gt; 3x → น่าเชื่อถือมาก<br>Breakout วอลุ่มเบา = อาจเป็น False Breakout</p>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-red);padding:1.5rem;">
+  <h5 style="margin-top:0;color:var(--accent-red);">4. False Breakout เป็นสัญญาณที่ดี</h5>
+  <p style="font-size:0.82rem;">ในหุ้นปั่น: False Breakout ขึ้น = ผู้ปั่นหลอกให้คนไล่ซื้อแล้วเทขายใส่ False Breakout วอลุ่มสูง → อันตรายมาก</p>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-purple);padding:1.5rem;">
+  <h5 style="margin-top:0;color:var(--accent-purple);">5. ดู Timeframe ใหญ่ก่อน</h5>
+  <p style="font-size:0.82rem;">เดือน → สัปดาห์ → วัน → ชั่วโมง<br>Timeframe ใหญ่บอกทิศทางหลัก<br>ในหุ้นปั่น รายวันให้สัญญาณดีที่สุด</p>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-cyan);padding:1.5rem;">
+  <h5 style="margin-top:0;color:var(--accent-cyan);">6. ดู "ความเร็ว" ของราคา</h5>
+  <p style="font-size:0.82rem;">ราคาวิ่งขึ้นเร็วเกินไป (50% ใน 1 สัปดาห์) มักจะย่อตัวแรง ราคาที่ค่อยๆ ขึ้นมักยั่งยืนกว่า</p>
+</div>
+</div>
+
+<h4>Price Action vs Indicator</h4>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>หัวข้อ</th><th>Price Action</th><th>Indicator</th></tr></thead>
+<tbody>
+<tr><td><strong>ข้อมูล</strong></td><td>ราคาและวอลุ่มเท่านั้น</td><td>คำนวณจากราคา (Lagging)</td></tr>
+<tr><td><strong>ความเร็ว</strong></td><td style="color:var(--accent-green);">เห็นสัญญาณเร็วกว่า</td><td>ช้ากว่า ต้องรอคำนวณ</td></tr>
+<tr><td><strong>ในหุ้นปั่น</strong></td><td style="color:var(--accent-green);">เห็นพฤติกรรมผู้ปั่นได้ชัด</td><td style="color:var(--accent-red);">อาจให้สัญญาณช้าเกินไป</td></tr>
+<tr><td><strong>แนะนำ</strong></td><td><strong>ใช้เป็นหลัก</strong></td><td>ใช้ประกอบเพื่อยืนยัน</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3 id="master-checklist">Checklist รวม: สัญญาณทั้งหมดที่ต้องจับตา</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>ช่วง</th><th>Price Action</th><th>Indicator</th><th>ข่าว/ข้อมูล</th></tr></thead>
+<tbody>
+<tr><td style="color:var(--accent-blue-light);font-weight:700;">สะสม</td><td>Sideway แคบ, Higher Lows, Hammer ซ้ำๆ</td><td>OBV ไต่ขึ้น, Bollinger Squeeze</td><td>เงียบ, ผู้ถือหุ้นเปลี่ยน</td></tr>
+<tr><td style="color:var(--accent-green);font-weight:700;">Pre-Pump</td><td>Breakout, Gap Up, Marubozu</td><td>RSI &gt; 70, วอลุ่ม &gt; 3x</td><td>ข่าวลือ, MOU, บทวิเคราะห์</td></tr>
+<tr><td style="color:var(--accent-orange);font-weight:700;">Pump</td><td>Flag, Higher Highs, ชนซิลลิ่ง</td><td>RSI &gt; 80, MFI &gt; 80</td><td>ข่าวดีรัวๆ, KOL พูดถึง</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">Distribution</td><td>Shooting Star, Double Top, H&amp;S</td><td>Volume Divergence, RSI Divergence</td><td>ข่าวดีแต่ราคาไม่ไป, Insider ขาย</td></tr>
+<tr><td style="color:var(--text-muted);font-weight:700;">Dump</td><td>Gap Down, Three Black Crows</td><td>RSI &lt; 30, MACD ตัดลง</td><td>ขึ้นเครื่องหมาย, ก.ล.ต. สอบสวน</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="info-box tip">
+  <div class="bt">🏆 วิธีที่ดีที่สุด</div>
+  ใช้ <strong>Price Action เป็นหลัก</strong> ในการตัดสินใจ แล้วใช้ <strong>Indicator เป็นตัวยืนยัน</strong> ไม่ใช่ในทางกลับกัน ดูวอลุ่มก่อนเสมอ — วอลุ่มคือความจริง ราคาอาจหลอกได้ หา Divergence — ราคาไปทางหนึ่ง Indicator ไปอีกทาง = สัญญาณเตือน อย่าลืมดูพื้นฐาน — Technical Analysis บอกว่า "อะไรกำลังเกิดขึ้น" แต่ Fundamental บอกว่า "มันสมเหตุสมผลไหม"
+</div>
+
+
+</main>
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#x2191;</button>
+<script>
+window.addEventListener('scroll', () => { document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400); });
+</script>
+</body>
+</html>
