@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ภาค 1: รู้จักเกมปั่นหุ้น — คู่มือฉบับสมบูรณ์</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-card: #1a2235;
+    --bg-code: #0d1321;
+    --border-primary: #2a3550;
+    --text-primary: #e8edf5;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-blue: #3b82f6;
+    --accent-blue-light: #60a5fa;
+    --accent-cyan: #22d3ee;
+    --accent-green: #34d399;
+    --accent-emerald: #10b981;
+    --accent-yellow: #fbbf24;
+    --accent-orange: #f97316;
+    --accent-red: #ef4444;
+    --accent-purple: #a78bfa;
+    --accent-pink: #f472b6;
+    --gradient-blue: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    --gradient-green: linear-gradient(135deg, #10b981, #22d3ee);
+    --gradient-warm: linear-gradient(135deg, #f97316, #fbbf24);
+    --gradient-red: linear-gradient(135deg, #ef4444, #f97316);
+    --gradient-hero: linear-gradient(135deg, #1a0a0e 0%, #2d1020 30%, #1e1b4b 60%, #0f172a 100%);
+    --shadow-lg: 0 8px 30px rgba(0,0,0,0.5);
+    --shadow-glow-blue: 0 0 20px rgba(59,130,246,0.15);
+    --shadow-glow-red: 0 0 20px rgba(239,68,68,0.15);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: 'IBM Plex Sans Thai', 'Noto Sans Thai', sans-serif;
+    background: var(--bg-primary); color: var(--text-primary);
+    line-height: 1.8; -webkit-font-smoothing: antialiased;
+  }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: var(--border-primary); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent-red); }
+
+  .top-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(10,14,26,0.9); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-primary);
+    padding: 0 2rem; height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-brand { font-weight: 700; font-size: 1.1rem; background: var(--gradient-red); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .nav-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.8rem; padding: 0.3rem 0.7rem; border-radius: 6px; transition: all 0.2s; white-space: nowrap; }
+  .nav-links a:hover { color: #f87171; background: rgba(239,68,68,0.1); }
+
+  .sidebar {
+    position: fixed; left: 0; top: 60px; bottom: 0; width: 300px;
+    background: var(--bg-secondary); border-right: 1px solid var(--border-primary);
+    overflow-y: auto; padding: 1.5rem 0; z-index: 100;
+  }
+  .sidebar-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); padding: 0 1.5rem; margin-bottom: 1rem; }
+  .toc-list { list-style: none; }
+  .toc-list li a { display: block; padding: 0.4rem 1.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.82rem; border-left: 3px solid transparent; transition: all 0.2s; }
+  .toc-list li a:hover { color: #f87171; background: rgba(239,68,68,0.05); border-left-color: var(--accent-red); }
+  .toc-list li.sub a { padding-left: 2.5rem; font-size: 0.78rem; }
+  .toc-list li.sub2 a { padding-left: 3.2rem; font-size: 0.75rem; color: var(--text-muted); }
+  .toc-divider { height: 1px; background: var(--border-primary); margin: 0.6rem 1.5rem; }
+
+  .main-content { margin-left: 300px; margin-top: 60px; max-width: 920px; padding: 2rem 3rem 6rem; }
+
+  .hero {
+    background: var(--gradient-hero); border-radius: var(--radius-xl);
+    padding: 4rem 3rem; margin-bottom: 3rem;
+    border: 1px solid rgba(239,68,68,0.2);
+    position: relative; overflow: hidden; text-align: center;
+  }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 50%, rgba(239,68,68,0.06) 0%, transparent 60%), radial-gradient(circle at 70% 50%, rgba(139,92,246,0.06) 0%, transparent 60%); }
+  .hero-badge { display: inline-block; background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: #f87171; font-size: 0.8rem; font-weight: 600; padding: 0.4rem 1.2rem; border-radius: 50px; margin-bottom: 1.5rem; position: relative; }
+  .hero h1 { font-family: 'Noto Sans Thai', sans-serif; font-size: 2.5rem; font-weight: 800; line-height: 1.3; margin-bottom: 1rem; position: relative; }
+  .hero h1 .grad { background: linear-gradient(135deg, #ef4444, #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-sub { font-size: 1.05rem; color: var(--text-secondary); max-width: 650px; margin: 0 auto 2rem; position: relative; }
+  .hero-stats { display: flex; justify-content: center; gap: 2.5rem; margin-top: 2rem; position: relative; }
+  .hero-stat { text-align: center; }
+  .hero-stat .num { font-size: 1.8rem; font-weight: 800; background: var(--gradient-warm); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-stat .lbl { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+  .section-header { margin: 4rem 0 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--border-primary); }
+  .section-header h2 { font-family: 'Noto Sans Thai', sans-serif; font-size: 1.8rem; font-weight: 800; display: flex; align-items: center; gap: 0.8rem; }
+  .sn { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 12px; font-size: 1rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .sn.red { background: var(--gradient-red); }
+  .sn.blue { background: var(--gradient-blue); }
+  .sn.green { background: var(--gradient-green); }
+  .sn.warm { background: var(--gradient-warm); }
+  .sn.purple { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+
+  h3 { font-family: 'Noto Sans Thai', sans-serif; font-size: 1.3rem; font-weight: 700; margin: 2.5rem 0 1rem; color: var(--accent-blue-light); }
+  h4 { font-size: 1.05rem; font-weight: 600; margin: 1.8rem 0 0.8rem; color: var(--accent-cyan); }
+  h5 { font-size: 0.95rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent-purple); }
+  p { margin-bottom: 1rem; color: var(--text-secondary); }
+  strong { color: var(--text-primary); font-weight: 600; }
+
+  .quote-block { background: var(--bg-card); border-left: 4px solid var(--accent-purple); border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 1.5rem 2rem; margin: 2rem 0; font-style: italic; color: var(--text-secondary); }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: var(--radius-lg); padding: 2rem; margin: 1.5rem 0; transition: all 0.3s; }
+  .card:hover { border-color: rgba(59,130,246,0.3); box-shadow: var(--shadow-glow-blue); }
+  .card-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; }
+
+  .two-col { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin: 1.5rem 0; }
+  .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 1.5rem 0; }
+
+  .diagram-block {
+    background: var(--bg-code); border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md); padding: 1.5rem 2rem; margin: 1.5rem 0;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; line-height: 1.8;
+    color: var(--text-secondary); overflow-x: auto; position: relative;
+    white-space: pre-wrap; word-wrap: break-word;
+  }
+  .diagram-block .tag { position: absolute; top: 0.8rem; right: 1rem; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 0.2rem 0.6rem; border-radius: 4px; font-family: 'IBM Plex Sans Thai', sans-serif; }
+  .diagram-block .tag.diagram { background: rgba(59,130,246,0.15); color: var(--accent-blue-light); }
+  .diagram-block .tag.flow { background: rgba(249,115,22,0.15); color: var(--accent-orange); }
+  .diagram-block .tag.signal { background: rgba(239,68,68,0.15); color: var(--accent-red); }
+  .diagram-block .tag.structure { background: rgba(167,139,250,0.15); color: var(--accent-purple); }
+  .diagram-block .tag.candle { background: rgba(16,185,129,0.15); color: var(--accent-green); }
+  .diagram-block .tag.volume { background: rgba(34,211,238,0.15); color: var(--accent-cyan); }
+  .diagram-block .hl { color: var(--accent-cyan); font-weight: 500; }
+  .diagram-block .val { color: var(--accent-yellow); }
+  .diagram-block .ok { color: var(--accent-green); }
+  .diagram-block .warn { color: var(--accent-orange); }
+  .diagram-block .bad { color: var(--accent-red); }
+
+  .info-box { border-radius: var(--radius-md); padding: 1.2rem 1.5rem; margin: 1.5rem 0; font-size: 0.9rem; }
+  .info-box.tip { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); color: var(--accent-green); }
+  .info-box.warning { background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2); color: var(--accent-orange); }
+  .info-box.danger { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); color: var(--accent-red); }
+  .info-box.info { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); color: var(--accent-blue-light); }
+  .info-box.observe { background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); color: var(--accent-purple); }
+  .info-box .bt { font-weight: 700; margin-bottom: 0.5rem; }
+
+  .table-wrapper { overflow-x: auto; margin: 1.5rem 0; border-radius: var(--radius-md); border: 1px solid var(--border-primary); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  thead { background: rgba(59,130,246,0.1); }
+  th { padding: 0.8rem 1rem; text-align: left; font-weight: 600; color: var(--accent-blue-light); border-bottom: 2px solid var(--border-primary); }
+  td { padding: 0.7rem 1rem; border-bottom: 1px solid rgba(42,53,80,0.5); color: var(--text-secondary); }
+  tbody tr:hover { background: rgba(59,130,246,0.03); }
+
+  .step-flow { display: flex; gap: 0; margin: 2rem 0; overflow-x: auto; }
+  .step-item { flex: 1; min-width: 120px; text-align: center; position: relative; padding: 1rem 0.3rem; }
+  .step-item::after { content: ''; position: absolute; top: 26px; right: -50%; width: 100%; height: 2px; background: var(--border-primary); }
+  .step-item:last-child::after { display: none; }
+  .step-circle { width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; color: #fff; margin-bottom: 0.4rem; position: relative; z-index: 1; }
+  .step-label { font-size: 0.72rem; color: var(--text-secondary); font-weight: 500; }
+
+  .back-to-top { position: fixed; bottom: 2rem; right: 2rem; width: 44px; height: 44px; border-radius: 50%; background: var(--gradient-red); color: #fff; border: none; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-lg); opacity: 0; transition: opacity 0.3s; z-index: 1000; }
+  .back-to-top.visible { opacity: 1; }
+
+  @media (max-width: 1024px) {
+    .sidebar { transform: translateX(-100%); }
+    .main-content { margin-left: 0; padding: 1.5rem; }
+    .two-col, .three-col { grid-template-columns: 1fr; }
+    .hero { padding: 2.5rem 1.5rem; }
+    .hero h1 { font-size: 1.8rem; }
+    .hero-stats { flex-direction: column; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-brand">&#x26A0;&#xFE0F; ภาค 1 — รู้จักเกมปั่นหุ้น</div>
+  <div class="nav-links">
+    <a href="#ch1">บทที่ 1: ปั่นหุ้นคืออะไร</a>
+    <a href="#ch2">บทที่ 2: ผู้เล่นในเกม</a>
+    <a href="#ch3">บทที่ 3: รูปแบบการปั่น</a>
+    <a href="#ch4">บทที่ 4: กฎหมาย</a>
+  </div>
+</nav>
+
+<aside class="sidebar">
+  <div class="sidebar-title">สารบัญ</div>
+  <ul class="toc-list">
+    <li><a href="#ch1">บทที่ 1: ปั่นหุ้นคืออะไร</a></li>
+    <li class="sub"><a href="#definition">นิยาม</a></li>
+    <li class="sub"><a href="#diff">เก็งกำไร vs ปั่นหุ้น</a></li>
+    <li class="sub"><a href="#psychology">กลไกทางจิตวิทยา</a></li>
+    <li class="sub"><a href="#redflags">สัญญาณเตือน 10 ข้อ</a></li>
+    <li class="sub"><a href="#lifecycle">วงจรการปั่น 5 ขั้นตอน</a></li>
+    <li class="sub"><a href="#why-repeat">ทำไมเกิดซ้ำแล้วซ้ำเล่า</a></li>
+    <li class="sub"><a href="#history">ประวัติศาสตร์ซ้ำรอย</a></li>
+    <li class="sub"><a href="#emotion-cycle">วงจรอารมณ์ของเหยื่อ</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#ch2">บทที่ 2: ผู้เล่นในเกม</a></li>
+    <li class="sub"><a href="#manipulator">ผู้ปั่น (Manipulator)</a></li>
+    <li class="sub"><a href="#follower">ผู้ตาม (Follower)</a></li>
+    <li class="sub"><a href="#victim">เหยื่อ (Victim)</a></li>
+    <li class="sub"><a href="#foodchain">ห่วงโซ่อาหาร</a></li>
+    <li class="sub"><a href="#why-follower-lose">ทำไมผู้ตามแพ้</a></li>
+    <li class="sub"><a href="#position-check">เช็คลิสต์ตำแหน่ง</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#ch3">บทที่ 3: รูปแบบการปั่น</a></li>
+    <li class="sub"><a href="#pump-dump">3.1 Pump and Dump</a></li>
+    <li class="sub"><a href="#painting">3.2 Painting the Tape</a></li>
+    <li class="sub"><a href="#marking">3.3 Marking the Close</a></li>
+    <li class="sub"><a href="#spoofing">3.4 Spoofing</a></li>
+    <li class="sub"><a href="#wash">3.5 Wash Trading</a></li>
+    <li class="sub"><a href="#corner">3.6 Corner the Market</a></li>
+    <li class="sub"><a href="#frontrun">3.7 Front Running</a></li>
+    <li class="sub"><a href="#layering">3.8 Layering</a></li>
+    <li class="sub"><a href="#bearraid">3.9 Bear Raid</a></li>
+    <li class="sub"><a href="#churning">3.10 Churning</a></li>
+    <li class="sub"><a href="#bidoffer-signals">สังเกตจาก Bid-Offer</a></li>
+    <li class="sub"><a href="#candle-signals">สังเกตจากแท่งเทียน</a></li>
+    <li class="sub"><a href="#volume-signals">สังเกตจากวอลุ่ม</a></li>
+    <li class="sub"><a href="#compare-all">ตารางเปรียบเทียบ</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#ch4">บทที่ 4: กฎหมายและบทลงโทษ</a></li>
+    <li class="sub"><a href="#thai-law">กฎหมายไทย</a></li>
+    <li class="sub"><a href="#regulators">หน่วยงานกำกับ</a></li>
+    <li class="sub"><a href="#limitations">ข้อจำกัดในทางปฏิบัติ</a></li>
+  </ul>
+</aside>
+
+<main class="main-content">
+
+<!-- ==================== HERO ==================== -->
+<section class="hero">
+  <div class="hero-badge">ภาค 1 — Stock Manipulation Playbook</div>
+  <h1>รู้จักเกมปั่นหุ้น<br><span class="grad">เข้าใจกลโกง ก่อนตกเป็นเหยื่อ</span></h1>
+  <p class="hero-sub">ทุกรูปแบบ ทุกกลยุทธ์ ทุกสัญญาณเตือน — คู่มือป้องกันตัวฉบับสมบูรณ์สำหรับนักลงทุนไทย</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">4</div><div class="lbl">บท</div></div>
+    <div class="hero-stat"><div class="num">10</div><div class="lbl">รูปแบบการปั่น</div></div>
+    <div class="hero-stat"><div class="num">8</div><div class="lbl">Cognitive Bias</div></div>
+    <div class="hero-stat"><div class="num">10</div><div class="lbl">Red Flags</div></div>
+  </div>
+</section>
+
+<div class="quote-block">
+  "สร้างภาพลวงตาว่าหุ้นตัวนี้กำลังจะดี หลอกให้คนเข้ามาซื้อ แล้วขายทิ้งใส่หน้า" — นิยามที่ตรงที่สุดของการปั่นหุ้น
+</div>
+<!-- ==================== CHAPTER 1 ==================== -->
+<div class="section-header" id="ch1">
+  <h2><span class="sn red">1</span> บทที่ 1: ปั่นหุ้นคืออะไร — ทำไมมันถึงเกิดขึ้นซ้ำแล้วซ้ำเล่า</h2>
+</div>
+
+<h3 id="definition">นิยาม</h3>
+<p>การปั่นหุ้น (Stock Manipulation) คือการกระทำที่ทำให้ราคาหลักทรัพย์เคลื่อนไหวผิดไปจากกลไกตลาดปกติโดยเจตนา เพื่อหลอกล่อให้ผู้ลงทุนรายอื่นตัดสินใจซื้อหรือขายตามข้อมูลที่บิดเบือน แล้วผู้ปั่นทำกำไรจากส่วนต่างราคา</p>
+
+<div class="info-box danger">
+  <div class="bt">&#x26A0;&#xFE0F; พูดง่ายๆ คือ</div>
+  "สร้างภาพลวงตาว่าหุ้นตัวนี้กำลังจะดี หลอกให้คนเข้ามาซื้อ แล้วขายทิ้งใส่หน้า"
+</div>
+
+<h3 id="diff">ความแตกต่างระหว่าง "ปั่นหุ้น" กับ "เก็งกำไร"</h3>
+<p>หลายคนสับสนระหว่างสองคำนี้ ซึ่งมีเส้นแบ่งที่ชัดเจน:</p>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>หัวข้อ</th><th>การเก็งกำไร (Speculation)</th><th>การปั่นหุ้น (Manipulation)</th></tr></thead>
+<tbody>
+<tr><td><strong>เจตนา</strong></td><td>คาดการณ์ทิศทางราคาจากข้อมูลที่มี</td><td>บิดเบือนราคาให้เคลื่อนไหวตามที่ต้องการ</td></tr>
+<tr><td><strong>วิธีการ</strong></td><td>ซื้อ/ขายตามการวิเคราะห์</td><td>สร้างวอลุ่มปลอม ปล่อยข่าวลือ ตั้งออเดอร์หลอก</td></tr>
+<tr><td><strong>ผลกระทบ</strong></td><td>เป็นส่วนหนึ่งของกลไกตลาดปกติ</td><td>ทำลายกลไกตลาด สร้างความเสียหายให้ผู้อื่น</td></tr>
+<tr><td><strong>กฎหมาย</strong></td><td style="color:var(--accent-green);">&#x2705; ถูกกฎหมาย</td><td style="color:var(--accent-red);">&#x274C; ผิดกฎหมาย</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>การเก็งกำไรเป็นเรื่องปกติของตลาด มันช่วยสร้างสภาพคล่องและทำให้ราคาสะท้อนข้อมูลใหม่ได้เร็วขึ้น แต่การปั่นหุ้นคือการ <strong>"โกง"</strong> กลไกตลาด ทำให้ราคาไม่สะท้อนมูลค่าที่แท้จริง</p>
+<!-- PSYCHOLOGY SECTION -->
+<h3 id="psychology">กลไกทางจิตวิทยาที่ผู้ปั่นใช้ประโยชน์</h3>
+<p>ผู้ปั่นไม่ได้แค่ขยับราคา พวกเขาเข้าใจจิตวิทยามนุษย์อย่างลึกซึ้ง และใช้ Cognitive Bias หลายตัวพร้อมกันเพื่อสร้าง <strong>"กับดักทางความคิด"</strong> ที่แทบเป็นไปไม่ได้ที่จะหลุดออกมาได้ถ้าไม่รู้ตัว:</p>
+
+<div class="two-col">
+<div class="card" style="border-left:4px solid var(--accent-red);">
+  <div class="card-title" style="color:var(--accent-red);">&#x1F631; FOMO — Fear of Missing Out</div>
+  <p style="font-size:0.88rem;">อาวุธที่ทรงพลังที่สุด เมื่อเห็นหุ้นวิ่ง +30% ใน 3 วัน สมองจะคำนวณทันทีว่า "ถ้าซื้อตั้งแต่วันแรก ตอนนี้ได้กำไรเท่าไหร่" ความเสียดายนี้ผลักดันให้กระโดดเข้าไปซื้อโดยไม่คิดว่า "ทำไมราคาถึงขึ้นมาขนาดนี้"</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-orange);">
+  <div class="card-title" style="color:var(--accent-orange);">&#x1F465; Social Proof</div>
+  <p style="font-size:0.88rem;">เมื่อเห็นคนอื่นซื้อเยอะ สมองบอกว่า "คนอื่นรู้อะไรที่เราไม่รู้" ผู้ปั่นสร้าง Social Proof ปลอมด้วยการใช้หลายบัญชีโพสต์ในกลุ่มไลน์/เฟซบุ๊กว่า "ซื้อแล้ว กำไรแล้ว"</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-yellow);">
+  <div class="card-title" style="color:var(--accent-yellow);">&#x23F3; Scarcity — ความขาดแคลน</div>
+  <p style="font-size:0.88rem;">สร้างภาพว่าหุ้นกำลังจะหมด ใครไม่ซื้อตอนนี้จะพลาด ประโยคเช่น "ของเหลือน้อยแล้ว" "พรุ่งนี้ราคาจะไม่ใช่ราคานี้แล้ว" ล้วนเป็นเทคนิค Scarcity</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-purple);">
+  <div class="card-title" style="color:var(--accent-purple);">&#x1F451; Authority — อำนาจ</div>
+  <p style="font-size:0.88rem;">อ้างว่าข้อมูลมาจาก "วงใน" หรือ "ผู้เชี่ยวชาญ" บางครั้งใช้ชื่อนักวิเคราะห์จริง หรือสร้างบุคคลสมมติที่ดูน่าเชื่อถือ มีประวัติ "ทำกำไร" มาก่อน</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-green);">
+  <div class="card-title" style="color:var(--accent-green);">&#x1F381; Reciprocity — การตอบแทน</div>
+  <p style="font-size:0.88rem;">ให้ "หุ้นเด็ด" ฟรีสักตัวสองตัวที่กำไรจริง เพื่อสร้างความไว้วางใจ แล้วค่อยหลอกทีหลังด้วยหุ้นที่ต้องการปั่น คนที่เคยได้กำไรจะรู้สึก "เป็นหนี้บุญคุณ"</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-cyan);">
+  <div class="card-title" style="color:var(--accent-cyan);">&#x2693; Anchoring — การยึดติดจุดอ้างอิง</div>
+  <p style="font-size:0.88rem;">ผู้ปั่นมักพูดถึง "เป้าหมายราคา" ที่สูงลิ่ว เช่น "หุ้นตัวนี้เป้า 50 บาท" ทั้งที่ราคาปัจจุบัน 15 บาท สมองจะยึดตัวเลข 50 บาทเป็นจุดอ้างอิง ทำให้รู้สึกว่าราคา 20-25 บาท "ยังถูกอยู่"</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-blue-light);">
+  <div class="card-title" style="color:var(--accent-blue-light);">&#x1F50D; Confirmation Bias — อคติยืนยัน</div>
+  <p style="font-size:0.88rem;">เมื่อซื้อหุ้นไปแล้ว สมองจะเลือกรับแต่ข้อมูลที่สนับสนุนการตัดสินใจของตัวเอง เห็นข่าวดีก็เชื่อทันที เห็นข่าวร้ายก็หาเหตุผลปัดตก ผู้ปั่นรู้ดีว่าแค่ปล่อยข่าวดีเรื่อยๆ ก็พอ</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-pink);">
+  <div class="card-title" style="color:var(--accent-pink);">&#x1F4B8; Sunk Cost Fallacy — ต้นทุนจม</div>
+  <p style="font-size:0.88rem;">เมื่อราคาลง แทนที่จะ Cut Loss กลับ "ถัวเฉลี่ย" เพราะคิดว่า "ลงทุนไปเยอะแล้ว ถ้าขายตอนนี้จะเสียเปล่า" ผู้ปั่นรู้ว่าคนส่วนใหญ่จะไม่ยอม Cut Loss จึงไม่ต้องกังวลว่าเหยื่อจะขายออกมาเร็วเกินไป</p>
+</div>
+</div>
+
+<div class="info-box observe">
+  <div class="bt">&#x1F50E; ข้อสังเกต</div>
+  ผู้ปั่นมืออาชีพจะใช้ Bias หลายตัวพร้อมกัน เช่น ปล่อยข่าว "วงใน" (Authority) ว่าหุ้นเป้า 50 บาท (Anchoring) ผ่านกลุ่มไลน์ที่มีคนเห็นด้วยเยอะ (Social Proof) พร้อมบอกว่า "ข่าวนี้รู้กันแค่ในกลุ่ม อีก 2 วันจะประกาศ" (Scarcity + FOMO) — ทั้งหมดนี้ทำงานร่วมกันจนแทบเป็นไปไม่ได้ที่จะต้านทานได้ ถ้าไม่รู้ตัวว่ากำลังถูกเล่นงาน
+</div>
+<!-- RED FLAGS + LIFECYCLE -->
+<h3 id="redflags">สัญญาณเตือนภัยเบื้องต้น 10 ข้อ (Red Flags Checklist)</h3>
+
+<div class="info-box danger">
+  <div class="bt">&#x1F6A8; กฎง่ายๆ</div>
+  ถ้าหุ้นตัวไหนมีสัญญาณเตือน <strong>3 ข้อขึ้นไป</strong> จาก 10 ข้อนี้ — อย่าซื้อ ไม่ว่าจะฟังดูน่าสนใจแค่ไหน ถ้ามี <strong>5 ข้อขึ้นไป</strong> — หนีให้ไกล
+</div>
+
+<div class="table-wrapper">
+<table>
+<thead style="background:rgba(239,68,68,0.1);"><tr><th style="color:#f87171;width:40px;">#</th><th style="color:#f87171;">สัญญาณเตือน</th><th style="color:#f87171;">รายละเอียด</th></tr></thead>
+<tbody>
+<tr><td style="color:var(--accent-red);font-weight:700;">1</td><td><strong>ราคาขึ้นเร็วผิดปกติ</strong></td><td>+50% ขึ้นไปภายใน 2-4 สัปดาห์ โดยไม่มีปัจจัยพื้นฐานรองรับที่ชัดเจน</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">2</td><td><strong>วอลุ่มพุ่งสูง 5-10 เท่า</strong></td><td>จากหุ้นที่ปกติซื้อขายวันละ 1 ล้านหุ้น กลายเป็น 10 ล้านหุ้นทันที</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">3</td><td><strong>ข่าวดีออกพร้อมกันหลายช่องทาง</strong></td><td>กลุ่มไลน์ เฟซบุ๊ก ฟอรัม ยูทูบ พูดถึงหุ้นตัวเดียวกันพร้อมกัน เหมือนมีคนจัดฉาก</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">4</td><td><strong>"เรื่องเล่า" สวยหรูเกินจริง</strong></td><td>สัมปทานหมื่นล้าน พาร์ทเนอร์ระดับโลก แต่บริษัทมีรายได้แค่ปีละ 100 ล้าน</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">5</td><td><strong>ไม่บอกจุดตัดขาดทุน</strong></td><td>คนแนะนำบอกแต่ "เป้าหมาย" แต่ไม่เคยบอก "จุดตัดขาดทุน"</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">6</td><td><strong>หุ้นตัวเล็ก Market Cap ต่ำ</strong></td><td>Market Cap ต่ำกว่า 5,000 ล้านบาท — เป้าหมายยอดนิยมของผู้ปั่น</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">7</td><td><strong>ผู้บริหารมีประวัติน่าสงสัย</strong></td><td>เคยเกี่ยวข้องกับหุ้นที่ถูกปั่นมาก่อน หรือเปลี่ยนธุรกิจบ่อย</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">8</td><td><strong>งบการเงินไม่สอดคล้อง</strong></td><td>อ้างว่าธุรกิจกำลังบูม แต่รายได้ไม่เพิ่ม หรือขาดทุนต่อเนื่อง</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">9</td><td><strong>รู้ข่าวจากกลุ่มไลน์</strong></td><td>ถ้าข่าวมาถึงคุณผ่านช่องทางไม่เป็นทางการ คุณเป็นคนสุดท้ายที่รู้ ไม่ใช่คนแรก</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">10</td><td><strong>รู้สึก "ต้องรีบซื้อเดี๋ยวนี้"</strong></td><td>ความรู้สึกเร่งด่วนคือสัญญาณอันตราย การลงทุนที่ดีไม่เคยต้องรีบ</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3 id="lifecycle">ขั้นตอนการปั่นหุ้น 5 ขั้นตอน (The Manipulation Lifecycle)</h3>
+<p>ไม่ว่าจะเป็นการปั่นรูปแบบใด ทุกครั้งจะผ่าน 5 ขั้นตอนหลักที่เป็นวงจรซ้ำเดิม:</p>
+
+<div class="step-flow">
+  <div class="step-item"><div class="step-circle" style="background:var(--gradient-blue);">1</div><div class="step-label">วางแผน<br>เลือกเป้าหมาย</div></div>
+  <div class="step-item"><div class="step-circle" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa);">2</div><div class="step-label">สะสมหุ้น<br>2-8 สัปดาห์</div></div>
+  <div class="step-item"><div class="step-circle" style="background:var(--gradient-warm);">3</div><div class="step-label">สร้างกระแส<br>ดันราคา</div></div>
+  <div class="step-item"><div class="step-circle" style="background:var(--gradient-red);">4</div><div class="step-label">กระจายของ<br>&#x26A0;&#xFE0F; อันตราย!</div></div>
+  <div class="step-item"><div class="step-circle" style="background:linear-gradient(135deg,#64748b,#475569);">5</div><div class="step-label">ทิ้งและหนี<br>&#x1F4A5; จบเกม</div></div>
+</div>
+
+<div class="diagram-block">
+  <span class="tag diagram">วงจรการปั่นหุ้น</span>
+ราคา
+  |                    <span class="bad">&#x2463; กระจายของ</span>
+  |                   &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+  |            <span class="warn">&#x2462; ดัน</span> /       \ <span class="bad">&#x2464; ทิ้ง</span>
+  |               /    &#x2195; แกว่ง  \
+  |             /                 \
+  |    <span class="hl">&#x2461; สะสม</span> /                    \
+  |   &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;                      \___
+  |&#x2500;&#x2500;&#x2500;&#x2524;      &#x251C;&#x2500;&#x2500;                         \___
+  |   &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;                                &#x2190; <span class="bad">ต่ำกว่าจุดเริ่ม</span>
+  | <span class="hl">&#x2460; วางแผน</span>
+  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; เวลา
+</div>
+
+<h4>ขั้นที่ 1: วางแผนและเลือกเป้าหมาย</h4>
+<p>ผู้ปั่นไม่ได้สุ่มเลือกหุ้น พวกเขามีเกณฑ์ชัดเจน:</p>
+<div class="card">
+<ul style="list-style:none;">
+  <li style="padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;">&#x1F4B0; <strong>Market Cap ต่ำ</strong> (มักต่ำกว่า 3,000-5,000 ล้านบาท) — ใช้เงินน้อยในการขยับราคา</li>
+  <li style="padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;">&#x1F4CA; <strong>Free Float ต่ำ</strong> — หุ้นที่ซื้อขายได้จริงในตลาดมีน้อย ควบคุมอุปทานได้ง่าย</li>
+  <li style="padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;">&#x1F4D6; <strong>มี "เรื่องเล่า" ที่ขายได้</strong> — พลังงานทดแทน AI สัมปทานรัฐ ธุรกิจใหม่ที่กำลังมาแรง</li>
+  <li style="padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;">&#x1F4A4; <strong>สภาพคล่องต่ำในช่วงปกติ</strong> — เมื่อวอลุ่มพุ่งขึ้นจะดึงดูดความสนใจได้ง่าย</li>
+  <li style="padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;">&#x1F91D; <strong>ผู้บริหารร่วมมือหรือไม่ขัดขวาง</strong> — บางกรณีผู้บริหารเองก็มีส่วนร่วม</li>
+</ul>
+</div>
+
+<h4>ขั้นที่ 2: สะสมหุ้น (Accumulation)</h4>
+<p>ขั้นตอนนี้ใช้เวลานานที่สุดและเงียบที่สุด เพราะผู้ปั่นไม่ต้องการให้ใครรู้:</p>
+<div class="card">
+<ul style="list-style:none;">
+  <li style="padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;">&#x2022; ค่อยๆ ซื้อทีละน้อยผ่านหลายบัญชี หลายโบรกเกอร์ กระจายเวลาซื้อตลอดทั้งวัน</li>
+  <li style="padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;">&#x2022; บางครั้ง "กดราคาลง" ก่อนด้วยการปล่อยข่าวร้ายเล็กๆ เพื่อเก็บของได้ถูกลง</li>
+  <li style="padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;">&#x2022; ใช้เทคนิค "Iceberg Order" — ตั้งซื้อจำนวนน้อยที่หน้าจอ แต่มีคำสั่งซ่อนอยู่ข้างหลัง</li>
+  <li style="padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;">&#x2022; ช่วงนี้อาจกินเวลา 2-8 สัปดาห์ หรือนานกว่านั้น</li>
+</ul>
+</div>
+<div class="info-box observe">
+  <div class="bt">&#x1F50E; สัญญาณการสะสม</div>
+  วอลุ่มค่อยๆ เพิ่มขึ้น 20-50% จากค่าเฉลี่ย แต่ราคาแทบไม่ขยับ เหมือนมีคน "รับซื้อ" ทุกครั้งที่มีคนขาย ดู OBV (On Balance Volume) จะเห็นชัดว่าเงินไหลเข้าแต่ราคาไม่ขึ้น
+</div>
+
+<h4>ขั้นที่ 3: สร้างกระแสและดันราคา (Promotion &amp; Markup)</h4>
+<div class="card">
+<ul style="list-style:none;">
+  <li style="padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;">&#x1F4E2; <strong>ปล่อยข่าวดีพร้อมกันหลายช่องทาง</strong> — กลุ่มไลน์ เฟซบุ๊ก ทวิตเตอร์ ฟอรัมหุ้น บทวิเคราะห์ปลอม ยูทูบ TikTok</li>
+  <li style="padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;">&#x1F3A4; <strong>ใช้ "กูรู" หรือ "อินฟลูเอนเซอร์" ช่วยโปรโมท</strong> — บางคนรู้ตัว บางคนไม่รู้ตัว</li>
+  <li style="padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;">&#x1F4B9; <strong>ดันราคาด้วยการซื้อจริงผสม Wash Trading</strong> — สร้างวอลุ่มให้ดูคึกคัก</li>
+  <li style="padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;">&#x1F4A5; <strong>เขย่าราคาเป็นระยะ (Shakeout)</strong> — ปล่อยให้ราคาลง 5-10% เพื่อเขี่ยคนใจไม่แข็งออก</li>
+</ul>
+</div>
+
+<h4>ขั้นที่ 4: กระจายของ (Distribution) — &#x26A0;&#xFE0F; อันตรายที่สุด</h4>
+<div class="info-box danger">
+  <div class="bt">&#x1F6A8; ขั้นตอนที่อันตรายที่สุดสำหรับเหยื่อ</div>
+  เจ้ามือเริ่มขายของทีละน้อย <strong>ในขณะที่ราคายังขึ้นอยู่หรือทรงตัวที่จุดสูง</strong> — นี่คือกับดักที่ร้ายที่สุด ข่าวดียังคงออกมาเรื่อยๆ เพื่อดึงแรงซื้อใหม่มารับของ
+</div>
+<div class="info-box observe">
+  <div class="bt">&#x1F50E; สัญญาณ Volume Divergence</div>
+  ราคาทำจุดสูงสุดใหม่ แต่วอลุ่มไม่ทำจุดสูงสุดใหม่ตาม แปลว่าแรงซื้อจริงหมดแล้ว ราคาที่ขึ้นเป็นแค่ภาพลวง อีกสัญญาณคือ "วอลุ่มสูงในวันที่ราคาปิดลง"
+</div>
+
+<h4>ขั้นที่ 5: ทิ้งและหนี (Dump &amp; Exit)</h4>
+<div class="card" style="border-left:4px solid var(--accent-red);">
+<ul style="list-style:none;">
+  <li style="padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;">&#x1F4A5; เจ้ามือเทขายของที่เหลือทั้งหมด ราคาร่วงลงอย่างรวดเร็ว</li>
+  <li style="padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;">&#x1F4A8; สภาพคล่องหายวับ — ตอนราคาขึ้นมีคนซื้อเต็ม แต่ตอนราคาลงแทบไม่มีคนรับ</li>
+  <li style="padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;">&#x1F4C9; ราคามักลงมาต่ำกว่าจุดเริ่มต้นก่อนปั่นด้วยซ้ำ</li>
+  <li style="padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;">&#x1F910; ข่าวดีทั้งหมดเงียบหายไปราวกับไม่เคยมี</li>
+</ul>
+</div>
+<div class="info-box warning">
+  <div class="bt">&#x26A0;&#xFE0F; ระวัง Dead Cat Bounce</div>
+  หลังจากราคาร่วงแรง มักมีราคาเด้งขึ้นมาเล็กน้อย 10-20% ทำให้คนคิดว่า "ถึงจุดต่ำสุดแล้ว" แต่จริงๆ เป็นแค่การเด้งชั่วคราวก่อนลงต่อ ถ้าวอลุ่มตอนเด้งน้อยกว่าวอลุ่มตอนร่วง = แมวตายเด้ง
+</div>
+<!-- WHY REPEAT + HISTORY + EMOTION CYCLE -->
+<h3 id="why-repeat">ทำไมมันเกิดขึ้นซ้ำแล้วซ้ำเล่า</h3>
+
+<div class="three-col">
+<div class="card" style="border-top:3px solid var(--accent-red);padding:1.5rem;">
+  <h4 style="margin-top:0;font-size:0.95rem;">&#x1F4B0; ความโลภไม่เคยเปลี่ยน</h4>
+  <p style="font-size:0.85rem;">ทุกคนอยากรวยเร็ว เมื่อเห็นหุ้นวิ่งแรง สัญชาตญาณบอกให้กระโดดเข้าไป กลัวตกรถมากกว่ากลัวขาดทุน</p>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-orange);padding:1.5rem;">
+  <h4 style="margin-top:0;font-size:0.95rem;">&#x1F512; ข้อมูลไม่สมมาตร</h4>
+  <p style="font-size:0.85rem;">ผู้ปั่นรู้ว่าตัวเองกำลังทำอะไร รู้ว่าจะขายเมื่อไหร่ แต่นักลงทุนรายย่อยเห็นแค่ราคาที่วิ่งขึ้นบนหน้าจอ</p>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-yellow);padding:1.5rem;">
+  <h4 style="margin-top:0;font-size:0.95rem;">&#x1F4B1; ตลาดมีสภาพคล่อง</h4>
+  <p style="font-size:0.85rem;">ซื้อง่ายขายง่าย เงินเข้าออกเร็ว ทำให้การปั่นทำกำไรได้ในเวลาสั้น</p>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-purple);padding:1.5rem;">
+  <h4 style="margin-top:0;font-size:0.95rem;">&#x2696;&#xFE0F; บทลงโทษยังไม่หนักพอ</h4>
+  <p style="font-size:0.85rem;">ถ้าปั่นได้ 500 ล้าน แต่โดนปรับ 50 ล้าน มันก็ยังคุ้ม กระบวนการทางกฎหมายยังใช้เวลานาน</p>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-cyan);padding:1.5rem;">
+  <h4 style="margin-top:0;font-size:0.95rem;">&#x1F4F1; โซเชียลมีเดียเป็นตัวเร่ง</h4>
+  <p style="font-size:0.85rem;">ข่าวลือแพร่กระจายเร็วกว่าเดิมหลายเท่า ต้นทุนในการ "สร้างกระแส" ต่ำลงมาก</p>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-green);padding:1.5rem;">
+  <h4 style="margin-top:0;font-size:0.95rem;">&#x1F9E0; ความจำสั้นของตลาด</h4>
+  <p style="font-size:0.85rem;">คนที่เคยขาดทุน หลังจากผ่านไป 6-12 เดือน มักลืมความเจ็บปวดและกลับมาเสี่ยงอีกครั้ง</p>
+</div>
+</div>
+
+<div class="info-box info">
+  <div class="bt">&#x1F4A1; นักลงทุนรายใหม่เข้ามาตลอด</div>
+  ทุกปีมีนักลงทุนหน้าใหม่เข้าตลาดหุ้น คนเหล่านี้ยังไม่เคยถูกหลอก ยังไม่มีภูมิคุ้มกัน เป็น "เหยื่อสด" ที่ผู้ปั่นรอคอย โดยเฉพาะช่วงที่ตลาดขาขึ้น
+</div>
+
+<h3 id="history">ประวัติศาสตร์ซ้ำรอย — บทเรียนที่ไม่มีใครจำ</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>เหตุการณ์</th><th>ปี</th><th>สิ่งที่เกิดขึ้น</th><th>บทเรียน</th></tr></thead>
+<tbody>
+<tr><td><strong>&#x1F337; Tulip Mania</strong></td><td>1637</td><td>หัวทิวลิปหายากถูกปั่นราคาจนแพงกว่าบ้านหลังหนึ่ง ก่อนร่วงเหลือเศษเสี้ยว</td><td style="color:var(--accent-yellow);">ของที่ "หายาก" ไม่ได้แปลว่า "มีค่า" เสมอไป</td></tr>
+<tr><td><strong>&#x1F30A; South Sea Bubble</strong></td><td>1720</td><td>หุ้นพุ่งจาก &#xA3;128 เป็น &#xA3;1,050 ใน 6 เดือน ก่อนร่วงเหลือ &#xA3;175 แม้แต่ Newton ยังขาดทุน</td><td style="color:var(--accent-yellow);">ความฉลาดในด้านอื่นไม่ได้ช่วยป้องกันความโลภ</td></tr>
+<tr><td><strong>&#x1F1F9;&#x1F1ED; วิกฤตต้มยำกุ้ง</strong></td><td>1997</td><td>SET ร่วงจาก 1,753 จุด เหลือ 207 จุด หุ้นหลายตัวกลายเป็นศูนย์</td><td style="color:var(--accent-yellow);">เมื่อทุกคนบอกว่า "ครั้งนี้ไม่เหมือน" — มันมักจะเหมือนทุกครั้ง</td></tr>
+<tr><td><strong>&#x1F4BB; ยุคดอทคอม</strong></td><td>2000</td><td>NASDAQ ร่วงจาก 5,048 เหลือ 1,114 หุ้นหลายตัวหายไปจากตลาด</td><td style="color:var(--accent-yellow);">"เรื่องเล่า" ที่ดีไม่ได้แปลว่าธุรกิจจะดี</td></tr>
+<tr><td><strong>&#x1F3AE; GameStop / Meme Stocks</strong></td><td>2021</td><td>ราคาพุ่งจาก $17 เป็น $483 ภายในไม่กี่สัปดาห์</td><td style="color:var(--accent-yellow);">แม้ "เจ้ามือ" จะเปลี่ยน แต่คนที่เข้าสุดท้ายยังคงเป็นเหยื่อ</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="info-box observe">
+  <div class="bt">&#x1F50E; รูปแบบเปลี่ยน เครื่องมือเปลี่ยน แต่หัวใจของเกมไม่เคยเปลี่ยน</div>
+  <strong>"หลอกให้คนโลภเข้ามา แล้วทิ้งให้คนกลัวแบกรับผลเสียหาย"</strong> — ทุกฟองสบู่มี "เรื่องเล่า" ที่ฟังดูสมเหตุสมผลในตอนนั้น วิธีป้องกันคือ ถามตัวเองเสมอว่า "ราคาตอนนี้สะท้อนมูลค่าจริงหรือสะท้อนความหวัง?"
+</div>
+
+<h3 id="emotion-cycle">วงจรอารมณ์ของเหยื่อ — แผนที่ที่ช่วยให้คุณรู้ว่าอยู่ตรงไหน</h3>
+
+<div class="diagram-block">
+  <span class="tag flow">วงจรอารมณ์</span>
+<span class="ok">สนใจ</span> &#x2192; <span class="ok">ตื่นเต้น</span> &#x2192; <span class="val">มั่นใจ</span> &#x2192; <span class="warn">โลภ</span> &#x2192; <span class="warn">กังวล</span> &#x2192; <span class="bad">ปฏิเสธ</span> &#x2192; <span class="bad">กลัว</span> &#x2192; <span class="bad">ยอมแพ้</span> &#x2192; ซึมเศร้า
+  |                                                                                              |
+  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; "&#3588;&#3619;&#3633;&#3657;&#3591;&#3627;&#3609;&#3657;&#3634;&#3592;&#3632;&#3652;&#3617;&#3656;&#3648;&#3611;&#3655;&#3609;&#3649;&#3610;&#3610;&#3609;&#3637;&#3657;" &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+</div>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>ขั้นตอน</th><th>อารมณ์</th><th>พฤติกรรม</th><th>ระดับอันตราย</th></tr></thead>
+<tbody>
+<tr><td><strong>1. สนใจ</strong></td><td>อยากรู้</td><td>เห็นหุ้นวิ่ง เริ่มหาข้อมูล ยังมีเหตุผลอยู่</td><td style="color:var(--accent-green);">&#x1F7E2; ต่ำ</td></tr>
+<tr><td><strong>2. ตื่นเต้น</strong></td><td>คาดหวัง</td><td>ยิ่งหาข้อมูลยิ่งเจอแต่ข่าวดี เริ่มคำนวณกำไรในหัว</td><td style="color:var(--accent-yellow);">&#x1F7E1; กลาง</td></tr>
+<tr><td><strong>3. มั่นใจ</strong></td><td>ภูมิใจ</td><td>ตัดสินใจซื้อ รู้สึกว่าตัวเองฉลาด "ผมวิเคราะห์มาดีแล้ว"</td><td style="color:var(--accent-orange);">&#x1F7E0; สูง</td></tr>
+<tr><td><strong>4. โลภ</strong></td><td>ต้องการมากขึ้น</td><td>ราคาขึ้นจริง เพิ่มเงินลงทุน ไม่ยอมขาย "มันยังไปได้อีก"</td><td style="color:var(--accent-red);">&#x1F534; สูงมาก</td></tr>
+<tr><td><strong>5. กังวล</strong></td><td>ไม่แน่ใจ</td><td>ราคาเริ่มแกว่ง บอกตัวเองว่า "แค่พักตัว"</td><td style="color:var(--accent-red);">&#x1F534; สูงมาก</td></tr>
+<tr><td><strong>6. ปฏิเสธ</strong></td><td>ไม่ยอมรับ</td><td>ราคาลงแรง แต่ไม่ยอมขาย "ยังไม่ขายยังไม่ขาดทุน"</td><td style="color:var(--accent-red);">&#x1F534; วิกฤต</td></tr>
+<tr><td><strong>7. กลัว</strong></td><td>ตื่นตระหนก</td><td>ราคาลงต่อเนื่อง นอนไม่หลับ เช็คราคาทุก 5 นาที</td><td style="color:var(--accent-red);">&#x1F534; วิกฤต</td></tr>
+<tr><td><strong>8. ยอมแพ้</strong></td><td>หมดหวัง</td><td>ขายทิ้งที่จุดต่ำสุด (มักเป็นจุดที่ผู้ปั่นเริ่มสะสมรอบใหม่)</td><td style="color:var(--text-muted);">&#x26AB; จบเกม</td></tr>
+<tr><td><strong>9. ซึมเศร้า</strong></td><td>เสียใจ</td><td>โทษตัวเอง แต่ไม่นานก็ลืม แล้ววนกลับไปข้อ 1</td><td style="color:var(--text-muted);">&#x26AB; วนซ้ำ</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="info-box tip">
+  <div class="bt">&#x1F4A1; วิธีใช้แผนที่นี้</div>
+  ทุกครั้งที่คุณกำลังจะตัดสินใจซื้อหุ้นที่ "ร้อนแรง" ให้ถามตัวเองว่า "ตอนนี้ผมอยู่ขั้นตอนไหนของวงจร?" ถ้าคุณรู้สึกตื่นเต้น มั่นใจ หรือกลัวตกรถ — คุณอยู่ในขั้นตอนที่ 2-4 ซึ่งเป็นจุดที่เจ้ามือต้องการให้คุณซื้อพอดี
+</div>
+<!-- ==================== CHAPTER 2 ==================== -->
+<div class="section-header" id="ch2">
+  <h2><span class="sn warm">2</span> บทที่ 2: ผู้เล่นในเกม — ใครปั่น ใครตาม ใครเป็นเหยื่อ</h2>
+</div>
+<p>การปั่นหุ้นไม่ใช่เกมคนเดียว มันเป็น <strong>"ระบบนิเวศ"</strong> ที่มีผู้เล่นหลายระดับ แต่ละคนมีบทบาท แรงจูงใจ และวิธีการที่แตกต่างกัน</p>
+
+<h3 id="manipulator">ผู้ปั่น (Manipulator) — สถาปนิกของเกม</h3>
+
+<div class="diagram-block">
+  <span class="tag structure">โครงสร้างองค์กร</span>
+                    <span class="bad">&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
+                    <span class="bad">&#x2502;  เจ้ามือหลัก    &#x2502;</span>
+                    <span class="bad">&#x2502;  (สมอง)         &#x2502;</span>
+                    <span class="bad">&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
+                             &#x2502;
+            &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+            &#x2502;                &#x2502;                &#x2502;
+   <span class="warn">&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x25BC;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span> <span class="warn">&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x25BC;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span> <span class="warn">&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x25BC;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
+   <span class="warn">&#x2502; โบรกเกอร์/      &#x2502;</span> <span class="warn">&#x2502; กองทัพ   &#x2502;</span> <span class="warn">&#x2502; ผู้บริหาร       &#x2502;</span>
+   <span class="warn">&#x2502; มาร์เก็ตติ้ง    &#x2502;</span> <span class="warn">&#x2502; ข่าวลือ  &#x2502;</span> <span class="warn">&#x2502; บริษัท          &#x2502;</span>
+   <span class="warn">&#x2502; (แขนขา)         &#x2502;</span> <span class="warn">&#x2502; (ปาก)    &#x2502;</span> <span class="warn">&#x2502; (ความชอบธรรม)   &#x2502;</span>
+   <span class="warn">&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span> <span class="warn">&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span> <span class="warn">&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
+            &#x2502;               &#x2502;                &#x2502;
+            &#x25BC;               &#x25BC;                &#x25BC;
+              &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+              <span class="hl">&#x2502;  นักลงทุนรายย่อย     &#x2502;</span>
+              <span class="hl">&#x2502;  (เหยื่อ)             &#x2502;</span>
+              &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+</div>
+
+<div class="two-col">
+<div class="card" style="border-left:4px solid var(--accent-red);">
+  <div class="card-title" style="color:var(--accent-red);">&#x1F9E0; กลุ่มที่ 1: เจ้ามือหลัก (Core Manipulator)</div>
+  <p style="font-size:0.88rem;">สมองของปฏิบัติการ มีเงินทุนหนา ตั้งแต่หลักสิบล้านถึงหลักพันล้านบาท มักทำงานเป็นทีม 3-10 คน ใช้บัญชีซื้อขายหลายสิบบัญชี กระจายไปหลายโบรกเกอร์ ผ่านชื่อนอมินี ญาติ เพื่อน</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-orange);">
+  <div class="card-title" style="color:var(--accent-orange);">&#x1F4BC; กลุ่มที่ 2: โบรกเกอร์/มาร์เก็ตติ้ง</div>
+  <p style="font-size:0.88rem;">แขนขาของปฏิบัติการ บางรายร่วมมือโดยตรง บางรายได้ประโยชน์จากวอลุ่มที่เพิ่มขึ้น จึง "เลือกที่จะไม่เห็น" ความผิดปกติ</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-yellow);">
+  <div class="card-title" style="color:var(--accent-yellow);">&#x1F4E3; กลุ่มที่ 3: กองทัพข่าวลือ (Rumor Army)</div>
+  <p style="font-size:0.88rem;">ปากของปฏิบัติการ ใช้กลุ่มไลน์ เฟซบุ๊ก ฟอรัมหุ้น ทวิตเตอร์ TikTok ยูทูบ สร้างบทสนทนาปลอมด้วยหลายบัญชี (Sock Puppet)</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-purple);">
+  <div class="card-title" style="color:var(--accent-purple);">&#x1F3A4; กลุ่มที่ 4: "กูรู" และอินฟลูเอนเซอร์</div>
+  <p style="font-size:0.88rem;">หน้าตาของปฏิบัติการ บางคนรู้ตัว (รับค่าจ้าง) บางคนไม่รู้ตัว (ถูกใช้เป็นเครื่องมือ) บางคนแค่ต้องการคอนเทนต์เพิ่มยอดวิว</p>
+</div>
+</div>
+
+<div class="info-box observe">
+  <div class="bt">&#x1F50E; ข้อสังเกต</div>
+  เจ้ามือหลักมักไม่ปรากฏตัวในที่สาธารณะ ไม่โพสต์ในกลุ่มไลน์ ไม่ออกสื่อ ถ้าคุณรู้จักคนที่อ้างว่าเป็น "เจ้ามือ" — เขาไม่ใช่เจ้ามือจริง เจ้ามือจริงไม่มีวันบอกใครว่าตัวเองเป็นเจ้ามือ
+</div>
+
+<h3 id="follower">ผู้ตาม (Follower) — นักเก็งกำไรที่คิดว่าตัวเองฉลาดพอ</h3>
+
+<div class="three-col">
+<div class="card" style="border-top:3px solid var(--accent-green);padding:1.5rem;">
+  <h4 style="margin-top:0;font-size:0.95rem;">&#x1F3AF; มืออาชีพ</h4>
+  <p style="font-size:0.85rem;">ใช้ TA จับจังหวะ มี Cut Loss เข้มงวด ลงเงินไม่เกิน 5-10% ของพอร์ต ทำกำไรได้ ~30-40% ของครั้งที่เล่น</p>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-orange);padding:1.5rem;">
+  <h4 style="margin-top:0;font-size:0.95rem;">&#x1F914; รู้ทั้งรู้</h4>
+  <p style="font-size:0.85rem;">"ผมรู้ว่ามันปั่น แต่ผมจะขายก่อน" — ประโยคนี้ทำให้คนขาดทุนมานับไม่ถ้วน กำไร 2 ครั้งแรกรวม 40,000 ขาดทุนครั้งเดียว 400,000</p>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-red);padding:1.5rem;">
+  <h4 style="margin-top:0;font-size:0.95rem;">&#x1F411; ตามฝูง</h4>
+  <p style="font-size:0.85rem;">ไม่ได้วิเคราะห์อะไรเลย แค่เห็นคนอื่นซื้อก็ซื้อตาม ตัดสินใจจากกลุ่มไลน์ เฟซบุ๊ก หรือคำแนะนำของเพื่อน</p>
+</div>
+</div>
+
+<h3 id="victim">เหยื่อ (Victim) — คนที่แบกรับผลเสียหายทั้งหมด</h3>
+
+<div class="two-col">
+<div class="card" style="border-left:4px solid var(--accent-red);">
+  <div class="card-title">&#x1F631; เหยื่อจาก FOMO</div>
+  <p style="font-size:0.88rem;">เห็นหุ้นวิ่ง +50% ใน 2 สัปดาห์ ทนไม่ไหว กระโดดเข้าซื้อ ไม่ได้หาข้อมูลอะไรเลย มักเข้าซื้อในช่วงที่ราคาใกล้จุดสูงสุด</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-orange);">
+  <div class="card-title">&#x1F4AC; เหยื่อจากข่าวลือ</div>
+  <p style="font-size:0.88rem;">เชื่อข่าว "หุ้นเด็ด" จากกลุ่มไลน์ คิดว่าตัวเองได้ "ข้อมูลวงใน" ทั้งที่จริงๆ เป็นคนสุดท้ายที่รู้</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-blue);">
+  <div class="card-title">&#x1F4CA; เหยื่อจากการวิเคราะห์ที่ถูกหลอก</div>
+  <p style="font-size:0.88rem;">ใช้ TA/FA วิเคราะห์ แต่ข้อมูลที่ใช้ถูกบิดเบือนตั้งแต่ต้น (กราฟถูก Paint, ข่าวถูกสร้าง) น่าเห็นใจที่สุด</p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-purple);">
+  <div class="card-title">&#x1F91D; เหยื่อจากความสัมพันธ์</div>
+  <p style="font-size:0.88rem;">ซื้อเพราะคนที่ไว้วางใจแนะนำ เมื่อราคาร่วง ทั้งคนแนะนำและคนที่ถูกแนะนำต่างก็ขาดทุน — และความสัมพันธ์ก็เสียหายด้วย</p>
+</div>
+</div>
+
+<h3 id="foodchain">ห่วงโซ่อาหาร — ใครกินใคร</h3>
+
+<div class="diagram-block">
+  <span class="tag structure">ห่วงโซ่อาหาร</span>
+<span class="bad">ชั้นที่ 1: เจ้ามือหลัก</span>
+&#x2502;  ซื้อก่อนทุกคน ราคาถูกที่สุด | ความเสี่ยง: <span class="ok">ต่ำสุด</span>
+&#x2502;
+&#x251C;&#x2500;&#x2500; <span class="warn">ชั้นที่ 2: วงในของเจ้ามือ</span>
+&#x2502;   &#x2502;  โบรกเกอร์/มาร์เก็ตติ้ง/ผู้บริหาร | ความเสี่ยง: <span class="val">ต่ำ-กลาง</span>
+&#x2502;   &#x2502;
+&#x2502;   &#x251C;&#x2500;&#x2500; <span class="val">ชั้นที่ 3: ผู้ตามมืออาชีพ</span>
+&#x2502;   &#x2502;   &#x2502;  จับสัญญาณได้จาก TA/วอลุ่ม | ความเสี่ยง: <span class="warn">กลาง</span>
+&#x2502;   &#x2502;   &#x2502;
+&#x2502;   &#x2502;   &#x251C;&#x2500;&#x2500; <span class="warn">ชั้นที่ 4: ผู้ตามแบบฝูง</span>
+&#x2502;   &#x2502;   &#x2502;   &#x2502;  รู้ข่าวจากกลุ่มไลน์/โซเชียล | ความเสี่ยง: <span class="bad">สูง</span>
+&#x2502;   &#x2502;   &#x2502;   &#x2502;
+&#x2502;   &#x2502;   &#x2502;   &#x2514;&#x2500;&#x2500; <span class="bad">ชั้นที่ 5: เหยื่อ</span>
+&#x2502;   &#x2502;   &#x2502;       รู้ข่าวสุดท้าย ซื้อราคาแพงที่สุด | ความเสี่ยง: <span class="bad">สูงสุด</span>
+</div>
+
+<div class="info-box danger">
+  <div class="bt">&#x1F6A8; กฎเหล็กของห่วงโซ่อาหาร</div>
+  <strong>ยิ่งรู้ข่าวช้า ยิ่งซื้อแพง</strong> — เจ้ามือซื้อที่ 5 บาท วงในซื้อที่ 7 บาท ผู้ตามซื้อที่ 12 บาท เหยื่อซื้อที่ 18 บาท เมื่อราคาร่วงลงมาที่ 4 บาท ทุกคนขาดทุนยกเว้นเจ้ามือ<br><br>
+  <strong>ถ้าคุณรู้ข่าวจากกลุ่มไลน์ — คุณอยู่ชั้นที่ 4-5</strong> ซึ่งเป็นชั้นที่เสี่ยงที่สุด
+</div>
+
+<h3 id="why-follower-lose">ทำไม "ผู้ตาม" ส่วนใหญ่แพ้ — 7 เหตุผล</h3>
+
+<div class="table-wrapper">
+<table>
+<thead style="background:rgba(239,68,68,0.1);"><tr><th style="color:#f87171;">#</th><th style="color:#f87171;">เหตุผล</th><th style="color:#f87171;">รายละเอียด</th></tr></thead>
+<tbody>
+<tr><td style="color:var(--accent-red);font-weight:700;">1</td><td><strong>ไม่รู้จังหวะจริง</strong></td><td>ผู้ปั่นอาจเริ่มขายตั้งแต่ราคายังขึ้นอยู่ ตอนที่คุณเห็น New High เจ้ามืออาจขายไปแล้ว 60-70%</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">2</td><td><strong>ความโลภทำให้ออกช้า</strong></td><td>ตั้งใจขายที่ +20% แต่พอถึงกลับคิดว่า "น่าจะไปได้อีก" สุดท้ายกลายเป็น -30%</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">3</td><td><strong>สภาพคล่องหายตอนร่วง</strong></td><td>ตอนขึ้นซื้อขายง่าย ตอนร่วงไม่มีคนรับ ตั้งขาย 15 บาท แต่ราคาหลุดไป 12 บาทเลย</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">4</td><td><strong>ถูกออกแบบให้แพ้</strong></td><td>ผู้ปั่น "เขย่า" ราคาเป็นระยะ (Shakeout) เพื่อ Trigger Stop Loss เขี่ยผู้ตามออก</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">5</td><td><strong>Overconfidence</strong></td><td>หลังกำไร 1-2 ครั้ง คิดว่าตัวเอง "เก่ง" จึงเพิ่มเงิน แต่กำไรก่อนอาจเป็นแค่ "โชค"</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">6</td><td><strong>ข้อมูลถูกควบคุม</strong></td><td>กราฟ (อาจถูก Paint) วอลุ่ม (อาจเป็น Wash Trading) ข่าว (อาจเป็นข่าวปลอม)</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">7</td><td><strong>เกม Negative-Sum</strong></td><td>มีค่าคอม ค่าสเปรด ภาษี ทำให้ "เงินรวม" ในระบบลดลง สถิติเข้าข้างเจ้ามือเสมอ</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3 id="position-check">วิธีระบุว่าคุณอยู่ตรงไหนในเกม — เช็คลิสต์ 10 ข้อ</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>คำถาม</th><th>ถ้าตอบ "ใช่" คุณอาจเป็น...</th></tr></thead>
+<tbody>
+<tr><td>1. คุณรู้ข่าวจากกลุ่มไลน์หรือโซเชียล?</td><td style="color:var(--accent-red);">เหยื่อ (ชั้นที่ 5)</td></tr>
+<tr><td>2. ราคาขึ้นมาแล้วมากกว่า 30% ก่อนที่คุณจะรู้?</td><td style="color:var(--accent-red);">เหยื่อ (ชั้นที่ 5)</td></tr>
+<tr><td>3. คุณรู้สึก "ต้องรีบซื้อเดี๋ยวนี้"?</td><td style="color:var(--accent-red);">เหยื่อ (กำลังถูก FOMO ครอบงำ)</td></tr>
+<tr><td>4. คุณไม่สามารถอธิบายธุรกิจของบริษัทได้?</td><td style="color:var(--accent-red);">เหยื่อ (ซื้อเพราะราคา ไม่ใช่ธุรกิจ)</td></tr>
+<tr><td>5. คุณรู้ว่ามันปั่น แต่คิดว่าจะออกทัน?</td><td style="color:var(--accent-orange);">ผู้ตาม (ชั้นที่ 3-4)</td></tr>
+<tr><td>6. คุณเคยทำกำไรจากหุ้นปั่นมาก่อน?</td><td style="color:var(--accent-orange);">ผู้ตามที่กำลังจะเป็นเหยื่อ</td></tr>
+<tr><td>7. คุณกำลังจะเพิ่มเงินหลังราคาขึ้น?</td><td style="color:var(--accent-orange);">กำลังเข้าสู่ขั้นตอน "โลภ"</td></tr>
+<tr><td>8. คุณสังเกตเห็นวอลุ่มผิดปกติก่อนมีข่าว?</td><td style="color:var(--accent-yellow);">ผู้ตามมืออาชีพ (ยังมีความเสี่ยง)</td></tr>
+<tr><td>9. คุณมีจุด Cut Loss ที่ชัดเจน?</td><td style="color:var(--accent-green);">มีโอกาสรอดสูงกว่า</td></tr>
+<tr><td>10. คุณพร้อมยอมรับขาดทุน 100%?</td><td style="color:var(--accent-green);">ถ้าไม่พร้อม อย่าเข้าไปเล่น</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="info-box tip">
+  <div class="bt">&#x1F3C6; ตำแหน่งที่ปลอดภัยที่สุดในเกมนี้</div>
+  ตำแหน่งที่ปลอดภัยที่สุดคือ <strong>"ไม่เล่น"</strong> — เป็นผู้สังเกตการณ์ที่เงียบ เรียนรู้จากความผิดพลาดของคนอื่น ถ้าคุณไม่แน่ใจว่าตัวเองอยู่ชั้นไหน — คุณอยู่ชั้นล่างสุด
+</div>
+<!-- ==================== CHAPTER 3 ==================== -->
+<div class="section-header" id="ch3">
+  <h2><span class="sn purple">3</span> บทที่ 3: รูปแบบการปั่นหุ้นที่พบบ่อย</h2>
+</div>
+<p>การปั่นหุ้นมีหลายรูปแบบ แต่ทุกรูปแบบมีจุดร่วมเดียวกันคือ — <strong>บิดเบือนราคาหรือปริมาณการซื้อขายเพื่อหลอกลวงผู้อื่น</strong></p>
+
+<!-- 3.1 PUMP AND DUMP -->
+<h3 id="pump-dump">3.1 Pump and Dump (ปั่นขึ้นแล้วทิ้ง)</h3>
+<p>รูปแบบคลาสสิกที่พบบ่อยที่สุดในทุกตลาดทั่วโลก เล่นกับ "ความโลภ" และ "ความกลัวตกรถ" โดยตรง</p>
+
+<div class="step-flow">
+  <div class="step-item"><div class="step-circle" style="background:var(--gradient-blue);">1</div><div class="step-label">สะสมหุ้น<br>2-8 สัปดาห์</div></div>
+  <div class="step-item"><div class="step-circle" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa);">2</div><div class="step-label">ทดสอบตลาด<br>3-5 วัน</div></div>
+  <div class="step-item"><div class="step-circle" style="background:var(--gradient-warm);">3</div><div class="step-label">ดันราคา<br>1-4 สัปดาห์</div></div>
+  <div class="step-item"><div class="step-circle" style="background:var(--gradient-red);">4</div><div class="step-label">กระจายของ<br>3-10 วัน</div></div>
+  <div class="step-item"><div class="step-circle" style="background:linear-gradient(135deg,#64748b,#475569);">5</div><div class="step-label">ทิ้ง<br>1-3 วัน</div></div>
+</div>
+
+<div class="diagram-block">
+  <span class="tag diagram">Pump and Dump Chart Pattern</span>
+ราคา
+  |            <span class="bad">___</span>
+  |           <span class="bad">/   \</span>        &#x2190; กระจายของ (ราคาไม่ขึ้นต่อ แต่วอลุ่มสูง)
+  |          <span class="warn">/</span>     <span class="bad">\</span>
+  |         <span class="warn">/</span> &#x2197; &#x2198;   <span class="bad">\</span>      &#x2190; เขย่าราคาระหว่างดัน
+  |        <span class="warn">/</span> &#x2197;       <span class="bad">\</span>
+  |       <span class="warn">/</span>            <span class="bad">\</span>
+  |   <span class="hl">___/</span>              <span class="bad">\___</span>
+  |  <span class="hl">/</span>                       <span class="bad">\___</span>
+  |<span class="hl">_/</span>                             &#x2190; <span class="bad">ราคาต่ำกว่าจุดเริ่มต้น</span>
+  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; เวลา
+  <span class="hl">สะสม</span>  ทดสอบ  <span class="warn">ดันราคา</span>  <span class="bad">กระจาย</span>  <span class="bad">ทิ้ง</span>
+</div>
+
+<!-- 3.2 PAINTING THE TAPE -->
+<h3 id="painting">3.2 Painting the Tape (ตกแต่งราคา)</h3>
+<p>"วาดกราฟ" ให้สวยเพื่อหลอกนักลงทุนที่ใช้ Technical Analysis — ซื้อขายสลับบัญชีเพื่อสร้างรูปแบบกราฟปลอม</p>
+<div class="card">
+  <div class="card-title">&#x1F3A8; ขั้นตอน</div>
+  <p style="font-size:0.88rem;"><strong>1.</strong> เปิดบัญชีหลายบัญชีผ่านหลายโบรกเกอร์ &#x2192; <strong>2.</strong> บัญชี A ขายที่ 10.10 &#x2192; บัญชี B ซื้อ &#x2192; บัญชี B ขายที่ 10.20 &#x2192; บัญชี C ซื้อ &#x2192; ราคาค่อยๆ ไต่ขึ้น &#x2192; <strong>3.</strong> สร้างรูปแบบกราฟ Cup and Handle, Ascending Triangle &#x2192; <strong>4.</strong> นักลงทุน TA เห็นสัญญาณซื้อ กระโดดเข้ามา</p>
+</div>
+<div class="info-box observe">
+  <div class="bt">&#x1F50E; สัญญาณ</div>
+  วอลุ่มแต่ละรายการ (Tick) มีขนาดเท่าๆ กันผิดปกติ | ราคาขยับขึ้นทีละช่องอย่างสม่ำเสมอ | เวลาที่เกิดรายการมีรูปแบบซ้ำๆ | Spread แคบผิดปกติ
+</div>
+
+<!-- 3.3 MARKING THE CLOSE -->
+<h3 id="marking">3.3 Marking the Close (ดันราคาปิด)</h3>
+<p>มุ่งเป้าที่ "ราคาปิด" ของวัน เพราะมีผลต่อ NAV กองทุน มูลค่าหลักประกัน และจิตวิทยานักลงทุน</p>
+<div class="card">
+  <div class="card-title">&#x23F0; ขั้นตอน</div>
+  <p style="font-size:0.88rem;">ระหว่างวันเงียบ &#x2192; ช่วง 10-15 นาทีสุดท้าย ส่งคำสั่งซื้อจำนวนมากที่ราคาสูง &#x2192; ราคาปิดสูงตามต้องการ &#x2192; วันรุ่งขึ้นราคาเปิด Gap Down</p>
+</div>
+<div class="info-box observe">
+  <div class="bt">&#x1F50E; สัญญาณ</div>
+  วอลุ่มพุ่งสูงผิดปกติในช่วง 10-15 นาทีสุดท้าย ขณะที่ทั้งวันเงียบ | เกิดบ่อยในวันสิ้นเดือน สิ้นไตรมาส | วันรุ่งขึ้นราคาเปิด Gap Down
+</div>
+
+<!-- 3.4 SPOOFING -->
+<h3 id="spoofing">3.4 Spoofing (ตั้งออเดอร์หลอก)</h3>
+<p>ใช้ "ภาพลวงตา" ของแรงซื้อหรือแรงขายเพื่อหลอกให้คนอื่นตัดสินใจผิด</p>
+<div class="card">
+  <div class="card-title">&#x1F47B; ขั้นตอน (กรณีต้องการซื้อถูก)</div>
+  <p style="font-size:0.88rem;"><strong>1.</strong> วาง Offer 500,000 หุ้นที่ราคาสูง &#x2192; คนเห็น Offer หนัก คิดว่าราคาขึ้นไม่ไหว &#x2192; <strong>2.</strong> คนแห่ขาย ผู้ปั่นแอบซื้อเก็บในราคาถูก &#x2192; <strong>3.</strong> ยกเลิก Offer หลอก &#x2192; ราคาพุ่งขึ้นทันที</p>
+</div>
+
+<!-- 3.5 WASH TRADING -->
+<h3 id="wash">3.5 Wash Trading (ซื้อขายสลับมือ)</h3>
+<p>สร้าง "วอลุ่มปลอม" เพื่อทำให้หุ้นดูมีสภาพคล่องและมีคนสนใจ</p>
+<div class="card">
+  <div class="card-title">&#x1F504; ขั้นตอน</div>
+  <p style="font-size:0.88rem;">บัญชี A ขาย 50,000 หุ้น &#x2192; บัญชี B ซื้อ &#x2192; บัญชี B ขาย &#x2192; บัญชี C ซื้อ &#x2192; วนไปเรื่อยๆ — หุ้นไม่ได้เปลี่ยนมือจริง แต่วอลุ่มพุ่งสูง &#x2192; ติดอันดับ Most Active &#x2192; ดึงดูดนักลงทุน</p>
+</div>
+<div class="info-box observe">
+  <div class="bt">&#x1F50E; สัญญาณชัดเจนที่สุด</div>
+  วอลุ่มสูงผิดปกติแต่ราคาแทบไม่เปลี่ยนแปลง | ขนาดออเดอร์แต่ละรายการเท่าๆ กัน | Turnover Ratio มากกว่า 100% ต่อวัน
+</div>
+<!-- 3.6 CORNER THE MARKET -->
+<h3 id="corner">3.6 Corner the Market (กว้านซื้อจนหมด)</h3>
+<p>ใช้ "อำนาจเงิน" ควบคุมอุปทานของหุ้น เมื่อถือหุ้นเกือบทั้งหมด ก็กำหนดราคาได้ตามใจ</p>
+<div class="card">
+  <div class="card-title">&#x1F3F0; ขั้นตอน</div>
+  <p style="font-size:0.88rem;">เลือกหุ้น Free Float ต่ำ &#x2192; ค่อยๆ กว้านซื้อจนถือเกือบหมด &#x2192; Offer บางมาก &#x2192; คนที่ Short ต้องหาหุ้นมาคืนแต่หาไม่ได้ (Short Squeeze) &#x2192; ราคาพุ่ง +100% ถึง +500% &#x2192; หลังจากบีบเสร็จ ราคาร่วงลงอย่างรวดเร็ว</p>
+</div>
+
+<!-- 3.7 FRONT RUNNING -->
+<h3 id="frontrun">3.7 Front Running (วิ่งนำหน้า)</h3>
+<p>ผู้กระทำมักเป็น "คนวงใน" ของระบบ เช่น โบรกเกอร์ เทรดเดอร์สถาบัน ที่เข้าถึงข้อมูลคำสั่งซื้อขาย</p>
+<div class="card">
+  <div class="card-title">&#x1F3C3; รูปแบบที่พบบ่อย</div>
+  <p style="font-size:0.88rem;">&#x2022; <strong>โบรกเกอร์ Front Run ลูกค้า</strong> — เห็นคำสั่งซื้อขนาดใหญ่ ซื้อก่อน<br>
+  &#x2022; <strong>นักวิเคราะห์ Front Run บทวิเคราะห์</strong> — ซื้อหุ้นก่อนออกบทวิเคราะห์แนะนำ "ซื้อ"<br>
+  &#x2022; <strong>ผู้บริหาร Front Run ข่าวบริษัท</strong> — ซื้อ/ขายก่อนประกาศข่าวสำคัญ (Insider Trading)</p>
+</div>
+
+<!-- 3.8 LAYERING -->
+<h3 id="layering">3.8 Layering (วางชั้นออเดอร์)</h3>
+<p>เวอร์ชันซับซ้อนของ Spoofing ที่ใช้ออเดอร์หลายระดับราคาสร้าง "กำแพง" ลวงตา</p>
+<div class="diagram-block">
+  <span class="tag signal">Layering Example</span>
+<span class="hl">Bid หลอก (สร้างภาพแรงซื้อหนัก):</span>
+  Bid ที่ 10.00 บาท: <span class="val">200,000</span> หุ้น
+  Bid ที่  9.90 บาท: <span class="val">300,000</span> หุ้น
+  Bid ที่  9.80 บาท: <span class="val">500,000</span> หุ้น
+  Bid ที่  9.70 บาท: <span class="val">400,000</span> หุ้น
+  Bid ที่  9.60 บาท: <span class="val">600,000</span> หุ้น
+  &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
+  รวม Bid หลอก: <span class="bad">2,000,000 หุ้น</span>
+
+&#x2192; นักลงทุนเห็น Bid หนา &#x2192; มั่นใจเข้าซื้อ
+&#x2192; ผู้ปั่นขายของจริงใส่แรงซื้อ
+&#x2192; ยกเลิก Bid หลอกทั้งหมด &#x2192; <span class="bad">ราคาร่วงทันที</span>
+</div>
+
+<!-- 3.9 BEAR RAID -->
+<h3 id="bearraid">3.9 Bear Raid (จู่โจมขาลง)</h3>
+<p>ตรงข้ามกับ Pump and Dump — "ทุบลง" ก่อนแล้วค่อยเก็บของถูก</p>
+<div class="card">
+  <div class="card-title">&#x1F43B; ขั้นตอน</div>
+  <p style="font-size:0.88rem;">เปิด Short Position / ซื้อ Put Option &#x2192; เทขายหุ้นจำนวนมาก + ปล่อยข่าวร้าย &#x2192; นักลงทุนตื่นตระหนก Panic Sell &#x2192; Margin Call บังคับขาย &#x2192; ราคาร่วงหนัก &#x2192; ผู้ปั่นซื้อสะสมในราคาถูก ปิด Short ทำกำไร</p>
+</div>
+
+<!-- 3.10 CHURNING -->
+<h3 id="churning">3.10 Churning (ปั่นวอลุ่มเพื่อค่าคอม)</h3>
+<p>ผู้กระทำไม่ได้ต้องการกำไรจากส่วนต่างราคา แต่ต้องการ "ค่าคอมมิชชั่น" จากการซื้อขาย</p>
+<div class="card">
+  <div class="card-title">&#x1F4B8; ขั้นตอน</div>
+  <p style="font-size:0.88rem;">สร้างความไว้วางใจ &#x2192; แนะนำหุ้นที่กำไรจริง 2-3 ตัว &#x2192; ลูกค้าให้อำนาจตัดสินใจ &#x2192; ซื้อขายถี่ผิดปกติ "ต้องปรับพอร์ต" &#x2192; ค่าคอมสะสมกินกำไรจนหมด</p>
+</div>
+<div class="info-box observe">
+  <div class="bt">&#x1F50E; สัญญาณ</div>
+  Turnover Ratio ของพอร์ตสูงผิดปกติ | ค่าคอมสะสมมากกว่า 5-10% ต่อปี | ผลตอบแทนต่ำกว่าดัชนีตลาดอย่างมีนัยสำคัญ
+</div>
+<!-- SIGNALS SECTION -->
+<h3 id="bidoffer-signals">วิธีสังเกตรูปแบบการปั่นจาก Bid-Offer</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>สิ่งที่เห็น</th><th>ความหมาย</th><th>รูปแบบการปั่น</th></tr></thead>
+<tbody>
+<tr><td>Bid ใหญ่ผิดปกติ แล้วหายไปทันที</td><td>ออเดอร์หลอก ไม่ได้ตั้งใจซื้อจริง</td><td style="color:var(--accent-orange);">Spoofing</td></tr>
+<tr><td>Bid/Offer หนาหลายชั้น ปรากฏ/หายพร้อมกัน</td><td>สร้างกำแพงลวงตา</td><td style="color:var(--accent-orange);">Layering</td></tr>
+<tr><td>ออเดอร์ขนาดเท่าๆ กัน สลับกันสม่ำเสมอ</td><td>ซื้อขายกันเองระหว่างบัญชี</td><td style="color:var(--accent-orange);">Wash Trading</td></tr>
+<tr><td>Offer บางมากผิดปกติ</td><td>มีคนกว้านซื้อจนหุ้นหมด</td><td style="color:var(--accent-orange);">Corner the Market</td></tr>
+<tr><td>ราคา Last ขยับขึ้นทีละช่อง วอลุ่มน้อยมาก</td><td>ค่อยๆ ดันราคาขึ้นทีละนิด</td><td style="color:var(--accent-orange);">Painting the Tape</td></tr>
+<tr><td>วอลุ่มพุ่งสูงช่วง 10-15 นาทีสุดท้าย</td><td>ดันราคาปิด</td><td style="color:var(--accent-orange);">Marking the Close</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3 id="candle-signals">วิธีสังเกตรูปแบบการปั่นจากแท่งเทียน (Candlestick)</h3>
+
+<div class="two-col">
+<div class="card" style="border-top:3px solid var(--accent-blue);padding:1.5rem;">
+  <h4 style="margin-top:0;font-size:0.95rem;">&#x1F7E6; ช่วงสะสม</h4>
+  <p style="font-size:0.85rem;">&#x2022; แท่งเทียนตัวเล็กติดกันหลายวัน (Narrow Range / Doji ซ้ำๆ)<br>&#x2022; ไส้เทียนล่างยาวซ้ำหลายวัน — มีคนรอรับซื้อข้างล่าง<br>&#x2022; แท่งแดงเล็กสลับเขียวเล็ก — ดูเหมือนไม่มีทิศทาง</p>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-green);padding:1.5rem;">
+  <h4 style="margin-top:0;font-size:0.95rem;">&#x1F7E9; ช่วงดันราคา</h4>
+  <p style="font-size:0.85rem;">&#x2022; แท่งเทียนเขียวยาวติดต่อกัน (Marubozu)<br>&#x2022; Gap Up ติดต่อกันหลายวัน<br>&#x2022; แท่งเทียนยาวขึ้นเรื่อยๆ (Expanding Range) — ใกล้จบรอบ!</p>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-orange);padding:1.5rem;">
+  <h4 style="margin-top:0;font-size:0.95rem;">&#x1F7E7; ช่วงกระจายของ</h4>
+  <p style="font-size:0.85rem;">&#x2022; Doji / Spinning Top ที่จุดสูงสุด — ตลาดลังเล<br>&#x2022; Shooting Star (ดาวตก) — ไส้บนยาว ถูกเทขายลงมา<br>&#x2022; Bearish Engulfing — แท่งแดงกลืนแท่งเขียว &#x26A0;&#xFE0F; อันตรายสูง</p>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-red);padding:1.5rem;">
+  <h4 style="margin-top:0;font-size:0.95rem;">&#x1F7E5; ช่วงทิ้ง</h4>
+  <p style="font-size:0.85rem;">&#x2022; แท่งเทียนแดงยาวมาก (Marubozu สีแดง)<br>&#x2022; Gap Down ติดต่อกัน<br>&#x2022; แท่งแดงยาวสลับเขียวสั้น = Dead Cat Bounce อย่าหลงเชื่อ!</p>
+</div>
+</div>
+
+<h3 id="volume-signals">วิธีสังเกตรูปแบบการปั่นจากวอลุ่ม (Volume)</h3>
+<p>วอลุ่มคือ "เสียง" ของตลาด ถ้าราคาคือ "ทิศทาง" วอลุ่มคือ "ความจริงจัง" ของทิศทางนั้น</p>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>ราคา</th><th>วอลุ่ม</th><th>ความหมายปกติ</th><th>ความหมายเมื่อถูกปั่น</th></tr></thead>
+<tbody>
+<tr><td style="color:var(--accent-green);">&#x2191; ขึ้น</td><td style="color:var(--accent-green);">&#x2191; เพิ่ม</td><td>แรงซื้อจริง ขาขึ้นแข็งแกร่ง</td><td>อาจเป็นช่วง Pump กำลังดึงคนเข้ามา</td></tr>
+<tr><td style="color:var(--accent-green);">&#x2191; ขึ้น</td><td style="color:var(--accent-red);">&#x2193; ลด</td><td>แรงซื้ออ่อนลง ใกล้หมดแรง</td><td style="color:var(--accent-red);"><strong>&#x26A0;&#xFE0F; เจ้ามือกำลังกระจายของ!</strong></td></tr>
+<tr><td style="color:var(--accent-red);">&#x2193; ลง</td><td style="color:var(--accent-green);">&#x2191; เพิ่ม</td><td>แรงขายจริง ขาลงแข็งแกร่ง</td><td>อาจเป็น Bear Raid หรือช่วง Dump</td></tr>
+<tr><td style="color:var(--accent-red);">&#x2193; ลง</td><td style="color:var(--accent-red);">&#x2193; ลด</td><td>แรงขายอ่อนลง</td><td>อาจเป็นช่วงที่เจ้ามือเริ่มสะสมรอบใหม่</td></tr>
+<tr><td>&#x2194; ไม่ขยับ</td><td style="color:var(--accent-green);">&#x2191; เพิ่มมาก</td><td>มีการสะสม/กระจายของ</td><td style="color:var(--accent-red);"><strong>&#x26A0;&#xFE0F; Wash Trading สร้างวอลุ่มปลอม</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="diagram-block">
+  <span class="tag volume">Volume Divergence</span>
+<span class="bad">&#x26A0;&#xFE0F; สัญญาณอันตราย: Volume Divergence</span>
+
+ราคา:    /\    /\    /\
+        /  \  /  \  / &#x2190; <span class="warn">ราคาทำ High ใหม่</span>
+
+วอลุ่ม:  <span class="hl">&#x2588;&#x2588;</span>   <span class="val">&#x2588;</span>    <span class="bad">&#x2584;</span>
+         <span class="hl">&#x2588;&#x2588;</span>   <span class="val">&#x2588;</span>    <span class="bad">&#x2584;</span>  &#x2190; <span class="bad">แต่วอลุ่มลดลงเรื่อยๆ</span>
+         <span class="hl">&#x2588;&#x2588;</span>   <span class="val">&#x2588;</span>    <span class="bad">&#x2584;</span>
+
+= <span class="bad">แรงซื้อจริงหมดแล้ว ราคาที่ขึ้นเป็นแค่ภาพลวง</span>
+</div>
+
+<div class="info-box danger">
+  <div class="bt">&#x1F6A8; กฎเหล็ก</div>
+  อย่าเชื่อราคาที่ไม่มีวอลุ่มรองรับ — ราคาที่ขึ้นโดยวอลุ่มน้อยเหมือนบ้านที่สร้างบนทราย พังได้ทุกเมื่อ และอย่าเชื่อวอลุ่มที่ไม่มีราคาขยับ — มันอาจเป็นแค่การซื้อขายกันเองเพื่อสร้างภาพ
+</div>
+
+<h3 id="compare-all">สรุปตารางเปรียบเทียบรูปแบบการปั่นทั้งหมด</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>รูปแบบ</th><th>เป้าหมาย</th><th>ระยะเวลา</th><th>ความซับซ้อน</th><th>สิ่งที่ควรสังเกต</th></tr></thead>
+<tbody>
+<tr><td><strong>Pump and Dump</strong></td><td>กำไรจากส่วนต่าง</td><td>สัปดาห์-เดือน</td><td style="color:var(--accent-yellow);">กลาง</td><td>ราคาขึ้นเร็ว + ข่าวดีพร้อมกัน</td></tr>
+<tr><td><strong>Painting the Tape</strong></td><td>สร้างกราฟสวย</td><td>วัน-สัปดาห์</td><td style="color:var(--accent-yellow);">กลาง</td><td>วอลุ่มเท่ากัน ราคาขยับสม่ำเสมอ</td></tr>
+<tr><td><strong>Marking the Close</strong></td><td>ดันราคาปิด</td><td>นาที</td><td style="color:var(--accent-green);">ต่ำ</td><td>วอลุ่มพุ่งช่วงท้ายวัน</td></tr>
+<tr><td><strong>Spoofing</strong></td><td>บิดเบือนราคาสั้น</td><td>วินาที-นาที</td><td style="color:var(--accent-yellow);">กลาง</td><td>ออเดอร์ใหญ่ปรากฏแล้วหาย</td></tr>
+<tr><td><strong>Wash Trading</strong></td><td>สร้างวอลุ่มปลอม</td><td>วัน-สัปดาห์</td><td style="color:var(--accent-green);">ต่ำ</td><td>วอลุ่มสูงแต่ราคาไม่ขยับ</td></tr>
+<tr><td><strong>Corner the Market</strong></td><td>ควบคุมอุปทาน</td><td>สัปดาห์-เดือน</td><td style="color:var(--accent-red);">สูง</td><td>Free Float ลดลง Offer บาง</td></tr>
+<tr><td><strong>Front Running</strong></td><td>กำไรจากข้อมูลล่วงหน้า</td><td>ชั่วโมง-วัน</td><td style="color:var(--accent-green);">ต่ำ</td><td>ซื้อขายก่อนข่าว/คำสั่งใหญ่</td></tr>
+<tr><td><strong>Layering</strong></td><td>บิดเบือน Order Book</td><td>นาที-ชั่วโมง</td><td style="color:var(--accent-red);">สูง</td><td>ออเดอร์หลายชั้นปรากฏ/หายพร้อมกัน</td></tr>
+<tr><td><strong>Bear Raid</strong></td><td>กดราคาเก็บของถูก</td><td>วัน-สัปดาห์</td><td style="color:var(--accent-yellow);">กลาง-สูง</td><td>ราคาร่วงแรง + ข่าวร้ายจากแหล่งไม่น่าเชื่อถือ</td></tr>
+<tr><td><strong>Churning</strong></td><td>ค่าคอมมิชชั่น</td><td>เดือน-ปี</td><td style="color:var(--accent-green);">ต่ำ</td><td>ซื้อขายถี่ผิดปกติ ผลตอบแทนต่ำ</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="info-box info">
+  <div class="bt">&#x1F4A1; หลักการสำคัญ</div>
+  ไม่มีรูปแบบการปั่นใดที่ใช้เพียงรูปแบบเดียว ผู้ปั่นมืออาชีพมักผสมผสานหลายเทคนิค เช่น ใช้ Wash Trading สร้างวอลุ่มปลอม + Painting the Tape วาดกราฟสวย + ปล่อยข่าวดี = Pump and Dump ที่สมบูรณ์แบบ
+</div>
+<!-- ==================== CHAPTER 4 ==================== -->
+<div class="section-header" id="ch4">
+  <h2><span class="sn blue">4</span> บทที่ 4: กฎหมายและบทลงโทษ</h2>
+</div>
+
+<h3 id="thai-law">กฎหมายไทย</h3>
+<p>การปั่นหุ้นผิดกฎหมายตาม <strong>พ.ร.บ.หลักทรัพย์และตลาดหลักทรัพย์ พ.ศ. 2535</strong> และที่แก้ไขเพิ่มเติม:</p>
+
+<div class="three-col">
+<div class="card" style="border-top:3px solid var(--accent-red);padding:1.5rem;">
+  <h4 style="margin-top:0;font-size:0.95rem;">&#x1F6AB; ห้ามสร้างราคา</h4>
+  <p style="font-size:0.85rem;">ห้ามบุคคลใดซื้อขายหลักทรัพย์ในลักษณะที่ทำให้ราคาหรือปริมาณการซื้อขายผิดไปจากสภาพปกติของตลาด</p>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-orange);padding:1.5rem;">
+  <h4 style="margin-top:0;font-size:0.95rem;">&#x1F6AB; ห้ามสร้างภาพลวง</h4>
+  <p style="font-size:0.85rem;">ห้ามทำให้บุคคลทั่วไปเข้าใจผิดเกี่ยวกับราคาหรือปริมาณการซื้อขาย</p>
+</div>
+<div class="card" style="border-top:3px solid var(--accent-purple);padding:1.5rem;">
+  <h4 style="margin-top:0;font-size:0.95rem;">&#x1F6AB; ห้ามใช้ข้อมูลภายใน</h4>
+  <p style="font-size:0.85rem;">ห้ามบุคคลที่มีข้อมูลภายในซื้อขายหลักทรัพย์เพื่อประโยชน์ของตนเอง (Insider Trading)</p>
+</div>
+</div>
+
+<div class="card">
+  <div class="card-title">&#x2696;&#xFE0F; โทษ</div>
+  <p style="font-size:0.88rem;">&#x2022; <strong>โทษทางอาญา:</strong> จำคุกและ/หรือปรับ โดยค่าปรับอาจสูงถึง 2 เท่าของผลประโยชน์ที่ได้รับ<br>
+  &#x2022; <strong>โทษทางแพ่ง:</strong> ก.ล.ต. สามารถใช้มาตรการลงโทษทางแพ่ง (Civil Penalty) ได้<br>
+  &#x2022; <strong>สิทธิเรียกร้อง:</strong> ผู้เสียหายสามารถฟ้องเรียกค่าเสียหายทางแพ่งได้</p>
+</div>
+
+<h3 id="regulators">หน่วยงานกำกับดูแล</h3>
+<div class="two-col">
+<div class="card" style="border-left:4px solid var(--accent-blue);padding:1.5rem;">
+  <div class="card-title" style="color:var(--accent-blue-light);">&#x1F3DB;&#xFE0F; ก.ล.ต.</div>
+  <p style="font-size:0.85rem;">สำนักงานคณะกรรมการกำกับหลักทรัพย์และตลาดหลักทรัพย์ — กำกับดูแลและตรวจสอบการกระทำผิด ตรวจสอบรายชื่อผู้ถูกลงโทษได้ที่ <strong>sec.or.th</strong></p>
+</div>
+<div class="card" style="border-left:4px solid var(--accent-green);padding:1.5rem;">
+  <div class="card-title" style="color:var(--accent-green);">&#x1F4CA; SET</div>
+  <p style="font-size:0.85rem;">ตลาดหลักทรัพย์แห่งประเทศไทย — มีระบบเฝ้าระวังการซื้อขายผิดปกติ เมื่อพบความผิดปกติจะขึ้นเครื่องหมาย <strong>SP (Suspension)</strong> หยุดการซื้อขายชั่วคราว</p>
+</div>
+</div>
+
+<h3 id="limitations">ข้อจำกัดในทางปฏิบัติ</h3>
+
+<div class="table-wrapper">
+<table>
+<thead style="background:rgba(239,68,68,0.1);"><tr><th style="color:#f87171;">ข้อจำกัด</th><th style="color:#f87171;">รายละเอียด</th></tr></thead>
+<tbody>
+<tr><td><strong>พิสูจน์เจตนายาก</strong></td><td>ต้องพิสูจน์ว่าผู้กระทำมี "เจตนา" ในการบิดเบือนราคา ซึ่งทำได้ยากมาก</td></tr>
+<tr><td><strong>ตามรอยยาก</strong></td><td>ผู้ปั่นใช้หลายบัญชี หลายนอมินี กระจายไปหลายโบรกเกอร์</td></tr>
+<tr><td><strong>กระบวนการช้า</strong></td><td>กระบวนการทางกฎหมายใช้เวลานาน กว่าจะพิสูจน์ได้ เงินก็ถูกโยกย้ายไปหมดแล้ว</td></tr>
+<tr><td><strong>ค่าปรับไม่คุ้ม</strong></td><td>บางกรณีค่าปรับน้อยกว่ากำไรที่ได้ ทำให้ไม่เข็ดหลาบ</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="info-box danger">
+  <div class="bt">&#x1F6A8; สิ่งที่นักลงทุนควรรู้</div>
+  <strong>อย่าหวังพึ่งกฎหมายเพียงอย่างเดียว</strong> — การป้องกันตัวเองด้วยความรู้คือเกราะที่ดีที่สุด กฎหมายมักจับได้หลังจากเกมจบไปแล้ว แต่ความรู้ช่วยให้คุณไม่เข้าไปเล่นตั้งแต่แรก
+</div>
+
+<h4>รูปแบบการลงโทษที่เคยเกิดขึ้น</h4>
+<div class="two-col">
+<div class="card" style="padding:1.5rem;">
+  <div class="card-title">&#x1F4CB; รูปแบบที่ 1: กลุ่มนายทุนสร้างราคา</div>
+  <p style="font-size:0.85rem;">ใช้หลายบัญชีซื้อขายสลับกัน สร้างวอลุ่มปลอม ปล่อยข่าวผ่านโซเชียลมีเดีย &#x2192; ก.ล.ต. ตรวจพบจากรูปแบบการซื้อขายผิดปกติ &#x2192; ถูกดำเนินคดีทั้งทางอาญาและทางแพ่ง</p>
+</div>
+<div class="card" style="padding:1.5rem;">
+  <div class="card-title">&#x1F4CB; รูปแบบที่ 2: ผู้บริหารใช้ข้อมูลภายใน</div>
+  <p style="font-size:0.85rem;">รู้ล่วงหน้าว่าบริษัทจะประกาศข่าวดี/ร้าย ซื้อ/ขายก่อนข่าวออก &#x2192; ก.ล.ต. ตรวจจับจากรายงาน Insider Trading &#x2192; ถูกปรับเป็นเงินหลายเท่าของกำไรที่ได้</p>
+</div>
+</div>
+
+<!-- FINAL QUOTE -->
+<div class="quote-block" style="border-left-color:var(--accent-red);margin-top:3rem;">
+  "รูปแบบเปลี่ยน เครื่องมือเปลี่ยน แต่หัวใจของเกมไม่เคยเปลี่ยน — หลอกให้คนโลภเข้ามา แล้วทิ้งให้คนกลัวแบกรับผลเสียหาย"
+  <span class="author" style="color:var(--accent-red);">— บทสรุปของภาค 1</span>
+</div>
+</main>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#x2191;</button>
+
+<script>
+document.querySelectorAll('.diagram-block').forEach(el => {
+  const lines = el.innerHTML.split('\n');
+  let minIndent = Infinity;
+  lines.forEach(line => { if (line.trim().length > 0) { const indent = line.match(/^(\s*)/)[1].length; if (indent < minIndent) minIndent = indent; }});
+  if (minIndent > 0 && minIndent < Infinity) el.innerHTML = lines.map(line => line.slice(minIndent)).join('\n');
+  el.innerHTML = el.innerHTML.replace(/^\s*\n/, '').replace(/\n\s*$/, '');
+});
+window.addEventListener('scroll', () => { document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400); });
+document.querySelectorAll('.toc-list a, .nav-links a').forEach(a => {
+  a.addEventListener('click', function(e) { e.preventDefault(); const t = document.querySelector(this.getAttribute('href')); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+});
+const sections = document.querySelectorAll('[id]');
+const tocLinks = document.querySelectorAll('.toc-list a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.getAttribute('id'); });
+  tocLinks.forEach(l => { l.style.borderLeftColor = l.getAttribute('href') === '#' + current ? '#ef4444' : 'transparent'; l.style.color = l.getAttribute('href') === '#' + current ? '#f87171' : ''; });
+});
+</script>
+</body>
+</html>
