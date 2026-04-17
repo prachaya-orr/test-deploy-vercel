@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ภาค 3: การจัดการเงิน — เอาตัวรอดและเติบโต</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+  :root {
+    --bg-primary: #0a0e1a; --bg-secondary: #111827; --bg-card: #1a2235; --bg-code: #0d1321;
+    --border-primary: #2a3550; --text-primary: #e8edf5; --text-secondary: #94a3b8; --text-muted: #64748b;
+    --accent-blue: #3b82f6; --accent-blue-light: #60a5fa; --accent-cyan: #22d3ee;
+    --accent-green: #34d399; --accent-emerald: #10b981; --accent-yellow: #fbbf24;
+    --accent-orange: #f97316; --accent-red: #ef4444; --accent-purple: #a78bfa; --accent-pink: #f472b6;
+    --gradient-blue: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    --gradient-green: linear-gradient(135deg, #10b981, #22d3ee);
+    --gradient-warm: linear-gradient(135deg, #f97316, #fbbf24);
+    --gradient-red: linear-gradient(135deg, #ef4444, #f97316);
+    --gradient-emerald: linear-gradient(135deg, #059669, #10b981);
+    --gradient-hero: linear-gradient(135deg, #0a1a0e 0%, #0d2818 30%, #1a2e1b 60%, #0f172a 100%);
+    --shadow-lg: 0 8px 30px rgba(0,0,0,0.5);
+    --shadow-glow-green: 0 0 20px rgba(16,185,129,0.15);
+    --shadow-glow-blue: 0 0 20px rgba(59,130,246,0.15);
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px; --radius-xl: 24px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body { font-family: 'IBM Plex Sans Thai', 'Noto Sans Thai', sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.8; -webkit-font-smoothing: antialiased; }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: var(--border-primary); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent-emerald); }
+
+  .top-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(10,14,26,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-primary); padding: 0 2rem; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--accent-blue);
+    transition: all 0.3s ease;
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 32px;
+    border-radius: 6px;
+    background: rgba(59,130,246,0.1);
+    letter-spacing: 0.5px;
+  }
+  .nav-logo:hover {
+    background: rgba(59,130,246,0.2);
+    transform: scale(1.05);
+    color: var(--accent-blue-light);
+  }
+  .nav-brand { font-weight: 700; font-size: 1.1rem; background: var(--gradient-emerald); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .nav-links { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.75rem; padding: 0.3rem 0.6rem; border-radius: 6px; transition: all 0.2s; white-space: nowrap; }
+  .nav-links a:hover { color: var(--accent-green); background: rgba(16,185,129,0.1); }
+
+  .sidebar { position: fixed; left: 0; top: 60px; bottom: 0; width: 290px; background: var(--bg-secondary); border-right: 1px solid var(--border-primary); overflow-y: auto; padding: 1.5rem 0; z-index: 100; }
+  .sidebar-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); padding: 0 1.5rem; margin-bottom: 1rem; }
+  .toc-list { list-style: none; }
+  .toc-list li a { display: block; padding: 0.3rem 1.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.78rem; border-left: 3px solid transparent; transition: all 0.2s; }
+  .toc-list li a:hover { color: var(--accent-green); background: rgba(16,185,129,0.05); border-left-color: var(--accent-emerald); }
+  .toc-list li.sub a { padding-left: 2.5rem; font-size: 0.74rem; }
+  .toc-divider { height: 1px; background: var(--border-primary); margin: 0.5rem 1.5rem; }
+
+  .main-content { margin-left: 290px; margin-top: 60px; max-width: 920px; padding: 2rem 3rem 6rem; }
+
+  .hero { background: var(--gradient-hero); border-radius: var(--radius-xl); padding: 4rem 3rem; margin-bottom: 3rem; border: 1px solid rgba(16,185,129,0.2); position: relative; overflow: hidden; text-align: center; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 50%, rgba(16,185,129,0.06) 0%, transparent 60%), radial-gradient(circle at 70% 50%, rgba(59,130,246,0.06) 0%, transparent 60%); }
+  .hero-badge { display: inline-block; background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); color: var(--accent-green); font-size: 0.8rem; font-weight: 600; padding: 0.4rem 1.2rem; border-radius: 50px; margin-bottom: 1.5rem; position: relative; }
+  .hero h1 { font-family: 'Noto Sans Thai', sans-serif; font-size: 2.5rem; font-weight: 800; line-height: 1.3; margin-bottom: 1rem; position: relative; }
+  .hero h1 .grad { background: linear-gradient(135deg, #10b981, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-sub { font-size: 1.05rem; color: var(--text-secondary); max-width: 650px; margin: 0 auto; position: relative; }
+  .hero-stats { display: flex; justify-content: center; gap: 2.5rem; margin-top: 2rem; position: relative; }
+  .hero-stat { text-align: center; }
+  .hero-stat .num { font-size: 1.8rem; font-weight: 800; background: var(--gradient-emerald); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-stat .lbl { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+  .section-header { margin: 4rem 0 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--border-primary); }
+  .section-header h2 { font-family: 'Noto Sans Thai', sans-serif; font-size: 1.7rem; font-weight: 800; display: flex; align-items: center; gap: 0.8rem; line-height: 1.4; }
+  .sn { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 12px; font-size: 1rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .sn.red { background: var(--gradient-red); } .sn.blue { background: var(--gradient-blue); } .sn.green { background: var(--gradient-green); } .sn.warm { background: var(--gradient-warm); } .sn.purple { background: linear-gradient(135deg, #8b5cf6, #a78bfa); } .sn.cyan { background: linear-gradient(135deg, #06b6d4, #22d3ee); } .sn.emerald { background: var(--gradient-emerald); }
+
+  h3 { font-family: 'Noto Sans Thai', sans-serif; font-size: 1.25rem; font-weight: 700; margin: 2.5rem 0 1rem; color: var(--accent-blue-light); }
+  h4 { font-size: 1.02rem; font-weight: 600; margin: 1.8rem 0 0.8rem; color: var(--accent-cyan); }
+  p { margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.92rem; }
+  strong { color: var(--text-primary); font-weight: 600; }
+  ul, ol { margin: 0.5rem 0 1rem 1.5rem; color: var(--text-secondary); }
+  li { margin-bottom: 0.4rem; font-size: 0.88rem; }
+
+  .quote-block { background: var(--bg-card); border-left: 4px solid var(--accent-purple); border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 1.5rem 2rem; margin: 2rem 0; font-style: italic; color: var(--text-secondary); font-size: 0.92rem; }
+  .quote-block .src { font-style: normal; font-size: 0.82rem; color: var(--text-muted); margin-top: 0.5rem; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: var(--radius-lg); padding: 1.8rem; margin: 1.5rem 0; transition: all 0.3s; }
+  .card:hover { border-color: rgba(16,185,129,0.3); box-shadow: var(--shadow-glow-green); }
+  .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.6rem; }
+
+  .two-col { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin: 1.5rem 0; }
+  .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 1.5rem 0; }
+
+  .diagram-block { background: var(--bg-code); border: 1px solid var(--border-primary); border-radius: var(--radius-md); padding: 1.5rem 2rem; margin: 1.5rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; line-height: 1.7; color: var(--text-secondary); overflow-x: auto; position: relative; white-space: pre; }
+  .diagram-block .tag { position: absolute; top: 0.8rem; right: 1rem; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 0.2rem 0.6rem; border-radius: 4px; font-family: 'IBM Plex Sans Thai', sans-serif; }
+  .diagram-block .tag.calc { background: rgba(16,185,129,0.15); color: var(--accent-green); }
+  .diagram-block .tag.example { background: rgba(59,130,246,0.15); color: var(--accent-blue-light); }
+  .diagram-block .tag.flow { background: rgba(249,115,22,0.15); color: var(--accent-orange); }
+  .diagram-block .tag.danger { background: rgba(239,68,68,0.15); color: var(--accent-red); }
+  .diagram-block .tag.system { background: rgba(167,139,250,0.15); color: var(--accent-purple); }
+  .diagram-block .tag.checklist { background: rgba(34,211,238,0.15); color: var(--accent-cyan); }
+  .diagram-block .tag.portfolio { background: rgba(251,191,36,0.15); color: var(--accent-yellow); }
+  .diagram-block .hl { color: var(--accent-cyan); } .diagram-block .val { color: var(--accent-yellow); } .diagram-block .ok { color: var(--accent-green); } .diagram-block .warn { color: var(--accent-orange); } .diagram-block .bad { color: var(--accent-red); }
+
+  .info-box { border-radius: var(--radius-md); padding: 1.2rem 1.5rem; margin: 1.5rem 0; font-size: 0.88rem; }
+  .info-box.tip { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); color: var(--accent-green); }
+  .info-box.warning { background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2); color: var(--accent-orange); }
+  .info-box.danger { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); color: var(--accent-red); }
+  .info-box.info { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); color: var(--accent-blue-light); }
+  .info-box.observe { background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); color: var(--accent-purple); }
+  .info-box .bt { font-weight: 700; margin-bottom: 0.5rem; }
+
+  .table-wrapper { overflow-x: auto; margin: 1.5rem 0; border-radius: var(--radius-md); border: 1px solid var(--border-primary); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  thead { background: rgba(16,185,129,0.1); }
+  th { padding: 0.7rem 0.8rem; text-align: left; font-weight: 600; color: var(--accent-green); border-bottom: 2px solid var(--border-primary); }
+  td { padding: 0.6rem 0.8rem; border-bottom: 1px solid rgba(42,53,80,0.5); color: var(--text-secondary); }
+  tbody tr:hover { background: rgba(16,185,129,0.03); }
+  thead.red-head { background: rgba(239,68,68,0.1); }
+  thead.red-head th { color: #f87171; }
+  thead.blue-head { background: rgba(59,130,246,0.1); }
+  thead.blue-head th { color: var(--accent-blue-light); }
+  thead.warn-head { background: rgba(249,115,22,0.1); }
+  thead.warn-head th { color: var(--accent-orange); }
+
+  .versus { display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; margin: 1.5rem 0; align-items: start; }
+  .versus .vs-badge { background: var(--bg-card); border: 2px solid var(--border-primary); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; color: var(--text-muted); align-self: center; }
+
+  .step-flow { display: flex; gap: 0; margin: 2rem 0; overflow-x: auto; }
+  .step-item { flex: 1; min-width: 100px; text-align: center; position: relative; padding: 1rem 0.2rem; }
+  .step-item::after { content: ''; position: absolute; top: 22px; right: -6px; font-size: 1rem; color: var(--text-muted); z-index: 1; }
+  .step-item:last-child::after { display: none; }
+  .step-circle { width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.78rem; color: #fff; margin-bottom: 0.3rem; }
+  .step-label { font-size: 0.7rem; color: var(--text-secondary); font-weight: 500; line-height: 1.4; }
+
+  .rule-card { background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: var(--radius-lg); padding: 1.5rem 1.8rem; margin: 1rem 0; position: relative; overflow: hidden; }
+  .rule-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+  .rule-card.gold::before { background: var(--gradient-warm); }
+  .rule-card.red::before { background: var(--gradient-red); }
+  .rule-card.green::before { background: var(--gradient-emerald); }
+  .rule-card.blue::before { background: var(--gradient-blue); }
+  .rule-card .rule-num { font-size: 2rem; font-weight: 900; opacity: 0.15; position: absolute; right: 1rem; top: 0.5rem; }
+  .rule-card .rule-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .rule-card p { font-size: 0.86rem; margin-bottom: 0.5rem; }
+
+  .checklist-box { background: var(--bg-code); border: 1px solid var(--border-primary); border-radius: var(--radius-md); padding: 1.5rem 2rem; margin: 1.5rem 0; font-size: 0.85rem; line-height: 2; }
+  .checklist-box .cb-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.8rem; color: var(--accent-cyan); }
+  .checklist-box .cb-item { color: var(--text-secondary); padding: 0.2rem 0; }
+  .checklist-box .cb-item::before { content: '☐ '; color: var(--accent-green); font-weight: 700; }
+
+  .back-to-top { position: fixed; bottom: 2rem; right: 2rem; width: 44px; height: 44px; border-radius: 50%; background: var(--gradient-emerald); color: #fff; border: none; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-lg); opacity: 0; transition: opacity 0.3s; z-index: 1000; }
+  .back-to-top.visible { opacity: 1; }
+
+  .progress-bar { position: fixed; top: 60px; left: 290px; right: 0; height: 3px; z-index: 999; background: transparent; }
+  .progress-bar .fill { height: 100%; background: var(--gradient-emerald); width: 0%; transition: width 0.1s; }
+
+  @media (max-width: 1024px) {
+    .sidebar { transform: translateX(-100%); }
+    .main-content { margin-left: 0; padding: 1.5rem; }
+    .progress-bar { left: 0; }
+    .two-col, .three-col, .versus { grid-template-columns: 1fr; }
+    .versus .vs-badge { justify-self: center; }
+    .hero { padding: 2.5rem 1.5rem; }
+    .hero h1 { font-size: 1.8rem; }
+    .hero-stats { flex-direction: column; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="fill" id="progressFill"></div></div>
+
+<nav class="top-nav">
+  <a href="/" class="nav-logo" title="กลับหน้าหลัก">HOME</a>
+  <div class="nav-brand">💰 ภาค 3 — การจัดการเงิน</div>
+  <div class="nav-links">
+    <a href="#ch12">บทที่ 12</a><a href="#ch13">บทที่ 13</a><a href="#ch14">บทที่ 14</a><a href="#ch15">บทที่ 15</a><a href="#ch16">บทที่ 16</a><a href="#ch17">บทที่ 17</a><a href="#ch18">บทที่ 18</a>
+  </div>
+</nav>
+
+<aside class="sidebar">
+  <div class="sidebar-title">สารบัญ</div>
+  <ul class="toc-list">
+    <li><a href="#ch12">บทที่ 12: Money Management พื้นฐาน</a></li>
+    <li class="sub"><a href="#why-mm">ทำไม MM สำคัญกว่าเลือกหุ้น</a></li>
+    <li class="sub"><a href="#compare-investors">เปรียบเทียบนักลงทุน 2 คน</a></li>
+    <li class="sub"><a href="#iron-rules">กฎเหล็ก 3 ข้อ</a></li>
+    <li class="sub"><a href="#margin-danger">อันตรายของมาร์จิ้น</a></li>
+    <li class="sub"><a href="#warning-signs">สัญญาณเตือน</a></li>
+    <li class="sub"><a href="#circuit-breaker">Circuit Breaker ส่วนตัว</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#ch13">บทที่ 13: Position Sizing</a></li>
+    <li class="sub"><a href="#2pct-rule">กฎ 2%</a></li>
+    <li class="sub"><a href="#position-formula">สูตรคำนวณ</a></li>
+    <li class="sub"><a href="#pyramid">Pyramid Trading</a></li>
+    <li class="sub"><a href="#avg-down">เฉลี่ยขาลง — กับดัก</a></li>
+    <li class="sub"><a href="#anti-martingale">Anti-Martingale</a></li>
+    <li class="sub"><a href="#board-lot">Board Lot</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#ch14">บทที่ 14: Stop Loss</a></li>
+    <li class="sub"><a href="#sl-types">ประเภท Stop Loss</a></li>
+    <li class="sub"><a href="#sl-mistakes">ข้อผิดพลาดที่พบบ่อย</a></li>
+    <li class="sub"><a href="#sl-manipulated">Stop Loss กับหุ้นปั่น</a></li>
+    <li class="sub"><a href="#sl-psychology">จิตวิทยาของ Stop Loss</a></li>
+    <li class="sub"><a href="#sl-hunting">Stop Loss Hunting</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#ch15">บทที่ 15: Risk-Reward Ratio</a></li>
+    <li class="sub"><a href="#rr-principle">หลักการ R:R</a></li>
+    <li class="sub"><a href="#rr-why">ทำไม R:R สำคัญ</a></li>
+    <li class="sub"><a href="#rr-expected-value">Expected Value</a></li>
+    <li class="sub"><a href="#rr-real-world">R:R ในโลกจริง</a></li>
+    <li class="sub"><a href="#rr-multiple-targets">Multiple Targets</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#ch16">บทที่ 16: Portfolio Management</a></li>
+    <li class="sub"><a href="#diversify">กระจายความเสี่ยง</a></li>
+    <li class="sub"><a href="#correlation">Correlation</a></li>
+    <li class="sub"><a href="#market-conditions">พอร์ตตามสภาพตลาด</a></li>
+    <li class="sub"><a href="#sector-rotation">Sector Rotation</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#ch17">บทที่ 17: จิตวิทยาการเงิน</a></li>
+    <li class="sub"><a href="#cognitive-bias">อคติทางจิตวิทยา</a></li>
+    <li class="sub"><a href="#discipline">สร้างวินัย</a></li>
+    <li class="sub"><a href="#sunk-cost">Sunk Cost Fallacy</a></li>
+    <li class="sub"><a href="#disposition">Disposition Effect</a></li>
+    <li class="sub"><a href="#revenge-trading">Revenge Trading</a></li>
+    <li class="sub"><a href="#trading-journal">Trading Journal</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#ch18">บทที่ 18: รวมทุกอย่างเข้าด้วยกัน</a></li>
+    <li class="sub"><a href="#complete-system">ระบบที่สมบูรณ์</a></li>
+    <li class="sub"><a href="#simulation">สถานการณ์จำลอง</a></li>
+    <li class="sub"><a href="#final-notes">ข้อสังเกตสุดท้าย</a></li>
+  </ul>
+</aside>
+
+<main class="main-content">
+
+<!-- ==================== HERO ==================== -->
+<section class="hero">
+  <div class="hero-badge">ภาค 3 — Money Management Playbook</div>
+  <h1>การจัดการเงิน<br><span class="grad">เอาตัวรอดและเติบโต</span></h1>
+  <p class="hero-sub">ทุกสูตร ทุกกฎ ทุกเทคนิค — คู่มือจัดการเงินฉบับสมบูรณ์ที่แยกนักลงทุนที่อยู่รอดออกจากนักลงทุนที่หมดตัว</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">7</div><div class="lbl">บท</div></div>
+    <div class="hero-stat"><div class="num">3</div><div class="lbl">กฎเหล็ก</div></div>
+    <div class="hero-stat"><div class="num">6</div><div class="lbl">อคติทางจิต</div></div>
+    <div class="hero-stat"><div class="num">4</div><div class="lbl">Stop Loss Types</div></div>
+  </div>
+</section>
+
+<div class="quote-block">
+  "The goal of a successful trader is to make the best trades. Money is secondary."
+  <div class="src">— Alexander Elder<br>แปล: เป้าหมายของนักเทรดที่ประสบความสำเร็จคือการทำเทรดที่ดีที่สุด เงินเป็นเรื่องรอง ถ้าคุณโฟกัสที่ "กระบวนการ" ที่ถูกต้อง "ผลลัพธ์" จะตามมาเอง</div>
+</div>
+
+<!-- ==================== CHAPTER 12 ==================== -->
+<div class="section-header" id="ch12">
+  <h2><span class="sn emerald">12</span> บทที่ 12: Money Management พื้นฐาน</h2>
+</div>
+
+<h3 id="why-mm">ทำไม Money Management สำคัญกว่าการเลือกหุ้น</h3>
+<p>นักลงทุนส่วนใหญ่ใช้เวลา 90% ไปกับการหาหุ้นที่จะซื้อ แต่ใช้เวลาแค่ 10% คิดเรื่องการจัดการเงิน ทั้งที่ในความเป็นจริง:</p>
+<ul>
+  <li>คุณอาจเลือกหุ้นถูกตัว 6 ใน 10 ครั้ง แต่ยังขาดทุนรวมได้ ถ้า 4 ครั้งที่ผิดขาดทุนหนักกว่า 6 ครั้งที่ถูก</li>
+  <li>คุณอาจเลือกหุ้นถูกแค่ 4 ใน 10 ครั้ง แต่ยังกำไรรวมได้ ถ้าจัดการเงินดี</li>
+</ul>
+
+<div class="info-box tip">
+  <div class="bt">💡 หลักการสำคัญ</div>
+  Money Management คือสิ่งที่แยกนักลงทุนที่อยู่รอดออกจากนักลงทุนที่หมดตัว
+</div>
+
+<h3 id="compare-investors">ตัวอย่างเปรียบเทียบ: นักลงทุน 2 คน</h3>
+
+<div class="versus">
+  <div class="card" style="border-left: 4px solid var(--accent-red);">
+    <div class="card-title" style="color: var(--accent-red);">❌ นักลงทุน A: เลือกหุ้นเก่ง แต่จัดการเงินแย่</div>
+    <ul style="font-size:0.84rem;">
+      <li>ถูก 7 ใน 10 ครั้ง (Win Rate <strong>70%</strong>)</li>
+      <li>ตอนถูก กำไรเฉลี่ย <strong>+10%</strong></li>
+      <li>ตอนผิด ขาดทุนเฉลี่ย <strong>-30%</strong> (ไม่ตั้ง Stop Loss)</li>
+      <li>ลงทุนครั้งละ 500,000 บาท (50% ของพอร์ต 1 ล้าน)</li>
+    </ul>
+    <div class="diagram-block" style="margin-top:0.8rem;"><span class="tag danger">ผลลัพธ์</span>
+กำไร: 7 × 50,000  = <span class="ok">+350,000</span>
+ขาดทุน: 3 × 150,000 = <span class="bad">-450,000</span>
+─────────────────────────────
+ผลลัพธ์: <span class="bad">-100,000 บาท ❌</span>
+(ขาดทุนทั้งที่ถูก 70%)</div>
+  </div>
+  <div class="vs-badge">VS</div>
+  <div class="card" style="border-left: 4px solid var(--accent-green);">
+    <div class="card-title" style="color: var(--accent-green);">✅ นักลงทุน B: เลือกหุ้นธรรมดา แต่จัดการเงินดี</div>
+    <ul style="font-size:0.84rem;">
+      <li>ถูก 4 ใน 10 ครั้ง (Win Rate <strong>40%</strong>)</li>
+      <li>ตอนถูก กำไรเฉลี่ย <strong>+20%</strong> (ปล่อยกำไรวิ่ง)</li>
+      <li>ตอนผิด ขาดทุนเฉลี่ย <strong>-8%</strong> (ตั้ง Stop Loss เคร่งครัด)</li>
+      <li>ลงทุนครั้งละ 200,000 บาท (20% ของพอร์ต 1 ล้าน)</li>
+    </ul>
+    <div class="diagram-block" style="margin-top:0.8rem;"><span class="tag calc">ผลลัพธ์</span>
+กำไร: 4 × 40,000 = <span class="ok">+160,000</span>
+ขาดทุน: 6 × 16,000 = <span class="bad">-96,000</span>
+─────────────────────────────
+ผลลัพธ์: <span class="ok">+64,000 บาท ✅</span>
+(กำไรทั้งที่ถูกแค่ 40%)</div>
+  </div>
+</div>
+
+<div class="info-box observe">
+  <div class="bt">🔎 ข้อสังเกต</div>
+  นี่คือพลังของ Money Management — คุณไม่จำเป็นต้องถูกทุกครั้ง แค่ต้องจัดการเงินให้ดี
+</div>
+
+<h3 id="iron-rules">กฎเหล็ก 3 ข้อ</h3>
+
+<div class="rule-card gold">
+  <div class="rule-num">01</div>
+  <div class="rule-title" style="color: var(--accent-yellow);">⚡ กฎข้อ 1: อย่าขาดทุนจนหมดตัว</div>
+  <p>ถ้าพอร์ตหายไป 50% คุณต้องทำกำไร 100% เพื่อกลับมาเท่าเดิม ถ้าพอร์ตหายไป 90% คุณต้องทำกำไร 900% — แทบเป็นไปไม่ได้</p>
+</div>
+
+<div class="table-wrapper">
+<table>
+<thead class="red-head"><tr><th style="color:#f87171;">ขาดทุน</th><th style="color:#f87171;">ต้องทำกำไรเพื่อกลับมาเท่าเดิม</th><th style="color:#f87171;">ระดับความยาก</th></tr></thead>
+<tbody>
+<tr><td><strong>-10%</strong></td><td>+11%</td><td style="color:var(--accent-green);">ง่าย</td></tr>
+<tr><td><strong>-20%</strong></td><td>+25%</td><td style="color:var(--accent-green);">พอทำได้</td></tr>
+<tr><td><strong>-30%</strong></td><td>+43%</td><td style="color:var(--accent-yellow);">ยาก</td></tr>
+<tr><td><strong>-50%</strong></td><td>+100%</td><td style="color:var(--accent-orange);">ยากมาก</td></tr>
+<tr><td><strong>-70%</strong></td><td>+233%</td><td style="color:var(--accent-red);">แทบเป็นไปไม่ได้</td></tr>
+<tr><td><strong>-90%</strong></td><td>+900%</td><td style="color:var(--accent-red);">เป็นไปไม่ได้</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="rule-card green">
+  <div class="rule-num">02</div>
+  <div class="rule-title" style="color: var(--accent-green);">💵 กฎข้อ 2: เก็บเงินสดไว้เสมอ</div>
+  <p>อย่าลงทุนเต็ม 100% ของพอร์ต เก็บเงินสดไว้อย่างน้อย 10-20% เพื่อรอโอกาส</p>
+  <p>เงินสดคือ "กระสุน" — ถ้าหมดกระสุนตอนที่โอกาสมา คุณทำอะไรไม่ได้</p>
+</div>
+
+<div class="rule-card red">
+  <div class="rule-num">03</div>
+  <div class="rule-title" style="color: var(--accent-red);">🚫 กฎข้อ 3: อย่าใช้เงินที่ขาดไม่ได้</div>
+  <p>เงินลงทุนต้องเป็นเงินที่ถ้าหายไปทั้งหมด ชีวิตยังดำเนินต่อได้ อย่าใช้เงินผ่อนบ้าน เงินค่าเทอมลูก เงินเกษียณ มาเล่นหุ้น อย่ากู้เงินมาลงทุน โดยเฉพาะมาร์จิ้น</p>
+</div>
+
+<h3 id="margin-danger">อันตรายของมาร์จิ้น (Margin)</h3>
+<p>มาร์จิ้นคือการกู้เงินจากโบรกเกอร์เพื่อซื้อหุ้น เช่น มีเงิน 500,000 บาท แต่ซื้อหุ้นได้ 1,000,000 บาท (มาร์จิ้น 50%)</p>
+
+<div class="diagram-block"><span class="tag danger">มาร์จิ้น — ตัวอย่างอันตราย</span>
+สถานการณ์: ซื้อหุ้นด้วยมาร์จิ้น 50%
+เงินตัวเอง: <span class="val">500,000</span> บาท
+เงินกู้:     <span class="val">500,000</span> บาท
+ซื้อหุ้นรวม: <span class="val">1,000,000</span> บาท
+
+<span class="warn">ถ้าหุ้นลง 30%:</span>
+มูลค่าหุ้น:  700,000 บาท
+หนี้มาร์จิ้น: 500,000 บาท
+เงินที่เหลือ: 200,000 บาท
+ขาดทุนจริง:  300,000 / 500,000 = <span class="bad">-60% ❌</span>
+
+<span class="bad">ถ้าหุ้นลง 50%:</span>
+มูลค่าหุ้น:  500,000 บาท
+หนี้มาร์จิ้น: 500,000 บาท
+เงินที่เหลือ: <span class="bad">0 บาท → หมดตัว + ถูก Force Sell</span></div>
+
+<div class="info-box danger">
+  <div class="bt">🚨 Force Sell (บังคับขาย)</div>
+  เมื่อมูลค่าหุ้นลดลงจนต่ำกว่าเกณฑ์ที่โบรกเกอร์กำหนด โบรกเกอร์จะบังคับขายหุ้นของคุณทันที ไม่ว่าราคาจะเท่าไหร่ ซึ่งมักเกิดขึ้นในจังหวะที่ราคาต่ำที่สุด
+</div>
+
+<div class="info-box warning">
+  <div class="bt">⚠️ กฎเหล็ก</div>
+  ถ้าคุณยังไม่สามารถทำกำไรสม่ำเสมอด้วยเงินตัวเองได้ อย่าแตะมาร์จิ้นเด็ดขาด
+</div>
+
+<h3 id="warning-signs">สัญญาณเตือนว่าคุณกำลังจัดการเงินผิดทาง</h3>
+
+<div class="card" style="border-left: 4px solid var(--accent-red);">
+  <div class="card-title" style="color: var(--accent-red);">🔴 ระดับ 1 — ต้องแก้ไขทันที</div>
+  <ul style="font-size:0.84rem;">
+    <li>ขาดทุนครั้งเดียวมากกว่า 10% ของพอร์ต → Position Size ใหญ่เกินไป หรือไม่มี Stop Loss</li>
+    <li>ถือหุ้นตัวเดียวมากกว่า 40% ของพอร์ต → กระจุกตัวเกินไป</li>
+    <li>ใช้มาร์จิ้นทั้งที่ยังไม่เคยทำกำไรสม่ำเสมอ → เพิ่มความเสี่ยงโดยไม่มีทักษะรองรับ</li>
+    <li>ลงทุน 100% ของพอร์ตตลอดเวลา → ไม่มีเงินสดสำรอง</li>
+  </ul>
+</div>
+
+<div class="card" style="border-left: 4px solid var(--accent-orange);">
+  <div class="card-title" style="color: var(--accent-orange);">🟠 ระดับ 2 — ต้องปรับปรุง</div>
+  <ul style="font-size:0.84rem;">
+    <li>ขาดทุนติดต่อกัน 5 ครั้งขึ้นไป → ระบบอาจมีปัญหา หรือตลาดไม่เหมาะกับสไตล์คุณ</li>
+    <li>กำไรเฉลี่ยต่อครั้งน้อยกว่าขาดทุนเฉลี่ยต่อครั้ง → Risk-Reward กลับหัว</li>
+    <li>เทรดบ่อยขึ้นเรื่อยๆ หลังขาดทุน → กำลังเทรดด้วยอารมณ์ (Revenge Trading)</li>
+    <li>ไม่เคยจดบันทึกการเทรด → ไม่มีข้อมูลให้ปรับปรุง</li>
+  </ul>
+</div>
+
+<div class="card" style="border-left: 4px solid var(--accent-yellow);">
+  <div class="card-title" style="color: var(--accent-yellow);">🟡 ระดับ 3 — ควรระวัง</div>
+  <ul style="font-size:0.84rem;">
+    <li>ไม่เคยคำนวณ Position Size ก่อนซื้อ → ซื้อตามความรู้สึก</li>
+    <li>ไม่รู้ว่า Win Rate ของตัวเองเท่าไหร่ → ไม่รู้จักระบบตัวเอง</li>
+    <li>เปลี่ยนระบบบ่อยหลังขาดทุน 2-3 ครั้ง → ไม่ให้เวลาระบบพิสูจน์ตัวเอง</li>
+  </ul>
+</div>
+
+<h3 id="circuit-breaker">Circuit Breaker ส่วนตัว</h3>
+<p>เหมือนตลาดหุ้นมี Circuit Breaker หยุดการซื้อขายเมื่อดัชนีลงแรง คุณก็ควรมีของตัวเอง:</p>
+
+<div class="diagram-block"><span class="tag system">Circuit Breaker ส่วนตัว</span>
+<span class="warn">⚡ ขาดทุนรวม 5% ของพอร์ตในสัปดาห์เดียว</span>
+   → ลด Position Size ลงครึ่งหนึ่ง
+
+<span class="bad">⚡ ขาดทุนรวม 10% ของพอร์ตในเดือนเดียว</span>
+   → หยุดเทรด 1 สัปดาห์
+
+<span class="bad">⚡ ขาดทุนรวม 20% ของพอร์ตในปีเดียว</span>
+   → หยุดเทรด 1 เดือน ทบทวนระบบทั้งหมด</div>
+
+<div class="info-box observe">
+  <div class="bt">🔎 ข้อสังเกต</div>
+  นักลงทุนมืออาชีพส่วนใหญ่มี Drawdown Limit ที่ชัดเจน ถ้าเกินขีดจำกัดจะหยุดเทรดทันที ไม่ใช่เพราะกลัว แต่เพราะรู้ว่าการขาดทุนต่อเนื่องมักหมายความว่ามีบางอย่างผิดปกติ — อาจเป็นตลาดเปลี่ยน ระบบไม่เหมาะ หรือจิตใจไม่พร้อม
+</div>
+
+<!-- ==================== CHAPTER 13 ==================== -->
+<div class="section-header" id="ch13">
+  <h2><span class="sn blue">13</span> บทที่ 13: Position Sizing — ลงเท่าไหร่ต่อตัว</h2>
+</div>
+
+<p>Position Sizing คือการกำหนดว่าจะลงทุนในหุ้นแต่ละตัวเป็นสัดส่วนเท่าไหร่ของพอร์ต นี่คือหัวใจของ Money Management</p>
+
+<h3 id="2pct-rule">กฎ 2% (2% Rule)</h3>
+
+<div class="info-box tip">
+  <div class="bt">💡 หลักการ</div>
+  ความเสี่ยงต่อการเทรดแต่ละครั้งไม่ควรเกิน 2% ของพอร์ต
+</div>
+
+<div class="diagram-block"><span class="tag example">ตัวอย่าง กฎ 2%</span>
+พอร์ต <span class="val">1,000,000</span> บาท
+ความเสี่ยงสูงสุดต่อครั้ง = 1,000,000 × 2% = <span class="ok">20,000 บาท</span>
+
+ถ้าตั้ง Stop Loss ไว้ที่ <span class="bad">-10%</span> จากราคาซื้อ:
+จำนวนเงินที่ซื้อได้ = 20,000 / 10% = <span class="hl">200,000 บาท</span> (20% ของพอร์ต)</div>
+
+<h3 id="position-formula">สูตรคำนวณ Position Size</h3>
+
+<div class="card" style="border: 2px solid rgba(16,185,129,0.3); background: rgba(16,185,129,0.03);">
+  <div class="card-title" style="color: var(--accent-green); font-size: 1.1rem;">📐 สูตรหลัก</div>
+  <div class="diagram-block" style="border-color: rgba(16,185,129,0.3);"><span class="tag calc">สูตร</span>
+<span class="hl">Position Size</span> = (พอร์ต × %ความเสี่ยงที่ยอมรับ) / %Stop Loss
+
+<span class="warn">ตัวอย่าง:</span>
+พอร์ต              = <span class="val">1,000,000</span> บาท
+ความเสี่ยงที่ยอมรับ = <span class="val">2%</span>
+Stop Loss          = <span class="val">8%</span>
+
+Position Size = (1,000,000 × 0.02) / 0.08
+             = 20,000 / 0.08
+             = <span class="ok">250,000 บาท</span> (25% ของพอร์ต)</div>
+</div>
+
+<h4>จำนวนหุ้นในพอร์ตที่เหมาะสม</h4>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>ขนาดพอร์ต</th><th>จำนวนหุ้นที่เหมาะสม</th><th>เหตุผล</th></tr></thead>
+<tbody>
+<tr><td><strong>&lt; 500,000</strong></td><td style="color:var(--accent-cyan);">3-5 ตัว</td><td>เงินน้อย กระจายมากไปจะเจือจาง</td></tr>
+<tr><td><strong>500K - 2M</strong></td><td style="color:var(--accent-cyan);">5-8 ตัว</td><td>สมดุลระหว่างกระจายและดูแล</td></tr>
+<tr><td><strong>2M - 10M</strong></td><td style="color:var(--accent-cyan);">8-12 ตัว</td><td>กระจายได้มากขึ้น</td></tr>
+<tr><td><strong>&gt; 10M</strong></td><td style="color:var(--accent-cyan);">10-15 ตัว</td><td>กระจายเต็มที่ แต่ยังดูแลไหว</td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>หลักการ:</strong> น้อยเกินไป → เสี่ยงกระจุกตัว | มากเกินไป → ดูแลไม่ทั่วถึง ผลตอบแทนเจือจาง</p>
+
+<h3 id="pyramid">Pyramid Trading — เพิ่ม Position อย่างมีระบบ</h3>
+<p>แทนที่จะซื้อทีเดียวเต็มจำนวน ให้แบ่งซื้อเป็นชุด (Scaling In):</p>
+
+<div class="diagram-block"><span class="tag flow">Pyramid Trading</span>
+<span class="hl">ชุดที่ 1:</span> ซื้อ <span class="val">40%</span> ของ Position Size ที่คำนวณไว้
+          → รอดูว่าราคาไปในทิศทางที่คาด
+
+<span class="hl">ชุดที่ 2:</span> ซื้อเพิ่ม <span class="val">30%</span> เมื่อราคายืนยันทิศทาง
+          → เช่น ทะลุแนวต้านสำคัญ
+
+<span class="hl">ชุดที่ 3:</span> ซื้อเพิ่ม <span class="val">30%</span> สุดท้ายเมื่อเทรนด์ชัดเจน
+          → เช่น ราคาพักตัวแล้วไปต่อ</div>
+
+<div class="two-col">
+  <div class="card" style="border-left: 4px solid var(--accent-green);">
+    <div class="card-title" style="color: var(--accent-green);">✅ ข้อดี</div>
+    <ul style="font-size:0.84rem;">
+      <li>ถ้าผิดทาง ขาดทุนแค่ 40% ของ Position Size ไม่ใช่ 100%</li>
+      <li>ถ้าถูกทาง ได้เพิ่ม Position ในจังหวะที่มั่นใจมากขึ้น</li>
+      <li>ลดผลกระทบทางจิตวิทยา เพราะไม่ต้อง "All-in" ทีเดียว</li>
+    </ul>
+  </div>
+  <div class="card" style="border-left: 4px solid var(--accent-red);">
+    <div class="card-title" style="color: var(--accent-red);">🚫 ข้อห้าม</div>
+    <p style="font-size:0.84rem;">อย่า Pyramid ลง (ซื้อเพิ่มเมื่อราคาลง) — นี่คือ "เฉลี่ยขาลง" ซึ่งเป็นวิธีที่ทำให้คนหมดตัวมากที่สุดวิธีหนึ่ง</p>
+  </div>
+</div>
+
+<h3 id="avg-down">การเฉลี่ยขาลง (Averaging Down) — กับดักที่อันตราย</h3>
+
+<div class="info-box danger">
+  <div class="bt">🚨 "หุ้นลงมาถูกแล้ว ซื้อเพิ่มเฉลี่ยต้นทุน"</div>
+  ประโยคนี้ทำลายพอร์ตคนมานับไม่ถ้วน
+</div>
+
+<div class="diagram-block"><span class="tag danger">เฉลี่ยขาลง — ตัวอย่างหายนะ</span>
+ซื้อครั้งที่ 1: 100 หุ้น × 10.00 บาท = <span class="val">1,000</span> บาท
+ราคาลงเหลือ 8.00 → ซื้อเพิ่ม 100 หุ้น = 800 บาท
+ต้นทุนเฉลี่ย: 1,800 / 200 = 9.00 บาท <span class="warn">"ดูดีขึ้น"</span>
+
+ราคาลงเหลือ 6.00 → ซื้อเพิ่ม 200 หุ้น = 1,200 บาท
+ต้นทุนเฉลี่ย: 3,000 / 400 = 7.50 บาท <span class="warn">"ยังไหว"</span>
+
+ราคาลงเหลือ 3.00 → ขาดทุน 60% จากต้นทุนเฉลี่ย
+เงินจม: <span class="val">3,000</span> บาท → มูลค่า: <span class="bad">1,200</span> บาท
+ขาดทุน: <span class="bad">-1,800 บาท ❌</span></div>
+
+<div class="info-box warning">
+  <div class="bt">⚠️ กฎ</div>
+  ถ้าเหตุผลที่ซื้อเปลี่ยนไป (เช่น พื้นฐานแย่ลง หรือรู้ว่าถูกปั่น) อย่าเฉลี่ยขาลง ให้ตัดขาดทุนแล้วไปหาโอกาสใหม่
+</div>
+
+<h3 id="anti-martingale">Anti-Martingale — ระบบที่ถูกต้อง</h3>
+<p>หลายคนทำตรงข้ามกับสิ่งที่ควรทำ คือ เพิ่ม Position Size หลังขาดทุน (เพื่อ "เอาคืน") และลด Position Size หลังกำไร (เพราะ "กลัวเสียกำไร") นี่คือระบบ Martingale ที่ทำให้คนหมดตัว</p>
+
+<div class="diagram-block"><span class="tag system">Anti-Martingale System</span>
+Position Size ปกติ = <span class="val">200,000</span> บาท
+
+<span class="bad">หลังขาดทุน:</span>
+หลังขาดทุน 1 ครั้ง      → ลดเหลือ <span class="val">200,000</span> (ยังเท่าเดิม)
+หลังขาดทุน 2 ครั้งติด   → ลดเหลือ <span class="warn">150,000</span> (75%)
+หลังขาดทุน 3 ครั้งติด   → ลดเหลือ <span class="bad">100,000</span> (50%)
+หลังขาดทุน 4 ครั้งติด   → <span class="bad">หยุดเทรด ทบทวนระบบ</span>
+
+<span class="ok">หลังกำไร:</span>
+หลังกำไร 1 ครั้ง         → กลับมา <span class="val">200,000</span> (ปกติ)
+หลังกำไร 2 ครั้งติด      → เพิ่มเป็น <span class="ok">250,000</span> (125%)
+หลังกำไร 3 ครั้งติด      → เพิ่มเป็น <span class="ok">300,000</span> (150%) ← เพดานสูงสุด</div>
+
+<h3 id="board-lot">Board Lot และผลกระทบต่อ Position Sizing</h3>
+<p>ในตลาดหุ้นไทย การซื้อขายต้องเป็นจำนวน Board Lot (100 หุ้น) ซึ่งอาจทำให้ Position Size จริงต่างจากที่คำนวณ:</p>
+
+<div class="diagram-block"><span class="tag calc">Board Lot — ตัวอย่าง</span>
+คำนวณได้ Position Size = <span class="val">180,000</span> บาท
+
+<span class="ok">ราคาหุ้น = 25.00 บาท</span>
+จำนวนหุ้น = 180,000 / 25 = 7,200 หุ้น
+ปัดเป็น Board Lot = 7,200 หุ้น (พอดี)
+
+<span class="warn">ราคาหุ้น = 85.00 บาท</span>
+จำนวนหุ้น = 180,000 / 85 = 2,117 หุ้น
+ปัดลง Board Lot = 2,100 หุ้น
+Position Size จริง = 2,100 × 85 = 178,500 บาท
+
+<span class="bad">ราคาหุ้น = 520.00 บาท</span>
+จำนวนหุ้น = 180,000 / 520 = 346 หุ้น
+ปัดลง Board Lot = 300 หุ้น
+Position Size จริง = 300 × 520 = <span class="bad">156,000 บาท</span> ← ต่างจากที่คำนวณมาก</div>
+
+<div class="info-box observe">
+  <div class="bt">🔎 ข้อสังเกต</div>
+  สำหรับหุ้นราคาสูง Board Lot อาจทำให้ Position Size จริงต่างจากที่คำนวณมาก ให้ปัดลงเสมอ (ซื้อน้อยกว่าที่คำนวณ) อย่าปัดขึ้น
+</div>
+
+<div class="checklist-box">
+  <div class="cb-title">📋 Checklist ก่อนซื้อ — คำนวณ Position Size</div>
+  <div class="cb-item">1. พอร์ตปัจจุบัน (เงินสด + มูลค่าหุ้น) = _________ บาท</div>
+  <div class="cb-item">2. ความเสี่ยงที่ยอมรับ = ___% (ปกติ 1-2%)</div>
+  <div class="cb-item">3. จำนวนเงินเสี่ยงสูงสุด = พอร์ต × %ความเสี่ยง = _________ บาท</div>
+  <div class="cb-item">4. ราคาซื้อ = _________ บาท</div>
+  <div class="cb-item">5. ราคา Stop Loss = _________ บาท (ต้องมีเหตุผลทางเทคนิค)</div>
+  <div class="cb-item">6. %Stop Loss = (ราคาซื้อ - Stop Loss) / ราคาซื้อ = ___%</div>
+  <div class="cb-item">7. Position Size = จำนวนเงินเสี่ยง / %Stop Loss = _________ บาท</div>
+  <div class="cb-item">8. จำนวนหุ้น = Position Size / ราคาซื้อ = _________ หุ้น</div>
+  <div class="cb-item">9. ปัดเป็นจำนวน Board Lot (100 หุ้น) = _________ หุ้น</div>
+  <div class="cb-item">10. ตรวจสอบ: Position Size นี้เกิน 25% ของพอร์ตหรือไม่? ถ้าเกิน → ลดลง</div>
+</div>
+
+<!-- ==================== CHAPTER 14 ==================== -->
+<div class="section-header" id="ch14">
+  <h2><span class="sn warm">14</span> บทที่ 14: Stop Loss — ศิลปะของการยอมแพ้ให้เป็น</h2>
+</div>
+
+<p>Stop Loss คือเครื่องมือที่สำคัญที่สุดในการปกป้องเงินทุน:</p>
+<ul>
+  <li><strong>ปกป้องเงินทุน</strong> — จำกัดความเสียหายไม่ให้ลุกลาม</li>
+  <li><strong>ตัดอารมณ์ออก</strong> — ตัดสินใจล่วงหน้าตอนที่ยังมีสติ</li>
+  <li><strong>รักษาเงินทุนไว้สำหรับโอกาสถัดไป</strong> — ขาดทุนน้อยๆ หลายครั้งดีกว่าขาดทุนหนักครั้งเดียว</li>
+</ul>
+
+<h3 id="sl-types">ประเภทของ Stop Loss</h3>
+
+<div class="two-col">
+  <div class="card" style="border-left: 4px solid var(--accent-blue);">
+    <div class="card-title" style="color: var(--accent-blue-light);">📏 1. Fixed Percentage Stop</div>
+    <p style="font-size:0.84rem;">ตั้งไว้ที่ -5% ถึง -10% จากราคาซื้อ เรียบง่าย ใช้ง่าย เหมาะกับมือใหม่</p>
+  </div>
+  <div class="card" style="border-left: 4px solid var(--accent-cyan);">
+    <div class="card-title" style="color: var(--accent-cyan);">📊 2. Technical Stop</div>
+    <p style="font-size:0.84rem;">ตั้ง Stop Loss ใต้แนวรับสำคัญ (Support Level) ใต้เส้น Moving Average (MA50, MA200) หรือใต้จุดต่ำสุดล่าสุด (Swing Low) มีเหตุผลทางเทคนิครองรับ</p>
+  </div>
+  <div class="card" style="border-left: 4px solid var(--accent-green);">
+    <div class="card-title" style="color: var(--accent-green);">📈 3. Trailing Stop</div>
+    <p style="font-size:0.84rem;">Stop Loss ที่เลื่อนตามราคาขึ้นไป เช่น ตั้งไว้ที่ -8% จากราคาสูงสุด ถ้าราคาขึ้นจาก 100 ไป 150 → Stop Loss เลื่อนจาก 92 ไป 138 ปกป้องกำไรที่ทำได้แล้ว</p>
+  </div>
+  <div class="card" style="border-left: 4px solid var(--accent-orange);">
+    <div class="card-title" style="color: var(--accent-orange);">⏱️ 4. Time Stop</div>
+    <p style="font-size:0.84rem;">ถ้าซื้อแล้วราคาไม่ไปไหนภายในเวลาที่กำหนด → ขายออก เช่น ถ้าซื้อแล้ว 2 สัปดาห์ราคาไม่ขยับ → ออก ป้องกันเงินทุนจม (Opportunity Cost)</p>
+  </div>
+</div>
+
+<h4>ตัวอย่างการตั้ง Stop Loss</h4>
+
+<div class="diagram-block"><span class="tag example">ตัวอย่าง Stop Loss</span>
+ซื้อหุ้น ABC ที่ราคา <span class="val">10.00</span> บาท
+แนวรับสำคัญอยู่ที่ <span class="hl">9.20</span> บาท
+
+Stop Loss = <span class="bad">9.00</span> บาท (ใต้แนวรับ เผื่อ False Breakdown)
+ความเสี่ยง = (10.00 - 9.00) / 10.00 = <span class="warn">10%</span>
+
+ถ้าพอร์ต 1,000,000 บาท และยอมเสี่ยง 2%:
+Position Size = (1,000,000 × 0.02) / 0.10 = <span class="ok">200,000 บาท</span>
+จำนวนหุ้นที่ซื้อ = 200,000 / 10.00 = <span class="ok">20,000 หุ้น</span></div>
+
+<h3 id="sl-mistakes">ข้อผิดพลาดที่พบบ่อย</h3>
+
+<div class="table-wrapper">
+<table>
+<thead class="red-head"><tr><th style="color:#f87171;">#</th><th style="color:#f87171;">ข้อผิดพลาด</th><th style="color:#f87171;">ผลลัพธ์</th></tr></thead>
+<tbody>
+<tr><td style="color:var(--accent-red);font-weight:700;">1</td><td><strong>ไม่ตั้ง Stop Loss เลย</strong> — "เดี๋ยวมันก็กลับขึ้น"</td><td style="color:var(--accent-red);">ขาดทุน 10% กลายเป็น 50%</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">2</td><td><strong>เลื่อน Stop Loss ลง</strong> — ตั้งไว้ -10% พอใกล้ก็เลื่อนเป็น -15%</td><td style="color:var(--accent-red);">ไม่มีประโยชน์ เหมือนไม่ได้ตั้ง</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">3</td><td><strong>Stop Loss แคบเกินไป</strong> — ตั้งไว้ -2%</td><td style="color:var(--accent-orange);">โดนเขี่ยออกทุกวัน ทั้งที่ทิศทางถูก</td></tr>
+<tr><td style="color:var(--accent-red);font-weight:700;">4</td><td><strong>ไม่ทำตาม Stop Loss</strong> — ตั้งไว้แต่ไม่กดขาย</td><td style="color:var(--accent-red);">เหมือนไม่ได้ตั้ง</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3 id="sl-manipulated">Stop Loss กับหุ้นปั่น — กรณีพิเศษ</h3>
+<p>หุ้นที่ถูกปั่นมีพฤติกรรมราคาที่ต่างจากหุ้นปกติ ต้องปรับวิธีตั้ง Stop Loss:</p>
+
+<div class="info-box warning">
+  <div class="bt">⚠️ ปัญหา</div>
+  หุ้นปั่นมักมี Volatility สูงมาก ราคาแกว่ง 10-20% ต่อวันเป็นเรื่องปกติ ถ้าตั้ง Stop Loss แคบเกินไป จะโดนเขี่ยออกทุกวัน
+</div>
+
+<div class="card">
+  <div class="card-title" style="color: var(--accent-cyan);">🛡️ วิธีจัดการ</div>
+  <ol style="font-size:0.84rem;">
+    <li><strong>ลด Position Size แทนการขยาย Stop Loss</strong> — แทนที่จะตั้ง Stop Loss กว้าง 20% ให้ลด Position Size ลงครึ่งหนึ่ง แล้วตั้ง Stop Loss ที่ 20% ความเสี่ยงเป็นเงินจะเท่ากัน แต่ให้พื้นที่ราคาแกว่งได้มากขึ้น</li>
+    <li><strong>ใช้ Time Stop ร่วมด้วย</strong> — ถ้าซื้อหุ้นปั่นแล้วราคาไม่วิ่งภายใน 3-5 วัน ให้ออก</li>
+    <li><strong>ตั้ง Stop Loss ที่ระดับที่ "เรื่องราว" เปลี่ยน</strong> — เช่น ถ้าซื้อเพราะ Breakout จากกรอบ Sideway ให้ตั้ง Stop Loss ใต้กรอบ Sideway เดิม</li>
+    <li><strong>อย่าถือข้ามคืนถ้าไม่จำเป็น</strong> — หุ้นปั่นมักเปิด Gap Down ในวันรุ่งขึ้นโดยไม่มีสัญญาณเตือน</li>
+  </ol>
+</div>
+
+<h3 id="sl-psychology">จิตวิทยาของ Stop Loss — ทำไมคนส่วนใหญ่ทำไม่ได้</h3>
+<p>การตั้ง Stop Loss เป็นเรื่องง่าย แต่การ "ทำตาม" Stop Loss เป็นเรื่องยากที่สุดอย่างหนึ่งในการลงทุน เพราะสมองมนุษย์ไม่ได้ถูกออกแบบมาให้ "ยอมแพ้" อย่างมีเหตุผล</p>
+
+<div class="card" style="border-left: 4px solid var(--accent-purple);">
+  <div class="card-title" style="color: var(--accent-purple);">🧠 ทำไมสมองต่อต้าน Stop Loss</div>
+  <ul style="font-size:0.84rem;">
+    <li>เมื่อราคาลงมาใกล้ Stop Loss สมองจะเริ่มหาเหตุผลว่า "ทำไมไม่ควรขาย"</li>
+    <li><em>"ลงมาเยอะแล้ว เดี๋ยวก็เด้ง"</em> — สมองมองหาความหวัง</li>
+    <li><em>"ขายตอนนี้ขาดทุน 8% แต่ถ้ารออีกนิดอาจกลับมา"</em> — สมองเลื่อนเส้นตาย</li>
+    <li><em>"คนอื่นยังถืออยู่เลย"</em> — สมองหาพวก</li>
+    <li>ทุกครั้งที่คุณเลื่อน Stop Loss ลง คุณกำลังบอกตัวเองว่า "กฎของผมไม่สำคัญ" และครั้งต่อไปจะเลื่อนง่ายขึ้นเรื่อยๆ</li>
+  </ul>
+</div>
+
+<h4>เทคนิคที่ช่วยให้ทำตาม Stop Loss ได้จริง</h4>
+
+<div class="three-col">
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-green); font-size: 0.9rem;">🤖 1. ตั้ง Auto Stop Loss</div>
+    <p style="font-size:0.82rem;">ตั้ง Automatic Stop Loss Order ทันทีหลังซื้อ ระบบจะขายให้อัตโนมัติ ไม่ต้องตัดสินใจเอง</p>
+  </div>
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-blue-light); font-size: 0.9rem;">📝 2. เขียน "ถ้า...แล้ว..."</div>
+    <p style="font-size:0.82rem;">เขียนลงกระดาษ: "ถ้าราคาลงถึง 9.00 บาท ผมจะขายทันที ไม่มีข้อยกเว้น" การเขียนทำให้เป็น "สัญญา" กับตัวเอง</p>
+  </div>
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-orange); font-size: 0.9rem;">🛡️ 3. คิดว่าเป็น "ค่าประกัน"</div>
+    <p style="font-size:0.82rem;">คุณจ่ายค่าประกันรถทุกปีโดยไม่บ่น Stop Loss ก็เหมือนกัน — ขาดทุนเล็กๆ คือ "เบี้ยประกัน" ที่ปกป้องพอร์ตจากหายนะ</p>
+  </div>
+</div>
+
+<h4>ขั้นตอนตั้ง Stop Loss อย่างเป็นระบบ</h4>
+
+<div class="diagram-block"><span class="tag flow">ขั้นตอนตั้ง Stop Loss</span>
+<span class="hl">ขั้นตอนที่ 1:</span> ระบุแนวรับทางเทคนิค
+   ├── ดู Support Level ที่ใกล้ที่สุดใต้ราคาซื้อ
+   ├── ดู Moving Average ที่สำคัญ (MA20, MA50)
+   └── ดู Swing Low ล่าสุด
+
+<span class="hl">ขั้นตอนที่ 2:</span> ตั้ง Stop Loss ใต้แนวรับ
+   └── เผื่อ Buffer 1-3% ใต้แนวรับ (ป้องกัน False Breakdown)
+       ตัวอย่าง: แนวรับที่ 9.20 → Stop Loss ที่ 8.90-9.00
+
+<span class="hl">ขั้นตอนที่ 3:</span> คำนวณ %ความเสี่ยง
+   └── ถ้า %Stop Loss > 15% → จุดเข้าไม่ดี หาจุดเข้าใหม่
+
+<span class="hl">ขั้นตอนที่ 4:</span> คำนวณ Position Size
+   └── ถ้า Position Size > 25% ของพอร์ต → ลดลง
+
+<span class="hl">ขั้นตอนที่ 5:</span> ตั้ง Stop Loss Order <span class="ok">ทันทีหลังซื้อ</span>
+   └── อย่ารอ อย่าบอกว่า "เดี๋ยวค่อยตั้ง"
+
+<span class="hl">ขั้นตอนที่ 6:</span> ปรับ Stop Loss เมื่อราคาขึ้น (Trailing)
+   ├── ราคาขึ้น 10% → เลื่อน Stop Loss ขึ้นมาที่จุดคุ้มทุน
+   ├── ราคาขึ้น 20% → เลื่อน Stop Loss ขึ้นมาล็อกกำไร 10%
+   └── <span class="bad">ห้ามเลื่อน Stop Loss ลง ไม่ว่ากรณีใดๆ</span></div>
+
+<h3 id="sl-hunting">Stop Loss Hunting — ระวังกับดัก</h3>
+
+<div class="info-box observe">
+  <div class="bt">🔎 Stop Loss Hunting คืออะไร</div>
+  ในตลาดหุ้นไทย โดยเฉพาะหุ้นเล็ก มีปรากฏการณ์ที่รายใหญ่จะกดราคาลงมาแตะจุด Stop Loss ที่คนส่วนใหญ่ตั้งไว้ (เช่น ตัวเลขกลมๆ อย่าง 10.00, 9.00) เพื่อกวาดหุ้นราคาถูก แล้วปล่อยให้ราคาวิ่งขึ้น
+</div>
+
+<div class="card">
+  <div class="card-title" style="color: var(--accent-cyan);">🛡️ วิธีป้องกัน</div>
+  <ul style="font-size:0.84rem;">
+    <li>อย่าตั้ง Stop Loss ที่ตัวเลขกลมๆ (เช่น 10.00 พอดี) ให้ตั้งที่ 9.85 หรือ 9.90 แทน</li>
+    <li>อย่าตั้ง Stop Loss ที่จุดที่ "ทุกคน" น่าจะตั้ง (เช่น ใต้แนวรับที่ชัดเจนมากพอดี)</li>
+    <li>เผื่อ Buffer เพิ่มอีก 1-2% ใต้จุดที่คิดว่าคนอื่นตั้ง Stop Loss</li>
+  </ul>
+</div>
+
+<!-- ==================== CHAPTER 15 ==================== -->
+<div class="section-header" id="ch15">
+  <h2><span class="sn cyan">15</span> บทที่ 15: Risk-Reward Ratio — คิดก่อนเข้า</h2>
+</div>
+
+<h3 id="rr-principle">หลักการ</h3>
+<p>ก่อนซื้อหุ้นทุกครั้ง ต้องคิดว่า: ถ้าผิดทาง จะขาดทุนเท่าไหร่? (Risk) ถ้าถูกทาง จะกำไรเท่าไหร่? (Reward)</p>
+
+<div class="card" style="border: 2px solid rgba(34,211,238,0.3); background: rgba(34,211,238,0.03);">
+  <div class="card-title" style="color: var(--accent-cyan); font-size: 1.1rem;">📐 สูตร Risk-Reward Ratio</div>
+  <div class="diagram-block" style="border-color: rgba(34,211,238,0.3);"><span class="tag calc">สูตร</span>
+<span class="hl">Risk-Reward Ratio</span> = กำไรที่คาดหวัง / ขาดทุนที่ยอมรับ
+
+<span class="ok">ขั้นต่ำที่ควรเทรด: 1:2</span> (เสี่ยง 1 ส่วน เพื่อกำไร 2 ส่วน)
+
+ตัวอย่าง:
+ซื้อที่ <span class="val">10.00</span> บาท
+Stop Loss ที่ <span class="bad">9.00</span> บาท (เสี่ยง 1 บาท)
+เป้าหมายกำไรที่ <span class="ok">12.00</span> บาท (กำไร 2 บาท)
+Risk-Reward = 2:1 <span class="ok">✅</span></div>
+</div>
+
+<h3 id="rr-why">ทำไม Risk-Reward สำคัญ</h3>
+
+<div class="diagram-block"><span class="tag calc">พลังของ R:R 1:2</span>
+10 ครั้ง, เสี่ยงครั้งละ <span class="val">10,000</span> บาท, R:R = 1:2
+
+ถูก 4 ครั้ง: +20,000 × 4 = <span class="ok">+80,000</span>
+ผิด 6 ครั้ง: -10,000 × 6 = <span class="bad">-60,000</span>
+─────────────────────────────────
+กำไรสุทธิ: <span class="ok">+20,000 บาท ✅</span>
+
+→ แพ้ได้ 6 ใน 10 ครั้ง แล้วยังกำไร!</div>
+
+<p>ถ้าใช้ Risk-Reward 1:1 ต้องถูกมากกว่า 50% ถึงจะกำไร — ยากกว่ามาก</p>
+
+<h4>วิธีหาจุดเข้าที่มี Risk-Reward ดี</h4>
+<ol>
+  <li><strong>ซื้อใกล้แนวรับ</strong> — Stop Loss แคบ เป้าหมายไกล</li>
+  <li><strong>ซื้อตอน Pullback ในขาขึ้น</strong> — ไม่ใช่ไล่ซื้อตอนราคาวิ่งแล้ว</li>
+  <li><strong>อย่าเข้าถ้า Risk-Reward ไม่ดี</strong> — ถ้าเป้าหมายกำไรใกล้กว่า Stop Loss ไม่คุ้มเสี่ยง</li>
+</ol>
+
+<h3 id="rr-expected-value">Expected Value — สูตรที่บอกว่าระบบคุณทำกำไรได้หรือไม่</h3>
+
+<div class="card" style="border: 2px solid rgba(167,139,250,0.3); background: rgba(167,139,250,0.03);">
+  <div class="card-title" style="color: var(--accent-purple); font-size: 1.05rem;">📊 สูตร Expected Value</div>
+  <div class="diagram-block" style="border-color: rgba(167,139,250,0.3);"><span class="tag calc">Expected Value</span>
+<span class="hl">EV</span> = (Win Rate × Average Win) - (Loss Rate × Average Loss)
+
+ตัวอย่าง:
+Win Rate = <span class="val">40%</span>, Average Win = <span class="ok">20,000</span> บาท
+Loss Rate = <span class="val">60%</span>, Average Loss = <span class="bad">10,000</span> บาท
+
+EV = (0.40 × 20,000) - (0.60 × 10,000)
+   = 8,000 - 6,000
+   = <span class="ok">+2,000 บาทต่อเทรด ✅</span>
+
+→ ถ้า EV เป็นบวก = ระบบทำกำไรในระยะยาว แม้จะแพ้บ่อยกว่าชนะ</div>
+</div>
+
+<h4>ข้อผิดพลาดในการคำนวณ Risk-Reward</h4>
+
+<div class="card" style="border-left: 4px solid var(--accent-red);">
+  <div class="card-title" style="color: var(--accent-red);">❌ 1. ตั้งเป้าหมายจากความหวัง ไม่ใช่จากเทคนิค</div>
+  <p style="font-size:0.84rem;"><strong>ผิด:</strong> "ผมอยากได้กำไร 50% ดังนั้น R:R = 1:5" → ไม่มีเหตุผลรองรับว่าราคาจะไปถึง</p>
+  <p style="font-size:0.84rem;"><strong>ถูก:</strong> "แนวต้านถัดไปอยู่ที่ 12 บาท ดังนั้นเป้าหมายคือ 12 บาท" → มีเหตุผลทางเทคนิค</p>
+</div>
+
+<div class="card" style="border-left: 4px solid var(--accent-orange);">
+  <div class="card-title" style="color: var(--accent-orange);">⚠️ 2. ไม่คิดถึง Probability</div>
+  <p style="font-size:0.84rem;">R:R 1:10 ดูดี แต่ถ้าโอกาสถูกแค่ 5% ก็ไม่คุ้ม | R:R 1:2 ดูธรรมดา แต่ถ้าโอกาสถูก 50% ก็คุ้มมาก</p>
+</div>
+
+<div class="card" style="border-left: 4px solid var(--accent-yellow);">
+  <div class="card-title" style="color: var(--accent-yellow);">💸 3. ลืมคิดค่าคอมมิชชั่นและภาษี</div>
+  <p style="font-size:0.84rem;">ค่าคอมมิชชั่นซื้อ+ขาย ประมาณ 0.15-0.25% ของมูลค่า ถ้าเทรดบ่อย ค่าคอมมิชชั่นสะสมกินกำไรได้มาก ต้องรวมเข้าไปในการคำนวณ Risk-Reward ด้วย</p>
+</div>
+
+<h3 id="rr-real-world">Risk-Reward ในโลกจริง vs ทฤษฎี</h3>
+
+<div class="info-box observe">
+  <div class="bt">🔎 ข้อสังเกตสำคัญ</div>
+  Risk-Reward ที่คำนวณไว้ ≠ Risk-Reward ที่ได้จริง เพราะ:<br>
+  • คุณอาจตั้งเป้ากำไร 20% แต่ขายออกตอนกำไร 12% เพราะกลัว → Reward จริงน้อยกว่า<br>
+  • คุณอาจตั้ง Stop Loss ที่ -8% แต่หุ้นเปิด Gap Down -15% → Risk จริงมากกว่า<br>
+  • ดังนั้น ควรเผื่อ "Slippage" ในการคำนวณด้วย
+</div>
+
+<div class="diagram-block"><span class="tag calc">Risk-Reward ที่ปรับแล้ว</span>
+Risk จริง = %Stop Loss + Slippage โดยประมาณ (1-2%)
+Reward จริง = เป้าหมายกำไร × โอกาสที่จะถึงเป้า
+
+<span class="warn">ตัวอย่าง:</span>
+Stop Loss = -8%
+Slippage โดยประมาณ = -1%
+Risk จริง = <span class="bad">-9%</span>
+
+เป้าหมายกำไร = +20%
+โอกาสที่ราคาจะถึงเป้า (จากประสบการณ์) = 60%
+Reward ที่ปรับแล้ว = 20% × 0.60 = <span class="ok">+12%</span>
+
+Risk-Reward ที่ปรับแล้ว = 12% / 9% = <span class="warn">1.33:1</span>
+→ ยังพอรับได้ แต่ไม่ดีเท่าที่คิดตอนแรก (2.5:1)</div>
+
+<h3 id="rr-multiple-targets">Multiple Targets — แบ่งขายเป็นชุด</h3>
+
+<div class="diagram-block"><span class="tag flow">Multiple Targets Strategy</span>
+ซื้อ <span class="val">10,000</span> หุ้น ที่ <span class="val">10.00</span> บาท
+
+<span class="ok">เป้าหมายที่ 1:</span> ขาย 3,000 หุ้น ที่ 11.50 บาท (+15%)
+   → ล็อกกำไร 4,500 บาท
+   → เลื่อน Stop Loss ขึ้นมาที่จุดคุ้มทุน
+
+<span class="ok">เป้าหมายที่ 2:</span> ขาย 3,000 หุ้น ที่ 13.00 บาท (+30%)
+   → ล็อกกำไรเพิ่ม 9,000 บาท
+   → เลื่อน Stop Loss ขึ้นมาล็อกกำไร
+
+<span class="ok">เป้าหมายที่ 3:</span> ปล่อย 4,000 หุ้นที่เหลือวิ่งด้วย Trailing Stop
+   → ถ้าเทรนด์แรง อาจได้กำไร +50% หรือมากกว่า</div>
+
+<div class="card">
+  <div class="card-title" style="color: var(--accent-green);">✅ ข้อดีของ Multiple Targets</div>
+  <ul style="font-size:0.84rem;">
+    <li>ล็อกกำไรบางส่วนไว้ก่อน ลดความกดดันทางจิตใจ</li>
+    <li>ยังมีโอกาสได้กำไรมากถ้าเทรนด์ไปต่อ</li>
+    <li>ลดโอกาสที่จะ "ขายหมดเร็วเกินไป" แล้วเสียดายทีหลัง</li>
+  </ul>
+</div>
+
+<div class="info-box info">
+  <div class="bt">💡 Opportunity Cost ที่คนมักลืม</div>
+  Risk-Reward ไม่ได้คิดแค่กำไร-ขาดทุนของเทรดนั้น แต่ต้องคิดถึง "โอกาสที่เสียไป" ด้วย ถ้าคุณถือหุ้นที่ไม่ไปไหน 3 เดือน → เงินจมอยู่ 3 เดือน ในระหว่างนั้นอาจมีโอกาสอื่นที่ดีกว่าผ่านไป นี่คือเหตุผลที่ "Time Stop" สำคัญ
+</div>
+
+<div class="checklist-box">
+  <div class="cb-title">📋 Checklist ก่อนเข้าเทรดทุกครั้ง</div>
+  <div class="cb-item">1. ระบุจุดเข้า: _________ บาท</div>
+  <div class="cb-item">2. ระบุ Stop Loss: _________ บาท (มีเหตุผลทางเทคนิค)</div>
+  <div class="cb-item">3. ระบุเป้าหมายกำไร: _________ บาท (มีเหตุผลทางเทคนิค)</div>
+  <div class="cb-item">4. คำนวณ Risk = จุดเข้า - Stop Loss = _________ บาท</div>
+  <div class="cb-item">5. คำนวณ Reward = เป้าหมาย - จุดเข้า = _________ บาท</div>
+  <div class="cb-item">6. Risk-Reward Ratio = Reward / Risk = _________</div>
+  <div class="cb-item">7. R:R ≥ 1:2 หรือไม่? ใช่ → ไปข้อ 8 | ไม่ → ไม่เข้าเทรด</div>
+  <div class="cb-item">8. คำนวณ Position Size ตามกฎ 2%</div>
+  <div class="cb-item">9. ตรวจสอบว่าพอร์ตรวมไม่เกินขีดจำกัด</div>
+  <div class="cb-item">10. ตั้ง Stop Loss Order ทันทีหลังซื้อ</div>
+</div>
+
+<!-- ==================== CHAPTER 16 ==================== -->
+<div class="section-header" id="ch16">
+  <h2><span class="sn purple">16</span> บทที่ 16: Portfolio Management — กระจายความเสี่ยง</h2>
+</div>
+
+<h3 id="diversify">หลักการกระจายความเสี่ยง</h3>
+
+<div class="info-box tip">
+  <div class="bt">💡 หลักการ</div>
+  "อย่าใส่ไข่ทั้งหมดในตะกร้าใบเดียว" — แต่ก็ อย่ากระจายมากจนดูแลไม่ไหว
+</div>
+
+<div class="three-col">
+  <div class="card" style="border-left: 4px solid var(--accent-blue);">
+    <div class="card-title" style="color: var(--accent-blue-light); font-size: 0.9rem;">🏭 1. กระจายตามอุตสาหกรรม</div>
+    <p style="font-size:0.82rem;">อย่าถือหุ้นธนาคาร 5 ตัว — ถ้าเศรษฐกิจแย่ ลงพร้อมกันหมด กระจายไปหลายกลุ่ม: ธนาคาร, พลังงาน, อาหาร, เทคโนโลยี, อสังหา</p>
+  </div>
+  <div class="card" style="border-left: 4px solid var(--accent-green);">
+    <div class="card-title" style="color: var(--accent-green); font-size: 0.9rem;">📊 2. กระจายตามขนาด</div>
+    <p style="font-size:0.82rem;">ผสมระหว่างหุ้นใหญ่ (มั่นคง) กับหุ้นกลาง-เล็ก (เติบโตสูง) หุ้นใหญ่เป็นแกนหลัก หุ้นเล็กเป็นส่วนเสริม</p>
+  </div>
+  <div class="card" style="border-left: 4px solid var(--accent-purple);">
+    <div class="card-title" style="color: var(--accent-purple); font-size: 0.9rem;">🎯 3. กระจายตามสไตล์</div>
+    <p style="font-size:0.82rem;">ผสมระหว่าง Value (หุ้นถูก) กับ Growth (หุ้นเติบโต) ผสมระหว่างหุ้นปันผลกับหุ้น Capital Gain</p>
+  </div>
+</div>
+
+<h4>การจัดสัดส่วนพอร์ต (ตัวอย่าง)</h4>
+
+<div class="diagram-block"><span class="tag portfolio">พอร์ตแบบสมดุล</span>
+<span class="hl">พอร์ตแบบสมดุล:</span>
+├── <span class="ok">หุ้นแกนหลัก (Core): 50-60%</span>
+│   └── หุ้นใหญ่ พื้นฐานดี ปันผลสม่ำเสมอ
+├── <span class="hl">หุ้นเติบโต (Growth): 20-30%</span>
+│   └── หุ้นกลาง-เล็กที่กำไรเติบโตดี
+├── <span class="warn">หุ้นเก็งกำไร (Speculative): 0-10%</span>
+│   └── หุ้นที่มีโอกาสสูงแต่เสี่ยงสูง
+└── <span class="val">เงินสด: 10-20%</span>
+    └── รอโอกาส</div>
+
+<h3 id="correlation">Correlation — กับดักของการกระจายความเสี่ยงปลอม</h3>
+<p>หลายคนคิดว่าถือหุ้น 10 ตัวแปลว่ากระจายความเสี่ยงดีแล้ว แต่ถ้าหุ้น 10 ตัวนั้นอยู่ในกลุ่มเดียวกันหรือเคลื่อนไหวไปในทิศทางเดียวกัน (High Correlation) ก็เหมือนถือหุ้นตัวเดียว</p>
+
+<div class="versus">
+  <div class="card" style="border-left: 4px solid var(--accent-red);">
+    <div class="card-title" style="color: var(--accent-red);">❌ กระจายปลอม</div>
+    <div class="diagram-block" style="font-size:0.76rem;"><span class="tag danger">ไม่ดี</span>
+├── หุ้นธนาคาร A
+├── หุ้นธนาคาร B
+├── หุ้นธนาคาร C
+├── หุ้นประกัน D
+└── หุ้นเช่าซื้อ E
+→ <span class="bad">ทั้งหมดเป็นกลุ่มการเงิน</span>
+  ถ้าดอกเบี้ยเปลี่ยน ลงพร้อมกันหมด</div>
+  </div>
+  <div class="vs-badge">VS</div>
+  <div class="card" style="border-left: 4px solid var(--accent-green);">
+    <div class="card-title" style="color: var(--accent-green);">✅ กระจายจริง</div>
+    <div class="diagram-block" style="font-size:0.76rem;"><span class="tag calc">ดี</span>
+├── หุ้นธนาคาร (กลุ่มการเงิน)
+├── หุ้นโรงไฟฟ้า (กลุ่มพลังงาน)
+├── หุ้นอาหาร (กลุ่มอุปโภคบริโภค)
+├── หุ้นโรงพยาบาล (กลุ่มสุขภาพ)
+└── หุ้นนิคมฯ (กลุ่มอสังหา)
+→ <span class="ok">แต่ละตัวได้รับผลกระทบจากปัจจัยต่างกัน</span></div>
+  </div>
+</div>
+
+<h4>เมื่อไหร่ควรถือเงินสด 100%</h4>
+<ul>
+  <li>ตลาดอยู่ในขาลงชัดเจน (SET Index ต่ำกว่า MA200)</li>
+  <li>คุณขาดทุนติดต่อกัน 5 ครั้งขึ้นไป → หยุดพัก ทบทวนระบบ</li>
+  <li>มีเหตุการณ์ไม่แน่นอนสูง (เลือกตั้ง วิกฤตเศรษฐกิจ สงคราม)</li>
+  <li>คุณรู้สึกว่าตัดสินใจจากอารมณ์มากกว่าเหตุผล</li>
+</ul>
+
+<div class="info-box observe">
+  <div class="bt">🔎 จำไว้</div>
+  การไม่ทำอะไรก็เป็นการตัดสินใจที่ดีได้ ไม่จำเป็นต้องอยู่ในตลาดตลอดเวลา
+</div>
+
+<h3 id="market-conditions">การจัดพอร์ตในสถานการณ์ตลาดต่างๆ</h3>
+
+<div class="card" style="border-left: 4px solid var(--accent-green);">
+  <div class="card-title" style="color: var(--accent-green);">📈 ตลาดขาขึ้น (Bull Market) — SET Index > MA200 และ MA50 > MA200</div>
+  <div class="diagram-block" style="font-size:0.76rem;"><span class="tag calc">Bull</span>
+├── หุ้นแกนหลัก (Core): <span class="val">40-50%</span>
+├── หุ้นเติบโต (Growth): <span class="ok">30-40%</span>
+├── หุ้นเก็งกำไร (Speculative): <span class="warn">10-15%</span>
+└── เงินสด: <span class="val">5-10%</span>
+→ เพิ่มสัดส่วนหุ้นเติบโตและเก็งกำไร ลดเงินสด</div>
+</div>
+
+<div class="card" style="border-left: 4px solid var(--accent-yellow);">
+  <div class="card-title" style="color: var(--accent-yellow);">↔️ ตลาด Sideway — SET Index แกว่งในกรอบ</div>
+  <div class="diagram-block" style="font-size:0.76rem;"><span class="tag portfolio">Sideway</span>
+├── หุ้นแกนหลัก (Core): <span class="val">50-60%</span>
+├── หุ้นเติบโต (Growth): <span class="hl">15-20%</span>
+├── หุ้นเก็งกำไร (Speculative): <span class="warn">0-5%</span>
+└── เงินสด: <span class="val">20-30%</span>
+→ เพิ่มเงินสด ลดหุ้นเก็งกำไร รอโอกาส</div>
+</div>
+
+<div class="card" style="border-left: 4px solid var(--accent-red);">
+  <div class="card-title" style="color: var(--accent-red);">📉 ตลาดขาลง (Bear Market) — SET Index < MA200 และ MA50 < MA200</div>
+  <div class="diagram-block" style="font-size:0.76rem;"><span class="tag danger">Bear</span>
+├── หุ้นแกนหลัก (Core): <span class="val">20-30%</span> (เฉพาะหุ้นที่แข็งแกร่งจริงๆ)
+├── หุ้นเติบโต (Growth): <span class="warn">0-10%</span>
+├── หุ้นเก็งกำไร (Speculative): <span class="bad">0%</span>
+└── เงินสด: <span class="ok">60-80%</span>
+→ ถือเงินสดเป็นหลัก ลดความเสี่ยงให้มากที่สุด</div>
+</div>
+
+<div class="info-box observe">
+  <div class="bt">🔎 ข้อสังเกตสำคัญ</div>
+  หลายคนรู้สึก "ผิด" ที่ถือเงินสดเยอะ เพราะรู้สึกว่า "เงินไม่ทำงาน" แต่ในตลาดขาลง เงินสดคือสินทรัพย์ที่ให้ผลตอบแทนดีที่สุด เพราะมันไม่ลดค่า ในขณะที่หุ้นลดค่าทุกวัน
+</div>
+
+<h3 id="sector-rotation">Sector Rotation — การหมุนเวียนกลุ่มอุตสาหกรรม</h3>
+
+<div class="diagram-block"><span class="tag flow">วงจรเศรษฐกิจกับกลุ่มหุ้นที่มักนำ</span>
+<span class="ok">🌱 เศรษฐกิจเริ่มฟื้นตัว (Early Recovery):</span>
+→ กลุ่มการเงิน (ธนาคาร), อสังหาริมทรัพย์, ยานยนต์
+→ เหตุผล: ดอกเบี้ยต่ำ สินเชื่อเริ่มขยายตัว
+
+<span class="hl">📈 เศรษฐกิจขยายตัว (Expansion):</span>
+→ กลุ่มเทคโนโลยี, อุตสาหกรรม, วัสดุก่อสร้าง
+→ เหตุผล: ความต้องการสินค้าและบริการเพิ่มขึ้น
+
+<span class="warn">🔥 เศรษฐกิจร้อนแรง (Late Cycle):</span>
+→ กลุ่มพลังงาน, สินค้าโภคภัณฑ์
+→ เหตุผล: เงินเฟ้อสูง ราคาวัตถุดิบขึ้น
+
+<span class="bad">📉 เศรษฐกิจชะลอตัว (Recession):</span>
+→ กลุ่มสาธารณูปโภค, สุขภาพ, อาหาร
+→ เหตุผล: เป็นสิ่งจำเป็น คนยังต้องใช้แม้เศรษฐกิจแย่</div>
+
+<div class="info-box info">
+  <div class="bt">💡 ข้อสังเกต</div>
+  คุณไม่จำเป็นต้องทำนายวงจรเศรษฐกิจได้แม่นยำ แค่สังเกตว่ากลุ่มไหนกำลังเป็นผู้นำตลาด (มี Relative Strength สูง) แล้วจัดพอร์ตให้มีน้ำหนักในกลุ่มนั้นมากขึ้น
+</div>
+
+<div class="checklist-box">
+  <div class="cb-title">📋 Portfolio Review ประจำเดือน</div>
+  <div class="cb-item">1. มูลค่าพอร์ตต้นเดือน: _________ บาท → สิ้นเดือน: _________ บาท</div>
+  <div class="cb-item">2. ผลตอบแทน: ___% เทียบกับ SET Index: ___%</div>
+  <div class="cb-item">3. หุ้นตัวไหนสัดส่วนเกิน 20%? → พิจารณาลด</div>
+  <div class="cb-item">4. กลุ่มอุตสาหกรรมไหนสัดส่วนเกิน 30%? → พิจารณาลด</div>
+  <div class="cb-item">5. เงินสดเหลือเท่าไหร่? เพียงพอหรือไม่?</div>
+  <div class="cb-item">6. หุ้นแต่ละตัว: ยังมีเหตุผลที่ถือหรือไม่? พื้นฐานเปลี่ยนไปหรือไม่?</div>
+  <div class="cb-item">7. ถ้าวันนี้ไม่ได้ถือ จะซื้อที่ราคานี้ไหม?</div>
+  <div class="cb-item">8. ตลาดอยู่ในขาขึ้น/Sideway/ขาลง? ควรปรับสัดส่วนหรือไม่?</div>
+  <div class="cb-item">9. หุ้นที่จะขาย: _________ | หุ้นที่จะซื้อ: _________</div>
+  <div class="cb-item">10. สัดส่วนเงินสดเป้าหมาย: ___%</div>
+</div>
+
+<!-- ==================== CHAPTER 17 ==================== -->
+<div class="section-header" id="ch17">
+  <h2><span class="sn red">17</span> บทที่ 17: จิตวิทยาการเงิน — ศัตรูตัวจริงคือตัวเอง</h2>
+</div>
+
+<h3 id="cognitive-bias">อคติทางจิตวิทยาที่ทำให้ขาดทุน</h3>
+
+<div class="two-col">
+  <div class="card" style="border-left: 4px solid var(--accent-red);">
+    <div class="card-title" style="color: var(--accent-red);">😱 1. FOMO — กลัวตกรถ</div>
+    <p style="font-size:0.84rem;">เห็นหุ้นวิ่ง 3 วันติด → กระโดดเข้าซื้อ มักเข้าซื้อตอนราคาสูงสุด เพราะนั่นคือตอนที่กระแสดังที่สุด</p>
+    <p style="font-size:0.82rem; color: var(--accent-green);"><strong>วิธีแก้:</strong> ถ้าไม่ได้วางแผนซื้อไว้ก่อน อย่าซื้อ ตลาดมีโอกาสใหม่เสมอ</p>
+  </div>
+  <div class="card" style="border-left: 4px solid var(--accent-orange);">
+    <div class="card-title" style="color: var(--accent-orange);">💔 2. Loss Aversion — เกลียดการขาดทุน</div>
+    <p style="font-size:0.84rem;">ความเจ็บปวดจากการขาดทุน 1,000 บาท รุนแรงกว่าความสุขจากการกำไร 1,000 บาท ประมาณ 2 เท่า ทำให้ถือหุ้นขาดทุนนานเกินไป</p>
+    <p style="font-size:0.82rem; color: var(--accent-green);"><strong>วิธีแก้:</strong> ตั้ง Stop Loss ล่วงหน้า และทำตามอย่างเคร่งครัด</p>
+  </div>
+  <div class="card" style="border-left: 4px solid var(--accent-blue);">
+    <div class="card-title" style="color: var(--accent-blue-light);">🔍 3. Confirmation Bias — หาข้อมูลสนับสนุนตัวเอง</div>
+    <p style="font-size:0.84rem;">ซื้อหุ้นแล้ว จะอ่านแต่ข่าวดีของหุ้นตัวนั้น ข่าวร้ายจะถูกมองข้ามหรือหาเหตุผลมาแก้ตัว</p>
+    <p style="font-size:0.82rem; color: var(--accent-green);"><strong>วิธีแก้:</strong> หาเหตุผลที่ควรขาย ก่อนหาเหตุผลที่ควรถือ</p>
+  </div>
+  <div class="card" style="border-left: 4px solid var(--accent-yellow);">
+    <div class="card-title" style="color: var(--accent-yellow);">⚓ 4. Anchoring — ยึดติดกับราคา</div>
+    <p style="font-size:0.84rem;">"ผมซื้อมา 20 บาท ต้องรอให้กลับไป 20 บาทก่อนถึงจะขาย" — ราคาที่คุณซื้อไม่มีความหมายอะไรกับตลาด ตลาดไม่สนใจต้นทุนของคุณ</p>
+    <p style="font-size:0.82rem; color: var(--accent-green);"><strong>วิธีแก้:</strong> ถามตัวเองว่า "ถ้าวันนี้ไม่ได้ถือหุ้นตัวนี้ ผมจะซื้อมันที่ราคานี้ไหม?"</p>
+  </div>
+  <div class="card" style="border-left: 4px solid var(--accent-purple);">
+    <div class="card-title" style="color: var(--accent-purple);">👑 5. Overconfidence — มั่นใจเกินไป</div>
+    <p style="font-size:0.84rem;">กำไรติดต่อกัน 3-4 ครั้ง → คิดว่าตัวเองเก่ง → เพิ่ม Position Size → ขาดทุนหนัก ในตลาดขาขึ้น ทุกคนดูเหมือนอัจฉริยะ</p>
+    <p style="font-size:0.82rem; color: var(--accent-green);"><strong>วิธีแก้:</strong> ยึดกฎ Position Sizing เสมอ ไม่ว่าจะมั่นใจแค่ไหน</p>
+  </div>
+  <div class="card" style="border-left: 4px solid var(--accent-cyan);">
+    <div class="card-title" style="color: var(--accent-cyan);">🐑 6. Herd Mentality — ทำตามฝูง</div>
+    <p style="font-size:0.84rem;">ทุกคนซื้อ ผมก็ซื้อ ทุกคนขาย ผมก็ขาย ปัญหาคือ "ทุกคน" มักผิดที่จุดกลับตัว</p>
+    <p style="font-size:0.82rem; color: var(--accent-green);"><strong>วิธีแก้:</strong> มีระบบการลงทุนของตัวเอง ตัดสินใจจากข้อมูล ไม่ใช่จากคนอื่น</p>
+  </div>
+</div>
+
+<h3 id="discipline">สร้างวินัยการลงทุน</h3>
+
+<div class="two-col">
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-blue-light);">📋 1. มี Trading Plan</div>
+    <p style="font-size:0.84rem;">เขียนแผนก่อนซื้อทุกครั้ง: ซื้อเพราะอะไร เป้าหมายเท่าไหร่ Stop Loss ที่ไหน ถ้าไม่มีแผน อย่าซื้อ</p>
+  </div>
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-green);">📓 2. จด Trading Journal</div>
+    <p style="font-size:0.84rem;">บันทึกทุกการซื้อขาย: วันที่ หุ้น ราคาซื้อ ราคาขาย เหตุผล ผลลัพธ์ บทเรียน ทบทวนทุกเดือน หาจุดอ่อนของตัวเอง</p>
+  </div>
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-cyan);">😴 3. พักผ่อน</div>
+    <p style="font-size:0.84rem;">อย่าจ้องหน้าจอทั้งวัน ความเหนื่อยล้าทำให้ตัดสินใจแย่ลง ถ้าขาดทุนติดต่อกัน หยุดพัก 1-2 สัปดาห์</p>
+  </div>
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-purple);">🎯 4. ยอมรับการขาดทุน</div>
+    <p style="font-size:0.84rem;">ไม่มีใครถูกทุกครั้ง แม้แต่ Warren Buffett ก็ขาดทุน สิ่งสำคัญคือ "ขาดทุนน้อยๆ หลายครั้ง กำไรมากๆ ไม่กี่ครั้ง" ก็ชนะแล้ว</p>
+  </div>
+</div>
+
+<h3 id="sunk-cost">Sunk Cost Fallacy — กับดักต้นทุนจม</h3>
+
+<div class="card" style="border: 2px solid rgba(239,68,68,0.3); background: rgba(239,68,68,0.03);">
+  <div class="card-title" style="color: var(--accent-red);">💸 "ผมลงทุนไปเยอะแล้ว ถอยไม่ได้"</div>
+  <p style="font-size:0.86rem;">เงินที่คุณลงทุนไปแล้วเป็น "ต้นทุนจม" (Sunk Cost) มันหายไปแล้วไม่ว่าคุณจะทำอะไร สิ่งที่ควรถามคือ <strong>"จากจุดนี้ไป ทางเลือกไหนดีที่สุด?"</strong> ไม่ใช่ "ผมลงทุนไปเท่าไหร่แล้ว?"</p>
+  <div class="diagram-block" style="border-color: rgba(239,68,68,0.3);"><span class="tag example">ตัวอย่าง</span>
+ซื้อหุ้น <span class="val">500,000</span> บาท → ตอนนี้เหลือ <span class="bad">200,000</span> บาท
+
+<span class="bad">คำถามผิด:</span> "ผมต้องรอให้กลับไป 500,000 บาท"
+<span class="ok">คำถามถูก:</span>  "ถ้าผมมีเงิน 200,000 บาทวันนี้ ผมจะซื้อหุ้นตัวนี้ไหม?"
+
+ถ้าคำตอบคือ "ไม่" → <span class="ok">ขาย แล้วเอาเงินไปลงทุนในสิ่งที่ดีกว่า</span></div>
+</div>
+
+<h3 id="disposition">Disposition Effect — ขายหุ้นกำไรเร็ว ถือหุ้นขาดทุนนาน</h3>
+
+<div class="card" style="border-left: 4px solid var(--accent-orange);">
+  <div class="card-title" style="color: var(--accent-orange);">⚠️ อคติที่พบบ่อยที่สุดในนักลงทุนรายย่อย</div>
+  <ul style="font-size:0.84rem;">
+    <li>หุ้นกำไร 10% → รีบขาย กลัวกำไรหาย</li>
+    <li>หุ้นขาดทุน 30% → ถือต่อ หวังว่าจะกลับมา</li>
+  </ul>
+  <p style="font-size:0.86rem;">ผลลัพธ์คือ <strong>"ตัดกำไรเร็ว ปล่อยขาดทุนวิ่ง"</strong> ซึ่งตรงข้ามกับสิ่งที่ควรทำ</p>
+</div>
+
+<div class="info-box tip">
+  <div class="bt">💡 สิ่งที่ควรทำ</div>
+  <strong>"ตัดขาดทุนเร็ว ปล่อยกำไรวิ่ง"</strong> (Cut losses short, let profits run)<br><br>
+  วิธีฝึก:<br>
+  • ใช้ Trailing Stop เพื่อปล่อยกำไรวิ่ง — ไม่ต้องตัดสินใจเอง ให้ระบบทำ<br>
+  • ตั้ง Stop Loss ก่อนซื้อเสมอ — ตัดสินใจตอนที่ยังไม่มีอารมณ์เข้ามาเกี่ยว<br>
+  • จด Trading Journal — เมื่อเห็นรูปแบบซ้ำๆ ของตัวเอง จะเริ่มแก้ไขได้
+</div>
+
+<h3 id="revenge-trading">Revenge Trading — การเทรดเพื่อแก้แค้นตลาด</h3>
+
+<div class="info-box danger">
+  <div class="bt">🚨 สถานการณ์อันตราย</div>
+  คุณเพิ่งขาดทุนหนัก → รู้สึกโกรธ → อยาก "เอาคืน" → เข้าเทรดทันทีโดยไม่มีแผน → ขาดทุนอีก → โกรธมากขึ้น → เทรดอีก → วนลูป
+</div>
+
+<div class="card">
+  <div class="card-title" style="color: var(--accent-red);">🔴 สัญญาณว่าคุณกำลัง Revenge Trade</div>
+  <ul style="font-size:0.84rem;">
+    <li>เข้าเทรดทันทีหลังขาดทุน โดยไม่ได้วิเคราะห์</li>
+    <li>เพิ่ม Position Size เพื่อ "เอาคืน" ให้เร็ว</li>
+    <li>เลือกหุ้นที่ Volatility สูงเพราะอยากได้กำไรเร็ว</li>
+    <li>รู้สึกว่า "ตลาดเป็นหนี้ผม"</li>
+    <li>เทรดบ่อยขึ้นผิดปกติในวันเดียว</li>
+  </ul>
+</div>
+
+<div class="card" style="border-left: 4px solid var(--accent-green);">
+  <div class="card-title" style="color: var(--accent-green);">🛡️ วิธีรับมือ</div>
+  <ol style="font-size:0.84rem;">
+    <li>ตั้งกฎ: "หลังขาดทุน ห้ามเทรดอีกอย่างน้อย 1 ชั่วโมง" (หรือ 1 วัน ถ้าขาดทุนหนัก)</li>
+    <li>ลุกออกจากหน้าจอ ไปเดินเล่น ดื่มน้ำ ทำอย่างอื่น</li>
+    <li>กลับมาอ่าน Trading Plan ของตัวเอง</li>
+    <li>ถามตัวเองว่า "ถ้าผมไม่ได้เพิ่งขาดทุน ผมจะเข้าเทรดนี้ไหม?"</li>
+    <li>ถ้าคำตอบคือ "ไม่แน่ใจ" → อย่าเทรด</li>
+  </ol>
+</div>
+
+<h4>อารมณ์ในแต่ละช่วงของการเทรด</h4>
+
+<div class="table-wrapper">
+<table>
+<thead class="blue-head"><tr><th style="color:var(--accent-blue-light);">ช่วง</th><th style="color:var(--accent-blue-light);">อารมณ์ที่มักเกิด</th><th style="color:var(--accent-blue-light);">ข้อผิดพลาดที่พบบ่อย</th><th style="color:var(--accent-blue-light);">วิธีรับมือ</th></tr></thead>
+<tbody>
+<tr><td><strong>ก่อนซื้อ</strong></td><td>ตื่นเต้น, FOMO, มั่นใจเกิน</td><td style="color:var(--accent-red);">ข้ามขั้นตอน ไม่คำนวณ Position Size</td><td style="color:var(--accent-green);">บังคับทำ Checklist ก่อนซื้อทุกครั้ง</td></tr>
+<tr><td><strong>หลังซื้อ (ไม่ไปไหน)</strong></td><td>กังวล, ใจร้อน, สงสัยตัวเอง</td><td style="color:var(--accent-red);">ขายเร็วเกินไป ทนไม่ได้</td><td style="color:var(--accent-green);">กลับไปดูแผน ใช้ Time Stop</td></tr>
+<tr><td><strong>ราคาลง (ใกล้ SL)</strong></td><td>กลัว, ปฏิเสธ, โกรธ, ต่อรอง</td><td style="color:var(--accent-red);">เลื่อน Stop Loss ลง</td><td style="color:var(--accent-green);">ตั้ง Auto Stop Loss ไว้ก่อน</td></tr>
+<tr><td><strong>ราคาขึ้น (กำไร)</strong></td><td>ดีใจ, กลัวเสียกำไร, โลภ</td><td style="color:var(--accent-red);">ขายเร็วเกินไป (Disposition Effect)</td><td style="color:var(--accent-green);">ใช้ Trailing Stop แบ่งขายเป็นชุด</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3 id="trading-journal">Trading Journal — Template</h3>
+
+<div class="checklist-box">
+  <div class="cb-title">📓 Trading Journal Template</div>
+  <div style="color: var(--accent-cyan); font-weight: 600; margin: 0.5rem 0;">— ก่อนซื้อ —</div>
+  <div class="cb-item">เหตุผลที่ซื้อ: _________________________________</div>
+  <div class="cb-item">สัญญาณทางเทคนิค: _________________________________</div>
+  <div class="cb-item">ราคาซื้อ: _________ | Stop Loss: _________ | เป้าหมาย: _________</div>
+  <div class="cb-item">Risk-Reward Ratio: _________ | Position Size: _________ (___% ของพอร์ต)</div>
+  <div class="cb-item">ระดับความมั่นใจ (1-10): _________ </div>
+  <div class="cb-item">อารมณ์ตอนซื้อ: สงบ / ตื่นเต้น / กลัวตกรถ / มั่นใจมาก</div>
+  <div style="color: var(--accent-orange); font-weight: 600; margin: 0.5rem 0;">— ระหว่างถือ —</div>
+  <div class="cb-item">มีเหตุการณ์อะไรที่ทำให้อยากเปลี่ยนแผน? _________________</div>
+  <div class="cb-item">เลื่อน Stop Loss หรือไม่? ไม่ / เลื่อนขึ้น / เลื่อนลง (ทำไม?)</div>
+  <div style="color: var(--accent-green); font-weight: 600; margin: 0.5rem 0;">— หลังขาย —</div>
+  <div class="cb-item">วันที่ขาย: _________ | ราคาขาย: _________ | กำไร/ขาดทุน: _________ (___%)</div>
+  <div class="cb-item">ขายเพราะ: ถึงเป้า / Stop Loss / Time Stop / เปลี่ยนใจ</div>
+  <div class="cb-item">ทำตามแผนหรือไม่? ใช่ / ไม่ (ทำไม?)</div>
+  <div class="cb-item">อารมณ์ตอนขาย: สงบ / กลัว / โลภ / โกรธ / โล่งใจ</div>
+  <div style="color: var(--accent-purple); font-weight: 600; margin: 0.5rem 0;">— บทเรียน —</div>
+  <div class="cb-item">สิ่งที่ทำถูก: _________________________________</div>
+  <div class="cb-item">สิ่งที่ทำผิด: _________________________________</div>
+  <div class="cb-item">สิ่งที่จะทำต่างไปในครั้งหน้า: _________________________________</div>
+</div>
+
+<div class="info-box observe">
+  <div class="bt">🔎 ข้อสังเกตสำคัญเกี่ยวกับ Trading Journal</div>
+  • จดทุกเทรด ไม่ใช่แค่เทรดที่ขาดทุน — เทรดที่กำไรก็มีบทเรียน<br>
+  • ทบทวนทุกสิ้นเดือน หาว่า "รูปแบบ" อะไรที่ทำซ้ำๆ<br>
+  • ข้อมูลที่สำคัญที่สุดคือ "อารมณ์" — เมื่อเห็นว่าทุกครั้งที่ซื้อด้วยอารมณ์ "กลัวตกรถ" มักขาดทุน คุณจะเริ่มระวังมากขึ้น<br>
+  • หลังจดไป 3-6 เดือน คุณจะเริ่มเห็น "จุดอ่อน" ของตัวเองชัดเจน
+</div>
+
+<h4>กฎเหล็กส่วนตัว — ติดไว้หน้าจอ</h4>
+
+<div class="diagram-block"><span class="tag system">กฎเหล็กของผม (ตัวอย่าง)</span>
+<span class="val"> 1.</span> ผมจะไม่ซื้อหุ้นโดยไม่มี Trading Plan
+<span class="val"> 2.</span> ผมจะตั้ง Stop Loss ทุกครั้ง และจะ<span class="bad">ไม่เลื่อนลง</span>
+<span class="val"> 3.</span> ผมจะไม่เสี่ยงเกิน <span class="ok">2%</span> ของพอร์ตต่อเทรด
+<span class="val"> 4.</span> ผมจะไม่เทรดหลังขาดทุนหนักโดยไม่พักก่อน
+<span class="val"> 5.</span> ผมจะไม่ซื้อหุ้นเพราะคนอื่นบอก โดยไม่วิเคราะห์เอง
+<span class="val"> 6.</span> ผมจะไม่เฉลี่ยขาลงในหุ้นที่พื้นฐานเปลี่ยน
+<span class="val"> 7.</span> ผมจะจด Trading Journal ทุกเทรด
+<span class="val"> 8.</span> ผมจะทบทวนพอร์ตทุกสิ้นเดือน
+<span class="val"> 9.</span> ถ้าขาดทุนรวม <span class="bad">10%</span> ในเดือนเดียว ผมจะหยุดพัก
+<span class="val">10.</span> ผมยอมรับว่าขาดทุนเป็นส่วนหนึ่งของเกม</div>
+
+<!-- ==================== CHAPTER 18 ==================== -->
+<div class="section-header" id="ch18">
+  <h2><span class="sn green">18</span> บทที่ 18: การรวมทุกอย่างเข้าด้วยกัน — ระบบการลงทุนที่สมบูรณ์</h2>
+</div>
+
+<h3 id="complete-system">ภาพรวม: จากทฤษฎีสู่การปฏิบัติ</h3>
+<p>เนื้อหาทั้งหมดในภาค 3 นี้ไม่ได้มีไว้ให้อ่านแล้วจำ แต่มีไว้ให้นำไปใช้เป็น "ระบบ" ที่ทำงานร่วมกัน:</p>
+
+<div class="diagram-block"><span class="tag system">ระบบการจัดการเงินที่สมบูรณ์</span>
+<span class="hl">ขั้นตอนที่ 1: ประเมินสภาพตลาด</span>
+├── ตลาดขาขึ้น/Sideway/ขาลง?
+├── ควรถือหุ้นกี่ % ของพอร์ต?
+└── ควรเน้นกลุ่มอุตสาหกรรมไหน?
+
+<span class="hl">ขั้นตอนที่ 2: คัดเลือกหุ้น</span>
+├── มีสัญญาณซื้อจากระบบหรือไม่?
+├── Risk-Reward Ratio ≥ 1:2 หรือไม่?
+└── มีเหตุผลทางเทคนิคและ/หรือพื้นฐานรองรับหรือไม่?
+
+<span class="hl">ขั้นตอนที่ 3: คำนวณ Position Size</span>
+├── ความเสี่ยงสูงสุด = 2% ของพอร์ต
+├── กำหนด Stop Loss จากเทคนิค
+└── Position Size = ความเสี่ยง / %Stop Loss
+
+<span class="ok">ขั้นตอนที่ 4: เข้าซื้อ</span>
+├── ซื้อตาม Pyramid (40% → 30% → 30%)
+├── ตั้ง Stop Loss Order ทันที
+└── จด Trading Journal
+
+<span class="warn">ขั้นตอนที่ 5: บริหารระหว่างถือ</span>
+├── เลื่อน Stop Loss ขึ้นเมื่อราคาขึ้น (Trailing)
+├── แบ่งขายเป็นชุดเมื่อถึงเป้าหมาย
+└── ตรวจสอบว่าเหตุผลที่ซื้อยังไม่เปลี่ยน
+
+<span class="bad">ขั้นตอนที่ 6: ออกจากตำแหน่ง</span>
+├── Stop Loss ถูกแตะ → ขายทันที
+├── ถึงเป้าหมายกำไร → ขายตามแผน
+├── Time Stop → ขายถ้าราคาไม่ไปไหน
+└── เหตุผลที่ซื้อเปลี่ยน → ขายทันที
+
+<span class="hl">ขั้นตอนที่ 7: ทบทวนและปรับปรุง</span>
+├── จด Trading Journal หลังขาย
+├── ทบทวนพอร์ตทุกสิ้นเดือน
+└── ปรับระบบตามบทเรียนที่ได้</div>
+
+<h3 id="simulation">สถานการณ์จำลอง: นำระบบไปใช้จริง</h3>
+<p><strong>สถานการณ์:</strong> คุณมีพอร์ต 1,000,000 บาท ตลาดอยู่ในขาขึ้น</p>
+
+<div class="diagram-block"><span class="tag example">สถานการณ์จำลอง — ขั้นตอนที่ 1-3</span>
+<span class="hl">ขั้นตอนที่ 1: ประเมินตลาด</span>
+SET Index > MA200 <span class="ok">✅</span> ขาขึ้น
+สัดส่วนเป้าหมาย: หุ้น 80% เงินสด 20%
+งบลงทุน = <span class="val">800,000</span> บาท
+
+<span class="hl">ขั้นตอนที่ 2: พบหุ้น XYZ น่าสนใจ</span>
+ราคาปัจจุบัน: <span class="val">15.00</span> บาท
+เพิ่ง Breakout จากกรอบ Sideway 12-14.50 บาท
+Volume เพิ่มขึ้น 3 เท่า
+แนวต้านถัดไป: <span class="ok">20.00</span> บาท
+แนวรับ (กรอบ Sideway เดิม): <span class="hl">14.50</span> บาท
+
+<span class="hl">ขั้นตอนที่ 3: คำนวณ</span>
+Stop Loss = <span class="bad">13.80</span> บาท (ใต้กรอบ Sideway เผื่อ Buffer)
+%Stop Loss = (15.00 - 13.80) / 15.00 = <span class="warn">8%</span>
+ความเสี่ยงสูงสุด = 1,000,000 × 2% = <span class="val">20,000</span> บาท
+Position Size = 20,000 / 0.08 = <span class="ok">250,000</span> บาท (25% ของพอร์ต)
+Risk-Reward = (20.00 - 15.00) / (15.00 - 13.80) = 5.00 / 1.20 = <span class="ok">4.17:1 ✅</span></div>
+
+<div class="diagram-block"><span class="tag flow">สถานการณ์จำลอง — ขั้นตอนที่ 4: เข้าซื้อแบบ Pyramid</span>
+<span class="ok">ชุดที่ 1:</span> ซื้อ 40% = 100,000 บาท = 6,600 หุ้น
+  ที่ราคา 15.00 บาท → ตั้ง Stop Loss ที่ 13.80 ทันที
+  → รอดูว่าราคายืนเหนือ 15.50 ได้หรือไม่
+
+<span class="ok">ชุดที่ 2:</span> ราคายืนเหนือ 15.50 ได้ 2 วัน
+  ซื้อเพิ่ม 30% = 75,000 บาท = 4,800 หุ้น ที่ 15.50 บาท
+  → ปรับ Stop Loss ของทั้งหมดขึ้นมาที่ 14.50
+
+<span class="ok">ชุดที่ 3:</span> ราคาพักตัวที่ 16.00 แล้วไปต่อ
+  ซื้อเพิ่ม 30% = 75,000 บาท = 4,600 หุ้น ที่ 16.20 บาท
+  → ปรับ Stop Loss ขึ้นมาที่ 15.00 (จุดคุ้มทุนโดยประมาณ)</div>
+
+<div class="diagram-block"><span class="tag flow">สถานการณ์จำลอง — ขั้นตอนที่ 5-6: บริหารและออก</span>
+<span class="warn">ขั้นตอนที่ 5: บริหารระหว่างถือ</span>
+รวมถือ: <span class="val">16,000</span> หุ้น ต้นทุนเฉลี่ย ~15.60 บาท
+ราคาขึ้นไป 18.00 → เลื่อน Trailing Stop ขึ้นมาที่ 16.50
+  (ล็อกกำไร ~6%)
+ขายชุดแรก 5,000 หุ้น ที่ 18.00 → ล็อกกำไร <span class="ok">12,000</span> บาท
+
+<span class="ok">ขั้นตอนที่ 6: ออกจากตำแหน่ง</span>
+ราคาขึ้นไป 19.50 → ขายอีก 5,000 หุ้น → ล็อกกำไร <span class="ok">19,500</span> บาท
+ปล่อย 6,000 หุ้นที่เหลือวิ่งด้วย Trailing Stop ที่ 18.00
+ราคาขึ้นไป 21.00 แล้วย่อลงมาแตะ Trailing Stop ที่ 19.30
+  → ขายอัตโนมัติ → กำไร <span class="ok">22,200</span> บาท
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+<span class="ok">ผลลัพธ์รวม:</span>
+กำไรรวม: <span class="ok">~53,700 บาท</span>
+ความเสี่ยงสูงสุดที่ตั้งไว้: <span class="val">20,000 บาท</span>
+Risk-Reward ที่ได้จริง: 53,700 / 20,000 = <span class="ok">2.69:1 ✅</span></div>
+
+<h3 id="final-notes">ข้อสังเกตสุดท้ายของภาค 3</h3>
+
+<div class="rule-card gold">
+  <div class="rule-num">01</div>
+  <div class="rule-title" style="color: var(--accent-yellow);">ไม่มีระบบไหนสมบูรณ์แบบ</div>
+  <p>ระบบที่ดีที่สุดคือระบบที่คุณทำตามได้จริง ไม่ใช่ระบบที่ซับซ้อนที่สุด ถ้าระบบยุ่งยากจนคุณไม่อยากทำตาม มันก็ไม่มีประโยชน์</p>
+</div>
+
+<div class="rule-card green">
+  <div class="rule-num">02</div>
+  <div class="rule-title" style="color: var(--accent-green);">เริ่มจากเล็กๆ</div>
+  <p>ถ้าคุณเพิ่งเริ่มใช้ระบบ Money Management อย่าเริ่มด้วยเงินจำนวนมาก เริ่มด้วยเงินน้อยๆ ฝึกจนชิน แล้วค่อยเพิ่ม</p>
+</div>
+
+<div class="rule-card blue">
+  <div class="rule-num">03</div>
+  <div class="rule-title" style="color: var(--accent-blue-light);">ให้เวลาระบบพิสูจน์ตัวเอง</div>
+  <p>อย่าเปลี่ยนระบบหลังขาดทุน 2-3 ครั้ง ระบบที่ดีต้องใช้เวลาอย่างน้อย 30-50 เทรดถึงจะเห็นผลลัพธ์ที่แท้จริง ถ้าเปลี่ยนบ่อย คุณจะไม่มีวันรู้ว่าระบบไหนใช้ได้จริง</p>
+</div>
+
+<div class="rule-card gold">
+  <div class="rule-num">04</div>
+  <div class="rule-title" style="color: var(--accent-yellow);">ทบทวนและปรับปรุงอย่างสม่ำเสมอ</div>
+  <p>ตลาดเปลี่ยนแปลงตลอดเวลา ระบบที่ใช้ได้ดีในปีนี้อาจไม่เหมาะกับปีหน้า ทบทวนผลงานทุก 3-6 เดือน แล้วปรับปรุงตามสิ่งที่เรียนรู้</p>
+</div>
+
+<div class="rule-card red">
+  <div class="rule-num">05</div>
+  <div class="rule-title" style="color: var(--accent-red);">จำไว้เสมอ: เป้าหมายหลักคือ "อยู่รอด"</div>
+  <p>ในตลาดหุ้น คนที่อยู่รอดได้นานที่สุดคือคนที่ชนะ ไม่ใช่คนที่กำไรมากที่สุดในระยะสั้น ถ้าคุณยังอยู่ในตลาดได้ คุณยังมีโอกาส ถ้าหมดตัว โอกาสก็หมดไปด้วย</p>
+</div>
+
+<div class="info-box observe">
+  <div class="bt">🔎 ข้อสังเกตสุดท้าย</div>
+  กฎเหล่านี้ไม่มีประโยชน์ถ้าคุณไม่ทำตาม สิ่งที่แยกนักลงทุนที่ประสบความสำเร็จออกจากคนที่ล้มเหลว ไม่ใช่ "ความรู้" แต่คือ <strong>"วินัย"</strong> คุณอาจรู้ทุกอย่างในหนังสือเล่มนี้ แต่ถ้าไม่ทำตาม ก็ไม่ต่างจากคนที่ไม่รู้อะไรเลย
+</div>
+
+<div class="quote-block">
+  "The goal of a successful trader is to make the best trades. Money is secondary."
+  <div class="src">— Alexander Elder<br>ถ้าคุณโฟกัสที่ "กระบวนการ" ที่ถูกต้อง "ผลลัพธ์" จะตามมาเอง</div>
+</div>
+
+</main>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// Back to top button
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('backToTop');
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+
+// Progress bar
+window.addEventListener('scroll', () => {
+  const fill = document.getElementById('progressFill');
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = (scrollTop / docHeight) * 100;
+  fill.style.width = progress + '%';
+});
+
+// Active sidebar link
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      document.querySelectorAll('.toc-list a').forEach(a => {
+        a.style.color = '';
+        a.style.borderLeftColor = 'transparent';
+      });
+      const id = entry.target.id;
+      const link = document.querySelector(`.toc-list a[href="#${id}"]`);
+      if (link) {
+        link.style.color = '#34d399';
+        link.style.borderLeftColor = '#10b981';
+      }
+    }
+  });
+}, { threshold: 0.3, rootMargin: '-60px 0px -60% 0px' });
+
+document.querySelectorAll('[id^="ch"], [id]').forEach(el => {
+  if (el.id) observer.observe(el);
+});
+</script>
+
+</body>
+</html>

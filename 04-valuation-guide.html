@@ -1,0 +1,2512 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ภาค 4: การประเมินมูลค่าหุ้น — คู่มือฉบับสมบูรณ์</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-card: #1a2235;
+    --bg-card-hover: #1f2a40;
+    --bg-code: #0d1321;
+    --border-primary: #2a3550;
+    --border-accent: #3b82f6;
+    --text-primary: #e8edf5;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-blue: #3b82f6;
+    --accent-blue-light: #60a5fa;
+    --accent-cyan: #22d3ee;
+    --accent-green: #34d399;
+    --accent-emerald: #10b981;
+    --accent-yellow: #fbbf24;
+    --accent-orange: #f97316;
+    --accent-red: #ef4444;
+    --accent-purple: #a78bfa;
+    --accent-pink: #f472b6;
+    --gradient-blue: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    --gradient-green: linear-gradient(135deg, #10b981, #22d3ee);
+    --gradient-warm: linear-gradient(135deg, #f97316, #fbbf24);
+    --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+    --shadow-lg: 0 8px 30px rgba(0,0,0,0.5);
+    --shadow-glow-blue: 0 0 20px rgba(59,130,246,0.15);
+    --shadow-glow-green: 0 0 20px rgba(16,185,129,0.15);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: 'IBM Plex Sans Thai', 'Noto Sans Thai', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: var(--border-primary); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent-blue); }
+
+  /* ===== NAVIGATION ===== */
+  .top-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(10,14,26,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-primary);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--accent-blue);
+    transition: all 0.3s ease;
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 32px;
+    border-radius: 6px;
+    background: rgba(59,130,246,0.1);
+    letter-spacing: 0.5px;
+  }
+  .nav-logo:hover {
+    background: rgba(59,130,246,0.2);
+    transform: scale(1.05);
+    color: var(--accent-blue-light);
+  }
+  .nav-brand {
+    font-weight: 700; font-size: 1.1rem;
+    background: var(--gradient-blue);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .nav-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .nav-links a {
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 0.8rem; padding: 0.3rem 0.7rem;
+    border-radius: 6px; transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--accent-blue-light); background: rgba(59,130,246,0.1); }
+
+  /* ===== SIDEBAR TOC ===== */
+  .sidebar {
+    position: fixed; left: 0; top: 60px; bottom: 0;
+    width: 300px; background: var(--bg-secondary);
+    border-right: 1px solid var(--border-primary);
+    overflow-y: auto; padding: 1.5rem 0;
+    z-index: 100; transition: transform 0.3s;
+  }
+  .sidebar-title {
+    font-size: 0.75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--text-muted); padding: 0 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .toc-list { list-style: none; }
+  .toc-list li a {
+    display: block; padding: 0.5rem 1.5rem;
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 0.85rem; border-left: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .toc-list li a:hover {
+    color: var(--accent-blue-light);
+    background: rgba(59,130,246,0.05);
+    border-left-color: var(--accent-blue);
+  }
+  .toc-list li.toc-h3 a { padding-left: 2.5rem; font-size: 0.8rem; }
+
+  /* ===== MAIN CONTENT ===== */
+  .main-content {
+    margin-left: 300px; margin-top: 60px;
+    max-width: 900px; padding: 2rem 3rem 6rem;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: var(--gradient-hero);
+    border-radius: var(--radius-xl);
+    padding: 4rem 3rem;
+    margin-bottom: 3rem;
+    border: 1px solid rgba(139,92,246,0.2);
+    position: relative; overflow: hidden;
+    text-align: center;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(59,130,246,0.08) 0%, transparent 60%),
+                radial-gradient(circle at 70% 50%, rgba(139,92,246,0.08) 0%, transparent 60%);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.3);
+    color: var(--accent-blue-light);
+    font-size: 0.8rem; font-weight: 600;
+    padding: 0.4rem 1.2rem; border-radius: 50px;
+    margin-bottom: 1.5rem; position: relative;
+  }
+  .hero h1 {
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 2.5rem; font-weight: 800;
+    line-height: 1.3; margin-bottom: 1rem;
+    position: relative;
+  }
+  .hero h1 .gradient-text {
+    background: var(--gradient-blue);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-subtitle {
+    font-size: 1.1rem; color: var(--text-secondary);
+    max-width: 600px; margin: 0 auto 2rem;
+    position: relative;
+  }
+
+  /* ===== QUOTE ===== */
+  .quote-block {
+    background: var(--bg-card);
+    border-left: 4px solid var(--accent-purple);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    padding: 1.5rem 2rem; margin: 2rem 0;
+    font-style: italic; color: var(--text-secondary);
+  }
+  .quote-block .author {
+    display: block; margin-top: 0.8rem;
+    font-style: normal; font-weight: 600;
+    color: var(--accent-purple); font-size: 0.9rem;
+  }
+
+  /* ===== SECTION HEADERS ===== */
+  .section-header {
+    margin: 4rem 0 2rem; padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border-primary);
+  }
+  .section-header h2 {
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 1.8rem; font-weight: 800;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .section-number {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px; border-radius: 12px;
+    font-size: 1rem; font-weight: 700; color: #fff; flex-shrink: 0;
+  }
+  .section-number.blue { background: var(--gradient-blue); }
+  .section-number.green { background: var(--gradient-green); }
+  .section-number.warm { background: var(--gradient-warm); }
+  .section-number.purple { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+
+  h3 {
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 1.35rem; font-weight: 700;
+    margin: 2.5rem 0 1rem;
+    color: var(--accent-blue-light);
+  }
+  h4 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 2rem 0 0.8rem;
+    color: var(--accent-cyan);
+  }
+
+  p { margin-bottom: 1rem; color: var(--text-secondary); }
+  strong { color: var(--text-primary); font-weight: 600; }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: 2rem; margin: 1.5rem 0;
+    transition: all 0.3s;
+  }
+  .card:hover {
+    border-color: rgba(59,130,246,0.3);
+    box-shadow: var(--shadow-glow-blue);
+  }
+  .card-title {
+    font-size: 1.1rem; font-weight: 700;
+    margin-bottom: 1rem; display: flex;
+    align-items: center; gap: 0.6rem;
+  }
+
+  /* ===== THREE COLUMN GRID ===== */
+  .three-col {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; margin: 2rem 0;
+  }
+  .col-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem; transition: all 0.3s;
+  }
+  .col-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .col-card.blue-accent { border-top: 3px solid var(--accent-blue); }
+  .col-card.green-accent { border-top: 3px solid var(--accent-green); }
+  .col-card.purple-accent { border-top: 3px solid var(--accent-purple); }
+  .col-card h4 { margin-top: 0; font-size: 1rem; }
+  .col-card ul { list-style: none; margin-top: 0.8rem; }
+  .col-card ul li {
+    padding: 0.3rem 0; font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+  .col-card ul li::before {
+    content: '•'; margin-right: 0.5rem;
+    color: var(--accent-blue);
+  }
+  .col-card .label {
+    font-size: 0.75rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px;
+    color: var(--text-muted); margin-top: 1rem;
+    display: block;
+  }
+  .col-card .label-text {
+    font-size: 0.85rem; color: var(--text-secondary);
+    margin-top: 0.3rem;
+  }
+
+  /* ===== CODE / FORMULA BLOCKS ===== */
+  .formula-block {
+    background: var(--bg-code);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: 1.5rem 2rem; margin: 1.5rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem; line-height: 1.9;
+    color: var(--text-secondary);
+    overflow-x: auto;
+    position: relative;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .formula-block .tag {
+    position: absolute; top: 0.8rem; right: 1rem;
+    font-size: 0.65rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px;
+    padding: 0.2rem 0.6rem; border-radius: 4px;
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+  }
+  .formula-block .tag.formula { background: rgba(59,130,246,0.15); color: var(--accent-blue-light); }
+  .formula-block .tag.example { background: rgba(16,185,129,0.15); color: var(--accent-green); }
+  .formula-block .tag.steps { background: rgba(249,115,22,0.15); color: var(--accent-orange); }
+  .formula-block .tag.data { background: rgba(167,139,250,0.15); color: var(--accent-purple); }
+
+  .formula-block .highlight { color: var(--accent-cyan); font-weight: 500; }
+  .formula-block .val { color: var(--accent-yellow); }
+  .formula-block .ok { color: var(--accent-green); }
+  .formula-block .warn { color: var(--accent-orange); }
+  .formula-block .bad { color: var(--accent-red); }
+  .formula-block .comment { color: var(--text-muted); }
+
+  /* ===== INFO BOX ===== */
+  .info-box {
+    border-radius: var(--radius-md);
+    padding: 1.2rem 1.5rem; margin: 1.5rem 0;
+    font-size: 0.92rem;
+  }
+  .info-box.tip {
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.2);
+    color: var(--accent-green);
+  }
+  .info-box.warning {
+    background: rgba(249,115,22,0.08);
+    border: 1px solid rgba(249,115,22,0.2);
+    color: var(--accent-orange);
+  }
+  .info-box.danger {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.2);
+    color: var(--accent-red);
+  }
+  .info-box.info {
+    background: rgba(59,130,246,0.08);
+    border: 1px solid rgba(59,130,246,0.2);
+    color: var(--accent-blue-light);
+  }
+  .info-box .box-title {
+    font-weight: 700; margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+
+  /* ===== TABLE ===== */
+  .table-wrapper {
+    overflow-x: auto; margin: 1.5rem 0;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-primary);
+  }
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  thead { background: rgba(59,130,246,0.1); }
+  th {
+    padding: 0.8rem 1rem; text-align: left;
+    font-weight: 600; color: var(--accent-blue-light);
+    border-bottom: 2px solid var(--border-primary);
+    white-space: nowrap;
+  }
+  td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid rgba(42,53,80,0.5);
+    color: var(--text-secondary);
+  }
+  tbody tr:hover { background: rgba(59,130,246,0.03); }
+
+  /* ===== TREE DIAGRAM ===== */
+  .tree {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem; line-height: 1.8;
+    color: var(--text-secondary);
+    padding: 1rem 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .tree .node { color: var(--text-primary); font-weight: 500; }
+  .tree .source { color: var(--accent-cyan); font-size: 0.8rem; }
+
+  /* ===== SENSITIVITY TABLE ===== */
+  .sensitivity-table td.current {
+    background: rgba(59,130,246,0.15);
+    color: var(--accent-blue-light);
+    font-weight: 600;
+  }
+  .sensitivity-table td.good { color: var(--accent-green); }
+  .sensitivity-table td.neutral { color: var(--accent-yellow); }
+  .sensitivity-table td.bad { color: var(--accent-red); }
+
+  /* ===== FOOTBALL FIELD ===== */
+  .football-field { margin: 2rem 0; }
+  .ff-row {
+    display: flex; align-items: center;
+    margin-bottom: 0.6rem; gap: 1rem;
+  }
+  .ff-label {
+    width: 120px; font-size: 0.85rem;
+    font-weight: 600; color: var(--text-secondary);
+    text-align: right; flex-shrink: 0;
+  }
+  .ff-bar-container {
+    flex: 1; height: 32px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px; position: relative;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .ff-bar {
+    position: absolute; height: 100%;
+    border-radius: 6px; opacity: 0.7;
+    display: flex; align-items: center;
+    justify-content: space-between;
+    padding: 0 0.6rem;
+    font-size: 0.75rem; font-weight: 600; color: #fff;
+  }
+  .ff-bar.pe { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+  .ff-bar.ev { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+  .ff-bar.dcf { background: linear-gradient(90deg, #10b981, #34d399); }
+  .ff-bar.ddm { background: linear-gradient(90deg, #f97316, #fbbf24); }
+  .ff-bar.epv { background: linear-gradient(90deg, #ef4444, #f87171); }
+  .ff-bar.nav { background: linear-gradient(90deg, #06b6d4, #22d3ee); }
+  .ff-current-line {
+    position: absolute; top: -8px; bottom: -8px;
+    width: 2px; background: var(--accent-yellow);
+    z-index: 10;
+  }
+  .ff-current-label {
+    position: absolute; top: -24px;
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--accent-yellow);
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+  .ff-scale {
+    display: flex; justify-content: space-between;
+    font-size: 0.7rem; color: var(--text-muted);
+    margin-top: 0.5rem; padding: 0 120px 0 0;
+    margin-left: calc(120px + 1rem);
+  }
+
+  /* ===== CHECKLIST ===== */
+  .checklist { list-style: none; margin: 1rem 0; }
+  .checklist li {
+    padding: 0.5rem 0; display: flex;
+    align-items: flex-start; gap: 0.8rem;
+    color: var(--text-secondary); font-size: 0.92rem;
+  }
+  .checklist li .check {
+    width: 20px; height: 20px; border-radius: 4px;
+    border: 2px solid var(--border-primary);
+    flex-shrink: 0; margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; color: transparent;
+    transition: all 0.2s; cursor: pointer;
+  }
+  .checklist li .check:hover {
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+  }
+
+  /* ===== ERRORS LIST ===== */
+  .error-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: 1.2rem 1.5rem; margin: 0.8rem 0;
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+  .error-num {
+    background: rgba(239,68,68,0.15);
+    color: var(--accent-red);
+    font-weight: 700; font-size: 0.85rem;
+    padding: 0.3rem 0.6rem; border-radius: 6px;
+    flex-shrink: 0; white-space: nowrap;
+  }
+  .error-item .fix { color: var(--accent-green); font-size: 0.9rem; margin-top: 0.3rem; }
+
+  /* ===== STEP INDICATOR ===== */
+  .step-flow {
+    display: flex; gap: 0; margin: 2rem 0;
+    overflow-x: auto; padding-bottom: 0.5rem;
+  }
+  .step-item {
+    flex: 1; min-width: 140px;
+    text-align: center; position: relative;
+    padding: 1rem 0.5rem;
+  }
+  .step-item::after {
+    content: ''; position: absolute;
+    top: 28px; right: -50%; width: 100%;
+    height: 2px; background: var(--border-primary);
+  }
+  .step-item:last-child::after { display: none; }
+  .step-circle {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--gradient-blue);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.85rem; color: #fff;
+    margin-bottom: 0.5rem; position: relative; z-index: 1;
+  }
+  .step-label {
+    font-size: 0.78rem; color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  /* ===== BACK TO TOP ===== */
+  .back-to-top {
+    position: fixed; bottom: 2rem; right: 2rem;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--gradient-blue); color: #fff;
+    border: none; cursor: pointer; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow-lg);
+    opacity: 0; transition: opacity 0.3s;
+    z-index: 1000;
+  }
+  .back-to-top.visible { opacity: 1; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1024px) {
+    .sidebar { transform: translateX(-100%); }
+    .main-content { margin-left: 0; padding: 1.5rem; }
+    .three-col { grid-template-columns: 1fr; }
+    .hero { padding: 2.5rem 1.5rem; }
+    .hero h1 { font-size: 1.8rem; }
+    .ff-label { width: 80px; font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== TOP NAVIGATION ===== -->
+<nav class="top-nav">
+  <a href="/" class="nav-logo" title="กลับหน้าหลัก">HOME</a>
+  <div class="nav-brand">📊 ภาค 4 — การประเมินมูลค่าหุ้น</div>
+  <div class="nav-links">
+    <a href="#overview">ภาพรวม</a>
+    <a href="#data-sources">แหล่งข้อมูล</a>
+    <a href="#relative">Relative</a>
+    <a href="#absolute">Absolute</a>
+    <a href="#asset-based">Asset-Based</a>
+    <a href="#special">เฉพาะทาง</a>
+    <a href="#practice">ปฏิบัติจริง</a>
+    <a href="#case-study">กรณีศึกษา</a>
+    <a href="#mistakes">ข้อผิดพลาด</a>
+  </div>
+</nav>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar">
+  <div class="sidebar-title">สารบัญ</div>
+  <ul class="toc-list">
+    <li><a href="#overview">ภาพรวม: 3 แนวทางหลัก</a></li>
+    <li><a href="#data-sources">ส่วนที่ 1: แหล่งข้อมูล</a></li>
+    <li class="toc-h3"><a href="#financial-data">ข้อมูลที่ต้องใช้</a></li>
+    <li class="toc-h3"><a href="#reading-fs">การอ่านงบการเงิน</a></li>
+    <li><a href="#relative">ส่วนที่ 2: Relative Valuation</a></li>
+    <li class="toc-h3"><a href="#pe-ratio">2.1 P/E Ratio</a></li>
+    <li class="toc-h3"><a href="#pbv-ratio">2.2 P/BV Ratio</a></li>
+    <li class="toc-h3"><a href="#ev-ebitda">2.3 EV/EBITDA</a></li>
+    <li class="toc-h3"><a href="#peg-ratio">2.4 PEG Ratio</a></li>
+    <li class="toc-h3"><a href="#ps-ratio">2.5 P/S Ratio</a></li>
+    <li class="toc-h3"><a href="#pcf-ratio">2.6 P/CF Ratio</a></li>
+    <li class="toc-h3"><a href="#div-yield">2.7 Dividend Yield</a></li>
+    <li><a href="#absolute">ส่วนที่ 3: Absolute Valuation</a></li>
+    <li class="toc-h3"><a href="#dcf">3.1 DCF</a></li>
+    <li class="toc-h3"><a href="#ddm">3.2 DDM</a></li>
+    <li class="toc-h3"><a href="#rim">3.3 Residual Income</a></li>
+    <li class="toc-h3"><a href="#eva">3.4 EVA</a></li>
+    <li><a href="#asset-based">ส่วนที่ 4: Asset-Based</a></li>
+    <li class="toc-h3"><a href="#nav">4.1 NAV</a></li>
+    <li class="toc-h3"><a href="#liquidation">4.2 Liquidation Value</a></li>
+    <li class="toc-h3"><a href="#replacement">4.3 Replacement Cost</a></li>
+    <li><a href="#special">ส่วนที่ 5: วิธีเฉพาะทาง</a></li>
+    <li class="toc-h3"><a href="#sotp">5.1 SOTP</a></li>
+    <li class="toc-h3"><a href="#epv">5.2 EPV</a></li>
+    <li><a href="#practice">ส่วนที่ 6: ปฏิบัติจริง</a></li>
+    <li class="toc-h3"><a href="#football-field">Football Field Chart</a></li>
+    <li class="toc-h3"><a href="#margin-safety">Margin of Safety</a></li>
+    <li><a href="#case-study">ส่วนที่ 7: กรณีศึกษา</a></li>
+    <li><a href="#mistakes">ส่วนที่ 8: ข้อผิดพลาด</a></li>
+    <li><a href="#checklist">ส่วนที่ 9: Checklist</a></li>
+    <li><a href="#references">แหล่งอ้างอิง</a></li>
+  </ul>
+</aside>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="main-content">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">บทที่ 19 — Fundamental Valuation</div>
+    <h1>การประเมินมูลค่าหุ้น<br>จากปัจจัยพื้นฐาน<br><span class="gradient-text">คู่มือฉบับสมบูรณ์</span></h1>
+    <p class="hero-subtitle">ทุกวิธี ทุกขั้นตอน พร้อมตัวอย่างจริง — ตั้งแต่วิธีง่ายๆ ไปจนถึงวิธีขั้นสูงที่นักวิเคราะห์มืออาชีพใช้</p>
+  </section>
+
+  <div class="quote-block">
+    "ราคาคือสิ่งที่คุณจ่าย มูลค่าคือสิ่งที่คุณได้รับ"
+    <span class="author">— Warren Buffett</span>
+  </div>
+
+  <p>การวิเคราะห์ทางเทคนิคบอกว่า <strong>"เมื่อไหร่ควรซื้อ"</strong> แต่การประเมินมูลค่า (Valuation) บอกว่า <strong>"ควรซื้อที่ราคาเท่าไหร่"</strong> — นักลงทุนที่ดีต้องรู้ทั้งสองอย่าง</p>
+
+  <!-- ===== OVERVIEW: 3 APPROACHES ===== -->
+  <div class="section-header" id="overview">
+    <h2><span class="section-number blue">📊</span> ภาพรวม: 3 แนวทางหลักในการประเมินมูลค่า</h2>
+  </div>
+
+  <div class="three-col">
+    <div class="col-card blue-accent">
+      <h4 style="color: var(--accent-blue-light);">1. Absolute Valuation</h4>
+      <p style="font-size:0.85rem; color:var(--text-muted);">มูลค่าสัมบูรณ์</p>
+      <ul>
+        <li>DCF</li>
+        <li>DDM</li>
+        <li>Residual Income</li>
+        <li>EVA</li>
+      </ul>
+      <span class="label">หลักการ</span>
+      <p class="label-text">คำนวณมูลค่าที่แท้จริงจากกระแสเงินสดในอนาคต</p>
+      <span class="label">เหมาะกับ</span>
+      <p class="label-text">นักลงทุนระยะยาวที่ต้องการความแม่นยำ</p>
+    </div>
+    <div class="col-card green-accent">
+      <h4 style="color: var(--accent-green);">2. Relative Valuation</h4>
+      <p style="font-size:0.85rem; color:var(--text-muted);">มูลค่าเปรียบเทียบ</p>
+      <ul>
+        <li>P/E Ratio</li>
+        <li>P/BV Ratio</li>
+        <li>EV/EBITDA</li>
+        <li>P/S Ratio</li>
+        <li>PEG Ratio</li>
+        <li>P/CF</li>
+      </ul>
+      <span class="label">หลักการ</span>
+      <p class="label-text">เปรียบเทียบกับหุ้นอื่นที่คล้ายกัน</p>
+      <span class="label">เหมาะกับ</span>
+      <p class="label-text">การเปรียบเทียบเร็ว คัดกรองเบื้องต้น</p>
+    </div>
+    <div class="col-card purple-accent">
+      <h4 style="color: var(--accent-purple);">3. Asset-Based Valuation</h4>
+      <p style="font-size:0.85rem; color:var(--text-muted);">มูลค่าสินทรัพย์</p>
+      <ul>
+        <li>Book Value</li>
+        <li>NAV</li>
+        <li>Liquidation Value</li>
+        <li>Replacement Cost</li>
+      </ul>
+      <span class="label">หลักการ</span>
+      <p class="label-text">ดูมูลค่าสินทรัพย์ที่บริษัทมีอยู่จริง</p>
+      <span class="label">เหมาะกับ</span>
+      <p class="label-text">หุ้นที่มีสินทรัพย์มาก ธนาคาร อสังหาฯ</p>
+    </div>
+  </div>
+
+  <div class="info-box tip">
+    <div class="box-title">💡 หลักการสำคัญ</div>
+    ไม่มีวิธีไหนที่ "ดีที่สุด" — นักวิเคราะห์มืออาชีพใช้หลายวิธีพร้อมกัน แล้วเปรียบเทียบผลลัพธ์ ถ้าหลายวิธีให้คำตอบไปในทิศทางเดียวกัน ความมั่นใจจะสูงขึ้น
+  </div>
+
+  <!-- ===== SECTION 1: DATA SOURCES ===== -->
+  <div class="section-header" id="data-sources">
+    <h2><span class="section-number green">1</span> แหล่งข้อมูลสำหรับการประเมินมูลค่า</h2>
+  </div>
+
+  <p>ก่อนจะเริ่มประเมินมูลค่า ต้องรู้ก่อนว่าจะหาข้อมูลจากไหน <strong>ข้อมูลที่ผิดจะนำไปสู่การประเมินที่ผิด</strong></p>
+
+  <h3 id="financial-data">ข้อมูลที่ต้องใช้และแหล่งที่มา</h3>
+
+  <!-- Data Source 1 -->
+  <div class="card">
+    <div class="card-title">📑 1. งบการเงิน (Financial Statements)</div>
+    <div class="tree"><span class="node">งบการเงิน</span>
+├── งบกำไรขาดทุน (Income Statement)
+├── งบดุล (Balance Sheet)
+├── งบกระแสเงินสด (Cash Flow Statement)
+└── หมายเหตุประกอบงบการเงิน (Notes)
+
+📌 <strong>แหล่งข้อมูล:</strong>
+   • <span class="source">set.or.th</span> → ค้นหาหุ้น → งบการเงิน
+   • <span class="source">settrade.com</span> → Financial Statement
+   • <span class="source">sec.or.th</span> → แบบ 56-1 One Report</div>
+  </div>
+
+  <!-- Data Source 2 -->
+  <div class="card">
+    <div class="card-title">💹 2. ข้อมูลราคาและการซื้อขาย</div>
+    <div class="tree"><span class="node">ข้อมูลราคา</span>
+├── ราคาหุ้นปัจจุบันและย้อนหลัง
+├── จำนวนหุ้นที่ออกจำหน่าย (Shares Outstanding)
+├── Market Capitalization
+└── วอลุ่มการซื้อขาย
+
+📌 <strong>แหล่งข้อมูล:</strong>
+   • <span class="source">settrade.com</span> → Stock Quote
+   • <span class="source">set.or.th</span> → ข้อมูลหลักทรัพย์</div>
+  </div>
+
+  <!-- Data Source 3 -->
+  <div class="card">
+    <div class="card-title">🏭 3. ข้อมูลอุตสาหกรรมและเปรียบเทียบ</div>
+    <div class="tree"><span class="node">ข้อมูลอุตสาหกรรม</span>
+├── P/E เฉลี่ยของกลุ่มอุตสาหกรรม
+├── อัตราการเติบโตของอุตสาหกรรม
+└── ข้อมูลคู่แข่ง (Peer Comparison)
+
+📌 <strong>แหล่งข้อมูล:</strong>
+   • <span class="source">set.or.th</span> → สถิติตลาด → ข้อมูลรายกลุ่มอุตสาหกรรม
+   • <span class="source">settrade.com</span> → Industry Comparison</div>
+  </div>
+
+  <!-- Data Source 4 -->
+  <div class="card">
+    <div class="card-title">🌐 4. ข้อมูลเศรษฐกิจมหภาค</div>
+    <div class="tree"><span class="node">เศรษฐกิจมหภาค</span>
+├── อัตราดอกเบี้ยนโยบาย (Policy Rate)
+├── อัตราผลตอบแทนพันธบัตรรัฐบาล (Risk-Free Rate)
+├── อัตราเงินเฟ้อ
+└── GDP Growth
+
+📌 <strong>แหล่งข้อมูล:</strong>
+   • <span class="source">bot.or.th</span> → ธนาคารแห่งประเทศไทย
+   • <span class="source">thaibma.or.th</span> → อัตราผลตอบแทนพันธบัตร
+   • <span class="source">nesdc.go.th</span> → สภาพัฒน์ (GDP)</div>
+  </div>
+
+  <!-- Data Source 5 -->
+  <div class="card">
+    <div class="card-title">📈 5. ข้อมูล Beta และ Risk Premium</div>
+    <div class="tree"><span class="node">Beta &amp; Risk Premium</span>
+├── Beta ของหุ้น
+├── Equity Risk Premium (ERP)
+└── Country Risk Premium (CRP)
+
+📌 <strong>แหล่งข้อมูล:</strong>
+   • <span class="source">settrade.com</span> → Beta (ดูในหน้า Stock Quote)
+   • <span class="source">pages.stern.nyu.edu/~adamodar</span> → Damodaran Online
+     (ข้อมูล ERP, CRP, Beta ตามอุตสาหกรรมทั่วโลก)
+   • <span class="source">thaibma.or.th</span> → Risk-Free Rate (พันธบัตร 10 ปี)</div>
+  </div>
+
+  <div class="info-box info">
+    <div class="box-title">🌟 แหล่งอ้างอิงสำคัญ</div>
+    เว็บไซต์ของ Prof. Aswath Damodaran แห่ง NYU Stern School of Business (<strong>pages.stern.nyu.edu/~adamodar</strong>) เป็นแหล่งข้อมูลฟรีที่ดีที่สุดในโลกสำหรับข้อมูล Valuation — มีทั้ง Equity Risk Premium, Country Risk Premium, Beta ตามอุตสาหกรรม, Cost of Capital ของทุกประเทศ อัปเดตทุกปี
+  </div>
+
+  <!-- Reading Financial Statements -->
+  <h3 id="reading-fs">การอ่านงบการเงินเพื่อ Valuation — สิ่งที่ต้องดึงออกมา</h3>
+
+  <div class="formula-block">
+    <span class="tag data">งบกำไรขาดทุน</span>
+<span class="highlight">จากงบกำไรขาดทุน (Income Statement):</span>
+├── รายได้ (Revenue) — 3-5 ปีย้อนหลัง → คำนวณอัตราเติบโต
+├── กำไรขั้นต้น (Gross Profit) → คำนวณ Gross Margin
+├── กำไรจากการดำเนินงาน (Operating Profit / EBIT)
+├── EBITDA = EBIT + Depreciation + Amortization
+├── กำไรสุทธิ (Net Income) → คำนวณ EPS
+├── ค่าเสื่อมราคา (Depreciation &amp; Amortization)
+└── ดอกเบี้ยจ่าย (Interest Expense)
+  </div>
+
+  <div class="formula-block">
+    <span class="tag data">งบดุล</span>
+<span class="highlight">จากงบดุล (Balance Sheet):</span>
+├── สินทรัพย์รวม (Total Assets)
+├── หนี้สินรวม (Total Liabilities)
+├── ส่วนของผู้ถือหุ้น (Shareholders' Equity) → คำนวณ BPS
+├── หนี้สินที่มีดอกเบี้ย (Interest-Bearing Debt)
+├── เงินสดและรายการเทียบเท่า (Cash &amp; Equivalents)
+├── สินทรัพย์ถาวรสุทธิ (Net Fixed Assets)
+└── เงินลงทุนสุทธิ (Net Working Capital)
+  </div>
+
+  <div class="formula-block">
+    <span class="tag data">งบกระแสเงินสด</span>
+<span class="highlight">จากงบกระแสเงินสด (Cash Flow Statement):</span>
+├── กระแสเงินสดจากการดำเนินงาน (Operating Cash Flow / CFO)
+├── รายจ่ายลงทุน (Capital Expenditure / CapEx)
+├── <span class="val">Free Cash Flow = CFO - CapEx</span>
+├── เงินปันผลจ่าย (Dividends Paid)
+└── การเปลี่ยนแปลงเงินทุนหมุนเวียน (Change in Working Capital)
+  </div>
+
+  <!-- ===== SECTION 2: RELATIVE VALUATION ===== -->
+  <div class="section-header" id="relative">
+    <h2><span class="section-number green">2</span> Relative Valuation — การประเมินมูลค่าเชิงเปรียบเทียบ</h2>
+  </div>
+
+  <p>Relative Valuation เป็นวิธีที่ใช้ง่ายและเร็วที่สุด เหมาะสำหรับการคัดกรองเบื้องต้น หลักการคือ <strong>"หุ้นที่คล้ายกันควรมีราคาใกล้เคียงกัน"</strong></p>
+
+  <!-- 2.1 P/E Ratio -->
+  <h3 id="pe-ratio">2.1 P/E Ratio (Price to Earnings Ratio)</h3>
+  <p>อัตราส่วนราคาต่อกำไร — เป็น Ratio ที่ใช้แพร่หลายที่สุดในโลก</p>
+
+  <div class="formula-block">
+    <span class="tag formula">สูตร</span>
+<span class="highlight">P/E = ราคาหุ้น / กำไรต่อหุ้น (EPS)</span>
+หรือ
+<span class="highlight">P/E = Market Cap / กำไรสุทธิ</span>
+
+<span class="comment">ตัวอย่าง:</span>
+ราคาหุ้น = <span class="val">50</span> บาท
+EPS = <span class="val">5</span> บาท
+P/E = 50 / 5 = <span class="val">10 เท่า</span>
+
+<span class="comment">ความหมาย: ถ้ากำไรคงที่ ต้องรอ 10 ปีถึงจะได้ทุนคืน</span>
+  </div>
+
+  <h4>ประเภทของ P/E</h4>
+
+  <div class="formula-block">
+    <span class="tag steps">3 ประเภท</span>
+<span class="highlight">1. Trailing P/E</span> (P/E ย้อนหลัง)
+   = ราคาปัจจุบัน / EPS 4 ไตรมาสล่าสุด
+   → ใช้ข้อมูลจริง แต่มองย้อนหลัง
+
+<span class="highlight">2. Forward P/E</span> (P/E คาดการณ์)
+   = ราคาปัจจุบัน / EPS ที่คาดการณ์ 12 เดือนข้างหน้า
+   → มองไปข้างหน้า แต่ขึ้นอยู่กับความแม่นยำของการคาดการณ์
+
+<span class="highlight">3. Normalized P/E</span>
+   = ราคาปัจจุบัน / EPS เฉลี่ย 5-10 ปี (ปรับวัฏจักร)
+   → ลดผลกระทบจากปีที่กำไรสูง/ต่ำผิดปกติ
+  </div>
+
+  <h4>วิธีใช้ P/E ในการประเมินมูลค่า</h4>
+
+  <div class="formula-block">
+    <span class="tag example">ตัวอย่าง</span>
+<span class="highlight">ขั้นตอนที่ 1: หา P/E ที่เหมาะสม</span>
+├── เปรียบเทียบกับ P/E เฉลี่ยของกลุ่มอุตสาหกรรม
+│   📌 ดูได้ที่: <span class="source">set.or.th → สถิติตลาด → P/E รายกลุ่ม</span>
+├── เปรียบเทียบกับ P/E เฉลี่ยย้อนหลัง 5 ปีของหุ้นตัวเดียวกัน
+│   📌 ดูได้ที่: <span class="source">settrade.com → Financial Ratio</span>
+└── เปรียบเทียบกับ P/E ของคู่แข่ง (Peer Comparison)
+
+<span class="highlight">ขั้นตอนที่ 2: คำนวณมูลค่าที่เหมาะสม</span>
+มูลค่าที่เหมาะสม = EPS คาดการณ์ × P/E ที่เหมาะสม
+
+<span class="comment">ตัวอย่าง: หุ้น ABC อยู่ในกลุ่มอาหาร</span>
+├── EPS คาดการณ์ปีหน้า = <span class="val">3.50</span> บาท
+├── P/E เฉลี่ยกลุ่มอาหาร = <span class="val">18</span> เท่า
+├── P/E เฉลี่ย 5 ปีของ ABC = <span class="val">16</span> เท่า
+├── P/E ของคู่แข่ง = <span class="val">15-20</span> เท่า
+└── เลือก P/E ที่เหมาะสม = <span class="val">17</span> เท่า (ค่ากลาง)
+
+มูลค่าที่เหมาะสม = 3.50 × 17 = <span class="ok">59.50 บาท</span>
+ราคาปัจจุบัน = 45 บาท
+→ Upside = (59.50 - 45) / 45 = <span class="ok">+32.2% → น่าสนใจ ✅</span>
+  </div>
+
+  <div class="info-box warning">
+    <div class="box-title">⚠️ ข้อควรระวังของ P/E</div>
+    <ul style="margin-left:1rem; margin-top:0.5rem; list-style:disc;">
+      <li>P/E ใช้ไม่ได้กับบริษัทที่ขาดทุน (EPS ติดลบ)</li>
+      <li>กำไรสามารถถูก "ตกแต่ง" ได้ง่ายกว่ากระแสเงินสด</li>
+      <li>P/E สูงไม่ได้แปลว่า "แพง" เสมอไป — ถ้าบริษัทเติบโตเร็ว P/E สูงอาจสมเหตุสมผล</li>
+      <li>P/E ต่ำไม่ได้แปลว่า "ถูก" เสมอไป — อาจเป็นเพราะบริษัทมีปัญหา (Value Trap)</li>
+    </ul>
+  </div>
+
+  <!-- 2.2 P/BV Ratio -->
+  <h3 id="pbv-ratio">2.2 P/BV Ratio (Price to Book Value)</h3>
+  <p>อัตราส่วนราคาต่อมูลค่าทางบัญชี</p>
+
+  <div class="formula-block">
+    <span class="tag formula">สูตร</span>
+<span class="highlight">P/BV = ราคาหุ้น / มูลค่าทางบัญชีต่อหุ้น (BPS)</span>
+BPS = ส่วนของผู้ถือหุ้น / จำนวนหุ้นที่ออกจำหน่าย
+
+<span class="comment">ตัวอย่าง:</span>
+ราคาหุ้น = <span class="val">30</span> บาท
+ส่วนของผู้ถือหุ้น = <span class="val">5,000</span> ล้านบาท
+จำนวนหุ้น = <span class="val">200</span> ล้านหุ้น
+BPS = 5,000 / 200 = <span class="val">25</span> บาท
+P/BV = 30 / 25 = <span class="val">1.2 เท่า</span>
+
+<span class="comment">ความหมาย: ตลาดให้มูลค่าบริษัทสูงกว่ามูลค่าทางบัญชี 20%</span>
+  </div>
+
+  <div class="three-col" style="grid-template-columns: 1fr 1fr;">
+    <div class="col-card green-accent">
+      <h4 style="color:var(--accent-green);">✅ เหมาะกับ</h4>
+      <ul>
+        <li>ธนาคาร (สินทรัพย์ส่วนใหญ่เป็นสินเชื่อ)</li>
+        <li>บริษัทประกัน</li>
+        <li>บริษัทอสังหาริมทรัพย์</li>
+        <li>บริษัทที่มีสินทรัพย์จับต้องได้มาก</li>
+      </ul>
+    </div>
+    <div class="col-card" style="border-top: 3px solid var(--accent-red);">
+      <h4 style="color:var(--accent-red);">❌ ไม่เหมาะกับ</h4>
+      <ul>
+        <li>บริษัทเทคโนโลยี (สินทรัพย์ส่วนใหญ่เป็น Intangible)</li>
+        <li>บริษัทที่มี Brand Value สูง</li>
+        <li>บริษัทที่ Asset-Light (ใช้สินทรัพย์น้อย)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h4>ความสัมพันธ์ระหว่าง P/BV กับ ROE</h4>
+
+  <div class="formula-block">
+    <span class="tag formula">สูตร</span>
+<span class="highlight">P/BV ที่เหมาะสม ≈ (ROE - g) / (r - g)</span>
+
+ROE = Return on Equity (ผลตอบแทนต่อส่วนของผู้ถือหุ้น)
+g   = อัตราเติบโตระยะยาว
+r   = อัตราผลตอบแทนที่ต้องการ (Cost of Equity)
+
+<span class="highlight">หลักการง่ายๆ:</span>
+├── ROE &gt; Cost of Equity → P/BV ควร &gt; 1 <span class="ok">(บริษัทสร้างมูลค่าเพิ่ม)</span>
+├── ROE = Cost of Equity → P/BV ควร ≈ 1 <span class="comment">(ไม่ได้สร้างมูลค่าเพิ่ม)</span>
+└── ROE &lt; Cost of Equity → P/BV ควร &lt; 1 <span class="bad">(บริษัททำลายมูลค่า)</span>
+
+<span class="comment">ตัวอย่าง: ธนาคาร</span>
+├── ธนาคาร A: ROE = 15%, P/BV = 1.5 → <span class="ok">สมเหตุสมผล</span>
+├── ธนาคาร B: ROE = 8%,  P/BV = 1.5 → <span class="warn">อาจแพงเกินไป</span>
+└── ธนาคาร C: ROE = 12%, P/BV = 0.8 → <span class="ok">อาจถูกเกินไป (ถ้าไม่มีปัญหาซ่อน)</span>
+  </div>
+
+  <!-- 2.3 EV/EBITDA -->
+  <h3 id="ev-ebitda">2.3 EV/EBITDA</h3>
+  <p>อัตราส่วนมูลค่ากิจการต่อกำไรก่อนดอกเบี้ย ภาษี ค่าเสื่อม</p>
+
+  <div class="info-box tip">
+    <div class="box-title">💡 ทำไม EV/EBITDA ดีกว่า P/E ในหลายกรณี</div>
+    <ul style="margin-left:1rem; margin-top:0.5rem; list-style:disc;">
+      <li>ไม่ถูกบิดเบือนจากโครงสร้างเงินทุน (หนี้ vs ทุน)</li>
+      <li>ไม่ถูกบิดเบือนจากนโยบายค่าเสื่อมราคา</li>
+      <li>ไม่ถูกบิดเบือนจากอัตราภาษีที่ต่างกัน</li>
+      <li>เปรียบเทียบบริษัทข้ามประเทศได้ดีกว่า</li>
+    </ul>
+  </div>
+
+  <div class="formula-block">
+    <span class="tag formula">สูตร</span>
+<span class="highlight">Enterprise Value (EV)</span> = Market Cap + หนี้สินที่มีดอกเบี้ย - เงินสด
+<span class="highlight">EBITDA</span> = กำไรจากการดำเนินงาน (EBIT) + ค่าเสื่อมราคา + ค่าตัดจำหน่าย
+<span class="highlight">EV/EBITDA</span> = Enterprise Value / EBITDA
+
+<span class="comment">ตัวอย่าง:</span>
+Market Cap              = <span class="val">10,000</span> ล้านบาท
+หนี้สินที่มีดอกเบี้ย      = <span class="val">3,000</span> ล้านบาท
+เงินสด                  = <span class="val">1,000</span> ล้านบาท
+EV = 10,000 + 3,000 - 1,000 = <span class="val">12,000</span> ล้านบาท
+
+EBIT                    = <span class="val">1,500</span> ล้านบาท
+ค่าเสื่อมราคา            = <span class="val">500</span> ล้านบาท
+EBITDA = 1,500 + 500    = <span class="val">2,000</span> ล้านบาท
+
+EV/EBITDA = 12,000 / 2,000 = <span class="val">6 เท่า</span>
+  </div>
+
+  <h4>วิธีใช้ EV/EBITDA ในการประเมินมูลค่า</h4>
+
+  <div class="formula-block">
+    <span class="tag steps">ขั้นตอน</span>
+<span class="highlight">ขั้นตอนที่ 1:</span> หา EV/EBITDA ที่เหมาะสม
+├── เปรียบเทียบกับค่าเฉลี่ยของกลุ่มอุตสาหกรรม
+├── เปรียบเทียบกับค่าเฉลี่ยย้อนหลังของหุ้นตัวเดียวกัน
+└── เปรียบเทียบกับคู่แข่ง
+
+<span class="highlight">ขั้นตอนที่ 2:</span> คำนวณ Target EV
+Target EV = EBITDA คาดการณ์ × EV/EBITDA ที่เหมาะสม
+
+<span class="highlight">ขั้นตอนที่ 3:</span> แปลงเป็นราคาหุ้น
+Target Market Cap = Target EV - หนี้สินที่มีดอกเบี้ย + เงินสด
+Target Price = Target Market Cap / จำนวนหุ้น
+
+<span class="comment">ตัวอย่าง:</span>
+EBITDA คาดการณ์ปีหน้า   = <span class="val">2,200</span> ล้านบาท
+EV/EBITDA เฉลี่ยกลุ่ม    = <span class="val">7</span> เท่า
+Target EV               = 2,200 × 7 = <span class="val">15,400</span> ล้านบาท
+Target Market Cap        = 15,400 - 3,000 + 1,000 = <span class="val">13,400</span> ล้านบาท
+จำนวนหุ้น               = <span class="val">500</span> ล้านหุ้น
+Target Price             = 13,400 / 500 = <span class="ok">26.80 บาท</span>
+  </div>
+
+  <!-- 2.4 PEG Ratio -->
+  <h3 id="peg-ratio">2.4 PEG Ratio (Price/Earnings to Growth)</h3>
+  <p>P/E ปรับด้วยการเติบโต — แก้จุดอ่อนของ P/E ที่ไม่ได้คำนึงถึงอัตราเติบโต</p>
+
+  <div class="formula-block">
+    <span class="tag formula">สูตร</span>
+<span class="highlight">PEG = P/E / อัตราเติบโตของกำไร (%)</span>
+
+<span class="comment">ตัวอย่าง:</span>
+หุ้น A: P/E = <span class="val">30</span>, กำไรเติบโต 30% → PEG = 30/30 = <span class="val">1.0</span>
+หุ้น B: P/E = <span class="val">15</span>, กำไรเติบโต 5%  → PEG = 15/5  = <span class="bad">3.0</span>
+หุ้น C: P/E = <span class="val">20</span>, กำไรเติบโต 25% → PEG = 20/25 = <span class="ok">0.8</span>
+
+แม้หุ้น A จะมี P/E สูงกว่า แต่ PEG ต่ำกว่าหุ้น B
+→ หุ้น A "ถูก" กว่าเมื่อเทียบกับการเติบโต
+→ <span class="ok">หุ้น C น่าสนใจที่สุด (PEG &lt; 1)</span>
+  </div>
+
+  <div class="formula-block">
+    <span class="tag steps">เกณฑ์ Peter Lynch</span>
+PEG &lt; 1.0 → <span class="ok">อาจถูกเกินไป (Undervalued) ✅</span>
+PEG = 1.0 → <span class="val">ราคาสมเหตุสมผล (Fair Value)</span>
+PEG &gt; 1.0 → <span class="warn">อาจแพงเกินไป (Overvalued) ⚠️</span>
+PEG &gt; 2.0 → <span class="bad">แพงมาก ❌</span>
+  </div>
+
+  <!-- 2.5 P/S Ratio -->
+  <h3 id="ps-ratio">2.5 P/S Ratio (Price to Sales)</h3>
+  <p>อัตราส่วนราคาต่อยอดขาย</p>
+
+  <div class="formula-block">
+    <span class="tag formula">สูตร</span>
+<span class="highlight">P/S = ราคาหุ้น / ยอดขายต่อหุ้น</span>
+หรือ
+<span class="highlight">P/S = Market Cap / รายได้รวม</span>
+
+<span class="ok">เหมาะกับ:</span>
+├── บริษัทที่ยังไม่มีกำไร (Startup, บริษัทเทคโนโลยีช่วงเริ่มต้น)
+├── บริษัทที่กำไรผันผวนมาก แต่รายได้สม่ำเสมอ
+└── เปรียบเทียบบริษัทที่มี Margin ต่างกัน (ต้องระวัง)
+
+<span class="warn">ข้อจำกัด:</span>
+├── ไม่ได้บอกว่าบริษัทมีกำไรหรือไม่
+├── บริษัทที่มี Margin สูงควรมี P/S สูงกว่า
+└── ต้องเปรียบเทียบกับบริษัทในอุตสาหกรรมเดียวกันเท่านั้น
+  </div>
+
+  <!-- 2.6 P/CF Ratio -->
+  <h3 id="pcf-ratio">2.6 P/CF Ratio (Price to Cash Flow)</h3>
+
+  <div class="formula-block">
+    <span class="tag formula">สูตร</span>
+<span class="highlight">P/CF  = ราคาหุ้น / กระแสเงินสดจากการดำเนินงานต่อหุ้น</span>
+<span class="highlight">P/FCF = ราคาหุ้น / Free Cash Flow ต่อหุ้น</span>
+
+<span class="ok">ทำไม P/CF ดีกว่า P/E ในบางกรณี:</span>
+├── กระแสเงินสดถูก "ตกแต่ง" ได้ยากกว่ากำไร
+├── ไม่ถูกบิดเบือนจากนโยบายบัญชี (ค่าเสื่อม, การตั้งสำรอง)
+└── สะท้อนเงินสดที่บริษัทสร้างได้จริง
+  </div>
+
+  <!-- 2.7 Dividend Yield -->
+  <h3 id="div-yield">2.7 Dividend Yield — อัตราเงินปันผลตอบแทน</h3>
+
+  <div class="formula-block">
+    <span class="tag example">ตัวอย่าง</span>
+<span class="highlight">Dividend Yield = เงินปันผลต่อหุ้น / ราคาหุ้น × 100%</span>
+
+เงินปันผลต่อหุ้น = <span class="val">2.00</span> บาท
+ราคาหุ้น         = <span class="val">40</span> บาท
+Dividend Yield   = 2.00 / 40 × 100% = <span class="val">5.0%</span>
+
+<span class="highlight">เปรียบเทียบกับ:</span>
+├── อัตราดอกเบี้ยเงินฝาก          (~1.5-2.0%)
+├── อัตราผลตอบแทนพันธบัตร 10 ปี   (~2.5-3.0%)
+└── Dividend Yield เฉลี่ยของ SET   (~3.0-3.5%)
+
+ถ้า Dividend Yield สูงกว่าค่าเฉลี่ยมาก → อาจเป็นโอกาส
+<span class="warn">แต่ต้องตรวจสอบว่า:</span>
+├── บริษัทจ่ายปันผลสม่ำเสมอไหม? (ดูย้อนหลัง 5-10 ปี)
+├── Payout Ratio สมเหตุสมผลไหม? (ไม่ควรเกิน 80%)
+└── กำไรในอนาคตจะรองรับการจ่ายปันผลได้ไหม?
+  </div>
+
+  <!-- Summary Table -->
+  <h3>ตารางสรุป: เมื่อไหร่ควรใช้ Ratio ไหน</h3>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Ratio</th>
+          <th>เหมาะกับ</th>
+          <th>ไม่เหมาะกับ</th>
+          <th>แหล่งข้อมูล</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>P/E</strong></td>
+          <td>บริษัทที่มีกำไรสม่ำเสมอ</td>
+          <td>บริษัทขาดทุน, กำไรผันผวน</td>
+          <td>settrade.com</td>
+        </tr>
+        <tr>
+          <td><strong>P/BV</strong></td>
+          <td>ธนาคาร, อสังหาฯ, ประกัน</td>
+          <td>เทคโนโลยี, บริการ</td>
+          <td>settrade.com</td>
+        </tr>
+        <tr>
+          <td><strong>EV/EBITDA</strong></td>
+          <td>เปรียบเทียบข้ามโครงสร้างทุน</td>
+          <td>ธนาคาร (ไม่มี EBITDA ชัดเจน)</td>
+          <td>คำนวณเอง</td>
+        </tr>
+        <tr>
+          <td><strong>PEG</strong></td>
+          <td>หุ้น Growth ที่โตสม่ำเสมอ</td>
+          <td>หุ้นวัฏจักร, กำไรผันผวน</td>
+          <td>คำนวณเอง</td>
+        </tr>
+        <tr>
+          <td><strong>P/S</strong></td>
+          <td>บริษัทที่ยังไม่มีกำไร</td>
+          <td>บริษัทที่ Margin ต่างกันมาก</td>
+          <td>settrade.com</td>
+        </tr>
+        <tr>
+          <td><strong>P/CF</strong></td>
+          <td>ทุกบริษัท (ดีกว่า P/E)</td>
+          <td>บริษัทที่ CapEx สูงผิดปกติ</td>
+          <td>คำนวณเอง</td>
+        </tr>
+        <tr>
+          <td><strong>Div Yield</strong></td>
+          <td>หุ้นปันผล, นักลงทุนรายได้</td>
+          <td>หุ้น Growth ที่ไม่จ่ายปันผล</td>
+          <td>settrade.com</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== SECTION 3: ABSOLUTE VALUATION ===== -->
+  <div class="section-header" id="absolute">
+    <h2><span class="section-number blue">3</span> Absolute Valuation — การประเมินมูลค่าสัมบูรณ์</h2>
+  </div>
+
+  <p>Absolute Valuation คำนวณ <strong>"มูลค่าที่แท้จริง" (Intrinsic Value)</strong> ของหุ้น โดยไม่ต้องเปรียบเทียบกับหุ้นอื่น — เป็นวิธีที่แม่นยำที่สุดแต่ซับซ้อนที่สุด</p>
+
+  <!-- 3.1 DCF -->
+  <h3 id="dcf">3.1 Discounted Cash Flow (DCF)</h3>
+  <p>DCF เป็น <strong>"ราชา"</strong> ของวิธี Valuation ทั้งหมด เป็นวิธีที่นักวิเคราะห์มืออาชีพและ Investment Banker ใช้มากที่สุด</p>
+
+  <div class="formula-block">
+    <span class="tag formula">หลักการ</span>
+<span class="highlight">มูลค่าของบริษัท = ผลรวมของกระแสเงินสดอิสระในอนาคตทั้งหมด
+                   ที่ถูกคิดลดกลับมาเป็นมูลค่าปัจจุบัน</span>
+
+ทำไมต้อง "คิดลด" (Discount)?
+├── เงิน 100 บาทวันนี้ มีค่ามากกว่าเงิน 100 บาทในอีก 5 ปี
+├── เพราะเงินวันนี้สามารถนำไปลงทุนได้
+└── ยิ่งอนาคตไกล ยิ่งไม่แน่นอน → ต้องคิดลดมากขึ้น
+  </div>
+
+  <div class="formula-block">
+    <span class="tag formula">สูตร DCF</span>
+              FCF₁        FCF₂        FCF₃              FCFₙ + TV
+Value = ────────── + ────────── + ────────── + ... + ──────────
+         (1+WACC)¹   (1+WACC)²   (1+WACC)³           (1+WACC)ⁿ
+
+<span class="highlight">FCF</span>  = Free Cash Flow (กระแสเงินสดอิสระ)
+<span class="highlight">WACC</span> = Weighted Average Cost of Capital (ต้นทุนทุนถัวเฉลี่ยถ่วงน้ำหนัก)
+<span class="highlight">TV</span>   = Terminal Value (มูลค่าสุดท้าย)
+<span class="highlight">n</span>    = จำนวนปีที่คาดการณ์ (ปกติ 5-10 ปี)
+  </div>
+
+  <!-- DCF Step Flow -->
+  <div class="step-flow">
+    <div class="step-item">
+      <div class="step-circle">1</div>
+      <div class="step-label">คำนวณ FCFF</div>
+    </div>
+    <div class="step-item">
+      <div class="step-circle">2</div>
+      <div class="step-label">คาดการณ์ FCFF<br>5-10 ปี</div>
+    </div>
+    <div class="step-item">
+      <div class="step-circle">3</div>
+      <div class="step-label">คำนวณ WACC</div>
+    </div>
+    <div class="step-item">
+      <div class="step-circle">4</div>
+      <div class="step-label">Terminal Value</div>
+    </div>
+    <div class="step-item">
+      <div class="step-circle">5</div>
+      <div class="step-label">คิดลดเป็น<br>มูลค่าปัจจุบัน</div>
+    </div>
+    <div class="step-item">
+      <div class="step-circle">6</div>
+      <div class="step-label">Sensitivity<br>Analysis</div>
+    </div>
+  </div>
+
+  <h4>ขั้นตอนที่ 1: คำนวณ Free Cash Flow to Firm (FCFF)</h4>
+
+  <div class="formula-block">
+    <span class="tag formula">สูตร FCFF</span>
+<span class="highlight">FCFF = EBIT × (1 - อัตราภาษี) + ค่าเสื่อมราคา - CapEx - ΔWorking Capital</span>
+
+หรือ
+
+<span class="highlight">FCFF = Operating Cash Flow - CapEx + ดอกเบี้ยจ่าย × (1 - อัตราภาษี)</span>
+
+<span class="comment">ตัวอย่าง: บริษัท XYZ</span>
+├── EBIT              = <span class="val">2,000</span> ล้านบาท
+├── อัตราภาษี          = <span class="val">20%</span>
+├── ค่าเสื่อมราคา      = <span class="val">500</span> ล้านบาท
+├── CapEx             = <span class="val">800</span> ล้านบาท
+└── ΔWorking Capital  = <span class="val">200</span> ล้านบาท (เพิ่มขึ้น)
+
+FCFF = 2,000 × (1 - 0.20) + 500 - 800 - 200
+     = 1,600 + 500 - 800 - 200
+     = <span class="ok">1,100 ล้านบาท</span>
+  </div>
+
+  <div class="formula-block">
+    <span class="tag formula">ทางเลือก: FCFE</span>
+<span class="highlight">FCFE = FCFF - ดอกเบี้ยจ่าย × (1 - อัตราภาษี) + หนี้สินใหม่ - ชำระหนี้เดิม</span>
+
+FCFE ใช้เมื่อต้องการหามูลค่าส่วนของผู้ถือหุ้นโดยตรง
+(Discount ด้วย Cost of Equity แทน WACC)
+  </div>
+
+  <h4>ขั้นตอนที่ 2: คาดการณ์ FCFF ในอนาคต (5-10 ปี)</h4>
+
+  <div class="formula-block">
+    <span class="tag steps">แนวทาง A: Top-Down</span>
+<span class="highlight">แนวทาง A: Top-Down (จากบนลงล่าง)</span>
+├── 1. คาดการณ์ GDP Growth ของประเทศ
+│      📌 <span class="source">nesdc.go.th, bot.or.th, IMF World Economic Outlook</span>
+├── 2. คาดการณ์การเติบโตของอุตสาหกรรม
+│      📌 <span class="source">รายงานอุตสาหกรรมจาก SET, บทวิเคราะห์โบรกเกอร์</span>
+├── 3. คาดการณ์ส่วนแบ่งตลาดของบริษัท
+│      📌 <span class="source">56-1 One Report, รายงานประจำปี</span>
+├── 4. คำนวณรายได้คาดการณ์
+├── 5. คาดการณ์ Margin (Gross, Operating, Net)
+│      📌 ดูจากแนวโน้มย้อนหลัง 5 ปี + ปัจจัยที่จะเปลี่ยนแปลง
+└── 6. คำนวณ FCFF จากรายได้และ Margin ที่คาดการณ์
+  </div>
+
+  <div class="formula-block">
+    <span class="tag example">ตัวอย่างคาดการณ์ 5 ปี</span>
+<span class="highlight">ตัวอย่างการคาดการณ์ 5 ปี (บริษัท XYZ):</span>
+
+                    ปี 1    ปี 2    ปี 3    ปี 4    ปี 5
+รายได้ (ล้าน)       <span class="val">10,000  11,000  12,100  13,100  14,000</span>
+อัตราเติบโต          10%     10%     10%     8%      7%
+EBIT Margin          20%     20%     21%     21%     21%
+EBIT                2,000   2,200   2,541   2,751   2,940
+ภาษี (20%)           400     440     508     550     588
+NOPAT               1,600   1,760   2,033   2,201   2,352
++ ค่าเสื่อมราคา      500     550     600     650     700
+- CapEx              800     850     900     950    1,000
+- ΔWorking Capital   200     200     220     200     180
+<span class="ok">FCFF                1,100   1,260   1,513   1,701   1,872</span>
+  </div>
+
+  <div class="info-box warning">
+    <div class="box-title">⚠️ ข้อสังเกตสำคัญเรื่องการคาดการณ์</div>
+    <ul style="margin-left:1rem; margin-top:0.5rem; list-style:disc;">
+      <li>อย่าคาดการณ์การเติบโตสูงเกินไป — บริษัทส่วนใหญ่ไม่สามารถโตเกิน 15-20% ต่อปีได้นานๆ</li>
+      <li>ใช้ "Conservative Case" เป็นหลัก — ดีกว่าคาดการณ์สูงแล้วผิดหวัง</li>
+      <li>ดูแนวโน้มย้อนหลัง 5-10 ปี เป็นจุดเริ่มต้น แล้วปรับตามปัจจัยที่จะเปลี่ยนแปลง</li>
+    </ul>
+  </div>
+
+  <h4>ขั้นตอนที่ 3: คำนวณ WACC</h4>
+  <p>WACC คือ "อัตราคิดลด" ที่ใช้ใน DCF — เป็นต้นทุนเฉลี่ยของเงินทุนทั้งหมดที่บริษัทใช้</p>
+
+  <div class="formula-block">
+    <span class="tag formula">สูตร WACC</span>
+<span class="highlight">WACC = (E/V) × Re + (D/V) × Rd × (1 - T)</span>
+
+E  = มูลค่าตลาดของส่วนของผู้ถือหุ้น (Market Cap)
+D  = มูลค่าตลาดของหนี้สินที่มีดอกเบี้ย
+V  = E + D (มูลค่ารวมของบริษัท)
+Re = Cost of Equity (ต้นทุนส่วนของผู้ถือหุ้น)
+Rd = Cost of Debt (ต้นทุนหนี้สิน)
+T  = อัตราภาษีเงินได้นิติบุคคล
+  </div>
+
+  <h4>ขั้นตอนย่อย 3.1: คำนวณ Cost of Equity (Re) ด้วย CAPM</h4>
+
+  <div class="formula-block">
+    <span class="tag formula">CAPM</span>
+<span class="highlight">Re = Rf + β × (Rm - Rf) + CRP</span>
+
+Rf       = Risk-Free Rate (อัตราผลตอบแทนพันธบัตรรัฐบาล)
+β        = Beta (ความผันผวนของหุ้นเทียบกับตลาด)
+Rm       = Expected Market Return (ผลตอบแทนคาดหวังของตลาด)
+(Rm - Rf)= Equity Risk Premium (ERP)
+CRP      = Country Risk Premium (ส่วนชดเชยความเสี่ยงประเทศ)
+
+📌 <span class="highlight">แหล่งข้อมูลสำหรับแต่ละตัวแปร:</span>
+
+<span class="val">Rf (Risk-Free Rate):</span>
+├── ใช้อัตราผลตอบแทนพันธบัตรรัฐบาลไทย 10 ปี
+├── 📌 <span class="source">thaibma.or.th → Government Bond Yield</span>
+└── ตัวอย่าง: ~2.5-3.0% (ณ ปี 2025-2026)
+
+<span class="val">β (Beta):</span>
+├── วัดความผันผวนของหุ้นเทียบกับ SET Index
+├── 📌 <span class="source">settrade.com → หน้า Stock Quote ของหุ้นแต่ละตัว</span>
+├── β &gt; 1 → หุ้นผันผวนมากกว่าตลาด (เช่น หุ้นเทคโนโลยี)
+├── β = 1 → หุ้นผันผวนเท่ากับตลาด
+├── β &lt; 1 → หุ้นผันผวนน้อยกว่าตลาด (เช่น หุ้นสาธารณูปโภค)
+└── ถ้าหา Beta ไม่ได้ ใช้ Industry Beta จาก Damodaran Online
+
+<span class="val">ERP (Equity Risk Premium):</span>
+├── ส่วนต่างผลตอบแทนที่นักลงทุนต้องการเพิ่มจากการลงทุนในหุ้น
+├── 📌 <span class="source">pages.stern.nyu.edu/~adamodar → Country Default Spreads</span>
+├── ERP ของไทย ≈ 7-9% (รวม Country Risk Premium)
+└── หรือใช้ Mature Market ERP (~5-6%) + Country Risk Premium (~2-3%)
+
+<span class="comment">ตัวอย่างการคำนวณ Cost of Equity:</span>
+Rf  = <span class="val">2.8%</span> (พันธบัตรรัฐบาลไทย 10 ปี)
+β   = <span class="val">1.2</span> (หุ้นผันผวนมากกว่าตลาดเล็กน้อย)
+ERP = <span class="val">7.5%</span> (รวม Country Risk Premium แล้ว)
+
+Re = 2.8% + 1.2 × 7.5%
+   = 2.8% + 9.0%
+   = <span class="ok">11.8%</span>
+  </div>
+
+  <h4>ขั้นตอนย่อย 3.2: คำนวณ Cost of Debt (Rd)</h4>
+
+  <div class="formula-block">
+    <span class="tag example">ตัวอย่าง</span>
+<span class="highlight">Rd = อัตราดอกเบี้ยเฉลี่ยที่บริษัทจ่ายจริง</span>
+
+วิธีหา:
+├── ดูจากหมายเหตุประกอบงบการเงิน → รายละเอียดเงินกู้ยืม
+├── หรือคำนวณ: Rd = ดอกเบี้ยจ่าย / หนี้สินที่มีดอกเบี้ยเฉลี่ย
+└── 📌 <span class="source">งบการเงินของบริษัท (set.or.th หรือ settrade.com)</span>
+
+ดอกเบี้ยจ่าย                = <span class="val">150</span> ล้านบาท
+หนี้สินที่มีดอกเบี้ยเฉลี่ย    = <span class="val">3,000</span> ล้านบาท
+Rd = 150 / 3,000            = <span class="ok">5.0%</span>
+  </div>
+
+  <h4>ขั้นตอนย่อย 3.3: รวมเป็น WACC</h4>
+
+  <div class="formula-block">
+    <span class="tag example">ตัวอย่าง WACC</span>
+Market Cap (E)              = <span class="val">10,000</span> ล้านบาท
+หนี้สินที่มีดอกเบี้ย (D)      = <span class="val">3,000</span> ล้านบาท
+V = E + D                   = <span class="val">13,000</span> ล้านบาท
+
+E/V = 10,000 / 13,000       = <span class="val">76.9%</span>
+D/V = 3,000 / 13,000        = <span class="val">23.1%</span>
+
+Re = <span class="val">11.8%</span>
+Rd = <span class="val">5.0%</span>
+T  = <span class="val">20%</span>
+
+WACC = (76.9% × 11.8%) + (23.1% × 5.0% × (1 - 20%))
+     = 9.07% + 0.92%
+     = <span class="ok">9.99% ≈ 10.0%</span>
+  </div>
+
+  <h4>ขั้นตอนที่ 4: คำนวณ Terminal Value</h4>
+  <p>Terminal Value คือมูลค่าของกระแสเงินสดทั้งหมดหลังจากช่วงที่คาดการณ์ (ปีที่ 6 เป็นต้นไป) — <strong>มักคิดเป็น 60-80% ของมูลค่ารวม</strong></p>
+
+  <div class="formula-block">
+    <span class="tag formula">วิธีที่ 1: Gordon Growth Model</span>
+<span class="highlight">TV = FCFFₙ × (1 + g) / (WACC - g)</span>
+
+g = อัตราเติบโตระยะยาว (Terminal Growth Rate)
+  → ปกติใช้ 2-3% (<span class="warn">ไม่ควรเกิน GDP Growth ระยะยาว</span>)
+  → ถ้าใช้สูงเกินไป มูลค่าจะพุ่งสูงผิดปกติ
+
+<span class="comment">ตัวอย่าง:</span>
+FCFF ปีที่ 5 = <span class="val">1,872</span> ล้านบาท
+g            = <span class="val">2.5%</span>
+WACC         = <span class="val">10.0%</span>
+
+TV = 1,872 × (1 + 0.025) / (0.10 - 0.025)
+   = 1,918.8 / 0.075
+   = <span class="ok">25,584 ล้านบาท</span>
+  </div>
+
+  <div class="formula-block">
+    <span class="tag formula">วิธีที่ 2: Exit Multiple</span>
+<span class="highlight">TV = EBITDAₙ × EV/EBITDA ที่เหมาะสม</span>
+
+<span class="comment">ตัวอย่าง:</span>
+EBITDA ปีที่ 5           = <span class="val">3,640</span> ล้านบาท
+EV/EBITDA เฉลี่ยกลุ่ม    = <span class="val">7</span> เท่า
+
+TV = 3,640 × 7 = <span class="ok">25,480 ล้านบาท</span>
+
+<span class="comment">ข้อสังเกต: ทั้งสองวิธีให้ผลลัพธ์ใกล้เคียงกัน (25,584 vs 25,480)
+ซึ่งเป็นสัญญาณดีว่าสมมติฐานสมเหตุสมผล</span>
+  </div>
+
+  <h4>ขั้นตอนที่ 5: คิดลดกลับมาเป็นมูลค่าปัจจุบัน</h4>
+
+  <div class="formula-block">
+    <span class="tag example">ตัวอย่าง DCF ทั้งหมด</span>
+<span class="highlight">ตัวอย่างการคำนวณ DCF ทั้งหมด (WACC = 10%):</span>
+
+ปี        FCFF (ล้าน)    Discount Factor    PV (ล้าน)
+─────────────────────────────────────────────────────
+1         1,100          1/(1.10)¹ = 0.909   <span class="val">1,000</span>
+2         1,260          1/(1.10)² = 0.826   <span class="val">1,041</span>
+3         1,513          1/(1.10)³ = 0.751   <span class="val">1,136</span>
+4         1,701          1/(1.10)⁴ = 0.683   <span class="val">1,162</span>
+5         1,872          1/(1.10)⁵ = 0.621   <span class="val">1,162</span>
+TV        25,584         1/(1.10)⁵ = 0.621   <span class="val">15,888</span>
+                                              ──────
+PV ของ FCFF ทั้งหมด                           <span class="val">6,501</span>
+PV ของ Terminal Value                         <span class="val">15,888</span>
+                                              ──────
+<span class="highlight">Enterprise Value (EV)                         22,389</span>
+
+หักหนี้สินที่มีดอกเบี้ย:                       -3,000
+บวกเงินสด:                                    +1,000
+                                              ──────
+<span class="highlight">Equity Value                                  20,389</span>
+
+จำนวนหุ้น: 500 ล้านหุ้น
+<span class="ok">มูลค่าที่เหมาะสมต่อหุ้น = 20,389 / 500 = 40.78 บาท</span>
+
+ถ้าราคาปัจจุบัน = 32 บาท
+Upside         = (40.78 - 32) / 32 = <span class="ok">+27.4%</span>
+Margin of Safety = (40.78 - 32) / 40.78 = <span class="ok">21.5%</span>
+  </div>
+
+  <h4>ขั้นตอนที่ 6: Sensitivity Analysis — ทดสอบความอ่อนไหว</h4>
+  <p>DCF อ่อนไหวต่อสมมติฐานมาก โดยเฉพาะ WACC และ Terminal Growth Rate <strong>ต้องทำ Sensitivity Analysis เสมอ</strong></p>
+
+  <div class="table-wrapper sensitivity-table">
+    <table>
+      <thead>
+        <tr>
+          <th>WACC ╲ g</th>
+          <th>1.5%</th>
+          <th>2.0%</th>
+          <th>2.5%</th>
+          <th>3.0%</th>
+          <th>3.5%</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>8.0%</strong></td>
+          <td class="good">52.10</td>
+          <td class="good">56.30</td>
+          <td class="good">61.40</td>
+          <td class="good">67.80</td>
+          <td class="good">76.20</td>
+        </tr>
+        <tr>
+          <td><strong>9.0%</strong></td>
+          <td class="good">44.50</td>
+          <td class="good">47.60</td>
+          <td class="good">51.20</td>
+          <td class="good">55.60</td>
+          <td class="good">61.00</td>
+        </tr>
+        <tr>
+          <td><strong>10.0%</strong></td>
+          <td class="neutral">38.60</td>
+          <td class="current">40.78</td>
+          <td class="current">43.30</td>
+          <td class="neutral">46.30</td>
+          <td class="neutral">49.90</td>
+        </tr>
+        <tr>
+          <td><strong>11.0%</strong></td>
+          <td class="neutral">33.80</td>
+          <td class="neutral">35.50</td>
+          <td class="neutral">37.40</td>
+          <td class="neutral">39.60</td>
+          <td class="neutral">42.20</td>
+        </tr>
+        <tr>
+          <td><strong>12.0%</strong></td>
+          <td class="bad">29.90</td>
+          <td class="bad">31.20</td>
+          <td class="neutral">32.70</td>
+          <td class="neutral">34.40</td>
+          <td class="neutral">36.40</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="formula-block">
+    <span class="tag steps">สรุปจากตาราง</span>
+├── กรณีดีที่สุด (WACC 8%, g 3.5%):   <span class="ok">76.20 บาท</span>
+├── กรณีฐาน (WACC 10%, g 2.5%):       <span class="val">43.30 บาท</span>
+├── กรณีแย่ที่สุด (WACC 12%, g 1.5%): <span class="bad">29.90 บาท</span>
+└── ราคาปัจจุบัน 32 บาท → ถูกกว่ากรณีฐาน แต่ใกล้กรณีแย่ที่สุด
+
+<span class="ok">ข้อสรุป:</span> ถ้าเชื่อว่า WACC ไม่เกิน 11% และ g ไม่ต่ำกว่า 2%
+→ มูลค่าที่เหมาะสมอยู่ที่ 35-51 บาท → ราคา 32 บาทน่าสนใจ
+  </div>
+
+  <div class="info-box danger">
+    <div class="box-title">⚠️ ข้อควรระวังของ DCF</div>
+    <ul style="margin-left:1rem; margin-top:0.5rem; list-style:disc;">
+      <li>ผลลัพธ์ขึ้นอยู่กับสมมติฐานมาก — "Garbage In, Garbage Out"</li>
+      <li>Terminal Value มักคิดเป็น 60-80% ของมูลค่ารวม → ถ้า Terminal Growth Rate ผิดแค่ 1% ผลลัพธ์เปลี่ยนมาก</li>
+      <li>ไม่เหมาะกับบริษัทที่กระแสเงินสดไม่แน่นอน (Startup, บริษัทวัฏจักร)</li>
+      <li>ต้องทำ Sensitivity Analysis เสมอ อย่าเชื่อตัวเลขเดียว</li>
+    </ul>
+  </div>
+
+  <!-- 3.2 DDM -->
+  <h3 id="ddm">3.2 Dividend Discount Model (DDM)</h3>
+  <p>DDM เป็น DCF เวอร์ชันที่ง่ายกว่า โดยใช้เงินปันผลแทนกระแสเงินสดอิสระ เหมาะกับบริษัทที่จ่ายเงินปันผลสม่ำเสมอ</p>
+
+  <h4>3.2.1 Gordon Growth Model (DDM แบบเติบโตคงที่)</h4>
+
+  <div class="formula-block">
+    <span class="tag formula">Gordon Growth Model</span>
+<span class="highlight">P₀ = D₁ / (r - g)</span>
+
+P₀ = มูลค่าที่เหมาะสมของหุ้น
+D₁ = เงินปันผลที่คาดว่าจะได้รับในปีหน้า
+r  = อัตราผลตอบแทนที่ต้องการ (Cost of Equity)
+g  = อัตราเติบโตของเงินปันผล (คงที่ตลอดไป)
+
+<span class="warn">เงื่อนไข: r &gt; g (ถ้า g ≥ r สูตรใช้ไม่ได้)</span>
+
+<span class="comment">ตัวอย่าง:</span>
+เงินปันผลปีนี้ (D₀)              = <span class="val">2.00</span> บาท
+อัตราเติบโตของเงินปันผล (g)       = <span class="val">5%</span>
+Cost of Equity (r)               = <span class="val">11%</span>
+
+D₁ = D₀ × (1 + g) = 2.00 × 1.05 = <span class="val">2.10</span> บาท
+P₀ = 2.10 / (0.11 - 0.05) = 2.10 / 0.06 = <span class="ok">35.00 บาท</span>
+
+ถ้าราคาปัจจุบัน = 28 บาท → <span class="ok">Undervalued ✅</span>
+ถ้าราคาปัจจุบัน = 42 บาท → <span class="warn">Overvalued ⚠️</span>
+  </div>
+
+  <div class="formula-block">
+    <span class="tag steps">วิธีหา g</span>
+<span class="highlight">วิธีหาอัตราเติบโตของเงินปันผล (g):</span>
+
+<span class="val">วิธีที่ 1: ดูจากอดีต</span>
+g = อัตราเติบโตเฉลี่ยของเงินปันผลย้อนหลัง 5-10 ปี
+📌 <span class="source">settrade.com → Dividend History</span>
+
+<span class="val">วิธีที่ 2: Sustainable Growth Rate</span>
+g = ROE × (1 - Payout Ratio)
+
+ตัวอย่าง:
+ROE = 15%
+Payout Ratio = 60% (จ่ายปันผล 60% ของกำไร)
+g = 15% × (1 - 0.60) = 15% × 0.40 = <span class="ok">6%</span>
+
+<span class="val">วิธีที่ 3: ใช้การคาดการณ์ของนักวิเคราะห์</span>
+📌 <span class="source">settrade.com → Consensus Estimate</span>
+  </div>
+
+  <h4>3.2.2 Two-Stage DDM (DDM แบบ 2 ช่วง)</h4>
+  <p>สำหรับบริษัทที่เติบโตเร็วในช่วงแรก แล้วค่อยๆ ชะลอตัว</p>
+
+  <div class="formula-block">
+    <span class="tag example">ตัวอย่าง Two-Stage DDM</span>
+<span class="highlight">ช่วงที่ 1:</span> เติบโตเร็ว (High Growth Phase) — เช่น 5 ปี
+<span class="highlight">ช่วงที่ 2:</span> เติบโตคงที่ (Stable Growth Phase) — ตลอดไป
+
+D₀ = <span class="val">2.00</span> บาท
+g₁ = <span class="val">12%</span> (เติบโตเร็ว 5 ปีแรก)
+g₂ = <span class="val">4%</span> (เติบโตคงที่หลังจากนั้น)
+r  = <span class="val">11%</span>
+
+ปี 1: D₁ = 2.00 × 1.12 = <span class="val">2.24</span>
+ปี 2: D₂ = 2.24 × 1.12 = <span class="val">2.51</span>
+ปี 3: D₃ = 2.51 × 1.12 = <span class="val">2.81</span>
+ปี 4: D₄ = 2.81 × 1.12 = <span class="val">3.15</span>
+ปี 5: D₅ = 3.15 × 1.12 = <span class="val">3.53</span>
+
+D₆ = 3.53 × 1.04 = <span class="val">3.67</span>
+P₅ = 3.67 / (0.11 - 0.04) = <span class="val">52.43</span>
+
+PV ของเงินปันผลช่วงที่ 1:
+PV(D₁) = 2.24 / 1.11  = 2.02
+PV(D₂) = 2.51 / 1.11² = 2.04
+PV(D₃) = 2.81 / 1.11³ = 2.05
+PV(D₄) = 3.15 / 1.11⁴ = 2.07
+PV(D₅) = 3.53 / 1.11⁵ = 2.09
+รวม PV ช่วงที่ 1 = <span class="val">10.27</span>
+
+PV ของ P₅ = 52.43 / 1.11⁵ = <span class="val">31.05</span>
+
+<span class="ok">P₀ = 10.27 + 31.05 = 41.32 บาท</span>
+  </div>
+
+  <div class="three-col" style="grid-template-columns: 1fr 1fr;">
+    <div class="col-card green-accent">
+      <h4 style="color:var(--accent-green);">✅ DDM เหมาะกับ</h4>
+      <ul>
+        <li>บริษัทที่จ่ายเงินปันผลสม่ำเสมอ (ธนาคาร สาธารณูปโภค)</li>
+        <li>บริษัทที่มี Payout Ratio คงที่</li>
+        <li>บริษัทที่เติบโตช้าแต่มั่นคง</li>
+      </ul>
+    </div>
+    <div class="col-card" style="border-top: 3px solid var(--accent-red);">
+      <h4 style="color:var(--accent-red);">❌ DDM ไม่เหมาะกับ</h4>
+      <ul>
+        <li>บริษัทที่ไม่จ่ายเงินปันผล</li>
+        <li>บริษัทที่เงินปันผลผันผวนมาก</li>
+        <li>บริษัทที่กำลังเติบโตเร็วและต้องการเก็บเงินไว้ลงทุน</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3.3 Residual Income Model -->
+  <h3 id="rim">3.3 Residual Income Model (RIM)</h3>
+  <p>มองว่ามูลค่าของบริษัท = มูลค่าทางบัญชี + มูลค่าปัจจุบันของ "กำไรส่วนเกิน" ในอนาคต</p>
+
+  <div class="formula-block">
+    <span class="tag formula">หลักการ</span>
+<span class="highlight">กำไรส่วนเกิน (Residual Income)</span>
+= กำไรสุทธิ - (ส่วนของผู้ถือหุ้น × Cost of Equity)
+
+ถ้า RI &gt; 0 → <span class="ok">บริษัทสร้างมูลค่าเพิ่มให้ผู้ถือหุ้น</span>
+ถ้า RI = 0 → <span class="comment">บริษัทให้ผลตอบแทนเท่ากับที่ผู้ถือหุ้นต้องการ</span>
+ถ้า RI &lt; 0 → <span class="bad">บริษัททำลายมูลค่าของผู้ถือหุ้น</span>
+  </div>
+
+  <div class="formula-block">
+    <span class="tag example">ตัวอย่าง RIM</span>
+<span class="highlight">V₀ = BV₀ + RI₁/(1+r)¹ + RI₂/(1+r)² + ... + RIₙ/(1+r)ⁿ</span>
+
+RIₙ = (ROEₙ - r) × BVₙ₋₁
+
+<span class="comment">ตัวอย่าง:</span>
+BV₀             = <span class="val">25</span> บาท
+ROE             = <span class="val">18%</span>
+Cost of Equity  = <span class="val">11%</span>
+g (อัตราเติบโตของ BV) = <span class="val">7%</span>
+
+RI₁ = (18% - 11%) × 25 = 7% × 25 = <span class="val">1.75</span> บาท
+
+ถ้า Residual Income เติบโตคงที่ที่ g:
+V₀ = BV₀ + RI₁ / (r - g)
+   = 25 + 1.75 / (0.11 - 0.07)
+   = 25 + 1.75 / 0.04
+   = 25 + 43.75
+   = <span class="ok">68.75 บาท</span>
+  </div>
+
+  <div class="info-box tip">
+    <div class="box-title">💡 ข้อดีของ Residual Income Model</div>
+    <ul style="margin-left:1rem; margin-top:0.5rem; list-style:disc;">
+      <li>ใช้ได้แม้บริษัทไม่จ่ายเงินปันผล</li>
+      <li>เริ่มจากมูลค่าทางบัญชีที่เป็นข้อมูลจริง (ไม่ใช่การคาดการณ์ทั้งหมด)</li>
+      <li>เหมาะกับธนาคารและบริษัทการเงิน (ที่ Book Value มีความหมาย)</li>
+    </ul>
+  </div>
+
+  <!-- 3.4 EVA -->
+  <h3 id="eva">3.4 Economic Value Added (EVA)</h3>
+  <p>EVA คล้ายกับ Residual Income แต่มองจากมุมของบริษัททั้งหมด (ไม่ใช่แค่ส่วนของผู้ถือหุ้น)</p>
+
+  <div class="formula-block">
+    <span class="tag formula">สูตร EVA</span>
+<span class="highlight">EVA = NOPAT - (Invested Capital × WACC)</span>
+
+NOPAT = Net Operating Profit After Tax = EBIT × (1 - T)
+Invested Capital = Total Assets - Non-Interest-Bearing Liabilities
+                 = ส่วนของผู้ถือหุ้น + หนี้สินที่มีดอกเบี้ย
+
+<span class="comment">ตัวอย่าง:</span>
+NOPAT            = <span class="val">1,600</span> ล้านบาท
+Invested Capital = <span class="val">15,000</span> ล้านบาท
+WACC             = <span class="val">10%</span>
+
+EVA = 1,600 - (15,000 × 10%)
+    = 1,600 - 1,500
+    = <span class="ok">+100 ล้านบาท ✅ (บริษัทสร้างมูลค่าเพิ่ม)</span>
+  </div>
+
+  <div class="formula-block">
+    <span class="tag example">ตัวอย่าง EVA Valuation</span>
+<span class="highlight">Enterprise Value = Invested Capital + PV ของ EVA ในอนาคต</span>
+
+ถ้า EVA เติบโตคงที่ที่ g:
+EV = IC₀ + EVA₁ / (WACC - g)
+
+IC₀  = <span class="val">15,000</span> ล้านบาท
+EVA₁ = <span class="val">100</span> ล้านบาท
+WACC = <span class="val">10%</span>
+g    = <span class="val">3%</span>
+
+EV = 15,000 + 100 / (0.10 - 0.03)
+   = 15,000 + 1,429
+   = <span class="val">16,429</span> ล้านบาท
+
+Equity Value = EV - หนี้สินที่มีดอกเบี้ย + เงินสด
+             = 16,429 - 3,000 + 1,000
+             = <span class="val">14,429</span> ล้านบาท
+
+มูลค่าต่อหุ้น = 14,429 / 500 = <span class="ok">28.86 บาท</span>
+  </div>
+
+  <div class="info-box info">
+    <div class="box-title">📚 แหล่งอ้างอิง</div>
+    แนวคิด EVA ถูกพัฒนาโดย Stern Stewart &amp; Co. และได้รับการยอมรับอย่างกว้างขวางในวงการการเงิน สามารถศึกษาเพิ่มเติมได้จาก Corporate Finance Institute
+  </div>
+
+  <!-- ===== SECTION 4: ASSET-BASED VALUATION ===== -->
+  <div class="section-header" id="asset-based">
+    <h2><span class="section-number warm">4</span> Asset-Based Valuation — การประเมินมูลค่าจากสินทรัพย์</h2>
+  </div>
+
+  <!-- 4.1 NAV -->
+  <h3 id="nav">4.1 Net Asset Value (NAV) — มูลค่าสินทรัพย์สุทธิ</h3>
+
+  <div class="formula-block">
+    <span class="tag formula">สูตร NAV</span>
+<span class="highlight">NAV = มูลค่ายุติธรรมของสินทรัพย์ทั้งหมด - หนี้สินทั้งหมด</span>
+NAV ต่อหุ้น = NAV / จำนวนหุ้น
+
+<span class="warn">ข้อแตกต่างจาก Book Value:</span>
+├── Book Value ใช้มูลค่าทางบัญชี (ราคาทุนหักค่าเสื่อม)
+└── NAV ใช้มูลค่ายุติธรรม (Fair Value / Market Value)
+  </div>
+
+  <div class="formula-block">
+    <span class="tag example">ตัวอย่าง: บริษัทอสังหาริมทรัพย์</span>
+├── ที่ดินในงบ (ราคาทุน):                <span class="val">2,000</span> ล้านบาท
+├── ที่ดินมูลค่ายุติธรรม (ราคาตลาด):     <span class="ok">5,000</span> ล้านบาท
+├── อาคารในงบ:                          <span class="val">3,000</span> ล้านบาท
+├── อาคารมูลค่ายุติธรรม:                 <span class="ok">4,000</span> ล้านบาท
+├── สินทรัพย์อื่น:                       <span class="val">1,000</span> ล้านบาท
+├── หนี้สินรวม:                          <span class="bad">4,000</span> ล้านบาท
+│
+├── Book Value = (2,000 + 3,000 + 1,000) - 4,000 = <span class="val">2,000</span> ล้านบาท
+└── NAV        = (5,000 + 4,000 + 1,000) - 4,000 = <span class="ok">6,000</span> ล้านบาท
+
+จำนวนหุ้น = 200 ล้านหุ้น
+BPS        = 2,000 / 200 = <span class="val">10</span> บาท
+NAV ต่อหุ้น = 6,000 / 200 = <span class="ok">30</span> บาท
+
+→ ถ้าราคาหุ้น = 20 บาท → <span class="ok">ซื้อได้ต่ำกว่า NAV 33% ✅</span>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📌 แหล่งข้อมูลสำหรับมูลค่ายุติธรรม</div>
+    <div class="tree">├── รายงานประเมินราคาทรัพย์สิน (ในหมายเหตุประกอบงบ)
+├── ราคาตลาดของหุ้นที่บริษัทถือ (สำหรับ Holding Company)
+└── ราคาประเมินที่ดินจากกรมที่ดิน (เป็นราคาขั้นต่ำ)</div>
+  </div>
+
+  <!-- 4.2 Liquidation Value -->
+  <h3 id="liquidation">4.2 Liquidation Value — มูลค่าเลิกกิจการ</h3>
+
+  <div class="formula-block">
+    <span class="tag formula">สูตร</span>
+<span class="highlight">Liquidation Value = มูลค่าที่จะได้รับถ้าขายสินทรัพย์ทั้งหมดแล้วชำระหนี้</span>
+
+<span class="warn">Liquidation Value มักต่ำกว่า NAV เพราะ:</span>
+├── ต้องขายเร่งด่วน → ได้ราคาต่ำกว่าราคาตลาด (Discount 20-50%)
+├── มีค่าใช้จ่ายในการเลิกกิจการ (ค่าชดเชยพนักงาน ค่าทนาย ฯลฯ)
+└── สินทรัพย์บางอย่างอาจขายไม่ได้ (สินทรัพย์เฉพาะทาง)
+
+<span class="comment">ตัวอย่าง:</span>
+NAV                        = <span class="val">6,000</span> ล้านบาท
+Liquidation Discount       = <span class="bad">30%</span>
+ค่าใช้จ่ายเลิกกิจการ       = <span class="bad">500</span> ล้านบาท
+
+Liquidation Value = 6,000 × (1 - 0.30) - 500
+                  = 4,200 - 500
+                  = <span class="val">3,700</span> ล้านบาท
+
+Liquidation Value ต่อหุ้น = 3,700 / 200 = <span class="val">18.50</span> บาท
+
+→ ถ้าราคาหุ้น &lt; 18.50 บาท → <span class="ok">ถูกมาก แม้แต่เลิกกิจการก็ยังได้เงินคืน</span>
+   <span class="comment">(Benjamin Graham เรียกว่า "Net-Net" หรือ "Cigar Butt" Investing)</span>
+  </div>
+
+  <!-- 4.3 Replacement Cost -->
+  <h3 id="replacement">4.3 Replacement Cost — มูลค่าทดแทน</h3>
+
+  <div class="formula-block">
+    <span class="tag formula">แนวคิด</span>
+<span class="highlight">Replacement Cost = ต้นทุนที่ต้องใช้ถ้าจะสร้างบริษัทนี้ขึ้นมาใหม่ตั้งแต่ศูนย์</span>
+
+รวมถึง:
+├── ค่าที่ดินและอาคาร (ราคาปัจจุบัน)
+├── ค่าเครื่องจักรและอุปกรณ์ (ราคาปัจจุบัน)
+├── ค่าสร้างแบรนด์และฐานลูกค้า
+├── ค่าพัฒนาเทคโนโลยีและ Know-how
+├── ค่าสร้างทีมงาน
+└── ค่าใบอนุญาตและสัมปทาน
+  </div>
+
+  <div class="formula-block">
+    <span class="tag example">ตัวอย่าง: โรงงานผลิตอาหาร</span>
+├── ที่ดิน 50 ไร่:                <span class="val">500</span> ล้านบาท
+├── โรงงานและเครื่องจักร:         <span class="val">2,000</span> ล้านบาท
+├── แบรนด์และฐานลูกค้า:          <span class="val">1,500</span> ล้านบาท (ประเมินจากรายได้)
+├── ใบอนุญาต FDA:                <span class="val">100</span> ล้านบาท
+└── ทีมงานและ Know-how:           <span class="val">500</span> ล้านบาท
+
+Replacement Cost = <span class="val">4,600</span> ล้านบาท
+
+ถ้า Market Cap = 3,000 ล้านบาท
+→ <span class="ok">ซื้อบริษัทถูกกว่าสร้างใหม่ 35% → น่าสนใจ ✅</span>
+  </div>
+
+  <!-- ===== SECTION 5: SPECIAL METHODS ===== -->
+  <div class="section-header" id="special">
+    <h2><span class="section-number purple">5</span> วิธี Valuation เฉพาะทาง</h2>
+  </div>
+
+  <!-- 5.1 SOTP -->
+  <h3 id="sotp">5.1 Sum-of-the-Parts (SOTP) — ประเมินแยกส่วน</h3>
+  <p>ใช้กับบริษัทที่มีหลายธุรกิจ (Conglomerate / Holding Company) โดยประเมินมูลค่าแต่ละธุรกิจแยกกัน แล้วรวมกัน</p>
+
+  <div class="formula-block">
+    <span class="tag example">ตัวอย่าง SOTP</span>
+<span class="highlight">ตัวอย่าง: บริษัท Holding XYZ</span>
+
+<span class="val">ธุรกิจ 1: ค้าปลีก</span>
+├── EBITDA = 3,000 ล้านบาท
+├── EV/EBITDA เฉลี่ยกลุ่มค้าปลีก = 12 เท่า
+└── มูลค่า = 3,000 × 12 = <span class="val">36,000</span> ล้านบาท
+
+<span class="val">ธุรกิจ 2: อสังหาริมทรัพย์</span>
+├── NAV = 15,000 ล้านบาท
+└── มูลค่า = <span class="val">15,000</span> ล้านบาท (ใช้ NAV)
+
+<span class="val">ธุรกิจ 3: พลังงาน</span>
+├── ถือหุ้น 30% ในบริษัท A (Market Cap 50,000 ล้าน)
+└── มูลค่า = 50,000 × 30% = <span class="val">15,000</span> ล้านบาท
+
+เงินสดส่วนเกิน: <span class="val">2,000</span> ล้านบาท
+
+Enterprise Value รวม = 36,000 + 15,000 + 15,000 + 2,000
+                     = <span class="val">68,000</span> ล้านบาท
+
+หักหนี้สินที่มีดอกเบี้ย: <span class="bad">-10,000</span> ล้านบาท
+หัก Holding Discount (20%): × 0.80
+
+Equity Value = (68,000 - 10,000) × 0.80
+             = 58,000 × 0.80
+             = <span class="ok">46,400</span> ล้านบาท
+
+จำนวนหุ้น = 1,000 ล้านหุ้น
+มูลค่าต่อหุ้น = 46,400 / 1,000 = <span class="ok">46.40 บาท</span>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏢 Holding Discount คืออะไร</div>
+    <p>Holding Company มักถูกซื้อขายต่ำกว่ามูลค่ารวมของส่วนประกอบ เพราะ:</p>
+    <div class="tree">├── ความซับซ้อนของโครงสร้าง → นักลงทุนเข้าใจยาก
+├── ค่าใช้จ่ายบริหารส่วนกลาง (Corporate Overhead)
+├── ผู้ถือหุ้นไม่สามารถเลือกลงทุนเฉพาะธุรกิจที่ต้องการ
+└── ปัญหา Agency Cost (ผู้บริหารอาจไม่ทำเพื่อผู้ถือหุ้น)
+
+<strong>Holding Discount ทั่วไป:</strong> 10-30%
+<strong>ในตลาดหุ้นไทย:</strong> มักอยู่ที่ 15-25%</div>
+  </div>
+
+  <!-- 5.2 EPV -->
+  <h3 id="epv">5.2 Earnings Power Value (EPV)</h3>
+  <p>ประเมินมูลค่าจาก "กำไรที่ยั่งยืน" โดยไม่สมมติการเติบโต — เป็นวิธีที่ <strong>Conservative ที่สุด</strong></p>
+
+  <div class="formula-block">
+    <span class="tag formula">สูตร EPV</span>
+<span class="highlight">EPV = Normalized EBIT × (1 - T) / WACC</span>
+
+<span class="val">Normalized EBIT</span> = กำไรจากการดำเนินงานที่ปรับให้เป็น "ปกติ"
+├── ตัดรายการพิเศษออก (กำไร/ขาดทุนจากการขายสินทรัพย์)
+├── ตัดรายการที่เกิดครั้งเดียวออก
+├── ใช้ค่าเฉลี่ย 3-5 ปี ถ้ากำไรผันผวน
+└── ปรับค่าเสื่อมราคาให้สะท้อน Maintenance CapEx จริง
+
+<span class="comment">ตัวอย่าง:</span>
+Normalized EBIT = <span class="val">1,800</span> ล้านบาท
+อัตราภาษี       = <span class="val">20%</span>
+WACC            = <span class="val">10%</span>
+
+EPV = 1,800 × (1 - 0.20) / 0.10
+    = 1,440 / 0.10
+    = <span class="val">14,400</span> ล้านบาท
+
+Equity Value = 14,400 - 3,000 (หนี้) + 1,000 (เงินสด)
+             = <span class="val">12,400</span> ล้านบาท
+
+มูลค่าต่อหุ้น = 12,400 / 500 = <span class="ok">24.80 บาท</span>
+
+<span class="highlight">การตีความ:</span>
+├── ถ้าราคาหุ้น &lt; EPV → <span class="ok">ถูก แม้ไม่มีการเติบโต</span>
+├── ถ้าราคาหุ้น = EPV → <span class="val">ราคาสมเหตุสมผล (ไม่ได้จ่ายเพื่อการเติบโต)</span>
+└── ถ้าราคาหุ้น &gt; EPV → <span class="warn">ตลาดคาดหวังการเติบโต (ต้องมั่นใจว่าจะโตจริง)</span>
+  </div>
+
+  <div class="info-box info">
+    <div class="box-title">📚 แหล่งอ้างอิง</div>
+    แนวคิด EPV มาจาก Prof. Bruce Greenwald แห่ง Columbia Business School ผู้เขียนหนังสือ <em>Value Investing: From Graham to Buffett and Beyond</em>
+  </div>
+
+  <!-- ===== SECTION 6: PUTTING IT ALL TOGETHER ===== -->
+  <div class="section-header" id="practice">
+    <h2><span class="section-number blue">6</span> การนำทุกวิธีมารวมกัน — Valuation ในทางปฏิบัติ</h2>
+  </div>
+
+  <!-- Football Field Chart -->
+  <h3 id="football-field">Football Field Chart — แผนภูมิสนามฟุตบอล</h3>
+  <p>นักวิเคราะห์มืออาชีพไม่ได้ใช้วิธีเดียว แต่ใช้หลายวิธีแล้วนำมาเปรียบเทียบกันในรูปแบบ "Football Field Chart"</p>
+
+  <div class="card" style="padding: 2rem;">
+    <div class="football-field">
+      <!-- Scale: 20 to 60, so range = 40. Each unit = 2.5% width -->
+      <div class="ff-row">
+        <div class="ff-label">P/E</div>
+        <div class="ff-bar-container">
+          <div class="ff-bar pe" style="left: 17.5%; width: 37.5%;"><span>27</span><span>42</span></div>
+          <div class="ff-current-line" style="left: 30%;"></div>
+        </div>
+      </div>
+      <div class="ff-row">
+        <div class="ff-label">EV/EBITDA</div>
+        <div class="ff-bar-container">
+          <div class="ff-bar ev" style="left: 22.5%; width: 40%;"><span>29</span><span>45</span></div>
+        </div>
+      </div>
+      <div class="ff-row">
+        <div class="ff-label">DCF</div>
+        <div class="ff-bar-container">
+          <div class="ff-bar dcf" style="left: 25%; width: 52.5%;"><span>30</span><span>51</span></div>
+        </div>
+      </div>
+      <div class="ff-row">
+        <div class="ff-label">DDM</div>
+        <div class="ff-bar-container">
+          <div class="ff-bar ddm" style="left: 7.5%; width: 35%;"><span>23</span><span>37</span></div>
+        </div>
+      </div>
+      <div class="ff-row">
+        <div class="ff-label">EPV</div>
+        <div class="ff-bar-container">
+          <div class="ff-bar epv" style="left: 5%; width: 20%;"><span>22</span><span>30</span></div>
+        </div>
+      </div>
+      <div class="ff-row">
+        <div class="ff-label">NAV</div>
+        <div class="ff-bar-container">
+          <div class="ff-bar nav" style="left: 25%; width: 25%;"><span>30</span><span>40</span></div>
+          <div class="ff-current-line" style="left: 30%;">
+            <div class="ff-current-label">ราคาปัจจุบัน 32 ฿</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ff-scale">
+      <span>20</span><span>25</span><span>30</span><span>35</span><span>40</span><span>45</span><span>50</span><span>55</span><span>60</span>
+    </div>
+
+    <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(16,185,129,0.08); border-radius: 8px; border: 1px solid rgba(16,185,129,0.2);">
+      <strong style="color: var(--accent-green);">สรุป:</strong>
+      <ul style="margin-left: 1rem; margin-top: 0.5rem; list-style: disc; color: var(--text-secondary); font-size: 0.9rem;">
+        <li>ช่วงมูลค่าที่เหมาะสม (ทุกวิธีทับซ้อนกัน): <strong>30-40 บาท</strong></li>
+        <li>ราคาปัจจุบัน 32 บาท → อยู่ในช่วงล่างของมูลค่าที่เหมาะสม</li>
+        <li>Upside กรณีฐาน: ~20-25%</li>
+        <li>Margin of Safety: มีพอสมควร ✅</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Valuation Workflow -->
+  <h3>Valuation Workflow ฉบับสมบูรณ์</h3>
+
+  <div class="card">
+    <div class="card-title">📋 ขั้นตอนที่ 1: รวบรวมข้อมูล (30-60 นาที)</div>
+    <div class="tree">├── ดาวน์โหลดงบการเงิน 5 ปีย้อนหลัง (<span class="source">set.or.th</span>)
+├── ดูอัตราส่วนทางการเงิน (<span class="source">settrade.com</span>)
+├── อ่าน 56-1 One Report (<span class="source">sec.or.th</span>)
+├── ดู P/E, P/BV เฉลี่ยกลุ่มอุตสาหกรรม (<span class="source">set.or.th</span>)
+├── ดู Beta (<span class="source">settrade.com</span>)
+├── ดู Risk-Free Rate (<span class="source">thaibma.or.th</span>)
+└── ดู ERP, CRP (<span class="source">pages.stern.nyu.edu/~adamodar</span>)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📊 ขั้นตอนที่ 2: Relative Valuation (15-30 นาที)</div>
+    <div class="tree">├── คำนวณ P/E → เปรียบเทียบกับกลุ่มและย้อนหลัง
+├── คำนวณ P/BV → เปรียบเทียบกับ ROE
+├── คำนวณ EV/EBITDA → เปรียบเทียบกับคู่แข่ง
+├── คำนวณ PEG → ดูว่าราคาสมเหตุสมผลกับการเติบโตไหม
+└── สรุป: ช่วงราคาจาก Relative Valuation</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔬 ขั้นตอนที่ 3: Absolute Valuation (60-120 นาที)</div>
+    <div class="tree">├── <strong>DCF:</strong>
+│   ├── คาดการณ์ FCFF 5 ปี
+│   ├── คำนวณ WACC (CAPM → Cost of Equity → WACC)
+│   ├── คำนวณ Terminal Value
+│   ├── คิดลดกลับมาเป็นมูลค่าปัจจุบัน
+│   └── ทำ Sensitivity Analysis
+├── DDM (ถ้าบริษัทจ่ายปันผลสม่ำเสมอ)
+└── EPV (เป็น Conservative Case)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏗️ ขั้นตอนที่ 4: Asset-Based Valuation (ถ้าเหมาะสม)</div>
+    <div class="tree">├── NAV (สำหรับอสังหาฯ, Holding Company)
+└── SOTP (สำหรับ Conglomerate)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">✅ ขั้นตอนที่ 5: สรุปและตัดสินใจ (15-30 นาที)</div>
+    <div class="tree">├── สร้าง Football Field Chart
+├── หาช่วงมูลค่าที่เหมาะสม (ทุกวิธีทับซ้อนกัน)
+├── คำนวณ Margin of Safety
+│   = (มูลค่าที่เหมาะสม - ราคาปัจจุบัน) / มูลค่าที่เหมาะสม
+│   → ควรมี Margin of Safety อย่างน้อย 20-30%
+└── ตัดสินใจ: <span class="ok">ซื้อ</span> / <span class="val">รอ</span> / <span class="bad">ข้าม</span></div>
+  </div>
+
+  <!-- Margin of Safety -->
+  <h3 id="margin-safety">Margin of Safety — หลักการที่สำคัญที่สุดของ Value Investing</h3>
+
+  <div class="formula-block">
+    <span class="tag formula">สูตร</span>
+<span class="highlight">Margin of Safety = (Intrinsic Value - ราคาตลาด) / Intrinsic Value × 100%</span>
+
+<span class="comment">ตัวอย่าง:</span>
+Intrinsic Value (จาก DCF) = <span class="val">43</span> บาท
+ราคาตลาด                  = <span class="val">32</span> บาท
+Margin of Safety           = (43 - 32) / 43 = <span class="ok">25.6%</span>
+
+<span class="highlight">เกณฑ์:</span>
+├── Margin of Safety &gt; 30%   → <span class="ok">น่าสนใจมาก ✅✅</span>
+├── Margin of Safety 20-30%  → <span class="ok">น่าสนใจ ✅</span>
+├── Margin of Safety 10-20%  → <span class="val">พอรับได้ (ถ้ามั่นใจในการวิเคราะห์)</span>
+├── Margin of Safety &lt; 10%   → <span class="warn">ไม่คุ้มเสี่ยง ⚠️</span>
+└── Margin of Safety &lt; 0%    → <span class="bad">แพงเกินไป ❌</span>
+
+<span class="highlight">ทำไมต้องมี Margin of Safety:</span>
+├── การคาดการณ์ไม่มีทางถูก 100% → ต้องมีพื้นที่สำหรับความผิดพลาด
+├── สถานการณ์อาจเปลี่ยนแปลง → เศรษฐกิจ อุตสาหกรรม คู่แข่ง
+├── ข้อมูลอาจไม่ครบถ้วน → มีสิ่งที่เราไม่รู้เสมอ
+└── ยิ่ง Margin of Safety สูง ยิ่งปลอดภัย
+  </div>
+
+  <div class="quote-block">
+    "Margin of Safety คือสะพานที่เชื่อมระหว่างโลกของการวิเคราะห์กับโลกแห่งความเป็นจริง"
+    <span class="author">— Benjamin Graham, The Intelligent Investor</span>
+  </div>
+
+  <!-- ===== SECTION 7: CASE STUDY ===== -->
+  <div class="section-header" id="case-study">
+    <h2><span class="section-number green">7</span> กรณีศึกษา — ตัวอย่างการ Valuation หุ้นไทยแบบครบวงจร</h2>
+  </div>
+
+  <h3>กรณีศึกษา: บริษัท สมมติ จำกัด (มหาชน) — "ABC"</h3>
+
+  <div class="card">
+    <div class="card-title">🏢 ข้อมูลพื้นฐาน</div>
+    <div class="formula-block" style="margin: 0;">
+├── กลุ่มอุตสาหกรรม:         <span class="val">อาหารและเครื่องดื่ม</span>
+├── ราคาหุ้นปัจจุบัน:         <span class="val">48</span> บาท
+├── จำนวนหุ้น:               <span class="val">1,000</span> ล้านหุ้น
+├── Market Cap:              <span class="val">48,000</span> ล้านบาท
+├── หนี้สินที่มีดอกเบี้ย:     <span class="val">8,000</span> ล้านบาท
+├── เงินสด:                  <span class="val">3,000</span> ล้านบาท
+└── Enterprise Value:        <span class="val">53,000</span> ล้านบาท
+    </div>
+  </div>
+
+  <h4>ข้อมูลทางการเงิน 5 ปีย้อนหลัง</h4>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>รายการ</th>
+          <th>ปี -4</th>
+          <th>ปี -3</th>
+          <th>ปี -2</th>
+          <th>ปี -1</th>
+          <th>ปีล่าสุด</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>รายได้ (ล้าน)</strong></td><td>30,000</td><td>33,000</td><td>35,000</td><td>38,000</td><td>42,000</td></tr>
+        <tr><td><strong>อัตราเติบโต</strong></td><td>8%</td><td>10%</td><td>6%</td><td>9%</td><td>11%</td></tr>
+        <tr><td><strong>Gross Margin</strong></td><td>35.0%</td><td>36.0%</td><td>36.0%</td><td>36.0%</td><td>37.0%</td></tr>
+        <tr><td><strong>EBIT Margin</strong></td><td>14.0%</td><td>15.0%</td><td>15.0%</td><td>15.0%</td><td>16.0%</td></tr>
+        <tr><td><strong>กำไรสุทธิ (ล้าน)</strong></td><td>3,000</td><td>3,600</td><td>3,850</td><td>4,180</td><td>5,000</td></tr>
+        <tr><td><strong>EPS (บาท)</strong></td><td>3.00</td><td>3.60</td><td>3.85</td><td>4.18</td><td>5.00</td></tr>
+        <tr><td><strong>เงินปันผล/หุ้น</strong></td><td>1.50</td><td>1.80</td><td>2.00</td><td>2.10</td><td>2.50</td></tr>
+        <tr><td><strong>Payout Ratio</strong></td><td>50%</td><td>50%</td><td>52%</td><td>50%</td><td>50%</td></tr>
+        <tr><td><strong>ROE</strong></td><td>18%</td><td>19%</td><td>18%</td><td>18%</td><td>20%</td></tr>
+        <tr><td><strong>D/E Ratio</strong></td><td>0.35</td><td>0.30</td><td>0.28</td><td>0.25</td><td>0.22</td></tr>
+        <tr><td><strong>OCF (ล้าน)</strong></td><td>5,500</td><td>6,200</td><td>6,500</td><td>7,000</td><td>8,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>ขั้นตอนที่ 1: Relative Valuation</h4>
+
+  <div class="formula-block">
+    <span class="tag steps">P/E Analysis</span>
+<span class="highlight">1. P/E Analysis:</span>
+├── Trailing P/E = 48 / 5.00 = <span class="val">9.6 เท่า</span>
+├── P/E เฉลี่ยกลุ่มอาหาร = <span class="val">18-22</span> เท่า
+├── P/E เฉลี่ย 5 ปีของ ABC = <span class="val">14</span> เท่า
+├── Forward P/E (EPS ปีหน้า = 5.50) = 48 / 5.50 = <span class="val">8.7 เท่า</span>
+└── สรุป: <span class="ok">P/E ต่ำกว่าค่าเฉลี่ยกลุ่มและย้อนหลัง → อาจ Undervalued</span>
+
+Target Price จาก P/E:
+├── Conservative (P/E 14): 5.50 × 14 = <span class="val">77</span> บาท
+├── Base Case (P/E 18):    5.50 × 18 = <span class="ok">99</span> บาท
+└── Optimistic (P/E 22):   5.50 × 22 = <span class="ok">121</span> บาท
+  </div>
+
+  <div class="formula-block">
+    <span class="tag steps">EV/EBITDA &amp; P/BV &amp; PEG</span>
+<span class="highlight">2. EV/EBITDA Analysis:</span>
+├── EBITDA = 6,720 + 2,600 = <span class="val">9,320</span> ล้านบาท
+├── EV/EBITDA = 53,000 / 9,320 = <span class="val">5.7 เท่า</span>
+├── EV/EBITDA เฉลี่ยกลุ่ม = <span class="val">10-14</span> เท่า
+└── สรุป: <span class="ok">ต่ำกว่าค่าเฉลี่ยกลุ่มมาก → อาจ Undervalued</span>
+
+Target Price จาก EV/EBITDA:
+├── EBITDA ปีหน้า (สมมติ) = 10,200 ล้านบาท
+├── Target EV (EV/EBITDA 10) = 102,000 ล้านบาท
+├── Target Market Cap = 102,000 - 8,000 + 3,000 = 97,000 ล้านบาท
+└── Target Price = 97,000 / 1,000 = <span class="ok">97 บาท</span>
+
+<span class="highlight">3. P/BV Analysis:</span>
+├── BPS = 25,000 / 1,000 = <span class="val">25</span> บาท
+├── P/BV = 48 / 25 = <span class="val">1.92 เท่า</span>
+├── ROE = 20% → P/BV ควรอยู่ที่ 2.5-3.0 เท่า
+└── สรุป: <span class="ok">P/BV ต่ำเมื่อเทียบกับ ROE → อาจ Undervalued</span>
+
+<span class="highlight">4. PEG Analysis:</span>
+├── P/E = 9.6
+├── อัตราเติบโตเฉลี่ย 5 ปี = 9%
+├── PEG = 9.6 / 9 = <span class="val">1.07</span>
+└── สรุป: <span class="val">PEG ใกล้ 1 → ราคาสมเหตุสมผลกับการเติบโต</span>
+  </div>
+
+  <h4>ขั้นตอนที่ 2: DCF Valuation</h4>
+
+  <div class="formula-block">
+    <span class="tag example">DCF สมมติฐาน &amp; ผลลัพธ์</span>
+<span class="highlight">สมมติฐาน:</span>
+├── อัตราเติบโตรายได้: ปี 1-3 = 10%, ปี 4-5 = 8%
+├── EBIT Margin: ค่อยๆ เพิ่มจาก 16% เป็น 17%
+├── อัตราภาษี: 20%
+├── CapEx/Revenue: 8%
+├── ΔWorking Capital/ΔRevenue: 10%
+├── Terminal Growth Rate: 3%
+└── WACC: 9.5%
+
+<span class="highlight">การคาดการณ์ FCFF:</span>
+                    ปี 1     ปี 2     ปี 3     ปี 4     ปี 5
+รายได้              46,200   50,820   55,902   60,374   65,204
+EBIT Margin         16.0%    16.3%    16.5%    16.8%    17.0%
+NOPAT (×0.80)       5,914    6,627    7,379    8,114    8,868
++ ค่าเสื่อมราคา    2,800    3,000    3,200    3,400    3,600
+- CapEx             3,696    4,066    4,472    4,830    5,216
+- ΔWC               420      462      508      447      483
+<span class="ok">FCFF                4,598    5,099    5,599    6,237    6,769</span>
+
+Terminal Value = 6,769 × 1.03 / (0.095 - 0.03) = <span class="val">107,262</span>
+
+PV ของ FCFF:
+ปี 1: 4,598 / 1.095  = <span class="val">4,199</span>
+ปี 2: 5,099 / 1.095² = <span class="val">4,251</span>
+ปี 3: 5,599 / 1.095³ = <span class="val">4,261</span>
+ปี 4: 6,237 / 1.095⁴ = <span class="val">4,333</span>
+ปี 5: 6,769 / 1.095⁵ = <span class="val">4,293</span>
+PV ของ TV: 107,262 / 1.095⁵ = <span class="val">68,013</span>
+
+Enterprise Value = 21,337 + 68,013 = <span class="val">89,350</span> ล้านบาท
+Equity Value = 89,350 - 8,000 + 3,000 = <span class="val">84,350</span> ล้านบาท
+มูลค่าต่อหุ้น = 84,350 / 1,000 = <span class="ok">84.35 บาท</span>
+
+<span class="ok">Margin of Safety = (84.35 - 48) / 84.35 = 43.1% ✅✅</span>
+  </div>
+
+  <h4>ขั้นตอนที่ 3: DDM Valuation</h4>
+
+  <div class="formula-block">
+    <span class="tag example">DDM ผลลัพธ์</span>
+D₀ = <span class="val">2.50</span> บาท, g₁ = <span class="val">10%</span> (5 ปีแรก), g₂ = <span class="val">4%</span> (หลังจากนั้น), r = <span class="val">11%</span>
+
+ปี 1: D₁ = 2.50 × 1.10 = 2.75
+ปี 2: D₂ = 2.75 × 1.10 = 3.03
+ปี 3: D₃ = 3.03 × 1.10 = 3.33
+ปี 4: D₄ = 3.33 × 1.10 = 3.66
+ปี 5: D₅ = 3.66 × 1.10 = 4.03
+
+D₆ = 4.03 × 1.04 = 4.19
+P₅ = 4.19 / (0.11 - 0.04) = 59.86
+
+PV ของเงินปันผล = 2.48 + 2.46 + 2.43 + 2.41 + 2.39 = <span class="val">12.17</span>
+PV ของ P₅ = 59.86 / 1.11⁵ = <span class="val">35.46</span>
+
+มูลค่าต่อหุ้น = 12.17 + 35.46 = <span class="val">47.63 บาท</span>
+→ <span class="comment">ใกล้เคียงราคาปัจจุบัน (48 บาท) → Fair Value จากมุม DDM</span>
+  </div>
+
+  <h4>ขั้นตอนที่ 4: สรุป Football Field</h4>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>วิธี</th>
+          <th>ราคาต่ำสุด</th>
+          <th>กรณีฐาน</th>
+          <th>ราคาสูงสุด</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>P/E</strong></td><td>77</td><td style="color:var(--accent-green);font-weight:600;">99</td><td>121</td></tr>
+        <tr><td><strong>EV/EBITDA</strong></td><td>80</td><td style="color:var(--accent-green);font-weight:600;">97</td><td>120</td></tr>
+        <tr><td><strong>DCF</strong></td><td>65</td><td style="color:var(--accent-green);font-weight:600;">84</td><td>110</td></tr>
+        <tr><td><strong>DDM</strong></td><td>40</td><td style="color:var(--accent-yellow);font-weight:600;">48</td><td>58</td></tr>
+        <tr><td><strong>EPV</strong></td><td>55</td><td style="color:var(--accent-green);font-weight:600;">62</td><td>70</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box tip">
+    <div class="box-title">📊 สรุปกรณีศึกษา ABC</div>
+    <ul style="margin-left:1rem; margin-top:0.5rem; list-style:disc;">
+      <li>ทุกวิธี (ยกเว้น DDM) บอกว่าหุ้นถูกกว่ามูลค่าที่เหมาะสม</li>
+      <li>ช่วงมูลค่าที่เหมาะสม (กรณีฐาน): <strong>62-99 บาท</strong></li>
+      <li>Upside กรณีฐาน: <strong>30-100%</strong></li>
+      <li>Margin of Safety: สูง</li>
+      <li><strong>ข้อสังเกต:</strong> DDM ให้มูลค่าต่ำกว่าวิธีอื่น เพราะ Payout Ratio แค่ 50% → บริษัทเก็บกำไรไว้ลงทุนมาก → DCF จับมูลค่าส่วนนี้ได้ แต่ DDM ไม่ได้</li>
+    </ul>
+  </div>
+
+  <!-- ===== SECTION 8: COMMON MISTAKES ===== -->
+  <div class="section-header" id="mistakes">
+    <h2><span class="section-number warm">8</span> ข้อผิดพลาดที่พบบ่อยในการ Valuation</h2>
+  </div>
+
+  <div class="error-item">
+    <span class="error-num">❌ 1</span>
+    <div>
+      <strong>ใช้วิธีเดียว</strong>
+      <div class="fix">→ ใช้หลายวิธีเปรียบเทียบกันเสมอ</div>
+    </div>
+  </div>
+
+  <div class="error-item">
+    <span class="error-num">❌ 2</span>
+    <div>
+      <strong>คาดการณ์การเติบโตสูงเกินไป</strong>
+      <div class="fix">→ ใช้ Conservative Case เป็นหลัก — ถามตัวเองว่า "ถ้าเติบโตแค่ครึ่งหนึ่งของที่คาด ยังน่าซื้อไหม?"</div>
+    </div>
+  </div>
+
+  <div class="error-item">
+    <span class="error-num">❌ 3</span>
+    <div>
+      <strong>ไม่ทำ Sensitivity Analysis</strong>
+      <div class="fix">→ ต้องทดสอบว่าผลลัพธ์เปลี่ยนแค่ไหนเมื่อสมมติฐานเปลี่ยน</div>
+    </div>
+  </div>
+
+  <div class="error-item">
+    <span class="error-num">❌ 4</span>
+    <div>
+      <strong>ใช้ Terminal Growth Rate สูงเกินไป</strong>
+      <div class="fix">→ ไม่ควรเกิน GDP Growth ระยะยาว (2-4% สำหรับไทย) — Terminal Growth Rate 5% ขึ้นไป → ผิดปกติ</div>
+    </div>
+  </div>
+
+  <div class="error-item">
+    <span class="error-num">❌ 5</span>
+    <div>
+      <strong>ไม่ปรับ WACC ตามความเสี่ยง</strong>
+      <div class="fix">→ บริษัทเล็กควรมี WACC สูงกว่าบริษัทใหญ่ — บริษัทที่มีหนี้มากควรมี WACC สูงกว่า</div>
+    </div>
+  </div>
+
+  <div class="error-item">
+    <span class="error-num">❌ 6</span>
+    <div>
+      <strong>เปรียบเทียบ P/E ข้ามอุตสาหกรรม</strong>
+      <div class="fix">→ P/E 15 ของธนาคาร ≠ P/E 15 ของเทคโนโลยี — ต้องเปรียบเทียบกับบริษัทในอุตสาหกรรมเดียวกัน</div>
+    </div>
+  </div>
+
+  <div class="error-item">
+    <span class="error-num">❌ 7</span>
+    <div>
+      <strong>ไม่ดู Quality ของกำไร</strong>
+      <div class="fix">→ กำไรจากการดำเนินงาน ≠ กำไรจากรายการพิเศษ — ดู Operating Cash Flow เทียบกับกำไรสุทธิ — ถ้า OCF &lt;&lt; Net Income → กำไรอาจไม่ใช่เงินสดจริง</div>
+    </div>
+  </div>
+
+  <div class="error-item">
+    <span class="error-num">❌ 8</span>
+    <div>
+      <strong>ลืม Margin of Safety</strong>
+      <div class="fix">→ แม้จะวิเคราะห์ดีแค่ไหน ก็มีโอกาสผิดเสมอ — ซื้อเมื่อราคาต่ำกว่ามูลค่าที่เหมาะสมอย่างน้อย 20-30%</div>
+    </div>
+  </div>
+
+  <div class="error-item">
+    <span class="error-num">❌ 9</span>
+    <div>
+      <strong>ตกหลุม Value Trap</strong>
+      <div class="fix">→ หุ้นที่ดู "ถูก" อาจถูกด้วยเหตุผล (ธุรกิจกำลังถดถอย) — ต้องดูว่า "ทำไม" ถึงถูก ไม่ใช่แค่ "ถูกแค่ไหน" — ตรวจสอบ: กำไรลดลงต่อเนื่อง? อุตสาหกรรมกำลังหดตัว? เทคโนโลยีเปลี่ยน?</div>
+    </div>
+  </div>
+
+  <div class="error-item">
+    <span class="error-num">❌ 10</span>
+    <div>
+      <strong>ยึดติดกับตัวเลข Valuation มากเกินไป</strong>
+      <div class="fix">→ Valuation เป็น "ศิลปะ" ไม่ใช่ "วิทยาศาสตร์" — ตัวเลขเป็นแค่จุดเริ่มต้น ต้องใช้วิจารณญาณประกอบ — ปัจจัยเชิงคุณภาพ (ผู้บริหาร, แบรนด์, Moat) สำคัญไม่แพ้ตัวเลข</div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 9: CHECKLIST ===== -->
+  <div class="section-header" id="checklist">
+    <h2><span class="section-number green">9</span> Checklist สำหรับการ Valuation</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 ก่อนเริ่ม Valuation</div>
+    <ul class="checklist">
+      <li><span class="check">✓</span>เข้าใจธุรกิจของบริษัทดีพอหรือยัง? (อธิบายให้คนอื่นฟังได้ไหม?)</li>
+      <li><span class="check">✓</span>อ่านงบการเงินอย่างน้อย 3 ปีย้อนหลังแล้วหรือยัง?</li>
+      <li><span class="check">✓</span>อ่าน 56-1 One Report แล้วหรือยัง?</li>
+      <li><span class="check">✓</span>รู้จักคู่แข่งหลักของบริษัทหรือยัง?</li>
+      <li><span class="check">✓</span>เข้าใจแนวโน้มอุตสาหกรรมหรือยัง?</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔬 ระหว่าง Valuation</div>
+    <ul class="checklist">
+      <li><span class="check">✓</span>ใช้อย่างน้อย 3 วิธีในการประเมินมูลค่า</li>
+      <li><span class="check">✓</span>สมมติฐานการเติบโตสมเหตุสมผลไหม? (ไม่สูงเกินไป)</li>
+      <li><span class="check">✓</span>WACC คำนวณถูกต้องไหม? (ใช้ข้อมูลล่าสุด)</li>
+      <li><span class="check">✓</span>Terminal Growth Rate ไม่เกิน GDP Growth ระยะยาว</li>
+      <li><span class="check">✓</span>ทำ Sensitivity Analysis แล้ว</li>
+      <li><span class="check">✓</span>ผลลัพธ์จากหลายวิธีไปในทิศทางเดียวกันไหม?</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">✅ หลัง Valuation</div>
+    <ul class="checklist">
+      <li><span class="check">✓</span>Margin of Safety อย่างน้อย 20-30%</li>
+      <li><span class="check">✓</span>ตรวจสอบว่าไม่ใช่ Value Trap (กำไรไม่ได้ลดลงต่อเนื่อง)</li>
+      <li><span class="check">✓</span>ปัจจัยเชิงคุณภาพสนับสนุนไหม? (ผู้บริหาร, Moat, แบรนด์)</li>
+      <li><span class="check">✓</span>มีสัญญาณปั่นหุ้นหรือไม่? (ตรวจสอบตามบทที่ 1-4)</li>
+      <li><span class="check">✓</span>บันทึกสมมติฐานและผลลัพธ์ไว้ใน Trading Journal</li>
+    </ul>
+  </div>
+
+  <!-- ===== REFERENCES ===== -->
+  <div class="section-header" id="references">
+    <h2><span class="section-number purple">📚</span> แหล่งอ้างอิงและเรียนรู้เพิ่มเติม</h2>
+  </div>
+
+  <div class="three-col" style="grid-template-columns: 1fr 1fr;">
+    <div class="col-card blue-accent">
+      <h4 style="color:var(--accent-blue-light);">ข้อมูลงบการเงินและอัตราส่วน</h4>
+      <ul>
+        <li><strong>set.or.th</strong> — งบการเงิน, ข่าวแจ้งตลาด, สถิติรายกลุ่ม</li>
+        <li><strong>settrade.com</strong> — Financial Ratio, Stock Screener, Consensus</li>
+        <li><strong>sec.or.th</strong> — 56-1 One Report, แบบ 59-2</li>
+        <li><strong>siamchart.com</strong> — กราฟเทคนิคัลหุ้นไทย</li>
+      </ul>
+    </div>
+    <div class="col-card green-accent">
+      <h4 style="color:var(--accent-green);">ข้อมูลเศรษฐกิจมหภาค</h4>
+      <ul>
+        <li><strong>bot.or.th</strong> — อัตราดอกเบี้ย, เงินเฟ้อ, GDP</li>
+        <li><strong>thaibma.or.th</strong> — อัตราผลตอบแทนพันธบัตร</li>
+        <li><strong>nesdc.go.th</strong> — GDP Growth, แนวโน้มเศรษฐกิจ</li>
+        <li><strong>imf.org</strong> — World Economic Outlook</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌐 ข้อมูล Valuation Parameters</div>
+    <div class="tree"><span class="node">pages.stern.nyu.edu/~adamodar (Damodaran Online)</span>
+├── Equity Risk Premium ทุกประเทศ (อัปเดตทุกปี)
+├── Country Risk Premium
+├── Beta ตามอุตสาหกรรม
+├── Cost of Capital ตามอุตสาหกรรม
+└── <span class="source">ข้อมูลฟรีทั้งหมด — แหล่งอ้างอิงระดับโลก</span>
+
+<span class="node">corporatefinanceinstitute.com</span> — บทเรียน Valuation ฟรี</div>
+  </div>
+
+  <h3>หนังสือแนะนำเรื่อง Valuation</h3>
+
+  <div class="three-col" style="grid-template-columns: 1fr 1fr;">
+    <div class="col-card blue-accent">
+      <h4 style="color:var(--accent-blue-light);">📖 สำหรับเริ่มต้น</h4>
+      <ul>
+        <li><strong>The Little Book of Valuation</strong> — Aswath Damodaran<br><span style="font-size:0.8rem;color:var(--text-muted);">สรุปวิธี Valuation ทุกวิธีในเล่มเดียว อ่านง่าย</span></li>
+        <li><strong>ลงทุนหุ้นอย่างเน้นคุณค่า</strong> — ดร.นิเวศน์ เหมวชิรวรากร<br><span style="font-size:0.8rem;color:var(--text-muted);">Value Investing แบบไทยๆ</span></li>
+      </ul>
+    </div>
+    <div class="col-card purple-accent">
+      <h4 style="color:var(--accent-purple);">📚 สำหรับเจาะลึก</h4>
+      <ul>
+        <li><strong>Investment Valuation</strong> — Aswath Damodaran<br><span style="font-size:0.8rem;color:var(--text-muted);">ตำราเรียน Valuation ที่ครบถ้วนที่สุด 1,000+ หน้า</span></li>
+        <li><strong>Valuation: Measuring and Managing the Value of Companies</strong> — McKinsey<br><span style="font-size:0.8rem;color:var(--text-muted);">มุมมอง Valuation จาก McKinsey &amp; Company</span></li>
+        <li><strong>Value Investing: From Graham to Buffett and Beyond</strong> — Bruce Greenwald<br><span style="font-size:0.8rem;color:var(--text-muted);">แนวคิด EPV และ Value Investing สมัยใหม่</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CLOSING QUOTES -->
+  <div style="margin-top: 4rem;">
+    <div class="quote-block">
+      "ในระยะสั้น ตลาดคือเครื่องลงคะแนนเสียง ในระยะยาว ตลาดคือเครื่องชั่งน้ำหนัก"
+      <span class="author">— Benjamin Graham</span>
+    </div>
+
+    <div class="quote-block" style="border-left-color: var(--accent-cyan);">
+      "มูลค่าที่แท้จริงของบริษัทไม่ได้ขึ้นอยู่กับว่าตลาดคิดว่ามันมีค่าเท่าไหร่ แต่ขึ้นอยู่กับกระแสเงินสดที่มันจะสร้างได้ตลอดอายุของมัน"
+      <span class="author" style="color: var(--accent-cyan);">— เรียบเรียงจากแนวคิดของ Aswath Damodaran, NYU Stern School of Business</span>
+    </div>
+
+    <div class="quote-block" style="border-left-color: var(--accent-green);">
+      "การลงทุนที่ชาญฉลาดที่สุดคือการลงทุนที่คล้ายธุรกิจมากที่สุด"
+      <span class="author" style="color: var(--accent-green);">— Benjamin Graham, The Intelligent Investor</span>
+    </div>
+  </div>
+
+</main>
+
+<!-- BACK TO TOP BUTTON -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  // Trim leading whitespace from formula-block and tree elements (fix pre-wrap indentation)
+  document.querySelectorAll('.formula-block, .tree').forEach(el => {
+    // Get text content, split into lines, find minimum indentation, and remove it
+    const lines = el.innerHTML.split('\n');
+    // Find minimum non-empty line indentation
+    let minIndent = Infinity;
+    lines.forEach(line => {
+      if (line.trim().length > 0) {
+        const indent = line.match(/^(\s*)/)[1].length;
+        if (indent < minIndent) minIndent = indent;
+      }
+    });
+    if (minIndent > 0 && minIndent < Infinity) {
+      el.innerHTML = lines.map(line => line.slice(minIndent)).join('\n');
+    }
+    // Also trim leading/trailing blank lines
+    el.innerHTML = el.innerHTML.replace(/^\s*\n/, '').replace(/\n\s*$/, '');
+  });
+
+  // Back to top visibility
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('backToTop');
+    btn.classList.toggle('visible', window.scrollY > 400);
+  });
+
+  // Interactive checklist
+  document.querySelectorAll('.checklist .check').forEach(el => {
+    el.addEventListener('click', function() {
+      this.parentElement.classList.toggle('checked');
+      if (this.parentElement.classList.contains('checked')) {
+        this.style.background = 'rgba(16,185,129,0.2)';
+        this.style.borderColor = '#10b981';
+        this.style.color = '#10b981';
+      } else {
+        this.style.background = 'transparent';
+        this.style.borderColor = '#2a3550';
+        this.style.color = 'transparent';
+      }
+    });
+  });
+
+  // Smooth scroll for TOC
+  document.querySelectorAll('.toc-list a, .nav-links a').forEach(a => {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Active TOC highlight
+  const sections = document.querySelectorAll('[id]');
+  const tocLinks = document.querySelectorAll('.toc-list a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const top = section.offsetTop - 100;
+      if (window.scrollY >= top) current = section.getAttribute('id');
+    });
+    tocLinks.forEach(link => {
+      link.style.borderLeftColor = link.getAttribute('href') === '#' + current ? '#3b82f6' : 'transparent';
+      link.style.color = link.getAttribute('href') === '#' + current ? '#60a5fa' : '';
+    });
+  });
+</script>
+</body>
+</html>
