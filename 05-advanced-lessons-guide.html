@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ภาค 5: บทเรียนขั้นสูง — จากเอาตัวรอดสู่เติบโตอย่างยั่งยืน</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-card: #1a2235;
+    --bg-card-hover: #1f2a40;
+    --bg-code: #0d1321;
+    --border-primary: #2a3550;
+    --border-accent: #3b82f6;
+    --text-primary: #e8edf5;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-blue: #3b82f6;
+    --accent-blue-light: #60a5fa;
+    --accent-cyan: #22d3ee;
+    --accent-green: #34d399;
+    --accent-emerald: #10b981;
+    --accent-yellow: #fbbf24;
+    --accent-orange: #f97316;
+    --accent-red: #ef4444;
+    --accent-purple: #a78bfa;
+    --accent-pink: #f472b6;
+    --gradient-blue: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    --gradient-green: linear-gradient(135deg, #10b981, #22d3ee);
+    --gradient-warm: linear-gradient(135deg, #f97316, #fbbf24);
+    --gradient-red: linear-gradient(135deg, #ef4444, #f97316);
+    --gradient-emerald: linear-gradient(135deg, #059669, #10b981);
+    --gradient-hero: linear-gradient(135deg, #0a0e1a 0%, #0d1528 30%, #1a1e2e 60%, #0f172a 100%);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+    --shadow-lg: 0 8px 30px rgba(0,0,0,0.5);
+    --shadow-glow-blue: 0 0 20px rgba(59,130,246,0.15);
+    --shadow-glow-green: 0 0 20px rgba(16,185,129,0.15);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; font-size: 16px; scroll-padding-top: 70px; }
+
+  body {
+    font-family: 'IBM Plex Sans Thai', 'Noto Sans Thai', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: var(--border-primary); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent-blue); }
+
+  /* ===== NAVIGATION ===== */
+  .top-nav {
+    position: sticky; top: 0; z-index: 1000;
+    background: rgba(10,14,26,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-primary);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-size: 0.9rem; font-weight: 700;
+    text-decoration: none; color: var(--accent-blue);
+    transition: all 0.3s ease; margin-right: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    width: 60px; height: 32px; border-radius: 6px;
+    background: rgba(59,130,246,0.1); letter-spacing: 0.5px;
+  }
+  .nav-logo:hover {
+    background: rgba(59,130,246,0.2);
+    transform: scale(1.05); color: var(--accent-blue-light);
+  }
+  .nav-brand {
+    font-weight: 700; font-size: 1.1rem;
+    background: var(--gradient-blue);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .nav-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .nav-links a {
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 0.8rem; padding: 0.3rem 0.7rem;
+    border-radius: 6px; transition: all 0.2s; white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--accent-blue-light); background: rgba(59,130,246,0.1); }
+
+  /* ===== SIDEBAR TOC ===== */
+  .sidebar {
+    position: fixed; left: 0; top: 60px; bottom: 0;
+    width: 300px; background: var(--bg-secondary);
+    border-right: 1px solid var(--border-primary);
+    overflow-y: auto; padding: 1.5rem 0;
+    z-index: 100; transition: transform 0.3s;
+  }
+  .sidebar-title {
+    font-size: 0.75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--text-muted); padding: 0 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .toc-list { list-style: none; }
+  .toc-list li a {
+    display: block; padding: 0.5rem 1.5rem;
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 0.85rem; border-left: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .toc-list li a:hover {
+    color: var(--accent-blue-light);
+    background: rgba(59,130,246,0.05);
+    border-left-color: var(--accent-blue);
+  }
+  .toc-list li.toc-h3 a { padding-left: 2.5rem; font-size: 0.8rem; }
+
+  /* ===== MAIN CONTENT ===== */
+  .main-content {
+    margin-left: 300px;
+    max-width: 900px; padding: 2rem 3rem 6rem;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: var(--gradient-hero);
+    border-radius: var(--radius-xl);
+    padding: 4rem 3rem; margin-bottom: 3rem;
+    border: 1px solid rgba(59,130,246,0.2);
+    position: relative; overflow: hidden; text-align: center;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(59,130,246,0.06) 0%, transparent 60%),
+                radial-gradient(circle at 70% 50%, rgba(139,92,246,0.06) 0%, transparent 60%);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.3);
+    color: var(--accent-blue-light);
+    font-size: 0.8rem; font-weight: 600;
+    padding: 0.4rem 1.2rem; border-radius: 50px;
+    margin-bottom: 1.5rem; position: relative;
+  }
+  .hero h1 {
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 2.5rem; font-weight: 800;
+    line-height: 1.3; margin-bottom: 1rem; position: relative;
+  }
+  .hero h1 .gradient-text {
+    background: linear-gradient(135deg, #3b82f6, #a78bfa);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-subtitle {
+    font-size: 1.1rem; color: var(--text-secondary);
+    max-width: 650px; margin: 0 auto 2rem; position: relative;
+  }
+
+  /* ===== QUOTE ===== */
+  .quote-block {
+    background: var(--bg-card);
+    border-left: 4px solid var(--accent-purple);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    padding: 1.5rem 2rem; margin: 2rem 0;
+    font-style: italic; color: var(--text-secondary);
+  }
+  .quote-block .author {
+    display: block; margin-top: 0.8rem;
+    font-style: normal; font-weight: 600;
+    color: var(--accent-purple); font-size: 0.9rem;
+  }
+
+  /* ===== SECTION HEADERS ===== */
+  .section-header {
+    margin: 4rem 0 2rem; padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border-primary);
+  }
+  .section-header h2 {
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 1.8rem; font-weight: 800;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .section-number {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px; border-radius: 12px;
+    font-size: 1rem; font-weight: 700; color: #fff; flex-shrink: 0;
+  }
+  .section-number.blue { background: var(--gradient-blue); }
+  .section-number.green { background: var(--gradient-green); }
+  .section-number.warm { background: var(--gradient-warm); }
+  .section-number.purple { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+  .section-number.emerald { background: var(--gradient-emerald); }
+  .section-number.red { background: var(--gradient-red); }
+  .section-number.cyan { background: linear-gradient(135deg, #06b6d4, #22d3ee); }
+
+  h3 {
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 1.35rem; font-weight: 700;
+    margin: 2.5rem 0 1rem;
+    color: var(--accent-blue-light);
+  }
+  h4 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 2rem 0 0.8rem;
+    color: var(--accent-cyan);
+  }
+
+  p { margin-bottom: 1rem; color: var(--text-secondary); }
+  strong { color: var(--text-primary); font-weight: 600; }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: 2rem; margin: 1.5rem 0;
+    transition: all 0.3s;
+  }
+  .card:hover {
+    border-color: rgba(59,130,246,0.3);
+    box-shadow: var(--shadow-glow-blue);
+  }
+  .card-title {
+    font-size: 1.1rem; font-weight: 700;
+    margin-bottom: 1rem; display: flex;
+    align-items: center; gap: 0.6rem;
+  }
+
+  /* ===== THREE COLUMN GRID ===== */
+  .three-col {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; margin: 2rem 0;
+  }
+  .col-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem; transition: all 0.3s;
+  }
+  .col-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .col-card.blue-accent { border-top: 3px solid var(--accent-blue); }
+  .col-card.green-accent { border-top: 3px solid var(--accent-green); }
+  .col-card.purple-accent { border-top: 3px solid var(--accent-purple); }
+  .col-card.warm-accent { border-top: 3px solid var(--accent-orange); }
+  .col-card.cyan-accent { border-top: 3px solid var(--accent-cyan); }
+  .col-card.red-accent { border-top: 3px solid var(--accent-red); }
+  .col-card.emerald-accent { border-top: 3px solid var(--accent-emerald); }
+  .col-card h4 { margin-top: 0; font-size: 1rem; }
+  .col-card ul { list-style: none; margin-top: 0.8rem; }
+  .col-card ul li {
+    padding: 0.3rem 0; font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+  .col-card ul li::before {
+    content: '•'; margin-right: 0.5rem;
+    color: var(--accent-blue);
+  }
+
+  /* ===== CODE / FORMULA BLOCKS ===== */
+  .formula-block {
+    background: var(--bg-code);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: 1.5rem 2rem; margin: 1.5rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem; line-height: 1.9;
+    color: var(--text-secondary);
+    overflow-x: auto; position: relative;
+    white-space: pre-wrap; word-wrap: break-word;
+  }
+  .formula-block .tag {
+    position: absolute; top: 0.8rem; right: 1rem;
+    font-size: 0.65rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px;
+    padding: 0.2rem 0.6rem; border-radius: 4px;
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+  }
+  .formula-block .tag.formula { background: rgba(59,130,246,0.15); color: var(--accent-blue-light); }
+  .formula-block .tag.example { background: rgba(16,185,129,0.15); color: var(--accent-green); }
+  .formula-block .tag.steps { background: rgba(249,115,22,0.15); color: var(--accent-orange); }
+  .formula-block .tag.data { background: rgba(167,139,250,0.15); color: var(--accent-purple); }
+  .formula-block .tag.concept { background: rgba(34,211,238,0.15); color: var(--accent-cyan); }
+  .formula-block .tag.spoofing { background: rgba(239,68,68,0.15); color: var(--accent-red); }
+  .formula-block .tag.layering { background: rgba(249,115,22,0.15); color: var(--accent-orange); }
+
+  .formula-block .highlight { color: var(--accent-cyan); font-weight: 500; }
+  .formula-block .val { color: var(--accent-yellow); }
+  .formula-block .ok { color: var(--accent-green); }
+  .formula-block .warn { color: var(--accent-orange); }
+  .formula-block .bad { color: var(--accent-red); }
+  .formula-block .comment { color: var(--text-muted); }
+
+  /* ===== INFO BOX ===== */
+  .info-box {
+    border-radius: var(--radius-md);
+    padding: 1.2rem 1.5rem; margin: 1.5rem 0;
+    font-size: 0.92rem;
+  }
+  .info-box.tip {
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.2);
+    color: var(--accent-green);
+  }
+  .info-box.warning {
+    background: rgba(249,115,22,0.08);
+    border: 1px solid rgba(249,115,22,0.2);
+    color: var(--accent-orange);
+  }
+  .info-box.danger {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.2);
+    color: var(--accent-red);
+  }
+  .info-box.info {
+    background: rgba(59,130,246,0.08);
+    border: 1px solid rgba(59,130,246,0.2);
+    color: var(--accent-blue-light);
+  }
+  .info-box .box-title {
+    font-weight: 700; margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+
+  /* ===== TABLE ===== */
+  .table-wrapper {
+    overflow-x: auto; margin: 1.5rem 0;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-primary);
+  }
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  thead { background: rgba(59,130,246,0.1); }
+  th {
+    padding: 0.8rem 1rem; text-align: left;
+    font-weight: 600; color: var(--accent-blue-light);
+    border-bottom: 2px solid var(--border-primary);
+    white-space: nowrap;
+  }
+  td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid rgba(42,53,80,0.5);
+    color: var(--text-secondary);
+  }
+  tbody tr:hover { background: rgba(59,130,246,0.03); }
+
+  /* ===== TREE DIAGRAM ===== */
+  .tree {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem; line-height: 1.8;
+    color: var(--text-secondary);
+    padding: 1rem 0;
+    white-space: pre-wrap; word-wrap: break-word;
+  }
+  .tree .node { color: var(--text-primary); font-weight: 500; }
+
+  /* ===== PRINCIPLE CARDS ===== */
+  .principle-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1rem; margin: 2rem 0;
+  }
+  .principle-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: 1.2rem 1.5rem;
+    display: flex; gap: 1rem; align-items: flex-start;
+    transition: all 0.3s;
+  }
+  .principle-card:hover {
+    border-color: rgba(59,130,246,0.3);
+    box-shadow: var(--shadow-glow-blue);
+  }
+  .principle-num {
+    background: var(--gradient-blue);
+    color: #fff; font-weight: 700; font-size: 0.85rem;
+    padding: 0.3rem 0.6rem; border-radius: 6px;
+    flex-shrink: 0; white-space: nowrap;
+  }
+
+  /* ===== BACK TO TOP ===== */
+  .back-to-top {
+    position: fixed; bottom: 2rem; right: 2rem;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--gradient-blue); color: #fff;
+    border: none; cursor: pointer; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow-lg);
+    opacity: 0; transition: opacity 0.3s;
+    z-index: 1000;
+  }
+  .back-to-top.visible { opacity: 1; }
+
+  .progress-bar { position: fixed; top: 60px; left: 300px; right: 0; height: 3px; z-index: 999; background: transparent; }
+  .progress-bar .fill { height: 100%; background: var(--gradient-blue); width: 0%; transition: width 0.1s; }
+
+  /* Hamburger Menu */
+  .hamburger-btn {
+    display: none; flex-direction: column;
+    justify-content: center; align-items: center;
+    width: 36px; height: 36px;
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 8px; cursor: pointer;
+    gap: 5px; padding: 0;
+    transition: all 0.3s ease; flex-shrink: 0;
+  }
+  .hamburger-btn:hover { background: rgba(59,130,246,0.2); }
+  .hamburger-btn span {
+    display: block; width: 18px; height: 2px;
+    background: var(--accent-blue-light);
+    border-radius: 2px; transition: all 0.3s ease;
+  }
+  .hamburger-btn.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger-btn.active span:nth-child(2) { opacity: 0; }
+  .hamburger-btn.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+  .mobile-menu-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); z-index: 998;
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .mobile-menu-overlay.open { display: block; opacity: 1; }
+  .mobile-menu {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: 300px; max-width: 85vw;
+    background: var(--bg-secondary); z-index: 999;
+    overflow-y: auto; padding: 1.5rem 0;
+    transform: translateX(100%); transition: transform 0.3s ease;
+    border-left: 1px solid var(--border-primary);
+    box-shadow: -4px 0 20px rgba(0,0,0,0.3);
+  }
+  .mobile-menu.open { transform: translateX(0); }
+  .mobile-menu .mm-title {
+    font-size: 0.75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--text-muted); padding: 0.5rem 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .mobile-menu .mm-list { list-style: none; padding: 0; margin: 0; }
+  .mobile-menu .mm-list li a {
+    display: block; padding: 0.6rem 1.5rem;
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 0.88rem; border-left: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .mobile-menu .mm-list li a:hover,
+  .mobile-menu .mm-list li a:active {
+    color: var(--accent-blue-light);
+    background: rgba(59,130,246,0.05);
+    border-left-color: var(--accent-blue);
+  }
+  .mobile-menu .mm-list li.sub a { padding-left: 2.5rem; font-size: 0.82rem; }
+  .mobile-menu .mm-divider {
+    height: 1px; background: var(--border-primary);
+    margin: 0.5rem 1.5rem;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1024px) {
+    .hamburger-btn { display: flex; }
+    .nav-links { display: none; }
+    .sidebar { transform: translateX(-100%); }
+    .main-content { margin-left: 0; padding: 1.5rem; }
+    .progress-bar { left: 0; }
+    .three-col { grid-template-columns: 1fr; }
+    .principle-grid { grid-template-columns: 1fr; }
+    .hero { padding: 2.5rem 1.5rem; }
+    .hero h1 { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="fill" id="progressFill"></div></div>
+
+<!-- ===== TOP NAVIGATION ===== -->
+<nav class="top-nav">
+  <a href="/" class="nav-logo" title="กลับหน้าหลัก">HOME</a>
+  <div class="nav-brand">🧠 ภาค 5 — บทเรียนขั้นสูง</div>
+  <div class="nav-links">
+    <a href="#ch20">Market Micro</a>
+    <a href="#ch21">Intermarket</a>
+    <a href="#ch22">Quant</a>
+    <a href="#ch23">Technical</a>
+    <a href="#ch24">Regime</a>
+    <a href="#ch25">Risk Mgmt</a>
+    <a href="#ch26">Behavioral</a>
+    <a href="#ch27">Edge</a>
+    <a href="#ch28">Meta-Learning</a>
+  </div>
+  <button class="hamburger-btn" id="hamburgerBtn" aria-label="เปิดเมนู">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mm-title">สารบัญ</div>
+  <ul class="mm-list">
+    <li><a href="#ch20">บทที่ 20: Market Microstructure</a></li>
+    <li class="sub"><a href="#order-book">Order Book Dynamics</a></li>
+    <li class="sub"><a href="#spoofing">Spoofing &amp; Layering</a></li>
+    <li class="sub"><a href="#iceberg">Iceberg Orders</a></li>
+    <li class="sub"><a href="#tick-data">Tick Data Analysis</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#ch21">บทที่ 21: Intermarket Analysis</a></li>
+    <li class="sub"><a href="#four-markets">4 ตลาดที่เชื่อมโยง</a></li>
+    <li class="sub"><a href="#bond-stock">Bond vs Stock</a></li>
+    <li class="sub"><a href="#thb-stock">THB vs Thai Stocks</a></li>
+    <li class="sub"><a href="#oil-stock">Oil vs Thai Stocks</a></li>
+    <li class="sub"><a href="#gold">Gold as Fear Indicator</a></li>
+    <li class="sub"><a href="#fund-flow">Fund Flow Analysis</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#ch22">บทที่ 22: Quantitative Thinking</a></li>
+    <li class="sub"><a href="#expectancy">Expectancy</a></li>
+    <li class="sub"><a href="#r-multiple">R-Multiple</a></li>
+    <li class="sub"><a href="#monte-carlo">Monte Carlo Simulation</a></li>
+    <li class="sub"><a href="#kelly">Kelly Criterion</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#ch23">บทที่ 23: Advanced Technical</a></li>
+    <li class="sub"><a href="#volume-profile">Volume Profile</a></li>
+    <li class="sub"><a href="#vwap">VWAP</a></li>
+    <li class="sub"><a href="#market-profile">Market Profile</a></li>
+    <li class="sub"><a href="#relative-strength">Relative Strength</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#ch24">บทที่ 24: Regime Detection</a></li>
+    <li class="sub"><a href="#regimes">4 Market Regimes</a></li>
+    <li class="sub"><a href="#breadth">Breadth Indicators</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#ch25">บทที่ 25: Advanced Risk Mgmt</a></li>
+    <li class="sub"><a href="#correlation">Correlation Risk</a></li>
+    <li class="sub"><a href="#var">Value at Risk</a></li>
+    <li class="sub"><a href="#drawdown">Max Drawdown Mgmt</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#ch26">บทที่ 26: Behavioral Finance</a></li>
+    <li class="sub"><a href="#prospect-theory">Prospect Theory</a></li>
+    <li class="sub"><a href="#system12">System 1 vs System 2</a></li>
+    <li class="sub"><a href="#narrative">Narrative Fallacy</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#ch27">บทที่ 27: Building Your Edge</a></li>
+    <li class="sub"><a href="#edge-def">Edge คืออะไร</a></li>
+    <li class="sub"><a href="#find-edge">Finding Your Edge</a></li>
+    <li class="sub"><a href="#compounding">Compounding</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#ch28">บทที่ 28: Meta-Learning</a></li>
+    <li class="sub"><a href="#deliberate-practice">Deliberate Practice</a></li>
+    <li class="sub"><a href="#aar">After Action Review</a></li>
+    <li class="sub"><a href="#process-outcome">Process vs Outcome</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#summary">สรุป 10 หลักการ</a></li>
+  </ul>
+</div>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar">
+  <div class="sidebar-title">สารบัญ</div>
+  <ul class="toc-list">
+    <li><a href="#ch20">บทที่ 20: Market Microstructure</a></li>
+    <li class="toc-h3"><a href="#order-book">Order Book Dynamics</a></li>
+    <li class="toc-h3"><a href="#spoofing">Spoofing &amp; Layering</a></li>
+    <li class="toc-h3"><a href="#iceberg">Iceberg Orders</a></li>
+    <li class="toc-h3"><a href="#tick-data">Tick Data Analysis</a></li>
+    <li><a href="#ch21">บทที่ 21: Intermarket Analysis</a></li>
+    <li class="toc-h3"><a href="#four-markets">4 ตลาดที่เชื่อมโยง</a></li>
+    <li class="toc-h3"><a href="#bond-stock">Bond vs Stock</a></li>
+    <li class="toc-h3"><a href="#thb-stock">THB vs Thai Stocks</a></li>
+    <li class="toc-h3"><a href="#oil-stock">Oil vs Thai Stocks</a></li>
+    <li class="toc-h3"><a href="#gold">Gold as Fear Indicator</a></li>
+    <li class="toc-h3"><a href="#fund-flow">Fund Flow Analysis</a></li>
+    <li><a href="#ch22">บทที่ 22: Quantitative Thinking</a></li>
+    <li class="toc-h3"><a href="#expectancy">Expectancy</a></li>
+    <li class="toc-h3"><a href="#r-multiple">R-Multiple</a></li>
+    <li class="toc-h3"><a href="#monte-carlo">Monte Carlo Simulation</a></li>
+    <li class="toc-h3"><a href="#kelly">Kelly Criterion</a></li>
+    <li><a href="#ch23">บทที่ 23: Advanced Technical</a></li>
+    <li class="toc-h3"><a href="#volume-profile">Volume Profile</a></li>
+    <li class="toc-h3"><a href="#vwap">VWAP</a></li>
+    <li class="toc-h3"><a href="#market-profile">Market Profile</a></li>
+    <li class="toc-h3"><a href="#relative-strength">Relative Strength</a></li>
+    <li><a href="#ch24">บทที่ 24: Regime Detection</a></li>
+    <li class="toc-h3"><a href="#regimes">4 Market Regimes</a></li>
+    <li class="toc-h3"><a href="#breadth">Breadth Indicators</a></li>
+    <li><a href="#ch25">บทที่ 25: Advanced Risk Mgmt</a></li>
+    <li class="toc-h3"><a href="#correlation">Correlation Risk</a></li>
+    <li class="toc-h3"><a href="#var">Value at Risk</a></li>
+    <li class="toc-h3"><a href="#drawdown">Max Drawdown Mgmt</a></li>
+    <li><a href="#ch26">บทที่ 26: Behavioral Finance</a></li>
+    <li class="toc-h3"><a href="#prospect-theory">Prospect Theory</a></li>
+    <li class="toc-h3"><a href="#system12">System 1 vs System 2</a></li>
+    <li class="toc-h3"><a href="#narrative">Narrative Fallacy</a></li>
+    <li><a href="#ch27">บทที่ 27: Building Your Edge</a></li>
+    <li class="toc-h3"><a href="#edge-def">Edge คืออะไร</a></li>
+    <li class="toc-h3"><a href="#find-edge">Finding Your Edge</a></li>
+    <li class="toc-h3"><a href="#compounding">Compounding</a></li>
+    <li><a href="#ch28">บทที่ 28: Meta-Learning</a></li>
+    <li class="toc-h3"><a href="#deliberate-practice">Deliberate Practice</a></li>
+    <li class="toc-h3"><a href="#aar">After Action Review</a></li>
+    <li class="toc-h3"><a href="#process-outcome">Process vs Outcome</a></li>
+    <li><a href="#summary">สรุป 10 หลักการ</a></li>
+  </ul>
+</aside>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="main-content">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">ภาค 5 — Advanced Lessons</div>
+    <h1>บทเรียนขั้นสูง<br><span class="gradient-text">จากเอาตัวรอดสู่เติบโตอย่างยั่งยืน</span></h1>
+    <p class="hero-subtitle">Market Microstructure, Intermarket Analysis, Quantitative Thinking, Behavioral Finance และอีกมากมาย — ทุกสิ่งที่นักลงทุนขั้นสูงต้องรู้</p>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- CHAPTER 20: Market Microstructure                             -->
+  <!-- ============================================================ -->
+  <div class="section-header" id="ch20">
+    <h2><span class="section-number blue">20</span> Market Microstructure — เข้าใจกลไกตลาดในระดับลึก</h2>
+  </div>
+
+  <h3 id="order-book">Order Book Dynamics — อ่าน Bid-Offer ให้เป็นมากกว่าแค่ดูตัวเลข</h3>
+
+  <p>นักลงทุนส่วนใหญ่ดู Bid-Offer แค่ "ใครเยอะกว่า" แต่นักลงทุนขั้นสูงอ่าน Order Book เหมือนอ่านภาษา — มันบอกเจตนาของผู้เล่นแต่ละฝ่าย</p>
+
+  <h4>Order Flow Analysis — อ่านกระแสคำสั่ง</h4>
+
+  <div class="formula-block">
+    <span class="tag concept">CONCEPT</span>
+<span class="highlight">ประเภทคำสั่งและความหมาย:</span>
+
+<span class="val">Market Order (คำสั่งตลาด):</span>
+├── ซื้อ Market Order = ต้องการหุ้นเดี๋ยวนี้ ยอมจ่ายราคา Offer
+│   → แสดงความเร่งด่วน = <span class="ok">แรงซื้อจริง</span>
+└── ขาย Market Order = ต้องการเงินเดี๋ยวนี้ ยอมขายราคา Bid
+    → แสดงความเร่งด่วน = <span class="bad">แรงขายจริง</span>
+
+<span class="val">Limit Order (คำสั่งจำกัดราคา):</span>
+├── Bid (ตั้งซื้อ) = "ผมยินดีซื้อที่ราคานี้ ถ้าราคาลงมา"
+│   → แสดงความต้องการ แต่ไม่เร่งด่วน
+└── Offer (ตั้งขาย) = "ผมยินดีขายที่ราคานี้ ถ้าราคาขึ้นไป"
+    → แสดงความต้องการขาย แต่ไม่เร่งด่วน
+  </div>
+
+  <h4>วิธีอ่าน Order Flow</h4>
+  <div class="card">
+    <div class="card-title">📊 สัญญาณจาก Order Flow</div>
+    <ul style="list-style:none; margin-top:0.5rem;">
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">• <strong>Market Buy > Market Sell</strong> → แรงซื้อจริงแข็งแกร่ง</li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">• <strong>Bid ถูก Hit บ่อยแต่ราคาไม่ลง</strong> → มีคนรอรับซื้อด้านล่างตลอด = <span style="color:var(--accent-green);">สัญญาณสะสม (Accumulation)</span></li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">• <strong>Offer ถูก Lift บ่อยแต่ราคาไม่ขึ้น</strong> → มีคนเติม Offer ใหม่ตลอด = <span style="color:var(--accent-red);">สัญญาณกระจายของ (Distribution)</span></li>
+    </ul>
+  </div>
+
+  <h3 id="spoofing">Spoofing และ Layering — กลลวงใน Order Book</h3>
+
+  <p>ผู้ปั่นไม่ได้แค่ซื้อขายจริง พวกเขายังใช้ Order Book เป็นเครื่องมือหลอกลวง:</p>
+
+  <div class="formula-block">
+    <span class="tag spoofing">SPOOFING</span>
+<span class="highlight">สถานการณ์: ผู้ปั่นต้องการซื้อหุ้นในราคาถูก</span>
+
+<span class="val">ขั้นตอน:</span>
+1. วาง Offer ขนาดใหญ่ที่ราคา 10.10 (<span class="bad">500,000 หุ้น</span>)
+   → คนเห็นว่ามีแรงขายหนัก → กลัว → ขายหุ้นออกมา
+2. รับซื้อหุ้นที่คนขายออกมาที่ราคา <span class="ok">9.90-10.00</span>
+3. ดึง Offer 500,000 หุ้นออก (<span class="comment">ไม่เคยตั้งใจจะขายจริง</span>)
+4. ราคาวิ่งขึ้นเพราะ "กำแพงขาย" หายไป
+
+<span class="ok">ผลลัพธ์: ซื้อหุ้นได้ในราคาถูกกว่าที่ควรจะเป็น</span>
+  </div>
+
+  <div class="formula-block">
+    <span class="tag layering">LAYERING</span>
+<span class="highlight">สถานการณ์: ผู้ปั่นต้องการดันราคาขึ้น</span>
+
+<span class="val">ขั้นตอน:</span>
+1. วาง Bid หลายชั้นด้านล่าง:
+   - <span class="ok">100,000 หุ้น</span> ที่ 10.00
+   - <span class="ok">200,000 หุ้น</span> ที่ 9.90
+   - <span class="ok">300,000 หุ้น</span> ที่ 9.80
+   → ดูเหมือนมีแรงซื้อรอรับหนามาก
+2. คนเห็นว่า "มีคนรอซื้อเยอะ" → มั่นใจ → ซื้อตาม
+3. ราคาขึ้น → ผู้ปั่นขายของออก
+4. ดึง Bid ทั้งหมดออก
+
+<span class="bad">ผลลัพธ์: สร้างภาพลวงว่ามีแรงซื้อหนัก ทั้งที่ไม่มี</span>
+  </div>
+
+  <div class="info-box warning">
+    <div class="box-title">⚠️ วิธีจับ Spoofing/Layering</div>
+    <ul style="margin-left:1rem; margin-top:0.5rem; list-style:disc;">
+      <li>Bid/Offer ขนาดใหญ่วางแล้วดึงออกภายใน 1-5 นาที → น่าสงสัย</li>
+      <li>Bid/Offer ขนาดใหญ่ถูกดึงออกเมื่อราคาใกล้ถึง → Spoofing</li>
+      <li>รูปแบบซ้ำๆ ในวันเดียว — Bid/Offer ใหญ่ปรากฏและหายไปซ้ำๆ → มีคนเล่นเกม</li>
+    </ul>
+  </div>
+
+  <h3 id="iceberg">Iceberg Orders — ออเดอร์ที่ซ่อนอยู่ใต้น้ำ</h3>
+
+  <div class="card">
+    <div class="card-title">🧊 Iceberg Order คืออะไร</div>
+    <p>คำสั่งซื้อ/ขายขนาดใหญ่ที่แสดงบน Order Book แค่ส่วนเล็กๆ เหมือนภูเขาน้ำแข็งที่โผล่พ้นน้ำแค่ยอด</p>
+    <div class="formula-block" style="margin-bottom:0;">
+      <span class="tag example">EXAMPLE</span>
+<span class="highlight">ตัวอย่าง:</span>
+คำสั่งซื้อจริง:  <span class="val">1,000,000 หุ้น</span>
+แสดงบน Bid:     <span class="val">10,000 หุ้น</span>
+
+ทุกครั้งที่ 10,000 หุ้นถูก Match → ระบบเติม 10,000 หุ้นใหม่อัตโนมัติ
+ดูจากหน้าจอเหมือนมีคนซื้อแค่ <span class="warn">10,000 หุ้น</span>
+แต่จริงๆ มีคนรอซื้อ <span class="ok">1,000,000 หุ้น</span>
+    </div>
+  </div>
+
+  <div class="info-box tip">
+    <div class="box-title">💡 วิธีจับ Iceberg Order</div>
+    <ul style="margin-left:1rem; margin-top:0.5rem; list-style:disc;">
+      <li>Bid/Offer ที่ช่องราคาเดียวกัน "เติม" ซ้ำๆ หลังถูก Match</li>
+      <li>Time &amp; Sales แสดงรายการซื้อขายที่ราคาเดียวกันซ้ำๆ หลายสิบครั้ง</li>
+      <li>วอลุ่มสะสมสูงมากแต่ Bid/Offer ที่แสดงน้อย</li>
+    </ul>
+  </div>
+
+  <div class="info-box info">
+    <div class="box-title">📘 ข้อสังเกต</div>
+    Iceberg Order ไม่ได้ผิดกฎหมาย — เป็นเครื่องมือที่สถาบันใช้เพื่อไม่ให้ตลาดรู้ว่ากำลังซื้อ/ขายจำนวนมาก ถ้าคุณจับได้ว่ามี <strong>Iceberg Buy</strong> → แสดงว่ามีรายใหญ่กำลังสะสม = ข้อมูลที่มีค่ามาก
+  </div>
+
+  <h3 id="tick-data">Tick Data Analysis — วิเคราะห์ทุกจังหวะการซื้อขาย</h3>
+
+  <p>Tick Data คือข้อมูลการซื้อขายทุกรายการ (ทุก Tick) ไม่ใช่แค่ราคาเปิด-ปิด-สูง-ต่ำ</p>
+
+  <div class="three-col">
+    <div class="col-card blue-accent">
+      <h4 style="color: var(--accent-blue-light);">🔵 Aggressor Analysis</h4>
+      <ul>
+        <li>Trades ที่ราคา Offer = <strong>Buy Aggressor</strong> = แรงซื้อเป็นฝ่ายรุก</li>
+        <li>Trades ที่ราคา Bid = <strong>Sell Aggressor</strong> = แรงขายเป็นฝ่ายรุก</li>
+      </ul>
+    </div>
+    <div class="col-card green-accent">
+      <h4 style="color: var(--accent-green);">🟢 Trade Size Distribution</h4>
+      <ul>
+        <li>รายการเล็ก (&lt;5,000 หุ้น) = รายย่อย</li>
+        <li>รายการใหญ่ (&gt;50,000 หุ้น) = สถาบัน</li>
+        <li>รายการขนาดเท่าๆ กันซ้ำๆ = Algorithm/Iceberg</li>
+      </ul>
+    </div>
+    <div class="col-card purple-accent">
+      <h4 style="color: var(--accent-purple);">🟣 Time of Trade</h4>
+      <ul>
+        <li>10:00-10:30 = ดันราคาตอนเปิด (Opening Push)</li>
+        <li>16:00-16:30 = Marking the Close</li>
+        <li>11:00-14:00 = การซื้อขายจริงของสถาบัน</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- CHAPTER 21: Intermarket Analysis                              -->
+  <!-- ============================================================ -->
+  <div class="section-header" id="ch21">
+    <h2><span class="section-number green">21</span> Intermarket Analysis — อ่านความสัมพันธ์ระหว่างตลาด</h2>
+  </div>
+
+  <p>ตลาดหุ้นไม่ได้อยู่โดดเดี่ยว มันเชื่อมโยงกับตลาดอื่นๆ อย่างแน่นแฟ้น นักลงทุนขั้นสูงต้องเข้าใจความสัมพันธ์เหล่านี้เพื่อ "เห็นภาพใหญ่" ก่อนตัดสินใจ</p>
+
+  <h3 id="four-markets">ความสัมพันธ์หลัก 4 ตลาด</h3>
+
+  <div class="card">
+    <div class="card-title">🌐 4 ตลาดที่เชื่อมโยงกัน</div>
+    <div class="formula-block" style="margin-bottom:0;">
+      <span class="tag concept">CONCEPT</span>
+┌──────────────────┐     ┌──────────────────┐
+│   <span class="highlight">ตลาดพันธบัตร</span>     │ ←→ │   <span class="highlight">ตลาดหุ้น</span>        │
+│  (Bond Market)   │     │ (Stock Market)   │
+└────────┬─────────┘     └────────┬─────────┘
+         │                        │
+         ▼                        ▼
+┌──────────────────┐     ┌──────────────────┐
+│   <span class="highlight">ตลาดค่าเงิน</span>     │ ←→ │  <span class="highlight">ตลาดสินค้าโภค</span>   │
+│ (Currency Mkt)   │     │ (Commodity Mkt)  │
+└──────────────────┘     └──────────────────┘
+    </div>
+  </div>
+
+  <h3 id="bond-stock">พันธบัตร vs หุ้น</h3>
+
+  <div class="formula-block">
+    <span class="tag data">BOND YIELD UP</span>
+<span class="bad">Bond Yield ขึ้น (ดอกเบี้ยสูงขึ้น)</span>
+├── เงินไหลจากหุ้นไปพันธบัตร (ผลตอบแทนดีกว่า ปลอดภัยกว่า)
+├── ต้นทุนการกู้ยืมของบริษัทสูงขึ้น → กำไรลดลง
+├── Discount Rate สูงขึ้น → มูลค่าปัจจุบันของกำไรในอนาคตลดลง
+└── กดดันหุ้น Growth (P/E สูง) มากกว่าหุ้น Value
+  </div>
+
+  <div class="formula-block">
+    <span class="tag data">BOND YIELD DOWN</span>
+<span class="ok">Bond Yield ลง (ดอกเบี้ยต่ำลง)</span>
+├── เงินไหลจากพันธบัตรไปหุ้น (หาผลตอบแทนที่สูงกว่า)
+├── ต้นทุนการกู้ยืมต่ำ → บริษัทขยายธุรกิจง่ายขึ้น
+└── หนุนหุ้น Growth มากกว่าหุ้น Value
+  </div>
+
+  <div class="card">
+    <div class="card-title">📌 ตัวชี้วัดที่ต้องดู</div>
+    <ul style="list-style:none;">
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• <strong>US 10-Year Treasury Yield</strong> — ดอกเบี้ยพันธบัตรสหรัฐ 10 ปี (ตัวชี้วัดสำคัญที่สุดของโลก)</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• <strong>Thai Government Bond Yield</strong> — ดอกเบี้ยพันธบัตรรัฐบาลไทย</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• <strong>Yield Curve</strong> — ถ้า Inverted (ดอกเบี้ยระยะสั้น > ระยะยาว) → <span style="color:var(--accent-red);">สัญญาณเตือนเศรษฐกิจถดถอย</span></li>
+    </ul>
+  </div>
+
+  <h3 id="thb-stock">ค่าเงินบาท vs หุ้นไทย</h3>
+
+  <div class="formula-block">
+    <span class="tag data">STRONG BAHT</span>
+<span class="ok">บาทแข็ง (USD/THB ลดลง):</span>
+├── ดีกับ: หุ้นนำเข้า (ต้นทุนวัตถุดิบถูกลง)
+├── แย่กับ: หุ้นส่งออก (รายได้เป็นเงินบาทน้อยลง)
+├── ดีกับ: หุ้นท่องเที่ยว (ต่างชาติมาเที่ยวถูกลง)
+└── สัญญาณ: เงินทุนต่างชาติไหลเข้า → หนุนตลาดหุ้น
+  </div>
+
+  <div class="formula-block">
+    <span class="tag data">WEAK BAHT</span>
+<span class="bad">บาทอ่อน (USD/THB เพิ่มขึ้น):</span>
+├── ดีกับ: หุ้นส่งออก (รายได้เป็นเงินบาทมากขึ้น)
+├── แย่กับ: หุ้นนำเข้า (ต้นทุนวัตถุดิบแพงขึ้น)
+├── แย่กับ: บริษัทที่มีหนี้เป็นเงินดอลลาร์
+└── สัญญาณ: เงินทุนต่างชาติไหลออก → กดดันตลาดหุ้น
+  </div>
+
+  <h3 id="oil-stock">น้ำมัน vs หุ้นไทย</h3>
+
+  <div class="formula-block">
+    <span class="tag data">OIL UP</span>
+<span class="warn">น้ำมันขึ้น:</span>
+├── <span class="ok">ดีกับ: PTT, PTTEP, BANPU (หุ้นพลังงาน)</span>
+├── <span class="bad">แย่กับ: สายการบิน (ต้นทุนน้ำมันสูงขึ้น)</span>
+├── <span class="bad">แย่กับ: หุ้นขนส่ง (ต้นทุนเชื้อเพลิงสูงขึ้น)</span>
+└── กดดัน: เงินเฟ้อสูงขึ้น → ดอกเบี้ยอาจขึ้น → กดดันตลาดรวม
+  </div>
+
+  <div class="formula-block">
+    <span class="tag data">OIL DOWN</span>
+<span class="ok">น้ำมันลง:</span>
+├── <span class="bad">แย่กับ: หุ้นพลังงาน</span>
+├── <span class="ok">ดีกับ: สายการบิน, ขนส่ง</span>
+└── หนุน: เงินเฟ้อลดลง → ดอกเบี้ยอาจลง → หนุนตลาดรวม
+  </div>
+
+  <h3 id="gold">ทองคำ — ตัวชี้วัดความกลัว</h3>
+
+  <div class="formula-block">
+    <span class="tag data">GOLD UP</span>
+<span class="warn">ทองคำขึ้น:</span>
+├── สัญญาณ: นักลงทุนกลัว (<span class="bad">Risk-off</span>)
+├── มักเกิดพร้อมกับ: หุ้นลง, Bond Yield ลง, ดอลลาร์อ่อน
+└── ความหมาย: ตลาดกำลังหนีไปหาสินทรัพย์ปลอดภัย
+  </div>
+
+  <div class="formula-block">
+    <span class="tag data">GOLD DOWN</span>
+<span class="ok">ทองคำลง:</span>
+├── สัญญาณ: นักลงทุนมั่นใจ (<span class="ok">Risk-on</span>)
+├── มักเกิดพร้อมกับ: หุ้นขึ้น, Bond Yield ขึ้น, ดอลลาร์แข็ง
+└── ความหมาย: ตลาดกำลังเสี่ยงมากขึ้น
+  </div>
+
+  <h3 id="fund-flow">Fund Flow Analysis — ติดตามเงินทุนไหลเข้าออก</h3>
+
+  <div class="formula-block">
+    <span class="tag data">DAILY DATA</span>
+<span class="highlight">ข้อมูลที่ต้องดูทุกวัน:</span>
+
+<span class="val">1. Net Buy/Sell ของนักลงทุนต่างชาติ</span>
+   - ซื้อสุทธิต่อเนื่อง → เงินไหลเข้า → หนุนตลาด
+   - ขายสุทธิต่อเนื่อง → เงินไหลออก → กดดันตลาด
+
+<span class="val">2. Net Buy/Sell ของนักลงทุนสถาบัน</span>
+   - สถาบันมักเป็น "Smart Money" — ดูว่าพวกเขาซื้อหรือขาย
+
+<span class="val">3. Net Buy/Sell ของนักลงทุนรายย่อย</span>
+   - รายย่อยมักเป็น <span class="warn">Contrarian Indicator</span>
+   - ถ้ารายย่อยซื้อหนักมาก → ระวัง ตลาดอาจใกล้จุดสูงสุด
+   - ถ้ารายย่อยขายหนักมาก → อาจเป็นโอกาสซื้อ
+  </div>
+
+  <div class="info-box tip">
+    <div class="box-title">💡 สัญญาณบวกที่แข็งแกร่งที่สุด</div>
+    ต่างชาติซื้อ + สถาบันซื้อ + รายย่อยขาย → Best Signal
+  </div>
+
+  <div class="info-box danger">
+    <div class="box-title">🚨 สัญญาณลบที่อันตรายที่สุด</div>
+    ต่างชาติขาย + สถาบันขาย + รายย่อยซื้อ → Worst Signal
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- CHAPTER 22: Quantitative Thinking                             -->
+  <!-- ============================================================ -->
+  <div class="section-header" id="ch22">
+    <h2><span class="section-number warm">22</span> Quantitative Thinking — คิดเป็นตัวเลข ไม่ใช่ความรู้สึก</h2>
+  </div>
+
+  <h3 id="expectancy">Expectancy — ค่าคาดหวังของระบบ</h3>
+
+  <p>นักลงทุนขั้นสูงไม่ได้ถามว่า "เทรดนี้จะกำไรไหม?" แต่ถามว่า "ระบบของผมมี Expectancy เป็นบวกไหม?"</p>
+
+  <div class="formula-block">
+    <span class="tag formula">FORMULA</span>
+<span class="highlight">Expectancy = (Win Rate × Avg Win) - (Loss Rate × Avg Loss)</span>
+  </div>
+
+  <div class="formula-block">
+    <span class="tag example">SYSTEM A</span>
+<span class="val">ตัวอย่างระบบ A:</span>
+Win Rate = 45%
+Average Win = 25,000 บาท
+Loss Rate = 55%
+Average Loss = 12,000 บาท
+
+Expectancy = (0.45 × 25,000) - (0.55 × 12,000)
+           = 11,250 - 6,600
+           = <span class="ok">+4,650 บาทต่อเทรด ✅</span>
+  </div>
+
+  <div class="formula-block">
+    <span class="tag example">SYSTEM B</span>
+<span class="val">ตัวอย่างระบบ B:</span>
+Win Rate = 70%
+Average Win = 8,000 บาท
+Loss Rate = 30%
+Average Loss = 25,000 บาท
+
+Expectancy = (0.70 × 8,000) - (0.30 × 25,000)
+           = 5,600 - 7,500
+           = <span class="bad">-1,900 บาทต่อเทรด ❌</span>
+  </div>
+
+  <div class="info-box warning">
+    <div class="box-title">⚠️ ข้อสังเกตสำคัญ</div>
+    ระบบ A ถูกแค่ 45% แต่ทำเงินได้ ระบบ B ถูกถึง 70% แต่ขาดทุน — <strong>Win Rate สูงไม่ได้แปลว่าดีเสมอไป</strong> สิ่งที่สำคัญคืออัตราส่วนระหว่างกำไรเฉลี่ยกับขาดทุนเฉลี่ย
+  </div>
+
+  <h3 id="r-multiple">R-Multiple — วัดผลเทรดด้วยหน่วย "R"</h3>
+
+  <p>R คือ "ความเสี่ยงเริ่มต้น" ของแต่ละเทรด ใช้เป็นหน่วยวัดมาตรฐานเพื่อเปรียบเทียบเทรดต่างๆ ได้</p>
+
+  <div class="formula-block">
+    <span class="tag example">EXAMPLE</span>
+<span class="highlight">R = (ราคาซื้อ - Stop Loss) × จำนวนหุ้น</span>
+
+<span class="val">ตัวอย่าง:</span>
+ซื้อ <span class="val">10,000</span> หุ้น ที่ <span class="val">10.00</span> บาท
+Stop Loss ที่ <span class="val">9.00</span> บาท
+R = (10.00 - 9.00) × 10,000 = <span class="val">10,000 บาท</span>
+
+ถ้าขายได้กำไรที่ 12.00 บาท:
+กำไร = (12.00 - 10.00) × 10,000 = 20,000 บาท
+R-Multiple = 20,000 / 10,000 = <span class="ok">+2R ✅</span>
+
+ถ้าขายขาดทุนที่ 9.00 บาท:
+ขาดทุน = (10.00 - 9.00) × 10,000 = 10,000 บาท
+R-Multiple = -10,000 / 10,000 = <span class="bad">-1R ❌</span>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📐 ทำไม R-Multiple สำคัญ</div>
+    <ul style="list-style:none;">
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">• ทำให้เปรียบเทียบเทรดที่ Position Size ต่างกันได้</li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">• เป้าหมาย: เทรดที่กำไรควรได้ <span style="color:var(--accent-green);">+2R ขึ้นไป</span> เทรดที่ขาดทุนควรไม่เกิน <span style="color:var(--accent-red);">-1R</span></li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">• ดู Distribution ของ R-Multiple ย้อนหลัง 50-100 เทรด จะเห็นภาพชัดว่าระบบทำงานอย่างไร</li>
+    </ul>
+  </div>
+
+  <h3 id="monte-carlo">Monte Carlo Simulation — ทดสอบระบบด้วยการจำลอง</h3>
+
+  <div class="formula-block">
+    <span class="tag steps">STEPS</span>
+<span class="highlight">วิธีทำ Monte Carlo แบบง่าย:</span>
+
+<span class="val">1.</span> เก็บผลลัพธ์ R-Multiple ของเทรดย้อนหลัง 50-100 ครั้ง
+   เช่น: +2R, -1R, +1.5R, -1R, +3R, -1R, +0.5R, ...
+
+<span class="val">2.</span> สุ่มลำดับใหม่ 1,000 ครั้ง (ใช้ Excel หรือ Python)
+   → แต่ละครั้งจะได้ Equity Curve ที่ต่างกัน
+
+<span class="val">3.</span> ดูผลลัพธ์:
+   - Worst Case Drawdown คือเท่าไหร่?
+   - มีโอกาสกี่ % ที่จะขาดทุนติดต่อกัน 10 ครั้ง?
+   - ต้องมีเงินทุนเท่าไหร่ถึงจะรอดจาก Worst Case?
+
+<span class="val">4.</span> ปรับ Position Size ให้รอดจาก Worst Case ได้
+  </div>
+
+  <div class="info-box tip">
+    <div class="box-title">💡 กฎง่ายๆ</div>
+    ถ้า Monte Carlo บอกว่า Worst Case Drawdown คือ -40% แต่คุณรับได้แค่ -20% → ต้องลด Position Size ลงครึ่งหนึ่ง ดีกว่าเจอ Drawdown แล้วหมดกำลังใจเลิกเทรด
+  </div>
+
+  <h3 id="kelly">Kelly Criterion — Position Sizing ที่เหมาะสมทางคณิตศาสตร์</h3>
+
+  <div class="formula-block">
+    <span class="tag formula">FORMULA</span>
+<span class="highlight">Kelly % = W - [(1 - W) / R]</span>
+
+W = Win Rate (อัตราชนะ)
+R = Win/Loss Ratio (กำไรเฉลี่ย / ขาดทุนเฉลี่ย)
+
+<span class="val">ตัวอย่าง:</span>
+Win Rate = 45% (W = 0.45)
+Average Win = 25,000 บาท
+Average Loss = 12,000 บาท
+R = 25,000 / 12,000 = 2.08
+
+Kelly % = 0.45 - [(1 - 0.45) / 2.08]
+        = 0.45 - [0.55 / 2.08]
+        = 0.45 - 0.264
+        = <span class="val">0.186 = 18.6%</span>
+
+→ ควรลงทุน 18.6% ของพอร์ตต่อเทรด (ตาม Full Kelly)
+  </div>
+
+  <div class="info-box danger">
+    <div class="box-title">⚠️ Never use Full Kelly</div>
+    Full Kelly ให้ผลตอบแทนสูงสุดทางทฤษฎี แต่ Drawdown จะรุนแรงมาก ในทางปฏิบัติ:
+    <ul style="margin-left:1rem; margin-top:0.5rem; list-style:disc;">
+      <li><strong>Full Kelly = 18.6%</strong> → Drawdown อาจถึง 50-60%</li>
+      <li><strong>Half Kelly = 9.3%</strong> → Drawdown ลดเหลือ 25-30%</li>
+      <li><strong>Quarter Kelly = 4.65%</strong> → Drawdown ลดเหลือ 12-15%</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- CHAPTER 23: Advanced Technical Analysis                       -->
+  <!-- ============================================================ -->
+  <div class="section-header" id="ch23">
+    <h2><span class="section-number purple">23</span> Advanced Technical Analysis — เทคนิคขั้นสูง</h2>
+  </div>
+
+  <h3 id="volume-profile">Volume Profile — แนวรับแนวต้านที่แท้จริง</h3>
+
+  <p>Volume Profile แสดงปริมาณการซื้อขายที่แต่ละระดับราคา (ไม่ใช่ตามเวลา) ทำให้เห็นว่า "ราคาไหนมีคนซื้อขายเยอะที่สุด"</p>
+
+  <div class="formula-block">
+    <span class="tag concept">VOLUME PROFILE</span>
+ราคา │
+     │         ████████████████  ← <span class="highlight">High Volume Node (HVN)</span>
+     │     ████████████████████     มีคนซื้อขายเยอะ = แนวรับ/ต้านแข็งแกร่ง
+     │         ████████████████
+     │              ██████        ← <span class="warn">Low Volume Node (LVN)</span>
+     │                ████           มีคนซื้อขายน้อย = ราคาวิ่งผ่านเร็ว
+     │              ██████
+     │     ████████████████████  ← <span class="val">Point of Control (POC)</span>
+     │   ██████████████████████     ราคาที่มีวอลุ่มสูงที่สุด
+     │     ████████████████████
+     │         ┊← <span class="ok">Value Area (70%)</span> →┊
+     └──────────────────────── วอลุ่ม
+  </div>
+
+  <div class="card">
+    <div class="card-title">📊 แนวคิดหลัก</div>
+    <ul style="list-style:none;">
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">• <strong>POC (Point of Control):</strong> ราคาที่มีวอลุ่มสูงที่สุด = "ราคายุติธรรม" ที่ตลาดยอมรับ</li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">• <strong>HVN (High Volume Node):</strong> ราคาที่มีการซื้อขายหนัก = แนวรับ/ต้านที่แข็งแกร่ง</li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">• <strong>LVN (Low Volume Node):</strong> ราคาที่มีการซื้อขายน้อย = ราคาจะวิ่งผ่านโซนนี้เร็ว</li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">• <strong>Value Area:</strong> ช่วงราคาที่มีวอลุ่ม 70% ของทั้งหมด = "โซนที่ตลาดยอมรับ"</li>
+    </ul>
+    <h4>วิธีใช้ Volume Profile</h4>
+    <ul style="list-style:none;">
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">1. หาแนวรับ-แนวต้านจาก HVN — แม่นยำกว่าการลากเส้นแนวนอนแบบเดิม</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">2. หาจุดที่ราคาจะวิ่งเร็วจาก LVN — เมื่อราคาทะลุ HVN เข้าสู่ LVN จะวิ่งเร็วจนถึง HVN ถัดไป</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">3. ดู POC เปลี่ยนแปลงอย่างไร — ถ้า POC ค่อยๆ ขยับขึ้น = เทรนด์ขาขึ้น</li>
+    </ul>
+  </div>
+
+  <h3 id="vwap">VWAP — ราคาเฉลี่ยถ่วงน้ำหนักด้วยวอลุ่ม</h3>
+
+  <div class="formula-block">
+    <span class="tag formula">FORMULA</span>
+<span class="highlight">VWAP = Σ(ราคา × วอลุ่ม) / Σ(วอลุ่ม)</span>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📈 ทำไม VWAP สำคัญ</div>
+    <ul style="list-style:none;">
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• สถาบันใช้ VWAP เป็น Benchmark — ถ้าซื้อได้ต่ำกว่า VWAP ถือว่า "ซื้อได้ดี"</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• VWAP ทำหน้าที่เป็นแนวรับ/ต้านแบบ Dynamic</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• ราคาเหนือ VWAP → ผู้ซื้อส่วนใหญ่กำไร → <span style="color:var(--accent-green);">Sentiment เป็นบวก</span></li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• ราคาต่ำกว่า VWAP → ผู้ซื้อส่วนใหญ่ขาดทุน → <span style="color:var(--accent-red);">Sentiment เป็นลบ</span></li>
+    </ul>
+    <h4>วิธีใช้ VWAP</h4>
+    <ul style="list-style:none;">
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• ซื้อเมื่อราคา Pullback มาแตะ VWAP แล้วเด้งขึ้น (ในวันที่เทรนด์ขึ้น)</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• ขายเมื่อราคาดีดขึ้นมาแตะ VWAP แล้วกลับลง (ในวันที่เทรนด์ลง)</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• ใช้ VWAP ± 1 Standard Deviation เป็นแนวรับ/ต้านเพิ่มเติม</li>
+    </ul>
+  </div>
+
+  <h3 id="market-profile">Market Profile — อ่านโครงสร้างตลาดรายวัน</h3>
+
+  <p>Market Profile แสดงการกระจายตัวของราคาตามเวลา ช่วยให้เห็นว่าตลาดอยู่ในสถานะไหน</p>
+
+  <div class="formula-block">
+    <span class="tag concept">NORMAL DAY</span>
+<span class="highlight">1. Normal Day (วันปกติ):</span>
+ราคา │  A
+     │  AB
+     │  ABC
+     │  ABCD      ← <span class="ok">รูปทรงระฆัง</span>
+     │  ABCDE        ตลาดสมดุล
+     │  ABCD
+     │  ABC
+     │  AB
+     │  A
+
+<span class="comment">วิธีใช้: เทรดในกรอบ Value Area ซื้อที่ขอบล่าง ขายที่ขอบบน</span>
+  </div>
+
+  <div class="formula-block">
+    <span class="tag concept">TREND DAY</span>
+<span class="highlight">2. Trend Day (วันเทรนด์):</span>
+ราคา │  A
+     │  AB
+     │  BC
+     │  CD         ← <span class="val">ราคาเคลื่อนไหวทิศทางเดียว</span>
+     │  DE            ตลาดไม่สมดุล
+     │  EF            โอกาสทำกำไรสูง
+     │  FG
+     │  GH
+
+<span class="comment">วิธีใช้: เทรดตามเทรนด์ อย่าสวนทาง ใช้ Pullback เป็นจุดเข้า</span>
+  </div>
+
+  <div class="formula-block">
+    <span class="tag concept">DOUBLE DIST</span>
+<span class="highlight">3. Double Distribution (สองยอด):</span>
+ราคา │  AB
+     │  ABC
+     │  AB         ← <span class="warn">มีสองโซนที่ซื้อขายหนัก</span>
+     │  A              ตลาดกำลังหาจุดสมดุลใหม่
+     │  AB
+     │  ABC
+     │  AB
+
+<span class="comment">วิธีใช้: รอดูว่าราคาจะเลือกอยู่โซนไหน แล้วเทรดตาม</span>
+  </div>
+
+  <h3 id="relative-strength">Relative Strength — เปรียบเทียบความแข็งแกร่ง</h3>
+
+  <div class="formula-block">
+    <span class="tag formula">FORMULA</span>
+<span class="highlight">RS = ราคาหุ้น / ราคาดัชนี (หรือหุ้นอ้างอิง)</span>
+
+ถ้า RS ขึ้น → หุ้น<span class="ok">แข็งแกร่งกว่าตลาด (Outperform)</span>
+ถ้า RS ลง → หุ้น<span class="bad">อ่อนแอกว่าตลาด (Underperform)</span>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📊 วิธีใช้ Relative Strength (3 วิธี)</div>
+    <ul style="list-style:none;">
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">1. <strong>เลือกหุ้นที่แข็งแกร่งกว่าตลาด</strong> — หุ้นที่ RS ขึ้นมักจะขึ้นต่อ (Momentum Effect)</li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">2. <strong>หลีกเลี่ยงหุ้นที่อ่อนแอกว่าตลาด</strong> — แม้จะดู "ถูก" แต่ถ้า RS ลง แสดงว่ามีปัญหาบางอย่าง</li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">3. <strong>จับจังหวะ Sector Rotation</strong> — เมื่อ RS ของกลุ่มอุตสาหกรรมเริ่มเปลี่ยนทิศ → เงินกำลังไหลเข้า/ออกจากกลุ่มนั้น</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- CHAPTER 24: Regime Detection                                  -->
+  <!-- ============================================================ -->
+  <div class="section-header" id="ch24">
+    <h2><span class="section-number cyan">24</span> Regime Detection — อ่านสถานะตลาดให้ออก</h2>
+  </div>
+
+  <h3 id="regimes">ตลาดมี 4 สถานะ (Market Regimes)</h3>
+
+  <p>ตลาดไม่ได้มีแค่ "ขึ้น" กับ "ลง" แต่มี 4 สถานะที่ต้องใช้กลยุทธ์ต่างกัน:</p>
+
+  <div class="formula-block">
+    <span class="tag concept">4 REGIMES</span>
+                    <span class="highlight">Volatility ต่ำ</span>          <span class="highlight">Volatility สูง</span>
+                ┌──────────────────┬──────────────────┐
+  เทรนด์ขึ้น    │  <span class="ok">Quiet Bull</span>       │  <span class="warn">Volatile Bull</span>    │
+                │  ขึ้นช้าๆ สม่ำเสมอ  │  ขึ้นแรง แกว่งแรง   │
+                │  → ถือยาว          │  → เทรดสั้น ตั้ง SL │
+                ├──────────────────┼──────────────────┤
+  เทรนด์ลง     │  <span class="warn">Quiet Bear</span>       │  <span class="bad">Volatile Bear</span>    │
+                │  ลงช้าๆ ค่อยๆ ไหล  │  ลงแรง ตื่นตระหนก   │
+                │  → ถือเงินสด       │  → ห้ามซื้อ รอ      │
+                └──────────────────┴──────────────────┘
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔍 วิธีระบุ Regime</div>
+    <ul style="list-style:none;">
+      <li style="padding:0.4rem 0; color:var(--text-secondary);"><strong>1. ทิศทาง (Direction):</strong> ดู MA50 vs MA200</li>
+      <li style="padding:0.2rem 0 0.2rem 1.5rem; color:var(--text-secondary);">- MA50 > MA200 → เทรนด์ขึ้น</li>
+      <li style="padding:0.2rem 0 0.2rem 1.5rem; color:var(--text-secondary);">- MA50 &lt; MA200 → เทรนด์ลง</li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);"><strong>2. ความผันผวน (Volatility):</strong> ดู ATR หรือ Bollinger Band Width</li>
+      <li style="padding:0.2rem 0 0.2rem 1.5rem; color:var(--text-secondary);">- ATR ต่ำกว่าค่าเฉลี่ย → Volatility ต่ำ</li>
+      <li style="padding:0.2rem 0 0.2rem 1.5rem; color:var(--text-secondary);">- ATR สูงกว่าค่าเฉลี่ย → Volatility สูง</li>
+    </ul>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Regime</th>
+          <th>Position Size</th>
+          <th>Stop Loss</th>
+          <th>กลยุทธ์</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong style="color:var(--accent-green);">Quiet Bull</strong></td><td>ปกติ-ใหญ่</td><td>แคบ (5-8%)</td><td>ถือยาว, Pyramid ขึ้น</td></tr>
+        <tr><td><strong style="color:var(--accent-yellow);">Volatile Bull</strong></td><td>เล็ก-ปกติ</td><td>กว้าง (10-15%)</td><td>เทรดสั้น, ขายบางส่วนเมื่อกำไร</td></tr>
+        <tr><td><strong style="color:var(--accent-orange);">Quiet Bear</strong></td><td>เล็กมาก</td><td>แคบ</td><td>ถือเงินสดเป็นหลัก, ซื้อเฉพาะหุ้นที่แข็งแกร่งมาก</td></tr>
+        <tr><td><strong style="color:var(--accent-red);">Volatile Bear</strong></td><td>ไม่ซื้อ</td><td>—</td><td>ถือเงินสด 100%, รอจนตลาดนิ่ง</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="breadth">Breadth Indicators — วัดสุขภาพของตลาดโดยรวม</h3>
+
+  <p>ดัชนี SET อาจขึ้น แต่ถ้าหุ้นส่วนใหญ่ลง แสดงว่าตลาดไม่แข็งแรงจริง Breadth Indicators ช่วยวัดสิ่งนี้</p>
+
+  <div class="three-col">
+    <div class="col-card blue-accent">
+      <h4 style="color: var(--accent-blue-light);">📊 Advance-Decline Line</h4>
+      <ul>
+        <li>SET ขึ้น + A/D ขึ้น = <strong style="color:var(--accent-green);">ขาขึ้นแข็งแกร่ง</strong></li>
+        <li>SET ขึ้น + A/D ลง = <strong style="color:var(--accent-orange);">⚠️ ขาขึ้นอ่อนแอ</strong> (แค่หุ้นใหญ่ไม่กี่ตัวดัน)</li>
+        <li>SET ลง + A/D ขึ้น = อาจใกล้กลับตัวขึ้น</li>
+        <li>SET ลง + A/D ลง = <strong style="color:var(--accent-red);">ขาลงแข็งแกร่ง</strong></li>
+      </ul>
+    </div>
+    <div class="col-card green-accent">
+      <h4 style="color: var(--accent-green);">📈 New High - New Low</h4>
+      <ul>
+        <li>New High มาก + New Low น้อย = <strong style="color:var(--accent-green);">ตลาดแข็งแกร่ง</strong></li>
+        <li>New High น้อย + New Low มาก = <strong style="color:var(--accent-red);">ตลาดอ่อนแอ</strong></li>
+        <li>New High ลดลงขณะ SET ทำ New High = <strong style="color:var(--accent-red);">⚠️ Divergence อันตราย</strong></li>
+      </ul>
+    </div>
+    <div class="col-card purple-accent">
+      <h4 style="color: var(--accent-purple);">📉 % Stocks Above MA200</h4>
+      <ul>
+        <li>&gt;70% = ร้อนแรง อาจ Overbought</li>
+        <li>50-70% = <strong style="color:var(--accent-green);">แข็งแกร่ง</strong></li>
+        <li>30-50% = ปานกลาง</li>
+        <li>&lt;30% = <strong style="color:var(--accent-red);">อ่อนแอ อาจ Oversold</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- CHAPTER 25: Advanced Risk Management                          -->
+  <!-- ============================================================ -->
+  <div class="section-header" id="ch25">
+    <h2><span class="section-number red">25</span> Advanced Risk Management — บริหารความเสี่ยงระดับมืออาชีพ</h2>
+  </div>
+
+  <h3 id="correlation">Correlation Risk — ความเสี่ยงที่มองไม่เห็น</h3>
+
+  <p>ในภาวะปกติ หุ้นแต่ละตัวอาจเคลื่อนไหวต่างทิศทาง แต่ในภาวะวิกฤต <strong>Correlation พุ่งขึ้นเข้าหา 1</strong> — หุ้นทุกตัวลงพร้อมกัน</p>
+
+  <div class="formula-block">
+    <span class="tag concept">CORRELATION</span>
+<span class="ok">ภาวะปกติ:</span>
+หุ้น A: ↑  หุ้น B: ↓  หุ้น C: ↑  หุ้น D: →  หุ้น E: ↓
+→ พอร์ตสมดุล กำไร-ขาดทุนหักล้างกัน
+
+<span class="bad">ภาวะวิกฤต:</span>
+หุ้น A: ↓↓  หุ้น B: ↓↓  หุ้น C: ↓↓  หุ้น D: ↓↓  หุ้น E: ↓↓
+→ ทุกตัวลงพร้อมกัน การกระจายไม่ช่วย
+  </div>
+
+  <div class="card">
+    <div class="card-title">🛡️ 4 วิธีจัดการ Correlation Risk</div>
+    <ul style="list-style:none;">
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">1. <strong>ถือเงินสดเป็นส่วนหนึ่งของพอร์ตเสมอ</strong> — เงินสดมี Correlation เป็น 0 กับหุ้น</li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">2. <strong>ลด Position Size รวมเมื่อ Correlation สูงขึ้น</strong> — วัดจาก VIX หรือ Implied Volatility</li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">3. <strong>ใช้ Stress Test</strong> — ถามว่า "ถ้าหุ้นทุกตัวลง 20% พร้อมกัน พอร์ตจะเป็นอย่างไร?"</li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">4. <strong>กระจายข้ามสินทรัพย์</strong> — ไม่ใช่แค่กระจายหุ้น แต่กระจายไปทองคำ พันธบัตร เงินสด</li>
+    </ul>
+  </div>
+
+  <h3 id="var">Value at Risk (VaR) — วัดความเสี่ยงเป็นตัวเลข</h3>
+
+  <div class="formula-block">
+    <span class="tag formula">FORMULA</span>
+<span class="highlight">VaR = พอร์ต × Z-score × Daily Standard Deviation</span>
+
+สำหรับ 95% confidence: Z-score = <span class="val">1.65</span>
+สำหรับ 99% confidence: Z-score = <span class="val">2.33</span>
+
+<span class="val">ตัวอย่าง:</span>
+พอร์ต = 1,000,000 บาท
+SD รายวันของพอร์ต = 1.5%
+VaR 95% = 1,000,000 × 1.65 × 0.015 = <span class="warn">24,750 บาท</span>
+
+<span class="comment">ความหมาย: ใน 95% ของวัน พอร์ตจะขาดทุนไม่เกิน 24,750 บาท
+แต่ใน 5% ของวัน (ประมาณ 1 วันต่อเดือน) อาจขาดทุนมากกว่านั้น</span>
+  </div>
+
+  <div class="info-box warning">
+    <div class="box-title">⚠️ ข้อจำกัดของ VaR</div>
+    <ul style="margin-left:1rem; margin-top:0.5rem; list-style:disc;">
+      <li>VaR บอกแค่ "ขาดทุนไม่เกินเท่าไหร่ในกรณีปกติ" แต่ไม่บอกว่า "ถ้าเกินจะเป็นเท่าไหร่"</li>
+      <li>ในวิกฤต (Tail Risk) ขาดทุนจริงอาจมากกว่า VaR หลายเท่า</li>
+      <li>ใช้ VaR เป็น "เครื่องมือตรวจสอบ" ไม่ใช่ "เครื่องมือตัดสินใจ"</li>
+    </ul>
+  </div>
+
+  <h3 id="drawdown">Maximum Drawdown Management — จัดการช่วงขาดทุนสะสม</h3>
+
+  <div class="formula-block">
+    <span class="tag steps">DRAWDOWN RULES</span>
+<span class="highlight">กฎ Drawdown Management:</span>
+
+├── Drawdown <span class="ok">0-10%</span>:   ปกติ เทรดตามระบบ
+├── Drawdown <span class="warn">10-15%</span>:  ลด Position Size ลง 25%
+├── Drawdown <span class="warn">15-20%</span>:  ลด Position Size ลง 50%
+├── Drawdown <span class="bad">20-25%</span>:  ลด Position Size ลง 75%
+└── Drawdown <span class="bad">&gt;25%</span>:   หยุดเทรด ทบทวนระบบทั้งหมด
+  </div>
+
+  <h4>Recovery Time — เวลาที่ต้องใช้ฟื้นตัว</h4>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Drawdown</th>
+          <th>ผลตอบแทนที่ต้องทำ</th>
+          <th>เวลาฟื้นตัว (สมมติทำได้ 15%/ปี)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>-10%</strong></td><td>+11.1%</td><td>~9 เดือน</td></tr>
+        <tr><td><strong>-20%</strong></td><td>+25.0%</td><td>~1.7 ปี</td></tr>
+        <tr><td><strong>-30%</strong></td><td>+42.9%</td><td>~2.6 ปี</td></tr>
+        <tr><td><strong style="color:var(--accent-red);">-40%</strong></td><td>+66.7%</td><td>~3.6 ปี</td></tr>
+        <tr><td><strong style="color:var(--accent-red);">-50%</strong></td><td>+100.0%</td><td>~5 ปี</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box danger">
+    <div class="box-title">🚨 สำคัญมาก</div>
+    Drawdown -50% ต้องใช้เวลา <strong>5 ปี</strong>ในการฟื้นตัว (ถ้าทำได้ 15%/ปี) นี่คือเหตุผลที่การป้องกัน Drawdown สำคัญกว่าการไล่ตามผลตอบแทน
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- CHAPTER 26: Behavioral Finance                                -->
+  <!-- ============================================================ -->
+  <div class="section-header" id="ch26">
+    <h2><span class="section-number purple">26</span> Behavioral Finance ขั้นสูง — เข้าใจสมองเพื่อเอาชนะตัวเอง</h2>
+  </div>
+
+  <h3 id="prospect-theory">Prospect Theory — ทำไมคนตัดสินใจผิดซ้ำแล้วซ้ำเล่า</h3>
+
+  <div class="formula-block">
+    <span class="tag concept">EXPERIMENT</span>
+<span class="highlight">การทดลองคลาสสิก:</span>
+
+<span class="val">ตัวเลือก A:</span> ได้เงิน 100,000 บาทแน่นอน
+<span class="val">ตัวเลือก B:</span> มีโอกาส 50% ได้ 200,000 บาท หรือ 50% ไม่ได้อะไร
+
+Expected Value เท่ากัน (100,000 บาท) แต่คนส่วนใหญ่เลือก A
+→ เมื่อเป็นเรื่อง<span class="ok">กำไร</span> คนเลือกความแน่นอน (<span class="ok">Risk Averse</span>)
+
+<span class="val">ตัวเลือก C:</span> เสียเงิน 100,000 บาทแน่นอน
+<span class="val">ตัวเลือก D:</span> มีโอกาส 50% เสีย 200,000 บาท หรือ 50% ไม่เสียอะไร
+
+Expected Value เท่ากัน (-100,000 บาท) แต่คนส่วนใหญ่เลือก D
+→ เมื่อเป็นเรื่อง<span class="bad">ขาดทุน</span> คนเลือกเสี่ยง (<span class="bad">Risk Seeking</span>)
+  </div>
+
+  <div class="card">
+    <div class="card-title">💡 ผลกระทบต่อการลงทุน</div>
+    <ul style="list-style:none;">
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">• ตอนกำไร → <span style="color:var(--accent-orange);">รีบขาย (กลัวกำไรหาย)</span> → ตัดกำไรเร็วเกินไป</li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">• ตอนขาดทุน → <span style="color:var(--accent-red);">ถือต่อ (หวังว่าจะกลับมา)</span> → ปล่อยขาดทุนวิ่ง</li>
+    </ul>
+    <h4>3 วิธีต่อสู้กับ Prospect Theory</h4>
+    <ul style="list-style:none;">
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">1. <strong>ตั้งกฎล่วงหน้า</strong> — ตัดสินใจตอนที่ยังไม่มีอารมณ์เข้ามาเกี่ยว</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">2. <strong>คิดเป็น R-Multiple</strong> — แทนที่จะคิดว่า "กำไร 50,000 บาท" ให้คิดว่า "+2R" ทำให้ตัดอารมณ์ออก</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">3. <strong>ใช้ระบบอัตโนมัติ</strong> — ตั้ง Trailing Stop ให้ระบบจัดการ ไม่ต้องตัดสินใจเอง</li>
+    </ul>
+  </div>
+
+  <h3 id="system12">System 1 vs System 2 — สมองสองระบบ</h3>
+
+  <div class="three-col" style="grid-template-columns: 1fr 1fr;">
+    <div class="col-card" style="border-top: 3px solid var(--accent-orange);">
+      <h4 style="color: var(--accent-orange);">⚡ System 1 (สมองเร็ว)</h4>
+      <ul>
+        <li>ทำงานอัตโนมัติ ไม่ต้องคิด</li>
+        <li>ใช้สัญชาตญาณ อารมณ์ ประสบการณ์</li>
+        <li>เร็วมาก แต่มักผิดพลาดในสถานการณ์ซับซ้อน</li>
+        <li><strong style="color:var(--accent-red);">ตัวอย่าง:</strong> เห็นหุ้นวิ่ง → กลัวตกรถ → กดซื้อทันที</li>
+      </ul>
+    </div>
+    <div class="col-card blue-accent">
+      <h4 style="color: var(--accent-blue-light);">🧠 System 2 (สมองช้า)</h4>
+      <ul>
+        <li>ต้องใช้ความพยายามในการคิด</li>
+        <li>ใช้เหตุผล ตรรกะ การวิเคราะห์</li>
+        <li>ช้า แต่แม่นยำกว่าในสถานการณ์ซับซ้อน</li>
+        <li><strong style="color:var(--accent-green);">ตัวอย่าง:</strong> คำนวณ Position Size → ตรวจสอบ R:R → ตั้ง Stop Loss → ค่อยซื้อ</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚠️ ปัญหา: System 1 มักชนะ System 2 เพราะ</div>
+    <ul style="list-style:none;">
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• ราคาเคลื่อนไหวเร็ว → สมองรู้สึกว่าต้อง "รีบตัดสินใจ"</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• อารมณ์ (กลัว โลภ) กระตุ้น System 1 ให้ทำงาน</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• System 2 ต้องใช้พลังงาน → เมื่อเหนื่อยหรือเครียด System 2 จะหยุดทำงาน</li>
+    </ul>
+    <h4>4 วิธีบังคับให้ System 2 ทำงาน</h4>
+    <ul style="list-style:none;">
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">1. <strong>Checklist</strong> — บังคับให้ผ่านขั้นตอนก่อนซื้อ/ขาย</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">2. <strong>Cooling Period</strong> — รอ 30 นาทีหลังเห็นสัญญาณก่อนตัดสินใจ</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">3. <strong>เขียนเหตุผล</strong> — ถ้าเขียนไม่ได้ แปลว่ายังคิดไม่รอบคอบ</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">4. <strong>พักผ่อนให้พอ</strong> — System 2 ต้องการพลังงาน นอนน้อย = ตัดสินใจแย่</li>
+    </ul>
+  </div>
+
+  <h3 id="narrative">Narrative Fallacy — กับดักของ "เรื่องเล่า"</h3>
+
+  <p>มนุษย์ชอบ "เรื่องเล่า" มากกว่า "ตัวเลข" สมองถูกออกแบบมาให้จดจำเรื่องราวได้ดีกว่าสถิติ ผู้ปั่นรู้ดีและใช้สิ่งนี้เป็นอาวุธ</p>
+
+  <div class="formula-block">
+    <span class="tag concept">CONTRAST</span>
+<span class="ok">เรื่องเล่า:</span>
+"บริษัท XYZ กำลังจะได้สัมปทานพลังงานสะอาดมูลค่า 10,000 ล้าน
+ CEO เป็นอดีตผู้บริหาร PTT มีคอนเนคชั่นระดับรัฐมนตรี
+ หุ้นตัวนี้จะเป็น 10-Bagger ภายใน 2 ปี"
+
+<span class="bad">ตัวเลข:</span>
+Market Cap <span class="val">800 ล้าน</span>, รายได้ปีล่าสุด <span class="val">50 ล้าน</span>, ขาดทุนสุทธิ <span class="bad">30 ล้าน</span>
+P/E <span class="bad">ติดลบ</span>, D/E Ratio <span class="bad">3.5</span>, Operating CF <span class="bad">ติดลบ 3 ปีติด</span>
+ผู้บริหารเคยถูก <span class="bad">ก.ล.ต. ตักเตือน</span>
+  </div>
+
+  <div class="info-box danger">
+    <div class="box-title">🚨 คนส่วนใหญ่จำ "เรื่องเล่า" ได้ แต่ไม่ได้ดู "ตัวเลข"</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🛡️ 4 วิธีต่อสู้กับ Narrative Fallacy</div>
+    <ul style="list-style:none;">
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">1. <strong>ดูตัวเลขก่อนเรื่องเล่าเสมอ</strong> — อ่านงบการเงินก่อนอ่านข่าว</li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">2. <strong>ถามว่า "ตัวเลขสนับสนุนเรื่องเล่าไหม?"</strong> — ถ้าไม่ → เรื่องเล่าไม่น่าเชื่อถือ</li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">3. <strong>หา "เรื่องเล่าฝั่งตรงข้าม"</strong> — ถ้าหาเหตุผลที่หุ้นจะลงไม่ได้ → คุณกำลังมี Confirmation Bias</li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">4. <strong>Base Rate Thinking</strong> — ถามว่า "จากสถิติ หุ้นที่มีลักษณะแบบนี้ กี่ % ที่สำเร็จจริง?"</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- CHAPTER 27: Building Your Edge                                -->
+  <!-- ============================================================ -->
+  <div class="section-header" id="ch27">
+    <h2><span class="section-number emerald">27</span> Building Your Edge — สร้างความได้เปรียบของตัวเอง</h2>
+  </div>
+
+  <h3 id="edge-def">Edge คืออะไร</h3>
+
+  <p>Edge คือ "ความได้เปรียบ" ที่ทำให้คุณมีโอกาสทำกำไรมากกว่าขาดทุนในระยะยาว ถ้าไม่มี Edge คุณกำลังเล่นพนัน ไม่ใช่ลงทุน</p>
+
+  <div class="three-col" style="grid-template-columns: 1fr 1fr;">
+    <div class="col-card blue-accent">
+      <h4 style="color: var(--accent-blue-light);">📘 1. Informational Edge</h4>
+      <ul>
+        <li>รู้ข้อมูลที่คนอื่นไม่รู้ (ถูกกฎหมาย)</li>
+        <li>วิเคราะห์งบการเงินลึกกว่าคนอื่น</li>
+        <li>เข้าใจอุตสาหกรรมเฉพาะทาง</li>
+        <li><span style="color:var(--accent-orange);">ยากขึ้นเรื่อยๆ ในยุคที่ข้อมูลเข้าถึงง่าย</span></li>
+      </ul>
+    </div>
+    <div class="col-card green-accent">
+      <h4 style="color: var(--accent-green);">📗 2. Analytical Edge</h4>
+      <ul>
+        <li>วิเคราะห์ข้อมูลเดียวกันได้ดีกว่าคนอื่น</li>
+        <li>เห็น Pattern ที่คนอื่นไม่เห็น</li>
+        <li>เข้าใจ Intermarket Relationship ดีกว่า</li>
+        <li><span style="color:var(--accent-orange);">ต้องฝึกฝนและพัฒนาตลอดเวลา</span></li>
+      </ul>
+    </div>
+    <div class="col-card purple-accent">
+      <h4 style="color: var(--accent-purple);">📕 3. Behavioral Edge</h4>
+      <ul>
+        <li>ควบคุมอารมณ์ได้ดีกว่าคนอื่น</li>
+        <li>มีวินัยในการทำตามระบบ</li>
+        <li>ไม่ตื่นตระหนกเมื่อตลาดผันผวน</li>
+        <li><span style="color:var(--accent-green);">Edge ที่ยั่งยืนที่สุด</span></li>
+      </ul>
+    </div>
+    <div class="col-card warm-accent">
+      <h4 style="color: var(--accent-orange);">📙 4. Structural Edge</h4>
+      <ul>
+        <li>ได้เปรียบจากโครงสร้างตลาด</li>
+        <li>รายย่อยซื้อหุ้นเล็กที่กองทุนใหญ่ซื้อไม่ได้</li>
+        <li>ไม่มีแรงกดดันจาก Benchmark</li>
+        <li>ไม่ต้องรายงานผลทุกไตรมาส</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 id="find-edge">วิธีค้นหา Edge ของตัวเอง</h3>
+
+  <h4>ขั้นตอนที่ 1: ทบทวน Trading Journal 100 เทรดย้อนหลัง</h4>
+
+  <div class="card">
+    <div class="card-title">📋 วิเคราะห์</div>
+    <ul style="list-style:none;">
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• เทรดประเภทไหนที่ทำกำไรบ่อยที่สุด? (Breakout? Pullback? Reversal? Momentum?)</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• หุ้นกลุ่มไหนที่คุณเข้าใจดีที่สุด?</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• ช่วงเวลาไหนที่คุณเทรดได้ดีที่สุด?</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• สถานการณ์ตลาดแบบไหนที่ระบบคุณทำงานดี?</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• อะไรคือข้อผิดพลาดที่เกิดซ้ำบ่อยที่สุด?</li>
+    </ul>
+  </div>
+
+  <h4>ขั้นตอนที่ 2: สร้าง Playbook ของตัวเอง</h4>
+
+  <div class="formula-block">
+    <span class="tag example">SETUP 1</span>
+<span class="highlight">Setup 1: "Breakout จาก Accumulation"</span>
+├── เงื่อนไข: Sideway &gt;4 สัปดาห์ + OBV ขึ้น + วอลุ่ม Breakout &gt;3x
+├── จุดเข้า: ราคาปิดเหนือแนวต้าน
+├── Stop Loss: ใต้กรอบ Sideway
+├── เป้าหมาย: ความกว้างของกรอบ Sideway × 1.5
+├── Win Rate ย้อนหลัง: <span class="val">52%</span>
+├── Avg R-Multiple: <span class="ok">+1.8R</span>
+└── Expectancy: <span class="ok">+0.54R ต่อเทรด</span>
+  </div>
+
+  <div class="formula-block">
+    <span class="tag example">SETUP 2</span>
+<span class="highlight">Setup 2: "Pullback ในขาขึ้น"</span>
+├── เงื่อนไข: ราคาเหนือ MA50 + RSI ลงมาแตะ 40-50 + วอลุ่มลดลง
+├── จุดเข้า: แท่งเทียนกลับตัวที่แนวรับ (Hammer, Engulfing)
+├── Stop Loss: ใต้ Swing Low ล่าสุด
+├── เป้าหมาย: High ก่อนหน้า
+├── Win Rate ย้อนหลัง: <span class="val">58%</span>
+├── Avg R-Multiple: <span class="ok">+1.5R</span>
+└── Expectancy: <span class="ok">+0.45R ต่อเทรด</span>
+  </div>
+
+  <h4>ขั้นตอนที่ 3: ทดสอบและปรับปรุง</h4>
+
+  <div class="card">
+    <div class="card-title">🔄 กระบวนการที่ไม่มีวันจบ</div>
+    <ul style="list-style:none;">
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• เทรดตาม Playbook อย่างเคร่งครัด 50 เทรด</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• บันทึกผลทุกเทรด</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• วิเคราะห์ว่า Setup ไหนทำงานดี Setup ไหนไม่ดี</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• ตัด Setup ที่ไม่ดีออก เพิ่ม Setup ใหม่ที่ค้นพบ</li>
+      <li style="padding:0.3rem 0; color:var(--text-secondary);">• ทำซ้ำ — นี่คือกระบวนการที่ไม่มีวันจบ</li>
+    </ul>
+  </div>
+
+  <h3 id="compounding">Compounding — พลังของดอกเบี้ยทบต้น</h3>
+
+  <div class="formula-block">
+    <span class="tag example">COMPOUNDING</span>
+<span class="highlight">ตัวอย่าง: เริ่มต้น 500,000 บาท ทำได้ 20% ต่อปี</span>
+
+ปีที่ 1:  500,000 → <span class="val">600,000</span>
+ปีที่ 3:  500,000 → <span class="val">864,000</span>
+ปีที่ 5:  500,000 → <span class="val">1,244,160</span>
+ปีที่ 10: 500,000 → <span class="ok">3,095,869</span>
+ปีที่ 15: 500,000 → <span class="ok">7,703,718</span>
+ปีที่ 20: 500,000 → <span class="ok">19,172,783</span>
+
+<span class="comment">จาก 500,000 เป็น 19 ล้าน ใน 20 ปี ด้วย 20% ต่อปี
+ไม่ต้องเสี่ยงมาก ไม่ต้องปั่น ไม่ต้องหาหุ้น 10-Bagger
+แค่ทำกำไรสม่ำเสมอ + ไม่ขาดทุนหนัก</span>
+  </div>
+
+  <div class="info-box tip">
+    <div class="box-title">💡 500k → 19M ใน 20 ปี</div>
+    ไม่ต้องเสี่ยงมาก ไม่ต้องปั่น ไม่ต้องหาหุ้น 10-Bagger แค่ทำกำไรสม่ำเสมอ + ไม่ขาดทุนหนัก
+  </div>
+
+  <div class="card">
+    <div class="card-title">📐 4 กฎของ Compounding</div>
+    <ul style="list-style:none;">
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">1. <strong>อย่าขาดทุนหนัก</strong> — Drawdown ใหญ่ทำลาย Compounding</li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">2. <strong>อย่าถอนเงินออกบ่อย</strong> — ปล่อยให้เงินทำงาน</li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">3. <strong>อดทน</strong> — Compounding ใช้เวลา ปีแรกๆ ดูช้า แต่ปีหลังๆ จะเร็วขึ้นแบบทวีคูณ</li>
+      <li style="padding:0.4rem 0; color:var(--text-secondary);">4. <strong>สม่ำเสมอสำคัญกว่าหวือหวา</strong> — 20% ต่อปีทุกปี ดีกว่า +100% ปีหนึ่ง -50% อีกปี</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- CHAPTER 28: Meta-Learning                                     -->
+  <!-- ============================================================ -->
+  <div class="section-header" id="ch28">
+    <h2><span class="section-number blue">28</span> Meta-Learning — เรียนรู้วิธีเรียนรู้</h2>
+  </div>
+
+  <h3 id="deliberate-practice">Deliberate Practice — ฝึกอย่างมีจุดมุ่งหมาย</h3>
+
+  <p>การเทรดไม่ต่างจากกีฬาหรือดนตรี — ต้องฝึกอย่างมีระบบ ไม่ใช่แค่ "ทำซ้ำ"</p>
+
+  <div class="three-col">
+    <div class="col-card blue-accent">
+      <h4 style="color: var(--accent-blue-light);">📊 1. Chart Replay</h4>
+      <ul>
+        <li>เปิดกราฟหุ้นที่เคยถูกปั่น ย้อนไปก่อนเริ่มปั่น</li>
+        <li>เลื่อนกราฟทีละวัน ถามตัวเองว่า "จะทำอะไร?"</li>
+        <li>บันทึกการตัดสินใจ แล้วเทียบกับสิ่งที่เกิดขึ้นจริง</li>
+        <li>ทำซ้ำกับหุ้นหลายสิบตัว จนจำ Pattern ได้</li>
+      </ul>
+    </div>
+    <div class="col-card green-accent">
+      <h4 style="color: var(--accent-green);">📝 2. Paper Trading</h4>
+      <ul>
+        <li>จำลองพอร์ต 1,000,000 บาท</li>
+        <li>เทรดตามระบบจริง แต่ไม่ใช้เงินจริง</li>
+        <li>บันทึกทุกเทรดเหมือนเทรดจริง</li>
+        <li>ทำอย่างน้อย 50 เทรดก่อนใช้เงินจริง</li>
+      </ul>
+    </div>
+    <div class="col-card purple-accent">
+      <h4 style="color: var(--accent-purple);">🧠 3. Mental Rehearsal</h4>
+      <ul>
+        <li>จินตนาการสถานการณ์ที่ยากลำบาก (หุ้นลง 15% ในวันเดียว)</li>
+        <li>ซ้อมการตัดสินใจในหัวก่อนเจอจริง</li>
+        <li>เมื่อเจอจริง สมองจะพร้อมมากกว่า</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 id="aar">After Action Review (AAR) — ทบทวนหลังเทรด</h3>
+
+  <p>ทุกเทรดคือบทเรียน ไม่ว่าจะกำไรหรือขาดทุน</p>
+
+  <div class="card">
+    <div class="card-title">📋 AAR Template</div>
+    <div class="formula-block" style="margin-bottom:0;">
+      <span class="tag steps">TEMPLATE</span>
+<span class="highlight">1. เกิดอะไรขึ้น? (What happened?)</span>
+   ซื้อหุ้น ___ ที่ราคา ___ เมื่อวันที่ ___
+   ขายที่ราคา ___ เมื่อวันที่ ___
+   ผลลัพธ์: +/-___R
+
+<span class="highlight">2. ทำไมถึงเป็นแบบนั้น? (Why?)</span>
+   ถ้ากำไร: อะไรทำให้ถูก? ระบบทำงานดีตรงไหน?
+   ถ้าขาดทุน: อะไรผิดพลาด? สัญญาณที่พลาดคืออะไร?
+
+<span class="highlight">3. ทำตามแผนไหม? (Did I follow the plan?)</span>
+   ✅ ใช่ + กำไร  → <span class="ok">ระบบดี ทำต่อ</span>
+   ✅ ใช่ + ขาดทุน → <span class="val">ระบบอาจต้องปรับ หรือแค่โชคไม่ดี</span>
+   ❌ ไม่ + กำไร  → <span class="bad">อันตราย! กำไรจากความโชคดี ไม่ยั่งยืน</span>
+   ❌ ไม่ + ขาดทุน → <span class="bad">ต้องแก้ไขวินัย</span>
+
+<span class="highlight">4. จะทำอะไรต่างไปในครั้งหน้า?</span>
+   ___________________________________
+    </div>
+  </div>
+
+  <h3 id="process-outcome">Process vs Outcome — ให้ความสำคัญกับกระบวนการ ไม่ใช่ผลลัพธ์</h3>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>ผลลัพธ์ดี (กำไร) 📈</th>
+          <th>ผลลัพธ์แย่ (ขาดทุน) 📉</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>กระบวนการดี ✅<br>(ทำตามระบบ)</strong></td>
+          <td style="color:var(--accent-green); font-weight:600;">ดีที่สุด — ทำต่อไป</td>
+          <td style="color:var(--accent-yellow);">ยอมรับได้ — ส่วนหนึ่งของเกม</td>
+        </tr>
+        <tr>
+          <td><strong>กระบวนการแย่ ❌<br>(ไม่ทำตามระบบ)</strong></td>
+          <td style="color:var(--accent-red); font-weight:600;">อันตรายที่สุด — สอนนิสัยที่ผิด</td>
+          <td style="color:var(--accent-orange);">สมควรแล้ว — บทเรียนราคาแพง</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box danger">
+    <div class="box-title">🚨 เทรดที่อันตรายที่สุด</div>
+    <strong>"กระบวนการแย่ + ผลลัพธ์ดี"</strong> เพราะมันสอนให้คุณทำผิดซ้ำ ตัวอย่าง: ไม่ตั้ง Stop Loss แต่บังเอิญกำไร → ครั้งต่อไปก็จะไม่ตั้ง Stop Loss อีก → จนกว่าจะเจอครั้งที่ขาดทุนหนัก
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SUMMARY                                                       -->
+  <!-- ============================================================ -->
+  <div class="section-header" id="summary">
+    <h2><span class="section-number emerald">📋</span> สรุป: 10 หลักการสำคัญสำหรับนักลงทุนขั้นสูง</h2>
+  </div>
+
+  <div class="principle-grid">
+    <div class="principle-card">
+      <span class="principle-num">1</span>
+      <div>
+        <strong>คิดเป็นความน่าจะเป็น ไม่ใช่ความแน่นอน</strong>
+        <p style="font-size:0.88rem; margin-top:0.3rem;">ไม่มีเทรดไหนที่ "ต้องกำไร" มีแต่เทรดที่ "มีโอกาสกำไรมากกว่าขาดทุน"</p>
+      </div>
+    </div>
+    <div class="principle-card">
+      <span class="principle-num">2</span>
+      <div>
+        <strong>ปกป้องเงินทุนก่อนหากำไร</strong>
+        <p style="font-size:0.88rem; margin-top:0.3rem;">Drawdown ทำลาย Compounding ป้องกันขาดทุนหนักสำคัญกว่าไล่ตามกำไรมาก</p>
+      </div>
+    </div>
+    <div class="principle-card">
+      <span class="principle-num">3</span>
+      <div>
+        <strong>มี Edge ที่วัดได้</strong>
+        <p style="font-size:0.88rem; margin-top:0.3rem;">ถ้าคุณไม่สามารถอธิบายได้ว่า Edge ของคุณคืออะไร คุณไม่มี Edge</p>
+      </div>
+    </div>
+    <div class="principle-card">
+      <span class="principle-num">4</span>
+      <div>
+        <strong>ให้ระบบทำงาน ไม่ใช่อารมณ์</strong>
+        <p style="font-size:0.88rem; margin-top:0.3rem;">ตัดสินใจล่วงหน้า ทำตามแผน ใช้ Checklist</p>
+      </div>
+    </div>
+    <div class="principle-card">
+      <span class="principle-num">5</span>
+      <div>
+        <strong>เข้าใจ Market Regime</strong>
+        <p style="font-size:0.88rem; margin-top:0.3rem;">กลยุทธ์ที่ดีในตลาดขาขึ้นอาจแย่ในตลาดขาลง ปรับตัวตามสถานการณ์</p>
+      </div>
+    </div>
+    <div class="principle-card">
+      <span class="principle-num">6</span>
+      <div>
+        <strong>ดูภาพใหญ่ก่อนภาพเล็ก</strong>
+        <p style="font-size:0.88rem; margin-top:0.3rem;">Intermarket Analysis, Fund Flow, Breadth Indicators บอกสุขภาพของตลาดโดยรวม</p>
+      </div>
+    </div>
+    <div class="principle-card">
+      <span class="principle-num">7</span>
+      <div>
+        <strong>อ่าน Order Book ให้เป็น</strong>
+        <p style="font-size:0.88rem; margin-top:0.3rem;">Spoofing, Iceberg, Layering เป็นเครื่องมือของผู้ปั่น ถ้าอ่านออกจะไม่ตกเป็นเหยื่อ</p>
+      </div>
+    </div>
+    <div class="principle-card">
+      <span class="principle-num">8</span>
+      <div>
+        <strong>วัดทุกอย่างเป็นตัวเลข</strong>
+        <p style="font-size:0.88rem; margin-top:0.3rem;">Expectancy, R-Multiple, VaR, Drawdown — ตัวเลขไม่โกหก ความรู้สึกโกหก</p>
+      </div>
+    </div>
+    <div class="principle-card">
+      <span class="principle-num">9</span>
+      <div>
+        <strong>ฝึกอย่างมีจุดมุ่งหมาย</strong>
+        <p style="font-size:0.88rem; margin-top:0.3rem;">Chart Replay, Paper Trading, AAR ทำให้คุณดีขึ้นทุกวัน</p>
+      </div>
+    </div>
+    <div class="principle-card">
+      <span class="principle-num">10</span>
+      <div>
+        <strong>อดทนและสม่ำเสมอ</strong>
+        <p style="font-size:0.88rem; margin-top:0.3rem;">Compounding ต้องการเวลา ไม่มีทางลัด ความสม่ำเสมอชนะความหวือหวาเสมอ</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOSING QUOTES -->
+  <div style="margin-top: 4rem;">
+    <div class="quote-block">
+      "ตลาดหุ้นเป็นเครื่องมือถ่ายโอนเงินจากคนใจร้อนไปสู่คนอดทน"
+      <span class="author">— Warren Buffett</span>
+    </div>
+
+    <div class="quote-block" style="border-left-color: var(--accent-cyan);">
+      "ในระยะสั้น ตลาดคือเครื่องลงคะแนนเสียง ในระยะยาว ตลาดคือเครื่องชั่งน้ำหนัก"
+      <span class="author" style="color: var(--accent-cyan);">— Benjamin Graham</span>
+    </div>
+
+    <div class="quote-block" style="border-left-color: var(--accent-green);">
+      "กฎข้อที่ 1: อย่าขาดทุน กฎข้อที่ 2: อย่าลืมกฎข้อที่ 1"
+      <span class="author" style="color: var(--accent-green);">— Warren Buffett</span>
+    </div>
+  </div>
+
+</main>
+
+<!-- BACK TO TOP BUTTON -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  // Hamburger menu toggle
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+  function toggleMenu() {
+    hamburgerBtn.classList.toggle('active');
+    mobileMenu.classList.toggle('open');
+    mobileMenuOverlay.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  }
+  function closeMenu() {
+    hamburgerBtn.classList.remove('active');
+    mobileMenu.classList.remove('open');
+    mobileMenuOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  hamburgerBtn.addEventListener('click', toggleMenu);
+  mobileMenuOverlay.addEventListener('click', closeMenu);
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', closeMenu);
+  });
+
+  // Trim leading whitespace from formula-block and tree elements
+  document.querySelectorAll('.formula-block, .tree').forEach(el => {
+    const lines = el.innerHTML.split('\n');
+    let minIndent = Infinity;
+    lines.forEach(line => {
+      if (line.trim().length > 0) {
+        const indent = line.match(/^(\s*)/)[1].length;
+        if (indent < minIndent) minIndent = indent;
+      }
+    });
+    if (minIndent > 0 && minIndent < Infinity) {
+      el.innerHTML = lines.map(line => line.slice(minIndent)).join('\n');
+    }
+    el.innerHTML = el.innerHTML.replace(/^\s*\n/, '').replace(/\n\s*$/, '');
+  });
+
+  // Back to top visibility
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('backToTop');
+    btn.classList.toggle('visible', window.scrollY > 400);
+  });
+
+  // Smooth scroll for TOC
+  document.querySelectorAll('.toc-list a, .nav-links a').forEach(a => {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Active TOC highlight
+  const sections = document.querySelectorAll('[id]');
+  const tocLinks = document.querySelectorAll('.toc-list a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const top = section.offsetTop - 100;
+      if (window.scrollY >= top) current = section.getAttribute('id');
+    });
+    tocLinks.forEach(link => {
+      link.style.borderLeftColor = link.getAttribute('href') === '#' + current ? '#3b82f6' : 'transparent';
+      link.style.color = link.getAttribute('href') === '#' + current ? '#60a5fa' : '';
+    });
+  });
+
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const fill = document.getElementById('progressFill');
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    fill.style.width = progress + '%';
+  });
+</script>
+<script src="/theme.js"></script>
+</body>
+</html>
