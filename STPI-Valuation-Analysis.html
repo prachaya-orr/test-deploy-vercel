@@ -1,0 +1,2056 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STPI Valuation Analysis — การประเมินมูลค่าหุ้น SET:STPI</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-card: #1a2235;
+    --bg-card-hover: #1f2a40;
+    --bg-code: #0d1321;
+    --border-primary: #2a3550;
+    --border-accent: #3b82f6;
+    --text-primary: #e8edf5;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-blue: #3b82f6;
+    --accent-blue-light: #60a5fa;
+    --accent-cyan: #22d3ee;
+    --accent-green: #34d399;
+    --accent-emerald: #10b981;
+    --accent-yellow: #fbbf24;
+    --accent-orange: #f97316;
+    --accent-red: #ef4444;
+    --accent-purple: #a78bfa;
+    --accent-pink: #f472b6;
+    --gradient-blue: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    --gradient-green: linear-gradient(135deg, #10b981, #22d3ee);
+    --gradient-warm: linear-gradient(135deg, #f97316, #fbbf24);
+    --gradient-red: linear-gradient(135deg, #ef4444, #f97316);
+    --gradient-emerald: linear-gradient(135deg, #059669, #10b981);
+    --gradient-hero: linear-gradient(135deg, #0a1a0e 0%, #0d2818 30%, #1a2e1b 60%, #0f172a 100%);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+    --shadow-lg: 0 8px 30px rgba(0,0,0,0.5);
+    --shadow-glow-blue: 0 0 20px rgba(59,130,246,0.15);
+    --shadow-glow-green: 0 0 20px rgba(16,185,129,0.15);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; font-size: 16px; scroll-padding-top: 70px; }
+  body {
+    font-family: 'IBM Plex Sans Thai', 'Noto Sans Thai', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: var(--border-primary); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent-emerald); }
+
+  .top-nav {
+    position: sticky; top: 0; z-index: 1000;
+    background: rgba(10,14,26,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-primary);
+    padding: 0 2rem; height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-size: 0.9rem; font-weight: 700;
+    text-decoration: none; color: var(--accent-blue);
+    transition: all 0.3s ease; margin-right: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    width: 60px; height: 32px; border-radius: 6px;
+    background: rgba(59,130,246,0.1); letter-spacing: 0.5px;
+  }
+  .nav-logo:hover {
+    background: rgba(59,130,246,0.2);
+    transform: scale(1.05);
+    color: var(--accent-blue-light);
+  }
+  .nav-brand {
+    font-weight: 700; font-size: 1.1rem;
+    background: var(--gradient-emerald);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .nav-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .nav-links a {
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 0.8rem; padding: 0.3rem 0.7rem;
+    border-radius: 6px; transition: all 0.2s; white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--accent-green); background: rgba(16,185,129,0.1); }
+
+  .sidebar {
+    position: fixed; left: 0; top: 60px; bottom: 0;
+    width: 300px; background: var(--bg-secondary);
+    border-right: 1px solid var(--border-primary);
+    overflow-y: auto; padding: 1.5rem 0; z-index: 100;
+    transition: transform 0.3s;
+  }
+  .sidebar-title {
+    font-size: 0.75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--text-muted); padding: 0 1.5rem; margin-bottom: 1rem;
+  }
+  .toc-list { list-style: none; }
+  .toc-list li a {
+    display: block; padding: 0.5rem 1.5rem;
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 0.85rem; border-left: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .toc-list li a:hover {
+    color: var(--accent-green);
+    background: rgba(16,185,129,0.05);
+    border-left-color: var(--accent-emerald);
+  }
+  .toc-list li.toc-h3 a { padding-left: 2.5rem; font-size: 0.8rem; }
+  .toc-divider { height: 1px; background: var(--border-primary); margin: 0.5rem 1.5rem; }
+
+  .main-content { margin-left: 300px; max-width: 900px; padding: 2rem 3rem 6rem; }
+
+  .hero {
+    background: var(--gradient-hero);
+    border-radius: var(--radius-xl); padding: 4rem 3rem;
+    margin-bottom: 3rem;
+    border: 1px solid rgba(16,185,129,0.2);
+    position: relative; overflow: hidden; text-align: center;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(16,185,129,0.06) 0%, transparent 60%),
+                radial-gradient(circle at 70% 50%, rgba(59,130,246,0.06) 0%, transparent 60%);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(16,185,129,0.15);
+    border: 1px solid rgba(16,185,129,0.3);
+    color: var(--accent-green); font-size: 0.8rem; font-weight: 600;
+    padding: 0.4rem 1.2rem; border-radius: 50px;
+    margin-bottom: 1.5rem; position: relative;
+  }
+  .hero h1 {
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 2.5rem; font-weight: 800;
+    line-height: 1.3; margin-bottom: 1rem; position: relative;
+  }
+  .hero h1 .gradient-text {
+    background: linear-gradient(135deg, #10b981, #22d3ee);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-subtitle {
+    font-size: 1.1rem; color: var(--text-secondary);
+    max-width: 600px; margin: 0 auto 2rem; position: relative;
+  }
+
+  .quote-block {
+    background: var(--bg-card);
+    border-left: 4px solid var(--accent-purple);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    padding: 1.5rem 2rem; margin: 2rem 0;
+    font-style: italic; color: var(--text-secondary);
+  }
+  .quote-block .author {
+    display: block; margin-top: 0.8rem;
+    font-style: normal; font-weight: 600;
+    color: var(--accent-purple); font-size: 0.9rem;
+  }
+
+  .section-header {
+    margin: 4rem 0 2rem; padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border-primary);
+  }
+  .section-header h2 {
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 1.8rem; font-weight: 800;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .section-number {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px; border-radius: 12px;
+    font-size: 1rem; font-weight: 700; color: #fff; flex-shrink: 0;
+  }
+  .section-number.blue { background: var(--gradient-blue); }
+  .section-number.green { background: var(--gradient-green); }
+  .section-number.warm { background: var(--gradient-warm); }
+  .section-number.purple { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+  .section-number.emerald { background: var(--gradient-emerald); }
+  .section-number.red { background: var(--gradient-red); }
+  .section-number.cyan { background: linear-gradient(135deg, #06b6d4, #22d3ee); }
+
+  h3 {
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 1.35rem; font-weight: 700;
+    margin: 2.5rem 0 1rem; color: var(--accent-blue-light);
+  }
+  h4 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 2rem 0 0.8rem; color: var(--accent-cyan);
+  }
+  p { margin-bottom: 1rem; color: var(--text-secondary); }
+  strong { color: var(--text-primary); font-weight: 600; }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: 2rem; margin: 1.5rem 0; transition: all 0.3s;
+  }
+  .card:hover {
+    border-color: rgba(16,185,129,0.3);
+    box-shadow: var(--shadow-glow-green);
+  }
+  .card-title {
+    font-size: 1.1rem; font-weight: 700;
+    margin-bottom: 1rem; display: flex;
+    align-items: center; gap: 0.6rem;
+  }
+
+  .three-col {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; margin: 2rem 0;
+  }
+  .two-col {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem; margin: 2rem 0;
+  }
+  .col-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem; transition: all 0.3s;
+  }
+  .col-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .col-card.blue-accent { border-top: 3px solid var(--accent-blue); }
+  .col-card.green-accent { border-top: 3px solid var(--accent-green); }
+  .col-card.purple-accent { border-top: 3px solid var(--accent-purple); }
+  .col-card.red-accent { border-top: 3px solid var(--accent-red); }
+  .col-card.cyan-accent { border-top: 3px solid var(--accent-cyan); }
+  .col-card.warm-accent { border-top: 3px solid var(--accent-orange); }
+  .col-card h4 { margin-top: 0; font-size: 1rem; }
+  .col-card ul { list-style: none; margin-top: 0.8rem; }
+  .col-card ul li {
+    padding: 0.3rem 0; font-size: 0.9rem; color: var(--text-secondary);
+  }
+  .col-card ul li::before {
+    content: '\2022'; margin-right: 0.5rem; color: var(--accent-emerald);
+  }
+  .col-card .label {
+    font-size: 0.75rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px;
+    color: var(--text-muted); margin-top: 1rem; display: block;
+  }
+  .col-card .label-text {
+    font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.3rem;
+  }
+
+  .formula-block {
+    background: var(--bg-code);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: 1.5rem 2rem; margin: 1.5rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem; line-height: 1.9;
+    color: var(--text-secondary); overflow-x: auto;
+    position: relative; white-space: pre-wrap; word-wrap: break-word;
+  }
+  .formula-block .tag {
+    position: absolute; top: 0.8rem; right: 1rem;
+    font-size: 0.65rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px;
+    padding: 0.2rem 0.6rem; border-radius: 4px;
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+  }
+  .formula-block .tag.formula { background: rgba(59,130,246,0.15); color: var(--accent-blue-light); }
+  .formula-block .tag.example { background: rgba(16,185,129,0.15); color: var(--accent-green); }
+  .formula-block .tag.steps { background: rgba(249,115,22,0.15); color: var(--accent-orange); }
+  .formula-block .tag.data { background: rgba(167,139,250,0.15); color: var(--accent-purple); }
+  .formula-block .tag.result { background: rgba(34,211,238,0.15); color: var(--accent-cyan); }
+  .formula-block .highlight { color: var(--accent-cyan); font-weight: 500; }
+  .formula-block .val { color: var(--accent-yellow); }
+  .formula-block .ok { color: var(--accent-green); }
+  .formula-block .warn { color: var(--accent-orange); }
+  .formula-block .bad { color: var(--accent-red); }
+  .formula-block .comment { color: var(--text-muted); }
+
+  .info-box {
+    border-radius: var(--radius-md);
+    padding: 1.2rem 1.5rem; margin: 1.5rem 0; font-size: 0.92rem;
+  }
+  .info-box.tip {
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.2); color: var(--accent-green);
+  }
+  .info-box.warning {
+    background: rgba(249,115,22,0.08);
+    border: 1px solid rgba(249,115,22,0.2); color: var(--accent-orange);
+  }
+  .info-box.danger {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.2); color: var(--accent-red);
+  }
+  .info-box.info {
+    background: rgba(59,130,246,0.08);
+    border: 1px solid rgba(59,130,246,0.2); color: var(--accent-blue-light);
+  }
+  .info-box .box-title {
+    font-weight: 700; margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+
+  .table-wrapper {
+    overflow-x: auto; margin: 1.5rem 0;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-primary);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  thead { background: rgba(16,185,129,0.1); }
+  th {
+    padding: 0.8rem 1rem; text-align: left;
+    font-weight: 600; color: var(--accent-green);
+    border-bottom: 2px solid var(--border-primary); white-space: nowrap;
+  }
+  td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid rgba(42,53,80,0.5);
+    color: var(--text-secondary);
+  }
+  tbody tr:hover { background: rgba(16,185,129,0.03); }
+
+  .sensitivity-table td.current {
+    background: rgba(16,185,129,0.15);
+    color: var(--accent-green); font-weight: 600;
+  }
+  .sensitivity-table td.good { color: var(--accent-green); }
+  .sensitivity-table td.neutral { color: var(--accent-yellow); }
+  .sensitivity-table td.bad { color: var(--accent-red); }
+
+  .football-field { margin: 2rem 0; }
+  .ff-row {
+    display: flex; align-items: center;
+    margin-bottom: 0.6rem; gap: 1rem;
+  }
+  .ff-label {
+    width: 120px; font-size: 0.85rem;
+    font-weight: 600; color: var(--text-secondary);
+    text-align: right; flex-shrink: 0;
+  }
+  .ff-bar-container {
+    flex: 1; height: 32px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px; position: relative;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .ff-bar {
+    position: absolute; height: 100%;
+    border-radius: 6px; opacity: 0.7;
+    display: flex; align-items: center;
+    justify-content: space-between;
+    padding: 0 0.6rem;
+    font-size: 0.75rem; font-weight: 600; color: #fff;
+  }
+  .ff-bar.pe { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+  .ff-bar.ev { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+  .ff-bar.dcf { background: linear-gradient(90deg, #10b981, #34d399); }
+  .ff-bar.pfcf { background: linear-gradient(90deg, #06b6d4, #22d3ee); }
+  .ff-bar.pbv { background: linear-gradient(90deg, #f97316, #fbbf24); }
+  .ff-bar.nav-bar { background: linear-gradient(90deg, #14b8a6, #5eead4); }
+  .ff-bar.epv { background: linear-gradient(90deg, #ef4444, #f87171); }
+  .ff-current-line {
+    position: absolute; top: -8px; bottom: -8px;
+    width: 2px; background: var(--accent-yellow); z-index: 10;
+  }
+  .ff-current-label {
+    position: absolute; top: -24px;
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--accent-yellow);
+    transform: translateX(-50%); white-space: nowrap;
+  }
+  .ff-scale {
+    display: flex; justify-content: space-between;
+    font-size: 0.7rem; color: var(--text-muted);
+    margin-top: 0.5rem; padding: 0;
+    margin-left: calc(120px + 1rem);
+  }
+
+  .checklist { list-style: none; margin: 1rem 0; }
+  .checklist li {
+    padding: 0.5rem 0; display: flex;
+    align-items: flex-start; gap: 0.8rem;
+    color: var(--text-secondary); font-size: 0.92rem;
+  }
+  .checklist li .check {
+    width: 20px; height: 20px; border-radius: 4px;
+    border: 2px solid var(--border-primary);
+    flex-shrink: 0; margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; color: transparent;
+    transition: all 0.2s; cursor: pointer;
+  }
+  .checklist li .check:hover {
+    border-color: var(--accent-green); color: var(--accent-green);
+  }
+
+  .error-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: 1.2rem 1.5rem; margin: 0.8rem 0;
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+  .error-num {
+    background: rgba(239,68,68,0.15);
+    color: var(--accent-red);
+    font-weight: 700; font-size: 0.85rem;
+    padding: 0.3rem 0.6rem; border-radius: 6px;
+    flex-shrink: 0; white-space: nowrap;
+  }
+  .error-item .fix { color: var(--accent-green); font-size: 0.9rem; margin-top: 0.3rem; }
+
+  .strength-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: 1.2rem 1.5rem; margin: 0.8rem 0;
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+  .strength-num {
+    background: rgba(16,185,129,0.15);
+    color: var(--accent-green);
+    font-weight: 700; font-size: 0.85rem;
+    padding: 0.3rem 0.6rem; border-radius: 6px;
+    flex-shrink: 0; white-space: nowrap;
+  }
+
+  .back-to-top {
+    position: fixed; bottom: 2rem; right: 2rem;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--gradient-emerald); color: #fff;
+    border: none; cursor: pointer; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow-lg);
+    opacity: 0; transition: opacity 0.3s; z-index: 1000;
+  }
+  .back-to-top.visible { opacity: 1; }
+
+  .progress-bar {
+    position: fixed; top: 60px; left: 300px; right: 0;
+    height: 3px; z-index: 999; background: transparent;
+  }
+  .progress-bar .fill {
+    height: 100%; background: var(--gradient-emerald);
+    width: 0%; transition: width 0.1s;
+  }
+
+  .hamburger-btn {
+    display: none; flex-direction: column;
+    justify-content: center; align-items: center;
+    width: 36px; height: 36px;
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 8px; cursor: pointer;
+    gap: 5px; padding: 0; transition: all 0.3s ease; flex-shrink: 0;
+  }
+  .hamburger-btn:hover { background: rgba(16,185,129,0.2); }
+  .hamburger-btn span {
+    display: block; width: 18px; height: 2px;
+    background: var(--accent-green); border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  .hamburger-btn.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger-btn.active span:nth-child(2) { opacity: 0; }
+  .hamburger-btn.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  .mobile-menu-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); z-index: 998;
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .mobile-menu-overlay.open { display: block; opacity: 1; }
+  .mobile-menu {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: 300px; max-width: 85vw;
+    background: var(--bg-secondary); z-index: 999;
+    overflow-y: auto; padding: 1.5rem 0;
+    transform: translateX(100%); transition: transform 0.3s ease;
+    border-left: 1px solid var(--border-primary);
+    box-shadow: -4px 0 20px rgba(0,0,0,0.3);
+  }
+  .mobile-menu.open { transform: translateX(0); }
+  .mobile-menu .mm-title {
+    font-size: 0.75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--text-muted); padding: 0.5rem 1.5rem; margin-bottom: 0.5rem;
+  }
+  .mobile-menu .mm-list { list-style: none; padding: 0; margin: 0; }
+  .mobile-menu .mm-list li a {
+    display: block; padding: 0.6rem 1.5rem;
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 0.88rem; border-left: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .mobile-menu .mm-list li a:hover,
+  .mobile-menu .mm-list li a:active {
+    color: var(--accent-green);
+    background: rgba(16,185,129,0.05);
+    border-left-color: var(--accent-emerald);
+  }
+  .mobile-menu .mm-list li.sub a { padding-left: 2.5rem; font-size: 0.82rem; }
+  .mobile-menu .mm-divider { height: 1px; background: var(--border-primary); margin: 0.5rem 1.5rem; }
+
+  @media (max-width: 1024px) {
+    .hamburger-btn { display: flex; }
+    .nav-links { display: none; }
+    .sidebar { transform: translateX(-100%); }
+    .main-content { margin-left: 0; padding: 1.5rem; }
+    .progress-bar { left: 0; }
+    .three-col { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    .hero { padding: 2.5rem 1.5rem; }
+    .hero h1 { font-size: 1.8rem; }
+    .ff-label { width: 80px; font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="fill" id="progressFill"></div></div>
+
+<!-- ===== TOP NAVIGATION ===== -->
+<nav class="top-nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="nav-logo" title="กลับหน้าหลัก">HOME</a>
+  <div class="nav-brand">📊 STPI Valuation Analysis</div>
+  <div class="nav-links">
+    <a href="#company-overview">ข้อมูลพื้นฐาน</a>
+    <a href="#financials">การเงิน</a>
+    <a href="#ratios">อัตราส่วน</a>
+    <a href="#relative">Relative</a>
+    <a href="#dcf">DCF</a>
+    <a href="#epv">EPV</a>
+    <a href="#asset-based">Asset-Based</a>
+    <a href="#football-field">Football Field</a>
+    <a href="#summary">สรุป</a>
+  </div>
+  <button class="hamburger-btn" id="hamburgerBtn" aria-label="เปิดเมนู">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mm-title">สารบัญ</div>
+  <ul class="mm-list">
+    <li><a href="#company-overview">1. ข้อมูลพื้นฐาน</a></li>
+    <li><a href="#financials">2. ข้อมูลทางการเงิน</a></li>
+    <li><a href="#ratios">3. อัตราส่วนทางการเงิน</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#relative">4. Relative Valuation</a></li>
+    <li class="sub"><a href="#pe-analysis">4.1 P/E Analysis</a></li>
+    <li class="sub"><a href="#pbv-analysis">4.2 P/BV Analysis</a></li>
+    <li class="sub"><a href="#ev-ebitda-analysis">4.3 EV/EBITDA</a></li>
+    <li class="sub"><a href="#pfcf-analysis">4.4 P/FCF Analysis</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#dcf">5. DCF Valuation</a></li>
+    <li class="sub"><a href="#wacc">WACC</a></li>
+    <li class="sub"><a href="#fcff-projection">FCFF Projection</a></li>
+    <li class="sub"><a href="#sensitivity">Sensitivity</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#epv">6. EPV</a></li>
+    <li><a href="#asset-based">7. Asset-Based</a></li>
+    <li><a href="#football-field">8. Football Field</a></li>
+    <li><a href="#summary">9. สรุปและข้อเสนอแนะ</a></li>
+    <li><a href="#strengths-weaknesses">10. จุดแข็ง จุดอ่อน</a></li>
+    <li><a href="#catalysts">11. Catalyst & Risk</a></li>
+    <li><a href="#checklist">12. Checklist</a></li>
+    <li><a href="#references">13. แหล่งข้อมูล</a></li>
+  </ul>
+</div>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar" role="complementary" aria-label="Table of contents">
+  <div class="sidebar-title">สารบัญ</div>
+  <ul class="toc-list">
+    <li><a href="#company-overview">1. ข้อมูลพื้นฐาน</a></li>
+    <li><a href="#financials">2. ข้อมูลทางการเงิน</a></li>
+    <li><a href="#ratios">3. อัตราส่วนทางการเงิน</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#relative">4. Relative Valuation</a></li>
+    <li class="toc-h3"><a href="#pe-analysis">4.1 P/E Analysis</a></li>
+    <li class="toc-h3"><a href="#pbv-analysis">4.2 P/BV Analysis</a></li>
+    <li class="toc-h3"><a href="#ev-ebitda-analysis">4.3 EV/EBITDA</a></li>
+    <li class="toc-h3"><a href="#pfcf-analysis">4.4 P/FCF Analysis</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#dcf">5. DCF Valuation</a></li>
+    <li class="toc-h3"><a href="#wacc">WACC Calculation</a></li>
+    <li class="toc-h3"><a href="#fcff-projection">FCFF Projection</a></li>
+    <li class="toc-h3"><a href="#sensitivity">Sensitivity Analysis</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#epv">6. EPV</a></li>
+    <li><a href="#asset-based">7. Asset-Based</a></li>
+    <li><a href="#football-field">8. Football Field Chart</a></li>
+    <li><div class="toc-divider"></div></li>
+    <li><a href="#summary">9. สรุปและข้อเสนอแนะ</a></li>
+    <li><a href="#strengths-weaknesses">10. จุดแข็ง จุดอ่อน</a></li>
+    <li><a href="#catalysts">11. Catalyst &amp; Risk</a></li>
+    <li><a href="#checklist">12. Checklist</a></li>
+    <li><a href="#references">13. แหล่งข้อมูล</a></li>
+  </ul>
+</aside>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="main-content" role="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">STPI Valuation Analysis</div>
+    <h1>การประเมินมูลค่าหุ้น SET:STPI<br><span class="gradient-text">STP&amp;I Public Company Limited</span></h1>
+    <p class="hero-subtitle">Valuation ฉบับสมบูรณ์ — ทุกวิธี ทุกมุมมอง พร้อมข้อมูลจริง ณ เมษายน 2569</p>
+  </section>
+
+  <div class="quote-block">
+    "ราคาคือสิ่งที่คุณจ่าย มูลค่าคือสิ่งที่คุณได้รับ"
+    <span class="author">— Warren Buffett</span>
+  </div>
+
+  <p>รายงานฉบับนี้ประเมินมูลค่าหุ้น STPI ด้วย <strong>7 วิธีการ</strong> ครอบคลุมทั้ง Relative Valuation, Absolute Valuation (DCF), EPV และ Asset-Based เพื่อหามูลค่าที่เหมาะสมและ Margin of Safety</p>
+
+  <div class="three-col">
+    <div class="col-card blue-accent">
+      <h4 style="color: var(--accent-blue-light);">📊 Relative Valuation</h4>
+      <p style="font-size:0.85rem; color:var(--text-muted);">มูลค่าเปรียบเทียบ</p>
+      <ul>
+        <li>P/E Ratio</li>
+        <li>P/BV Ratio</li>
+        <li>EV/EBITDA</li>
+        <li>P/FCF Ratio</li>
+      </ul>
+      <span class="label">น้ำหนัก</span>
+      <p class="label-text">50% — เปรียบเทียบกับกลุ่มอุตสาหกรรม</p>
+    </div>
+    <div class="col-card green-accent">
+      <h4 style="color: var(--accent-green);">💰 Absolute Valuation</h4>
+      <p style="font-size:0.85rem; color:var(--text-muted);">มูลค่าสัมบูรณ์</p>
+      <ul>
+        <li>DCF (FCFF)</li>
+        <li>EPV</li>
+      </ul>
+      <span class="label">น้ำหนัก</span>
+      <p class="label-text">30% — คำนวณจากกระแสเงินสดอนาคต</p>
+    </div>
+    <div class="col-card purple-accent">
+      <h4 style="color: var(--accent-purple);">🏢 Asset-Based</h4>
+      <p style="font-size:0.85rem; color:var(--text-muted);">มูลค่าสินทรัพย์</p>
+      <ul>
+        <li>Book Value / NAV</li>
+      </ul>
+      <span class="label">น้ำหนัก</span>
+      <p class="label-text">20% — ดูมูลค่าสินทรัพย์ที่มีอยู่จริง</p>
+    </div>
+  </div>
+
+  <div class="info-box tip">
+    <div class="box-title">💡 หลักการสำคัญ</div>
+    ไม่มีวิธีไหนที่ "ดีที่สุด" — เราใช้หลายวิธีพร้อมกัน แล้วเปรียบเทียบผลลัพธ์ผ่าน Football Field Chart ถ้าหลายวิธีให้คำตอบไปในทิศทางเดียวกัน ความมั่นใจจะสูงขึ้น
+  </div>
+
+  <!-- ===== SECTION 1: COMPANY OVERVIEW ===== -->
+  <div class="section-header" id="company-overview">
+    <h2><span class="section-number green">1</span> ข้อมูลพื้นฐาน (Company Overview)</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏭 STP&amp;I Public Company Limited (STPI)</div>
+    <div class="formula-block"><span class="tag data">company info</span>
+<span class="highlight">ชื่อบริษัท:</span>        STP&amp;I Public Company Limited (<span class="val">STPI</span>)
+<span class="highlight">กลุ่มอุตสาหกรรม:</span>   ทรัพยากร / วัสดุก่อสร้าง (Basic Materials)
+<span class="highlight">ธุรกิจหลัก:</span>        รับเหมาผลิตโครงสร้างเหล็ก, หม้อไอน้ำ, Piping, Process Module
+<span class="highlight">ตลาด:</span>             SET (ตลาดหลักทรัพย์แห่งประเทศไทย)
+
+<span class="highlight">ราคาปัจจุบัน:</span>       <span class="val">4.16 บาท</span> (17 เม.ย. 2569)
+<span class="highlight">52-Week High/Low:</span>   <span class="ok">6.00</span> / <span class="bad">2.34</span> บาท
+<span class="highlight">จำนวนหุ้น:</span>          1,812 ล้านหุ้น
+<span class="highlight">Market Cap:</span>         7,540 ล้านบาท
+<span class="highlight">Enterprise Value:</span>   11,130 ล้านบาท
+<span class="highlight">Beta (5Y):</span>          1.05
+<span class="highlight">Free Float:</span>         68.11%</div>
+
+    <h4>ลักษณะธุรกิจ</h4>
+    <p>STPI เป็นผู้รับเหมาผลิตโครงสร้างเหล็กขนาดใหญ่ (Steel Structure Fabrication) หม้อไอน้ำและถังแรงดัน (Boilers &amp; Pressure Vessels) งาน Piping Fabrication และ Process Module สำหรับอุตสาหกรรมปิโตรเคมี พลังงาน และโรงไฟฟ้า</p>
+
+    <div class="info-box info">
+      <div class="box-title">📌 ลักษณะเฉพาะของธุรกิจ Fabrication</div>
+      <strong>รายได้ขึ้นอยู่กับ Backlog:</strong> ธุรกิจรับเหมาจะมีรายได้ก็ต่อเมื่อได้สัญญาใหม่ ทำให้รายได้ผันผวนตามวัฏจักรอุตสาหกรรม<br>
+      <strong>สินทรัพย์ถาวรสูง:</strong> ต้องมีโรงงาน เครื่องจักร อุปกรณ์ขนาดใหญ่ → ค่าเสื่อมราคาสูง<br>
+      <strong>CapEx ต่ำ (Maintenance):</strong> เมื่อมีโรงงานแล้ว CapEx ส่วนใหญ่เป็นการบำรุงรักษา ไม่ใช่การขยาย<br>
+      <strong>Working Capital ผันผวน:</strong> ขึ้นอยู่กับเงื่อนไขการชำระเงินของแต่ละสัญญา
+    </div>
+
+    <h4>ตำแหน่งราคาปัจจุบัน</h4>
+    <div class="formula-block"><span class="tag data">price position</span>
+<span class="highlight">═══ ราคาเทียบกับ 52-Week Range ═══</span>
+52-Week Low:    <span class="bad">2.34 บาท</span>
+ราคาปัจจุบัน:   <span class="val">4.16 บาท</span>
+52-Week High:   <span class="ok">6.00 บาท</span>
+
+ตำแหน่ง = (4.16 - 2.34) / (6.00 - 2.34) = <span class="val">49.7%</span>
+<span class="comment">→ อยู่กลางๆ ของ 52-Week Range</span>
+
+<span class="highlight">═══ ราคาเทียบกับ Book Value ═══</span>
+BPS:            <span class="val">4.83 บาท</span>
+ราคาปัจจุบัน:   <span class="val">4.16 บาท</span>
+Discount:       <span class="ok">-13.9%</span> จาก Book Value
+
+<span class="highlight">═══ ราคาเทียบกับ FCF ═══</span>
+FCF/Share:      <span class="val">0.57 บาท</span>
+FCF Yield:      <span class="ok">13.68%</span>
+Payback Period: <span class="ok">7.3 ปี</span> <span class="comment">(ถ้า FCF คงที่)</span></div>
+  </div>
+
+  <!-- ===== SECTION 2: FINANCIAL DATA ===== -->
+  <div class="section-header" id="financials">
+    <h2><span class="section-number blue">2</span> ข้อมูลทางการเงิน (Financial Data)</h2>
+  </div>
+
+  <h3>รายได้ย้อนหลัง (Revenue History)</h3>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>รายการ</th>
+          <th>2020</th>
+          <th>2021</th>
+          <th>2022</th>
+          <th>2023</th>
+          <th>2024</th>
+          <th>TTM 2025</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>รายได้ (ล้าน)</strong></td>
+          <td>1,763</td>
+          <td>2,259</td>
+          <td>3,756</td>
+          <td>3,888</td>
+          <td>2,507</td>
+          <td><strong>3,410</strong></td>
+        </tr>
+        <tr>
+          <td><strong>เติบโต</strong></td>
+          <td>—</td>
+          <td style="color:var(--accent-green)">+28.1%</td>
+          <td style="color:var(--accent-green)">+66.3%</td>
+          <td style="color:var(--accent-green)">+3.5%</td>
+          <td style="color:var(--accent-red)">-35.5%</td>
+          <td style="color:var(--accent-green)">+36.0%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box warning">
+    <div class="box-title">⚠️ รายได้ผันผวนสูง</div>
+    รายได้ปี 2022 พุ่ง +66.3% แต่ปี 2024 ลดลง -35.5% — ธุรกิจรับเหมา Fabrication ขึ้นอยู่กับ Backlog และสัญญาใหม่ ทำให้รายได้ไม่สม่ำเสมอ
+  </div>
+
+  <h3>ข้อมูลทางการเงินหลัก (TTM)</h3>
+
+  <div class="formula-block"><span class="tag data">key financials — ttm</span>
+<span class="highlight">═══ งบกำไรขาดทุน ═══</span>
+Gross Profit:       <span class="val">844M</span>     Margin: <span class="val">24.75%</span>
+EBIT:               <span class="val">297M</span>     Margin: <span class="val">8.70%</span>
+EBITDA:             <span class="val">659M</span>     Margin: <span class="val">19.34%</span>
+Net Income:         <span class="val">195M</span>     Margin: <span class="val">5.72%</span>
+EPS:                <span class="val">0.11 บาท</span>
+
+<span class="highlight">═══ กระแสเงินสด ═══</span>
+Operating CF:       <span class="ok">1,150M</span>
+CapEx:              <span class="val">114M</span>
+Free Cash Flow:     <span class="ok">1,032M</span>    FCF/Share: <span class="ok">0.57 บาท</span>
+D&amp;A:                <span class="val">363M</span></div>
+
+  <h3>งบดุล (Balance Sheet — TTM)</h3>
+
+  <div class="formula-block"><span class="tag data">balance sheet</span>
+Cash:               <span class="val">520M</span>
+Total Debt:         <span class="warn">3,660M</span>
+Net Debt:           <span class="bad">-3,140M</span>  <span class="comment">(หนี้สุทธิ)</span>
+Equity:             <span class="val">9,190M</span>
+BPS:                <span class="val">4.83 บาท</span>
+Current Ratio:      <span class="ok">1.84</span>
+D/E:                <span class="val">0.40</span></div>
+
+  <h3>วิเคราะห์กระแสเงินสด (Cash Flow Analysis)</h3>
+
+  <div class="card">
+    <div class="card-title">💧 Cash Flow Quality Analysis</div>
+    <p>จุดที่น่าสนใจที่สุดของ STPI คือ <strong>ช่องว่างระหว่างกำไรทางบัญชีกับกระแสเงินสด</strong></p>
+
+    <div class="formula-block"><span class="tag data">cash flow quality</span>
+<span class="highlight">═══ เปรียบเทียบ Net Income vs Cash Flow ═══</span>
+Net Income (TTM):       <span class="bad">195M</span>
+Operating Cash Flow:    <span class="ok">1,150M</span>   <span class="comment">(สูงกว่า Net Income 5.9 เท่า!)</span>
+Free Cash Flow:         <span class="ok">1,032M</span>   <span class="comment">(สูงกว่า Net Income 5.3 เท่า!)</span>
+
+<span class="highlight">═══ สาเหตุของช่องว่าง ═══</span>
+ค่าเสื่อมราคา (D&amp;A):    <span class="val">363M</span>    <span class="comment">(รายการไม่ใช่เงินสด ที่กดกำไรทางบัญชี)</span>
+D&amp;A / Revenue:          <span class="val">10.6%</span>   <span class="comment">(สูง — สินทรัพย์ถาวรมาก)</span>
+D&amp;A / Net Income:       <span class="val">1.86x</span>   <span class="comment">(D&amp;A สูงกว่ากำไรสุทธิ!)</span>
+
+<span class="highlight">═══ FCF Quality Score ═══</span>
+FCF / Net Income:       <span class="ok">5.3x</span>    <span class="comment">(ยิ่งสูง ยิ่งดี — เงินสดจริงมากกว่ากำไรบัญชี)</span>
+FCF / Revenue:          <span class="ok">30.26%</span>  <span class="comment">(FCF Margin สูงมาก)</span>
+CapEx / Revenue:        <span class="val">3.34%</span>   <span class="comment">(CapEx ต่ำ — ธุรกิจ Asset-Light ในแง่ CapEx)</span>
+
+<span class="warn">⚠️ ข้อควรระวัง: FCF TTM อาจสูงผิดปกติจากการลดลงของ Working Capital ครั้งเดียว</span>
+<span class="comment">ต้องดู Normalized FCF ในระยะยาวด้วย</span></div>
+  </div>
+
+  <div class="info-box tip">
+    <div class="box-title">💡 ทำไม Cash Flow สำคัญกว่ากำไรทางบัญชี?</div>
+    กำไรทางบัญชีสามารถถูกบิดเบือนได้จากนโยบายบัญชี (เช่น วิธีคิดค่าเสื่อม, การรับรู้รายได้) แต่กระแสเงินสดเป็น "เงินจริง" ที่เข้าบริษัท — สำหรับ STPI ค่าเสื่อมราคาสูง 363M กดกำไรทางบัญชีลงมาก แต่ไม่ได้ทำให้เงินสดลดลง
+  </div>
+
+  <!-- ===== SECTION 3: KEY RATIOS ===== -->
+  <div class="section-header" id="ratios">
+    <h2><span class="section-number emerald">3</span> อัตราส่วนทางการเงิน (Key Ratios)</h2>
+  </div>
+
+  <div class="three-col">
+    <div class="col-card blue-accent">
+      <h4 style="color: var(--accent-blue-light);">📊 Valuation Ratios</h4>
+      <ul>
+        <li>P/E: <strong>38.63x</strong> ❌</li>
+        <li>P/BV: <strong>0.82x</strong></li>
+        <li>P/S: <strong>2.21x</strong></li>
+        <li>P/FCF: <strong>7.31x</strong> ✅</li>
+        <li>EV/EBITDA: <strong>11.78-13.42x</strong></li>
+        <li>EV/EBIT: <strong>27.39x</strong></li>
+        <li>FCF Yield: <strong>13.68%</strong> ✅</li>
+      </ul>
+    </div>
+    <div class="col-card green-accent">
+      <h4 style="color: var(--accent-green);">💰 Profitability &amp; Efficiency</h4>
+      <ul>
+        <li>Gross Margin: <strong>24.75%</strong></li>
+        <li>Operating Margin: <strong>8.70%</strong></li>
+        <li>Net Margin: <strong>5.72%</strong></li>
+        <li>ROE: <strong>2.51%</strong> ⚠️</li>
+        <li>ROA: <strong>1.20%</strong></li>
+        <li>ROIC: <strong>2.02%</strong></li>
+        <li>Asset Turnover: <strong>0.22</strong></li>
+      </ul>
+    </div>
+    <div class="col-card purple-accent">
+      <h4 style="color: var(--accent-purple);">🛡️ Risk &amp; Health</h4>
+      <ul>
+        <li>D/E: <strong>0.40</strong></li>
+        <li>Debt/EBITDA: <strong>4.39x</strong> ⚠️</li>
+        <li>Interest Coverage: <strong>1.60x</strong> ⚠️</li>
+        <li>Current Ratio: <strong>1.84</strong></li>
+        <li>Altman Z-Score: <strong>1.61</strong> ⚠️</li>
+        <li>Piotroski F-Score: <strong>7/9</strong> ✅</li>
+        <li>Beta: <strong>1.05</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-box info">
+    <div class="box-title">📌 สรุปอัตราส่วน</div>
+    <strong>จุดแข็ง:</strong> FCF Yield สูงมาก (13.68%), P/FCF ถูก (7.31x), Piotroski 7/9<br>
+    <strong>จุดอ่อน:</strong> ROE ต่ำมาก (2.51%), Interest Coverage ต่ำ (1.60x), Z-Score อยู่ใน Grey Zone
+  </div>
+
+  <!-- ===== SECTION 4: RELATIVE VALUATION ===== -->
+  <div class="section-header" id="relative">
+    <h2><span class="section-number warm">4</span> Relative Valuation — การประเมินมูลค่าเชิงเปรียบเทียบ</h2>
+  </div>
+
+  <p>เปรียบเทียบอัตราส่วนของ STPI กับค่าเฉลี่ยกลุ่มอุตสาหกรรมวัสดุก่อสร้าง/เหล็ก เพื่อดูว่าหุ้น <strong>"ถูก" หรือ "แพง"</strong> เมื่อเทียบกับบริษัทที่คล้ายกัน</p>
+
+  <!-- 4.1 P/E -->
+  <h3 id="pe-analysis">4.1 P/E Ratio Analysis</h3>
+
+  <div class="card">
+    <div class="card-title">📈 P/E Analysis — ราคาต่อกำไร</div>
+    <div class="formula-block"><span class="tag formula">P/E Analysis</span>
+<span class="highlight">Trailing P/E ของ STPI:</span>     <span class="bad">38.63 เท่า</span>
+<span class="highlight">EPS (TTM):</span>                  <span class="val">0.11 บาท</span>
+
+<span class="highlight">เปรียบเทียบ:</span>
+├── P/E เฉลี่ยกลุ่มวัสดุก่อสร้าง/เหล็ก SET:  ~<span class="ok">10-15 เท่า</span>
+├── P/E เฉลี่ย SET Index:                      ~15-18 เท่า
+└── P/E ของ STPI:                              <span class="bad">38.63 เท่า ❌ (สูงมาก)</span>
+
+<span class="comment">สาเหตุ: กำไรสุทธิ TTM เพียง 195M เทียบกับ Market Cap 7,540M</span>
+<span class="comment">→ ตลาดอาจคาดหวังการฟื้นตัวของกำไรในอนาคต</span></div>
+
+    <h4>Target Price จาก P/E (สมมติ EPS ปรับตัวดีขึ้น, P/E เป้าหมาย 15x)</h4>
+    <div class="formula-block"><span class="tag example">target prices</span>
+ถ้า EPS ฟื้นเป็น <span class="val">0.20</span> บาท × P/E 15 = <span class="val">3.00 บาท</span>
+ถ้า EPS ฟื้นเป็น <span class="val">0.25</span> บาท × P/E 15 = <span class="val">3.75 บาท</span>
+ถ้า EPS ฟื้นเป็น <span class="val">0.30</span> บาท × P/E 15 = <span class="val">4.50 บาท</span>
+ถ้า EPS ฟื้นเป็น <span class="val">0.40</span> บาท × P/E 15 = <span class="val">6.00 บาท</span>
+
+<span class="comment">→ ที่ราคา 4.16 บาท ต้องการ EPS อย่างน้อย ~0.28 บาท</span>
+<span class="comment">  ที่ P/E 15 เท่า ถึงจะ Fair Value</span></div>
+
+    <div class="info-box danger">
+      <div class="box-title">❌ P/E สูงเกินไป</div>
+      P/E 38.63 เท่า สูงกว่าค่าเฉลี่ยกลุ่ม 2-3 เท่า — ถ้าดูจาก P/E อย่างเดียว หุ้นแพงมาก แต่ต้องพิจารณาว่ากำไรทางบัญชีถูกกดดันจากค่าเสื่อมราคาสูง (D&amp;A 363M vs Net Income 195M)
+    </div>
+  </div>
+
+  <!-- 4.2 P/BV -->
+  <h3 id="pbv-analysis">4.2 P/BV Ratio Analysis</h3>
+
+  <div class="card">
+    <div class="card-title">📘 P/BV Analysis — ราคาต่อมูลค่าทางบัญชี</div>
+    <div class="formula-block"><span class="tag formula">P/BV Analysis</span>
+<span class="highlight">P/BV ของ STPI:</span>     <span class="ok">0.82 เท่า</span>  <span class="comment">(ต่ำกว่า 1 = ซื้อได้ต่ำกว่า Book Value)</span>
+<span class="highlight">BPS:</span>                <span class="val">4.83 บาท</span>
+<span class="highlight">ROE:</span>                <span class="bad">2.51%</span>  <span class="comment">(ต่ำกว่า Cost of Equity ~10%)</span>
+
+<span class="highlight">P/BV ที่เหมาะสม (Justified P/BV):</span>
+P/BV = (ROE - g) / (r - g)
+สมมติ: ROE = 2.51%, g = 2%, r = 9.5%
+P/BV = (0.0251 - 0.02) / (0.095 - 0.02)
+     = 0.0051 / 0.075
+     = <span class="bad">0.07 เท่า</span>  <span class="comment">(ต่ำมาก!)</span>
+
+<span class="comment">→ ถ้าใช้ ROE ปัจจุบัน P/BV ควรต่ำมาก</span>
+<span class="comment">→ แต่ตลาดให้ P/BV 0.82 → ตลาดคาดว่า ROE จะฟื้นตัว</span></div>
+
+    <h4>Target Price ถ้า ROE ฟื้นตัว</h4>
+    <div class="formula-block"><span class="tag example">roe recovery scenarios</span>
+<span class="highlight">ถ้า ROE ฟื้นเป็น 10%:</span>
+P/BV = (0.10 - 0.02) / (0.095 - 0.02) = 1.07 เท่า
+Target = BPS 4.83 × 1.07 = <span class="ok">5.17 บาท</span>
+
+<span class="highlight">ถ้า ROE ฟื้นเป็น 15%:</span>
+P/BV = (0.15 - 0.02) / (0.095 - 0.02) = 1.73 เท่า
+Target = BPS 4.83 × 1.73 = <span class="ok">8.36 บาท</span></div>
+  </div>
+
+  <!-- 4.3 EV/EBITDA -->
+  <h3 id="ev-ebitda-analysis">4.3 EV/EBITDA Analysis</h3>
+
+  <div class="card">
+    <div class="card-title">🏗️ EV/EBITDA Analysis</div>
+    <div class="formula-block"><span class="tag formula">EV/EBITDA</span>
+<span class="highlight">EV/EBITDA ของ STPI:</span>   <span class="warn">11.78 - 13.42 เท่า</span>
+<span class="highlight">EBITDA (TTM):</span>          <span class="val">659M</span>
+<span class="highlight">EV:</span>                     <span class="val">11,130M</span>
+
+<span class="highlight">เปรียบเทียบ:</span>
+├── EV/EBITDA เฉลี่ยกลุ่มเหล็ก/วัสดุก่อสร้าง: ~<span class="ok">6-10 เท่า</span>
+└── STPI: <span class="warn">11.78 - 13.42 เท่า → สูงกว่าค่าเฉลี่ยกลุ่ม ⚠️</span></div>
+
+    <h4>Target Price จาก EV/EBITDA</h4>
+    <div class="formula-block"><span class="tag example">target calculations</span>
+<span class="highlight">กรณี EBITDA 800M, EV/EBITDA 8x:</span>
+Target EV = 800 × 8 = 6,400M
+Target MCap = 6,400 - 3,660 + 520 = 3,260M
+Target Price = 3,260 / 1,812 = <span class="bad">1.80 บาท</span>
+
+<span class="highlight">กรณี EBITDA 1,200M, EV/EBITDA 8x:</span>
+Target EV = 9,600M
+Target MCap = 9,600 - 3,660 + 520 = 6,460M
+Target Price = 6,460 / 1,812 = <span class="warn">3.57 บาท</span>
+
+<span class="highlight">กรณี EBITDA 1,200M, EV/EBITDA 10x:</span>
+Target EV = 12,000M
+Target MCap = 12,000 - 3,660 + 520 = 8,860M
+Target Price = 8,860 / 1,812 = <span class="ok">4.89 บาท</span>
+
+<span class="comment">→ ที่ราคา 4.16 ต้องการ EBITDA ~1,100+ ที่ EV/EBITDA 10x</span></div>
+  </div>
+
+  <!-- 4.4 P/FCF -->
+  <h3 id="pfcf-analysis">4.4 P/FCF Analysis — จุดแข็งของ STPI</h3>
+
+  <div class="card">
+    <div class="card-title">💎 P/FCF Analysis — ราคาต่อกระแสเงินสดอิสระ</div>
+
+    <div class="info-box tip">
+      <div class="box-title">✅ จุดแข็งที่สำคัญที่สุดของ STPI</div>
+      P/FCF 7.31 เท่า ถูกมากเมื่อเทียบกับ P/E 38.63 เท่า — ความแตกต่างนี้บอกว่ากำไรทางบัญชีถูกกดดันจากค่าเสื่อมราคา แต่บริษัทสร้างเงินสดได้ดีมาก (OCF 1,150M vs Net Income 195M)
+    </div>
+
+    <div class="formula-block"><span class="tag formula">P/FCF Analysis</span>
+<span class="highlight">P/FCF:</span>      <span class="ok">7.31 เท่า ✅ (ถูกมาก)</span>
+<span class="highlight">FCF Yield:</span>  <span class="ok">13.68% ✅✅ (น่าสนใจมาก)</span>
+<span class="highlight">FCF/Share:</span>  <span class="val">0.57 บาท</span>
+
+<span class="highlight">เปรียบเทียบ P/E vs P/FCF:</span>
+├── P/E:   <span class="bad">38.63 เท่า</span>  (แพง)
+├── P/FCF: <span class="ok">7.31 เท่า</span>   (ถูก)
+└── Gap:   <span class="warn">5.3 เท่า</span>   <span class="comment">(ช่องว่างใหญ่มาก → D&amp;A กดกำไรทางบัญชี)</span>
+
+<span class="highlight">สาเหตุ:</span>
+OCF  = <span class="ok">1,150M</span>  vs  Net Income = <span class="bad">195M</span>
+D&amp;A  = <span class="val">363M</span>   <span class="comment">(ค่าเสื่อมราคาสูง กดกำไรทางบัญชี)</span></div>
+
+    <h4>Target Price จาก P/FCF</h4>
+    <div class="formula-block"><span class="tag example">target prices</span>
+FCF = <span class="val">1,032M</span>
+
+P/FCF <span class="val">8x</span>  → MCap = 8,256M  → <span class="val">4.56 บาท</span>
+P/FCF <span class="val">10x</span> → MCap = 10,320M → <span class="ok">5.70 บาท</span>
+P/FCF <span class="val">12x</span> → MCap = 12,384M → <span class="ok">6.83 บาท</span></div>
+
+    <h4>FCF Yield เปรียบเทียบกับทางเลือกอื่น</h4>
+    <div class="formula-block"><span class="tag data">yield comparison</span>
+<span class="highlight">═══ เปรียบเทียบ Yield ═══</span>
+STPI FCF Yield:         <span class="ok">13.68%</span>
+พันธบัตรรัฐบาลไทย 10Y:  <span class="val">2.8%</span>
+เงินฝากประจำ:            <span class="val">1.5-2.0%</span>
+SET Dividend Yield:     <span class="val">3.0-4.0%</span>
+SET Earnings Yield:     <span class="val">5.5-7.0%</span>
+
+<span class="ok">→ FCF Yield ของ STPI สูงกว่าทุกทางเลือก 2-5 เท่า</span>
+<span class="warn">⚠️ แต่ FCF อาจไม่ยั่งยืนที่ระดับนี้ (สูงผิดปกติจาก WC changes)</span></div>
+  </div>
+
+  <!-- Relative Valuation Summary Table -->
+  <h3>สรุป Relative Valuation</h3>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Ratio</th>
+          <th>STPI</th>
+          <th>เทียบกลุ่ม</th>
+          <th>สัญญาณ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>P/E</strong></td>
+          <td>38.63</td>
+          <td>10-15</td>
+          <td style="color:var(--accent-red)">แพงมาก ❌</td>
+        </tr>
+        <tr>
+          <td><strong>P/BV</strong></td>
+          <td>0.82</td>
+          <td>0.8-1.5</td>
+          <td style="color:var(--accent-orange)">ถูก (แต่ ROE ต่ำ) ⚠️</td>
+        </tr>
+        <tr>
+          <td><strong>EV/EBITDA</strong></td>
+          <td>11.78-13.42</td>
+          <td>6-10</td>
+          <td style="color:var(--accent-orange)">แพง ⚠️</td>
+        </tr>
+        <tr>
+          <td><strong>P/S</strong></td>
+          <td>2.21</td>
+          <td>0.3-1.0</td>
+          <td style="color:var(--accent-red)">แพง ❌</td>
+        </tr>
+        <tr>
+          <td><strong>P/FCF</strong></td>
+          <td>7.31</td>
+          <td>10-15</td>
+          <td style="color:var(--accent-green)">ถูกมาก ✅✅</td>
+        </tr>
+        <tr>
+          <td><strong>FCF Yield</strong></td>
+          <td>13.68%</td>
+          <td>5-8%</td>
+          <td style="color:var(--accent-green)">น่าสนใจมาก ✅✅</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box warning">
+    <div class="box-title">⚠️ สัญญาณขัดแย้ง</div>
+    <strong>แพง:</strong> เมื่อดูจาก P/E, EV/EBITDA, P/S<br>
+    <strong>ถูก:</strong> เมื่อดูจาก P/FCF, P/BV<br>
+    ความแตกต่างเกิดจาก: กำไรทางบัญชีต่ำ (ถูกกดจาก D&amp;A) แต่กระแสเงินสดสูง — ต้องวิเคราะห์ด้วย DCF เพื่อหาคำตอบที่ชัดเจนขึ้น
+  </div>
+
+  <!-- ===== SECTION 5: DCF ===== -->
+  <div class="section-header" id="dcf">
+    <h2><span class="section-number purple">5</span> Absolute Valuation — DCF (Discounted Cash Flow)</h2>
+  </div>
+
+  <p>DCF เป็นวิธีประเมินมูลค่าที่แม่นยำที่สุดในทางทฤษฎี โดยคำนวณมูลค่าปัจจุบันของกระแสเงินสดอิสระที่บริษัทจะสร้างได้ในอนาคต</p>
+
+  <div class="card">
+    <div class="card-title">📐 ขั้นตอนการทำ DCF</div>
+    <div class="formula-block"><span class="tag steps">DCF Steps</span>
+<span class="highlight">ขั้นตอนที่ 1:</span> คำนวณ WACC (Weighted Average Cost of Capital)
+<span class="highlight">ขั้นตอนที่ 2:</span> คาดการณ์ FCFF 5 ปี (Free Cash Flow to Firm)
+<span class="highlight">ขั้นตอนที่ 3:</span> คำนวณ Terminal Value
+<span class="highlight">ขั้นตอนที่ 4:</span> คิดลดกลับมาเป็นมูลค่าปัจจุบัน
+<span class="highlight">ขั้นตอนที่ 5:</span> Sensitivity Analysis</div>
+  </div>
+
+  <!-- WACC -->
+  <h3 id="wacc">ขั้นตอนที่ 1: คำนวณ WACC</h3>
+
+  <div class="formula-block"><span class="tag formula">WACC Calculation</span>
+<span class="highlight">═══ Cost of Equity (Re) — CAPM ═══</span>
+Rf (Risk-Free Rate)     = <span class="val">2.8%</span>   <span class="comment">(พันธบัตรรัฐบาลไทย 10 ปี)</span>
+Beta                    = <span class="val">1.05</span>
+ERP (Equity Risk Premium) = <span class="val">7.5%</span>   <span class="comment">(Mature ERP 5.5% + Country Risk 2.0%)</span>
+
+Re = 2.8% + 1.05 × 7.5% = 2.8% + 7.875% = <span class="ok">10.68%</span>
+
+<span class="highlight">═══ Cost of Debt (Rd) ═══</span>
+Rd (ประมาณการ)          = <span class="val">5.5%</span>
+Tax Rate (Effective)    = <span class="val">15.69%</span>
+
+<span class="highlight">═══ โครงสร้างเงินทุน ═══</span>
+Market Cap (E)          = <span class="val">7,540M</span>
+Debt (D)                = <span class="val">3,660M</span>
+V = E + D               = <span class="val">11,200M</span>
+E/V                     = <span class="val">67.3%</span>
+D/V                     = <span class="val">32.7%</span>
+
+<span class="highlight">═══ WACC ═══</span>
+WACC = (67.3% × 10.68%) + (32.7% × 5.5% × (1 - 15.69%))
+     = 7.19% + 1.52%
+     = <span class="val">8.71%</span>
+
+→ ใช้ <span class="ok">WACC = 9.0%</span> (ปัดขึ้นเพื่อ Conservative)</div>
+
+  <!-- FCFF Projection -->
+  <h3 id="fcff-projection">ขั้นตอนที่ 2: คาดการณ์ FCFF 5 ปี</h3>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>รายการ</th>
+          <th>ปี 1</th>
+          <th>ปี 2</th>
+          <th>ปี 3</th>
+          <th>ปี 4</th>
+          <th>ปี 5</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Revenue (ล้าน)</strong></td>
+          <td>3,922</td>
+          <td>4,510</td>
+          <td>4,961</td>
+          <td>5,358</td>
+          <td>5,786</td>
+        </tr>
+        <tr>
+          <td><strong>Growth</strong></td>
+          <td style="color:var(--accent-green)">+15%</td>
+          <td style="color:var(--accent-green)">+15%</td>
+          <td style="color:var(--accent-green)">+10%</td>
+          <td style="color:var(--accent-green)">+8%</td>
+          <td style="color:var(--accent-green)">+8%</td>
+        </tr>
+        <tr>
+          <td><strong>EBIT Margin</strong></td>
+          <td>9.0%</td>
+          <td>9.3%</td>
+          <td>9.5%</td>
+          <td>9.8%</td>
+          <td>10.0%</td>
+        </tr>
+        <tr>
+          <td><strong>FCFF (ล้าน)</strong></td>
+          <td><strong>455</strong></td>
+          <td><strong>535</strong></td>
+          <td><strong>626</strong></td>
+          <td><strong>703</strong></td>
+          <td><strong>770</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box info">
+    <div class="box-title">📌 หมายเหตุ</div>
+    FCF TTM ปัจจุบัน 1,032M สูงผิดปกติ (อาจเกิดจากการลดลงของ Working Capital ครั้งเดียว) — เราใช้ FCFF ที่ Normalize แล้วจาก NOPAT + D&amp;A - CapEx - ΔWC
+  </div>
+
+  <!-- Terminal Value -->
+  <h3>ขั้นตอนที่ 3: Terminal Value</h3>
+
+  <div class="formula-block"><span class="tag formula">Terminal Value</span>
+<span class="highlight">วิธีที่ 1: Gordon Growth Model</span>
+Terminal Growth Rate (g) = <span class="val">2.5%</span>
+FCFF ปีที่ 5 = <span class="val">770M</span>
+
+TV = 770 × (1 + 0.025) / (0.09 - 0.025)
+   = 789.25 / 0.065
+   = <span class="val">12,142M</span>
+
+<span class="highlight">วิธีที่ 2: Exit Multiple</span>
+EBITDA ปีที่ 5 = <span class="val">1,158M</span>
+EV/EBITDA Exit Multiple = <span class="val">8x</span>
+
+TV = 1,158 × 8 = <span class="val">9,264M</span>
+
+<span class="highlight">ค่าเฉลี่ย:</span>
+TV = (12,142 + 9,264) / 2 = <span class="ok">10,703M</span></div>
+
+  <!-- DCF Result -->
+  <h3>ขั้นตอนที่ 4: ผลลัพธ์ DCF</h3>
+
+  <h4>ตาราง Present Value (WACC = 9.0%)</h4>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>ปี</th>
+          <th>FCFF (ล้าน)</th>
+          <th>Discount Factor</th>
+          <th>PV (ล้าน)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1</strong></td>
+          <td>455</td>
+          <td>1/(1.09)¹ = 0.917</td>
+          <td>417</td>
+        </tr>
+        <tr>
+          <td><strong>2</strong></td>
+          <td>535</td>
+          <td>1/(1.09)² = 0.842</td>
+          <td>450</td>
+        </tr>
+        <tr>
+          <td><strong>3</strong></td>
+          <td>626</td>
+          <td>1/(1.09)³ = 0.772</td>
+          <td>483</td>
+        </tr>
+        <tr>
+          <td><strong>4</strong></td>
+          <td>703</td>
+          <td>1/(1.09)⁴ = 0.708</td>
+          <td>498</td>
+        </tr>
+        <tr>
+          <td><strong>5</strong></td>
+          <td>770</td>
+          <td>1/(1.09)⁵ = 0.650</td>
+          <td>501</td>
+        </tr>
+        <tr style="border-top: 2px solid var(--border-primary);">
+          <td><strong>TV</strong></td>
+          <td>10,703</td>
+          <td>1/(1.09)⁵ = 0.650</td>
+          <td><strong>6,957</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="formula-block"><span class="tag result">DCF Result</span>
+<span class="highlight">═══ Present Value (WACC = 9.0%) ═══</span>
+PV ของ FCFF (ปี 1-5):    <span class="val">2,349M</span>
+PV ของ Terminal Value:    <span class="val">6,957M</span>
+                          ──────
+Enterprise Value:         <span class="val">9,306M</span>
+
+หัก หนี้สินที่มีดอกเบี้ย:  <span class="bad">-3,660M</span>
+บวก เงินสด:               <span class="ok">+520M</span>
+                          ──────
+Equity Value:             <span class="val">6,166M</span>
+
+จำนวนหุ้น:                <span class="val">1,812 ล้านหุ้น</span>
+<span class="highlight">มูลค่าที่เหมาะสมต่อหุ้น</span> = 6,166 / 1,812 = <span class="warn">3.40 บาท</span>
+
+ราคาปัจจุบัน = <span class="val">4.16 บาท</span>
+→ Downside = (3.40 - 4.16) / 4.16 = <span class="bad">-18.3% ⚠️</span>
+→ จาก DCF กรณีฐาน: <span class="warn">หุ้นแพงกว่ามูลค่าที่เหมาะสม</span></div>
+
+  <div class="info-box warning">
+    <div class="box-title">⚠️ Terminal Value คิดเป็นสัดส่วนสูง</div>
+    PV ของ Terminal Value (6,957M) คิดเป็น <strong>74.7%</strong> ของ Enterprise Value ทั้งหมด — นี่เป็นจุดอ่อนของ DCF เพราะ Terminal Value อ่อนไหวต่อสมมติฐาน WACC และ Growth Rate มาก ดังนั้น Sensitivity Analysis จึงสำคัญมาก
+  </div>
+
+  <h4>สมมติฐานหลักของ DCF</h4>
+
+  <div class="formula-block"><span class="tag steps">DCF Assumptions</span>
+<span class="highlight">═══ สมมติฐานการเติบโต ═══</span>
+├── ปี 1-2: Revenue Growth <span class="val">+15%</span>  <span class="comment">(ฟื้นตัวจาก Backlog ใหม่)</span>
+├── ปี 3:   Revenue Growth <span class="val">+10%</span>  <span class="comment">(ชะลอตัว)</span>
+├── ปี 4-5: Revenue Growth <span class="val">+8%</span>   <span class="comment">(เข้าสู่ Steady State)</span>
+└── Terminal Growth:       <span class="val">2.5%</span>  <span class="comment">(ไม่เกิน GDP Growth ระยะยาว)</span>
+
+<span class="highlight">═══ สมมติฐาน Margin ═══</span>
+├── EBIT Margin: ค่อยๆ ปรับจาก <span class="val">9.0%</span> เป็น <span class="val">10.0%</span>
+├── อัตราภาษี: <span class="val">16%</span> (ใกล้เคียงอัตราที่แท้จริง)
+├── D&amp;A/Revenue: ~<span class="val">10%</span> (ค่อยๆ ลดลง)
+├── CapEx/Revenue: ~<span class="val">4%</span> (ต่ำ เพราะเป็นธุรกิจ Fabrication)
+└── ΔWorking Capital/ΔRevenue: <span class="val">15%</span>
+
+<span class="highlight">═══ ความเสี่ยงของสมมติฐาน ═══</span>
+<span class="warn">⚠️ Revenue Growth 15% อาจสูงเกินไปถ้า Backlog ไม่เพียงพอ</span>
+<span class="warn">⚠️ EBIT Margin 10% ต้องมีการปรับปรุงประสิทธิภาพอย่างต่อเนื่อง</span>
+<span class="ok">✅ Terminal Growth 2.5% เป็นสมมติฐานที่ Conservative</span></div>
+
+  <!-- Sensitivity Analysis -->
+  <h3 id="sensitivity">ขั้นตอนที่ 5: Sensitivity Analysis</h3>
+
+  <p>ตารางแสดงมูลค่าต่อหุ้น (บาท) เมื่อเปลี่ยน WACC และ Terminal Growth Rate — เซลล์สีเขียวคือมูลค่าสูงกว่าราคาปัจจุบัน 4.16 บาท</p>
+
+  <div class="table-wrapper">
+    <table class="sensitivity-table">
+      <thead>
+        <tr>
+          <th>WACC \ g</th>
+          <th>1.5%</th>
+          <th>2.0%</th>
+          <th>2.5%</th>
+          <th>3.0%</th>
+          <th>3.5%</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>7.0%</strong></td>
+          <td class="good">4.52</td>
+          <td class="good">4.92</td>
+          <td class="good">5.40</td>
+          <td class="good">5.99</td>
+          <td class="good">6.76</td>
+        </tr>
+        <tr>
+          <td><strong>8.0%</strong></td>
+          <td class="neutral">3.72</td>
+          <td class="neutral">4.00</td>
+          <td class="good">4.33</td>
+          <td class="good">4.72</td>
+          <td class="good">5.20</td>
+        </tr>
+        <tr>
+          <td><strong>9.0%</strong></td>
+          <td class="bad">3.10</td>
+          <td class="bad">3.30</td>
+          <td class="current">3.53 ★</td>
+          <td class="neutral">3.80</td>
+          <td class="neutral">4.12</td>
+        </tr>
+        <tr>
+          <td><strong>10.0%</strong></td>
+          <td class="bad">2.60</td>
+          <td class="bad">2.75</td>
+          <td class="bad">2.92</td>
+          <td class="bad">3.11</td>
+          <td class="bad">3.34</td>
+        </tr>
+        <tr>
+          <td><strong>11.0%</strong></td>
+          <td class="bad">2.20</td>
+          <td class="bad">2.31</td>
+          <td class="bad">2.43</td>
+          <td class="bad">2.57</td>
+          <td class="bad">2.73</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box info">
+    <div class="box-title">📊 อ่านตาราง Sensitivity</div>
+    <strong>สีเขียว:</strong> มูลค่า > 4.16 บาท (Upside) &nbsp;|&nbsp;
+    <strong>สีเหลือง:</strong> 3.50-4.16 บาท (ใกล้เคียง) &nbsp;|&nbsp;
+    <strong>สีแดง:</strong> < 3.50 บาท (Downside)<br>
+    ★ = กรณีฐาน (WACC 9%, g 2.5%) → ราคา 4.16 จะ Fair Value ก็ต่อเมื่อ WACC ต่ำกว่า 8% หรือ g สูงกว่า 3%
+  </div>
+
+  <!-- ===== SECTION 6: EPV ===== -->
+  <div class="section-header" id="epv">
+    <h2><span class="section-number red">6</span> EPV — Earnings Power Value</h2>
+  </div>
+
+  <p>EPV ประเมินมูลค่าจาก <strong>"กำลังทำกำไรปัจจุบัน"</strong> โดยไม่สมมติการเติบโต — ถ้า EPV สูงกว่าราคาตลาด แสดงว่าหุ้นถูกแม้ไม่เติบโต</p>
+
+  <div class="formula-block"><span class="tag formula">EPV Calculation</span>
+<span class="highlight">Normalized EBIT (TTM):</span>  <span class="val">297M</span>
+<span class="highlight">อัตราภาษี:</span>              <span class="val">16%</span>
+<span class="highlight">WACC:</span>                   <span class="val">9.0%</span>
+
+NOPAT = 297 × (1 - 0.16) = <span class="val">249.5M</span>
+
+EPV = NOPAT / WACC
+    = 249.5 / 0.09
+    = <span class="val">2,772M</span>
+
+Equity Value = EPV - Debt + Cash
+             = 2,772 - 3,660 + 520
+             = <span class="bad">-368M ❌</span>
+
+<span class="bad">→ EPV ติดลบ! กำไรปัจจุบันไม่เพียงพอรองรับมูลค่าหนี้สิน</span></div>
+
+  <div class="formula-block"><span class="tag example">ถ้า EBIT ดีขึ้น</span>
+<span class="highlight">สมมติ EBIT ปรับตัวเป็น 500M:</span>
+EPV = 500 × 0.84 / 0.09 = 420 / 0.09 = <span class="val">4,667M</span>
+Equity Value = 4,667 - 3,660 + 520 = <span class="val">1,527M</span>
+มูลค่าต่อหุ้น = 1,527 / 1,812 = <span class="bad">0.84 บาท</span>
+
+<span class="comment">→ แม้ EBIT ดีขึ้นเป็น 500M EPV ก็ยังต่ำกว่าราคาตลาดมาก</span>
+<span class="comment">→ ตลาดจ่ายเพื่อ "การเติบโต" ไม่ใช่ "กำลังทำกำไรปัจจุบัน"</span></div>
+
+  <div class="info-box danger">
+    <div class="box-title">❌ EPV บอกอะไร?</div>
+    ถ้าบริษัทไม่เติบโตเลย มูลค่าจะต่ำกว่าราคาตลาดมาก — นักลงทุนที่ซื้อ STPI กำลังจ่ายเพื่อ "ความคาดหวังการเติบโต" ซึ่งมีความเสี่ยงถ้าการเติบโตไม่เกิดขึ้น
+  </div>
+
+  <h3>EPV vs Market Value — วิเคราะห์ Growth Premium</h3>
+
+  <div class="card">
+    <div class="card-title">📊 Growth Premium Analysis</div>
+    <div class="formula-block"><span class="tag data">growth premium</span>
+<span class="highlight">═══ มูลค่าที่ตลาดจ่ายเพื่อการเติบโต ═══</span>
+Market Cap:             <span class="val">7,540M</span>
+EPV (Equity):           <span class="bad">-368M</span>  <span class="comment">(ติดลบ!)</span>
+
+Growth Premium = Market Cap - EPV
+              = 7,540 - (-368)
+              = <span class="warn">7,908M</span>
+
+<span class="highlight">═══ ความหมาย ═══</span>
+<span class="warn">ตลาดจ่าย "Growth Premium" ถึง 7,908M</span>
+<span class="warn">คิดเป็น 100%+ ของ Market Cap</span>
+
+<span class="comment">→ ราคาหุ้นทั้งหมดมาจากความคาดหวังการเติบโต</span>
+<span class="comment">→ ถ้าการเติบโตไม่เกิดขึ้น Downside Risk สูงมาก</span>
+<span class="comment">→ นี่คือเหตุผลที่ Margin of Safety สำคัญ</span></div>
+  </div>
+
+  <!-- ===== SECTION 7: ASSET-BASED ===== -->
+  <div class="section-header" id="asset-based">
+    <h2><span class="section-number cyan">7</span> Asset-Based Valuation — มูลค่าจากสินทรัพย์</h2>
+  </div>
+
+  <div class="formula-block"><span class="tag data">Asset-Based Valuation</span>
+<span class="highlight">═══ Book Value ═══</span>
+ส่วนของผู้ถือหุ้น (Book Value):  <span class="val">9,190M</span>
+BPS:                              <span class="val">4.83 บาท</span>
+P/BV:                             <span class="ok">0.82</span>  <span class="comment">(ต่ำกว่า Book Value)</span>
+
+<span class="highlight">═══ NAV ประมาณการ ═══</span>
+Book Value:                       <span class="val">9,190M</span>
+ปรับลด: สินทรัพย์ถาวรมูลค่าตลาดต่ำกว่า Book ~20%
+NAV ประมาณ = 9,190 × 0.85 =      <span class="val">~7,812M</span>
+NAV ต่อหุ้น = 7,812 / 1,812 =    <span class="ok">4.31 บาท</span>
+
+<span class="highlight">═══ สรุป ═══</span>
+ราคา <span class="val">4.16 บาท</span> ใกล้เคียง NAV ประมาณการ (<span class="ok">Discount ~3.5%</span>)
+<span class="comment">→ มี Downside Protection จากสินทรัพย์ แต่ไม่มาก</span></div>
+
+  <div class="info-box tip">
+    <div class="box-title">💡 ข้อสังเกต</div>
+    สำหรับธุรกิจ Fabrication สินทรัพย์ส่วนใหญ่เป็นเครื่องจักรและโรงงาน ซึ่งมูลค่าตลาดมือสองมักต่ำกว่า Book Value — การปรับลด 15% จึงเป็นการประมาณที่สมเหตุสมผล
+  </div>
+
+  <h3>เปรียบเทียบ Asset-Based กับวิธีอื่น</h3>
+
+  <div class="card">
+    <div class="card-title">🔍 Asset Value vs Earnings Value vs Market Value</div>
+    <div class="formula-block"><span class="tag data">value comparison</span>
+<span class="highlight">═══ เปรียบเทียบ 3 มุมมอง ═══</span>
+
+<span class="highlight">1. Asset Value (NAV):</span>
+   NAV ต่อหุ้น = <span class="val">4.31 บาท</span>
+   <span class="comment">→ มูลค่าสินทรัพย์สุทธิที่บริษัทมีอยู่จริง</span>
+
+<span class="highlight">2. Earnings Value (EPV):</span>
+   EPV ต่อหุ้น = <span class="bad">ติดลบ</span>
+   <span class="comment">→ กำลังทำกำไรปัจจุบันไม่เพียงพอ</span>
+
+<span class="highlight">3. Market Value:</span>
+   ราคาตลาด = <span class="val">4.16 บาท</span>
+   <span class="comment">→ ตลาดให้ราคาใกล้เคียง NAV</span>
+
+<span class="highlight">═══ การตีความ ═══</span>
+<span class="warn">EPV &lt; NAV &lt; Market Value</span>
+├── EPV ติดลบ → กำไรปัจจุบันไม่คุ้มค่าหนี้สิน
+├── NAV ≈ Market → ตลาดให้ราคาตามสินทรัพย์
+└── <span class="warn">ตลาดจ่ายเพื่อ "สินทรัพย์" + "ความหวังการเติบโต"</span>
+
+<span class="comment">ตามทฤษฎี Greenwald:</span>
+<span class="comment">ถ้า EPV &lt; NAV → บริษัทใช้สินทรัพย์ไม่คุ้มค่า</span>
+<span class="comment">ถ้า EPV &gt; NAV → บริษัทมี Competitive Advantage</span>
+<span class="comment">STPI: EPV &lt;&lt; NAV → ใช้สินทรัพย์ไม่คุ้มค่า ⚠️</span></div>
+  </div>
+
+  <!-- ===== SECTION 8: FOOTBALL FIELD ===== -->
+  <div class="section-header" id="football-field">
+    <h2><span class="section-number emerald">8</span> Football Field Chart — สรุปมูลค่าจากทุกวิธี</h2>
+  </div>
+
+  <p>แผนภูมิ Football Field แสดงช่วงมูลค่าจากทุกวิธีการประเมิน เส้นสีเหลืองคือราคาปัจจุบัน 4.16 บาท</p>
+
+  <h3>ตารางสรุปมูลค่าจากทุกวิธี</h3>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>วิธี Valuation</th>
+          <th>ต่ำสุด</th>
+          <th>กรณีฐาน</th>
+          <th>สูงสุด</th>
+          <th>น้ำหนัก</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>P/E</strong></td>
+          <td>3.00</td>
+          <td>4.50</td>
+          <td>6.00</td>
+          <td>15%</td>
+        </tr>
+        <tr>
+          <td><strong>EV/EBITDA</strong></td>
+          <td>1.80</td>
+          <td>3.57</td>
+          <td>4.89</td>
+          <td>15%</td>
+        </tr>
+        <tr>
+          <td><strong>DCF</strong></td>
+          <td>2.20</td>
+          <td>3.53</td>
+          <td>5.40</td>
+          <td>25%</td>
+        </tr>
+        <tr>
+          <td><strong>P/FCF</strong></td>
+          <td>4.56</td>
+          <td>5.70</td>
+          <td>6.83</td>
+          <td>20%</td>
+        </tr>
+        <tr>
+          <td><strong>P/BV (adj ROE)</strong></td>
+          <td>5.17</td>
+          <td>6.50</td>
+          <td>8.36</td>
+          <td>10%</td>
+        </tr>
+        <tr>
+          <td><strong>NAV</strong></td>
+          <td>4.00</td>
+          <td>4.31</td>
+          <td>4.60</td>
+          <td>10%</td>
+        </tr>
+        <tr>
+          <td><strong>EPV</strong></td>
+          <td style="color:var(--accent-red)">0.84</td>
+          <td style="color:var(--accent-red)">0.84</td>
+          <td>1.53</td>
+          <td>5%</td>
+        </tr>
+        <tr style="border-top: 2px solid var(--accent-emerald);">
+          <td><strong style="color:var(--accent-green)">Weighted Average</strong></td>
+          <td><strong>3.50</strong></td>
+          <td><strong style="color:var(--accent-green)">4.36</strong></td>
+          <td><strong>5.40</strong></td>
+          <td><strong>100%</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Football Field Chart</h3>
+
+  <div class="football-field">
+    <!-- P/E -->
+    <div class="ff-row">
+      <div class="ff-label">P/E</div>
+      <div class="ff-bar-container">
+        <div class="ff-bar pe" style="left: 33.33%; width: 33.33%;">
+          <span>3.00</span><span>6.00</span>
+        </div>
+        <div class="ff-current-line" style="left: 46.22%;">
+          <div class="ff-current-label">4.16</div>
+        </div>
+      </div>
+    </div>
+    <!-- EV/EBITDA -->
+    <div class="ff-row">
+      <div class="ff-label">EV/EBITDA</div>
+      <div class="ff-bar-container">
+        <div class="ff-bar ev" style="left: 20%; width: 34.33%;">
+          <span>1.80</span><span>4.89</span>
+        </div>
+        <div class="ff-current-line" style="left: 46.22%;"></div>
+      </div>
+    </div>
+    <!-- DCF -->
+    <div class="ff-row">
+      <div class="ff-label">DCF</div>
+      <div class="ff-bar-container">
+        <div class="ff-bar dcf" style="left: 24.44%; width: 35.56%;">
+          <span>2.20</span><span>5.40</span>
+        </div>
+        <div class="ff-current-line" style="left: 46.22%;"></div>
+      </div>
+    </div>
+    <!-- P/FCF -->
+    <div class="ff-row">
+      <div class="ff-label">P/FCF</div>
+      <div class="ff-bar-container">
+        <div class="ff-bar pfcf" style="left: 50.67%; width: 25.22%;">
+          <span>4.56</span><span>6.83</span>
+        </div>
+        <div class="ff-current-line" style="left: 46.22%;"></div>
+      </div>
+    </div>
+    <!-- P/BV -->
+    <div class="ff-row">
+      <div class="ff-label">P/BV (adj)</div>
+      <div class="ff-bar-container">
+        <div class="ff-bar pbv" style="left: 57.44%; width: 35.44%;">
+          <span>5.17</span><span>8.36</span>
+        </div>
+        <div class="ff-current-line" style="left: 46.22%;"></div>
+      </div>
+    </div>
+    <!-- NAV -->
+    <div class="ff-row">
+      <div class="ff-label">NAV</div>
+      <div class="ff-bar-container">
+        <div class="ff-bar nav-bar" style="left: 44.44%; width: 6.67%;">
+          <span>4.00</span><span>4.60</span>
+        </div>
+        <div class="ff-current-line" style="left: 46.22%;"></div>
+      </div>
+    </div>
+    <!-- EPV -->
+    <div class="ff-row">
+      <div class="ff-label">EPV</div>
+      <div class="ff-bar-container">
+        <div class="ff-bar epv" style="left: 9.33%; width: 7.67%;">
+          <span>0.84</span><span>1.53</span>
+        </div>
+        <div class="ff-current-line" style="left: 46.22%;"></div>
+      </div>
+    </div>
+    <!-- Scale -->
+    <div class="ff-scale">
+      <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+    </div>
+  </div>
+
+  <div class="info-box tip">
+    <div class="box-title">📊 อ่าน Football Field</div>
+    <strong>ราคา 4.16 บาท</strong> อยู่ในช่วงกลางของ DCF และ P/E แต่ต่ำกว่า P/FCF และ P/BV (adj) — วิธีที่เน้นกระแสเงินสดให้มูลค่าสูงกว่า ส่วนวิธีที่เน้นกำไรทางบัญชีให้มูลค่าต่ำกว่า
+  </div>
+
+  <!-- ===== SECTION 9: SUMMARY ===== -->
+  <div class="section-header" id="summary">
+    <h2><span class="section-number green">9</span> สรุปและข้อเสนอแนะ</h2>
+  </div>
+
+  <div class="card" style="border-color: rgba(16,185,129,0.3); box-shadow: var(--shadow-glow-green);">
+    <div class="card-title">📋 สรุปการประเมินมูลค่า STPI</div>
+
+    <div class="formula-block"><span class="tag result">valuation summary</span>
+<span class="highlight">═══ ผลลัพธ์ ═══</span>
+ราคาปัจจุบัน:              <span class="val">4.16 บาท</span>
+มูลค่าเฉลี่ยถ่วงน้ำหนัก:   <span class="ok">~4.36 บาท</span>
+ช่วงมูลค่าที่เหมาะสม:      <span class="val">3.50 - 5.40 บาท</span>
+Margin of Safety:          <span class="warn">4.6% (ต่ำมาก)</span>
+
+<span class="highlight">═══ น้ำหนักแต่ละวิธี ═══</span>
+P/E (15%)      → กรณีฐาน <span class="val">4.50</span> × 0.15 = 0.675
+EV/EBITDA (15%) → กรณีฐาน <span class="val">3.57</span> × 0.15 = 0.536
+DCF (25%)      → กรณีฐาน <span class="val">3.53</span> × 0.25 = 0.883
+P/FCF (20%)    → กรณีฐาน <span class="val">5.70</span> × 0.20 = 1.140
+P/BV adj (10%) → กรณีฐาน <span class="val">6.50</span> × 0.10 = 0.650
+NAV (10%)      → กรณีฐาน <span class="val">4.31</span> × 0.10 = 0.431
+EPV (5%)       → กรณีฐาน <span class="val">0.84</span> × 0.05 = 0.042
+                                          ──────
+Weighted Average:                          <span class="ok">4.36 บาท</span></div>
+
+    <div class="info-box warning" style="margin-top: 1.5rem;">
+      <div class="box-title">⚠️ คำแนะนำ: HOLD / รอจังหวะ</div>
+      <strong>เหตุผล:</strong><br>
+      1. Margin of Safety ต่ำเกินไป (4.6% vs 20% ที่แนะนำ)<br>
+      2. สัญญาณ Valuation ขัดแย้ง: ถูกจาก P/FCF, P/BV แต่แพงจาก P/E, EV/EBITDA, DCF<br>
+      3. ROE ต่ำมาก (2.51%) → ยังไม่สร้างมูลค่าให้ผู้ถือหุ้น<br>
+      4. ความเสี่ยงทางการเงิน: Z-Score 1.61, Interest Coverage 1.60<br>
+      5. รายได้ผันผวนสูง → ยากต่อการคาดการณ์
+    </div>
+
+    <h4>จุดที่น่าสนใจซื้อ</h4>
+    <div class="formula-block"><span class="tag example">buy zones</span>
+ราคา &lt; <span class="ok">3.50 บาท</span> → Margin of Safety ~20% จากกรณีฐาน
+ราคา &lt; <span class="ok">3.00 บาท</span> → Margin of Safety ~31% ✅
+ราคา &lt; <span class="ok">2.50 บาท</span> → Margin of Safety ~43% ✅✅</div>
+
+    <h4>จุดที่ควรพิจารณาขาย</h4>
+    <div class="formula-block"><span class="tag example">sell zones</span>
+ราคา &gt; <span class="warn">5.40 บาท</span> → เกินช่วงมูลค่าที่เหมาะสม
+ราคา &gt; <span class="bad">6.00 บาท</span> → แพงเกินไปจากทุกวิธี</div>
+
+    <h4>⚠️ ตรวจสอบ Value Trap</h4>
+
+    <div class="info-box danger">
+      <div class="box-title">🪤 STPI เป็น Value Trap หรือไม่?</div>
+      <strong>สัญญาณ Value Trap ที่พบ:</strong><br>
+      1. P/BV ต่ำ (0.82) แต่ ROE ต่ำมาก (2.51%) → ถูกเพราะมีเหตุผล<br>
+      2. รายได้ผันผวนสูง → ไม่มั่นคง<br>
+      3. ไม่จ่ายเงินปันผล → ไม่มีรายได้ระหว่างรอ<br>
+      4. Dilution +8.18% → มูลค่าต่อหุ้นถูกเจือจาง<br><br>
+      <strong>สัญญาณที่ไม่ใช่ Value Trap:</strong><br>
+      1. FCF แข็งแกร่ง (1,032M) → สร้างเงินสดจริง<br>
+      2. Piotroski F-Score 7/9 → สุขภาพการเงินดี<br>
+      3. รายได้ฟื้นตัว +36% → มีแนวโน้มดีขึ้น<br><br>
+      <strong>สรุป:</strong> มีความเสี่ยง Value Trap ปานกลาง — ต้องติดตาม ROE และ Backlog อย่างใกล้ชิด
+    </div>
+  </div>
+
+  <!-- ===== SECTION 10: STRENGTHS & WEAKNESSES ===== -->
+  <div class="section-header" id="strengths-weaknesses">
+    <h2><span class="section-number blue">10</span> จุดแข็ง จุดอ่อน</h2>
+  </div>
+
+  <h3>จุดแข็ง ✅</h3>
+
+  <div class="strength-item">
+    <div class="strength-num">✅ 1</div>
+    <div>
+      <strong>กระแสเงินสดแข็งแกร่ง</strong>
+      <p style="margin:0.3rem 0 0">FCF 1,032M, FCF Yield 13.68% — สร้างเงินสดได้ดีมากเมื่อเทียบกับ Market Cap</p>
+    </div>
+  </div>
+
+  <div class="strength-item">
+    <div class="strength-num">✅ 2</div>
+    <div>
+      <strong>P/BV &lt; 1 (ต่ำกว่า Book Value)</strong>
+      <p style="margin:0.3rem 0 0">ซื้อได้ต่ำกว่ามูลค่าทางบัญชี ~18% — มี Downside Protection จากสินทรัพย์</p>
+    </div>
+  </div>
+
+  <div class="strength-item">
+    <div class="strength-num">✅ 3</div>
+    <div>
+      <strong>Piotroski F-Score 7/9</strong>
+      <p style="margin:0.3rem 0 0">คะแนนสูง แสดงถึงสุขภาพทางการเงินที่ดีจากหลายมิติ</p>
+    </div>
+  </div>
+
+  <div class="strength-item">
+    <div class="strength-num">✅ 4</div>
+    <div>
+      <strong>รายได้ฟื้นตัว +36% TTM</strong>
+      <p style="margin:0.3rem 0 0">หลังจากลดลง -35.5% ในปี 2024 รายได้กลับมาเติบโตอย่างแข็งแกร่ง</p>
+    </div>
+  </div>
+
+  <div class="strength-item">
+    <div class="strength-num">✅ 5</div>
+    <div>
+      <strong>สภาพคล่องดี (Current Ratio 1.84)</strong>
+      <p style="margin:0.3rem 0 0">สินทรัพย์หมุนเวียนเพียงพอต่อหนี้สินระยะสั้น</p>
+    </div>
+  </div>
+
+  <h3>จุดอ่อน ⚠️</h3>
+
+  <div class="error-item">
+    <div class="error-num">⚠️ 1</div>
+    <div>
+      <strong>ROE ต่ำมาก 2.51%</strong>
+      <p style="margin:0.3rem 0 0">ต่ำกว่า Cost of Equity (~10%) มาก — บริษัทกำลัง "ทำลายมูลค่า" ของผู้ถือหุ้น</p>
+    </div>
+  </div>
+
+  <div class="error-item">
+    <div class="error-num">⚠️ 2</div>
+    <div>
+      <strong>Interest Coverage ต่ำ 1.60x</strong>
+      <p style="margin:0.3rem 0 0">กำไรจากดำเนินงานแทบไม่พอจ่ายดอกเบี้ย — ถ้ารายได้ลดลงอีกอาจมีปัญหาชำระหนี้</p>
+    </div>
+  </div>
+
+  <div class="error-item">
+    <div class="error-num">⚠️ 3</div>
+    <div>
+      <strong>Debt/EBITDA สูง 4.39x</strong>
+      <p style="margin:0.3rem 0 0">ใช้เวลา 4.4 ปีในการชำระหนี้จาก EBITDA — สูงกว่าเกณฑ์ปกติ (&lt; 3x)</p>
+    </div>
+  </div>
+
+  <div class="error-item">
+    <div class="error-num">⚠️ 4</div>
+    <div>
+      <strong>Altman Z-Score 1.61 (Grey Zone)</strong>
+      <p style="margin:0.3rem 0 0">อยู่ในโซนเสี่ยง (&lt; 1.81 = Distress Zone) — มีความเสี่ยงทางการเงินที่ต้องจับตา</p>
+    </div>
+  </div>
+
+  <div class="error-item">
+    <div class="error-num">⚠️ 5</div>
+    <div>
+      <strong>รายได้ผันผวนมาก</strong>
+      <p style="margin:0.3rem 0 0">2022: +66%, 2023: +3.5%, 2024: -35.5%, TTM: +36% — ธุรกิจรับเหมาขึ้นอยู่กับ Backlog</p>
+    </div>
+  </div>
+
+  <div class="error-item">
+    <div class="error-num">⚠️ 6</div>
+    <div>
+      <strong>ไม่จ่ายเงินปันผล</strong>
+      <p style="margin:0.3rem 0 0">ไม่มีรายได้ระหว่างรอ — ไม่เหมาะสำหรับนักลงทุนที่เน้น Income</p>
+    </div>
+  </div>
+
+  <div class="error-item">
+    <div class="error-num">⚠️ 7</div>
+    <div>
+      <strong>Dilution +8.18% YoY</strong>
+      <p style="margin:0.3rem 0 0">จำนวนหุ้นเพิ่มขึ้น ลด EPS และมูลค่าต่อหุ้นของผู้ถือหุ้นเดิม</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 11: CATALYSTS ===== -->
+  <div class="section-header" id="catalysts">
+    <h2><span class="section-number warm">11</span> Catalyst &amp; Risk Monitoring</h2>
+  </div>
+
+  <div class="two-col">
+    <div class="col-card green-accent">
+      <h4 style="color: var(--accent-green);">🟢 Catalyst เชิงบวก</h4>
+      <ul>
+        <li>Backlog ใหม่มูลค่าสูง → รายได้อนาคตชัดเจนขึ้น</li>
+        <li>EBIT Margin ฟื้นตัวเกิน 12% → ROE จะดีขึ้นมาก</li>
+        <li>ลดหนี้สินอย่างมีนัยสำคัญ → ลดความเสี่ยงทางการเงิน</li>
+        <li>เริ่มจ่ายเงินปันผล → ดึงดูดนักลงทุนรายได้</li>
+        <li>โครงการ Energy Transition / LNG → โอกาสงานใหม่</li>
+      </ul>
+    </div>
+    <div class="col-card red-accent">
+      <h4 style="color: var(--accent-red);">🔴 Catalyst เชิงลบ</h4>
+      <ul>
+        <li>Backlog ลดลงต่อเนื่อง → รายได้จะหดตัว</li>
+        <li>Interest Coverage ลดต่ำกว่า 1.0 → เสี่ยงผิดนัดชำระหนี้</li>
+        <li>เพิ่มทุนอีก → Dilution เพิ่ม</li>
+        <li>ราคาเหล็กพุ่งสูง → กดดัน Margin</li>
+        <li>คู่แข่งจากจีน/เวียดนามตัดราคา → สูญเสียส่วนแบ่งตลาด</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>ตัวชี้วัดที่ต้องติดตาม (Key Monitoring Metrics)</h3>
+
+  <div class="card">
+    <div class="card-title">📡 สิ่งที่ต้องติดตามทุกไตรมาส</div>
+    <div class="formula-block"><span class="tag steps">monitoring checklist</span>
+<span class="highlight">═══ ตัวชี้วัดเชิงบวก (ถ้าเห็นสัญญาณเหล่านี้ → พิจารณาซื้อ) ═══</span>
+<span class="ok">✅</span> Backlog ใหม่มูลค่ารวม &gt; 3,000M ต่อปี
+<span class="ok">✅</span> EBIT Margin ฟื้นตัวเกิน 12%
+<span class="ok">✅</span> ROE ฟื้นตัวเกิน 8%
+<span class="ok">✅</span> Interest Coverage เพิ่มเกิน 3.0x
+<span class="ok">✅</span> Debt/EBITDA ลดลงต่ำกว่า 3.0x
+<span class="ok">✅</span> ประกาศนโยบายจ่ายเงินปันผล
+
+<span class="highlight">═══ ตัวชี้วัดเชิงลบ (ถ้าเห็นสัญญาณเหล่านี้ → พิจารณาขาย) ═══</span>
+<span class="bad">❌</span> Backlog ลดลงต่อเนื่อง 2 ไตรมาสติดต่อกัน
+<span class="bad">❌</span> Interest Coverage ลดต่ำกว่า 1.0x
+<span class="bad">❌</span> Altman Z-Score ลดต่ำกว่า 1.23 (Distress Zone)
+<span class="bad">❌</span> ประกาศเพิ่มทุนครั้งใหม่
+<span class="bad">❌</span> Gross Margin ลดลงต่ำกว่า 20%
+<span class="bad">❌</span> FCF ติดลบ 2 ไตรมาสติดต่อกัน</div>
+  </div>
+
+  <!-- ===== SECTION 12: CHECKLIST ===== -->
+  <div class="section-header" id="checklist">
+    <h2><span class="section-number purple">12</span> Checklist การ Valuation</h2>
+  </div>
+
+  <p>ใช้ Checklist นี้เพื่อตรวจสอบว่าการวิเคราะห์ครบถ้วนหรือไม่ — คลิกที่ช่องเพื่อเปลี่ยนสถานะ</p>
+
+  <h3>✅ ก่อนเริ่ม Valuation</h3>
+  <ul class="checklist">
+    <li><span class="check">✓</span> เข้าใจธุรกิจ: รับเหมาผลิตโครงสร้างเหล็ก, หม้อไอน้ำ, Piping</li>
+    <li><span class="check">✓</span> ดูงบการเงินย้อนหลัง (รายได้ 5 ปี + TTM)</li>
+    <li><span class="check">✓</span> รู้จักกลุ่มอุตสาหกรรม: Basic Materials / Steel Fabrication</li>
+    <li><span class="check">☐</span> อ่าน 56-1 One Report ฉบับล่าสุด (แนะนำให้อ่านเพิ่มเติม)</li>
+  </ul>
+
+  <h3>✅ ระหว่าง Valuation</h3>
+  <ul class="checklist">
+    <li><span class="check">✓</span> ใช้ 7 วิธีในการประเมินมูลค่า (P/E, P/BV, EV/EBITDA, P/FCF, DCF, EPV, NAV)</li>
+    <li><span class="check">✓</span> สมมติฐานการเติบโตสมเหตุสมผล (15% → 8%)</li>
+    <li><span class="check">✓</span> WACC คำนวณจาก CAPM (9.0%)</li>
+    <li><span class="check">✓</span> Terminal Growth Rate 2.5% (ไม่เกิน GDP Growth)</li>
+    <li><span class="check">✓</span> ทำ Sensitivity Analysis</li>
+    <li><span class="check">✓</span> ผลลัพธ์จากหลายวิธีเปรียบเทียบกัน (Football Field)</li>
+  </ul>
+
+  <h3>✅ หลัง Valuation</h3>
+  <ul class="checklist">
+    <li><span class="check">☐</span> Margin of Safety: 4.6% ⚠️ (ต่ำกว่า 20% ที่แนะนำ)</li>
+    <li><span class="check">✓</span> ตรวจสอบ Value Trap: ROE ต่ำ + รายได้ผันผวน → มีความเสี่ยง</li>
+    <li><span class="check">✓</span> ปัจจัยเชิงคุณภาพ: ธุรกิจขึ้นกับ Backlog, แข่งขันสูง</li>
+    <li><span class="check">☐</span> ตรวจสอบสัญญาณปั่นหุ้น (ตามบทที่ 1-4)</li>
+    <li><span class="check">☐</span> บันทึกใน Trading Journal</li>
+  </ul>
+
+  <!-- ===== SECTION 13: REFERENCES ===== -->
+  <div class="section-header" id="references">
+    <h2><span class="section-number cyan">13</span> แหล่งข้อมูล</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📚 แหล่งข้อมูลที่ใช้ในการวิเคราะห์</div>
+    <div class="formula-block"><span class="tag data">data sources</span>
+1. <span class="highlight">Yahoo Finance</span> (STPI.BK) — ราคาหุ้น, 52-Week Range
+2. <span class="highlight">StockAnalysis.com</span> (BKK:STPI) — งบการเงิน, อัตราส่วน, Statistics
+3. <span class="highlight">SET.or.th</span> — Factsheet, Market Cap, EV/EBITDA
+4. <span class="highlight">WSJ Market Data</span> — รายได้ย้อนหลัง 5 ปี
+5. <span class="highlight">Wisesheets.io</span> — P/E, ROE, Current Ratio, Enterprise Value
+6. <span class="highlight">MarketScreener</span> — ข่าวสัญญาใหม่
+
+<span class="comment">📌 แนะนำให้ศึกษาเพิ่มเติม:</span>
+├── 56-1 One Report ของ STPI (sec.or.th)
+├── งบการเงินฉบับเต็มจาก set.or.th
+├── บทวิเคราะห์จากโบรกเกอร์ (ถ้ามี)
+└── ข้อมูล Backlog และสัญญาใหม่ล่าสุด</div>
+  </div>
+
+  <div class="info-box warning">
+    <div class="box-title">⚠️ ข้อจำกัดของการวิเคราะห์</div>
+    ข้อมูลงบการเงินรายปีบางส่วนไม่ครบถ้วน (ใช้ข้อมูลจากแหล่งฟรี) — ข้อมูล TTM มาจาก StockAnalysis.com ณ เม.ย. 2569 — การวิเคราะห์นี้เป็นเพื่อการศึกษาเท่านั้น ไม่ใช่คำแนะนำในการลงทุน
+  </div>
+
+  <div class="card">
+    <div class="card-title">📝 ข้อจำกัดและข้อควรระวัง</div>
+    <div class="formula-block"><span class="tag data">disclaimers</span>
+<span class="highlight">═══ ข้อจำกัดของข้อมูล ═══</span>
+├── ข้อมูลงบการเงินรายปีบางส่วนไม่ครบถ้วน
+├── ใช้ข้อมูลจากแหล่งฟรี (อาจมีความคลาดเคลื่อน)
+├── ข้อมูล TTM มาจาก StockAnalysis.com ณ เม.ย. 2569
+└── ไม่ได้อ่าน 56-1 One Report ฉบับเต็ม
+
+<span class="highlight">═══ ข้อจำกัดของการวิเคราะห์ ═══</span>
+├── DCF อ่อนไหวต่อสมมติฐาน (WACC, Growth Rate)
+├── FCF TTM อาจสูงผิดปกติ (ไม่ยั่งยืน)
+├── ไม่ได้วิเคราะห์ Backlog ในเชิงลึก
+├── ไม่ได้เปรียบเทียบกับคู่แข่งรายตัว
+└── ไม่ได้พิจารณาปัจจัยเชิงคุณภาพอย่างละเอียด
+
+<span class="bad">⚠️ การวิเคราะห์นี้เป็นเพื่อการศึกษาเท่านั้น</span>
+<span class="bad">⚠️ ไม่ใช่คำแนะนำในการลงทุน</span>
+<span class="bad">⚠️ ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมก่อนตัดสินใจ</span></div>
+  </div>
+
+  <!-- FOOTER QUOTE -->
+  <div class="quote-block" style="margin-top: 4rem;">
+    "ราคาคือสิ่งที่คุณจ่าย มูลค่าคือสิ่งที่คุณได้รับ — สำหรับ STPI: ราคา 4.16 บาท ใกล้เคียงมูลค่าที่เหมาะสม แต่ Margin of Safety ยังไม่เพียงพอ"
+    <span class="author">— สรุปจากการวิเคราะห์ 7 วิธี</span>
+  </div>
+
+</main>
+
+<!-- Back to Top -->
+<button class="back-to-top" id="backToTop" aria-label="กลับขึ้นด้านบน">↑</button>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+  // Progress bar
+  window.addEventListener('scroll', function() {
+    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var progress = (scrollTop / scrollHeight) * 100;
+    var fill = document.getElementById('progressFill');
+    if (fill) fill.style.width = progress + '%';
+  });
+
+  // Back to top
+  var backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  });
+  backToTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Hamburger menu
+  var hamburgerBtn = document.getElementById('hamburgerBtn');
+  var mobileMenu = document.getElementById('mobileMenu');
+  var mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+
+  function toggleMobileMenu() {
+    hamburgerBtn.classList.toggle('active');
+    mobileMenu.classList.toggle('open');
+    mobileMenuOverlay.classList.toggle('open');
+  }
+
+  hamburgerBtn.addEventListener('click', toggleMobileMenu);
+  mobileMenuOverlay.addEventListener('click', toggleMobileMenu);
+
+  // Close mobile menu on link click
+  var mobileLinks = mobileMenu.querySelectorAll('a');
+  mobileLinks.forEach(function(link) {
+    link.addEventListener('click', function() {
+      if (mobileMenu.classList.contains('open')) {
+        toggleMobileMenu();
+      }
+    });
+  });
+
+  // Checklist toggle
+  var checkItems = document.querySelectorAll('.checklist .check');
+  checkItems.forEach(function(item) {
+    item.addEventListener('click', function() {
+      if (this.textContent === '✓') {
+        this.textContent = '☐';
+        this.style.borderColor = 'var(--border-primary)';
+        this.style.color = 'transparent';
+        this.style.background = 'transparent';
+      } else {
+        this.textContent = '✓';
+        this.style.borderColor = 'var(--accent-green)';
+        this.style.color = 'var(--accent-green)';
+        this.style.background = 'rgba(16,185,129,0.1)';
+      }
+    });
+    // Initialize checked items
+    if (item.textContent === '✓') {
+      item.style.borderColor = 'var(--accent-green)';
+      item.style.color = 'var(--accent-green)';
+      item.style.background = 'rgba(16,185,129,0.1)';
+    }
+  });
+</script>
+<script src="theme.js"></script>
+</body>
+</html>

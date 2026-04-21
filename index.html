@@ -141,13 +141,123 @@
       transform: scale(1.05);
     }
 
+    /* Workshop Section */
+    .section-divider {
+      text-align: center;
+      margin: 60px 0 40px;
+      position: relative;
+    }
+
+    .section-divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(16,185,129,0.4), transparent);
+    }
+
+    .section-divider h2 {
+      display: inline-block;
+      background: var(--bg-primary);
+      padding: 0 24px;
+      font-size: 2rem;
+      font-weight: 800;
+      position: relative;
+      background: var(--bg-primary);
+    }
+
+    .section-divider h2 span {
+      background: linear-gradient(135deg, #10b981, #22d3ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-divider p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+
+    .workshop-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .workshop-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      border-radius: 16px;
+      padding: 40px 30px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .workshop-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #10b981, #22d3ee);
+    }
+
+    .workshop-card:hover {
+      border-color: #10b981;
+      box-shadow: 0 8px 30px rgba(16, 185, 129, 0.15);
+      transform: translateY(-5px);
+    }
+
+    .workshop-card h2 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      color: var(--text-primary);
+    }
+
+    .workshop-card p {
+      color: var(--text-secondary);
+      margin-bottom: 15px;
+    }
+
+    .workshop-card .workshop-tag {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      color: #34d399;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 50px;
+      margin-bottom: 20px;
+      width: fit-content;
+    }
+
+    .workshop-card .guide-button {
+      background: linear-gradient(135deg, #059669, #10b981);
+    }
+
     @media (max-width: 768px) {
-      .guides {
+      .guides,
+      .workshop-grid {
         grid-template-columns: 1fr;
       }
 
       .header h1 {
         font-size: 2.5rem;
+      }
+
+      .section-divider h2 {
+        font-size: 1.5rem;
       }
     }
   </style>
@@ -164,7 +274,7 @@
         <div>
           <h2>📚 ตอนที่ 1</h2>
           <p>รู้จักเกมปั่นหุ้น — คู่มือฉบับสมบูรณ์</p>
-          <p style="font-size: 0.9rem; color: #e8edf5;">เรียนรู้พื้นฐานของเกมปั่นหุ้นและกลไกการหลอกลวง</p>
+          <p style="font-size: 0.9rem; color: #f50404;">เรียนรู้พื้นฐานของเกมปั่นหุ้นและกลไกการหลอกลวง</p>
         </div>
         <button class="guide-button">
           <span>อ่านเลย →</span>
@@ -175,7 +285,7 @@
         <div>
           <h2>📈 ตอนที่ 2</h2>
           <p>สัญญาณและรูปแบบการปั่นหุ้น</p>
-          <p style="font-size: 0.9rem; color: #e8edf5;">รู้จักเครื่องหมายเตือนและวิธีหลีกเลี่ยงการหลอกลวง</p>
+          <p style="font-size: 0.9rem; color: #f50404;">รู้จักเครื่องหมายเตือนและวิธีหลีกเลี่ยงการหลอกลวง</p>
         </div>
         <button class="guide-button">
           <span>อ่านเลย →</span>
@@ -186,7 +296,7 @@
         <div>
           <h2>💰 ตอนที่ 3</h2>
           <p>การจัดการเงิน — เอาตัวรอดและเติบโต</p>
-          <p style="font-size: 0.9rem; color: #e8edf5;">เรียนรู้การจัดการความเสี่ยงและการลงทุนอย่างชาญฉลาด</p>
+          <p style="font-size: 0.9rem; color: #f50404;">เรียนรู้การจัดการความเสี่ยงและการลงทุนอย่างชาญฉลาด</p>
         </div>
         <button class="guide-button">
           <span>อ่านเลย →</span>
@@ -197,7 +307,7 @@
         <div>
           <h2>📊 ตอนที่ 4</h2>
           <p>การประเมินมูลค่าหุ้น</p>
-          <p style="font-size: 0.9rem; color: #e8edf5;">เข้าใจมูลค่าที่แท้จริงและหลีกเลี่ยงการซื้อแพง</p>
+          <p style="font-size: 0.9rem; color: #f50404;">เข้าใจมูลค่าที่แท้จริงและหลีกเลี่ยงการซื้อแพง</p>
         </div>
         <button class="guide-button">
           <span>อ่านเลย →</span>
@@ -208,10 +318,30 @@
         <div>
           <h2>🧠 ตอนที่ 5</h2>
           <p>บทเรียนขั้นสูง — จากเอาตัวรอดสู่เติบโตอย่างยั่งยืน</p>
-          <p style="font-size: 0.9rem; color: #e8edf5;">Market Microstructure, Intermarket Analysis, Quantitative Thinking และ Behavioral Finance</p>
+          <p style="font-size: 0.9rem; color: #f50404;">Market Microstructure, Intermarket Analysis, Quantitative Thinking และ Behavioral Finance</p>
         </div>
         <button class="guide-button">
           <span>อ่านเลย →</span>
+        </button>
+      </a>
+    </div>
+
+    <!-- Workshop Section -->
+    <div class="section-divider">
+      <h2><span>🔬 Workshop — ฝึกปฏิบัติจริง</span></h2>
+      <p>นำความรู้จากบทเรียนมาลงมือวิเคราะห์หุ้นจริง</p>
+    </div>
+
+    <div class="workshop-grid">
+      <a href="/STPI-Valuation-Analysis.html" class="workshop-card">
+        <div>
+          <div class="workshop-tag">📊 Valuation Workshop</div>
+          <h2>STPI Valuation Analysis</h2>
+          <p>การประเมินมูลค่าหุ้น SET:STPI — STP&amp;I Public Company Limited</p>
+          <p style="font-size: 0.9rem; color: #34d399;">ฝึกวิเคราะห์จริงด้วย 7 วิธี: P/E, P/BV, EV/EBITDA, P/FCF, DCF, EPV, NAV พร้อม Football Field Chart</p>
+        </div>
+        <button class="guide-button">
+          <span>เข้าสู่ Workshop →</span>
         </button>
       </a>
     </div>
