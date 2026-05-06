@@ -1,0 +1,2692 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ภาค 7: Intermarket Analysis — อ่านจักรวาลการเงินให้ออก</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-card: #1a2235;
+    --bg-card-hover: #1f2a40;
+    --bg-code: #0d1321;
+    --border-primary: #2a3550;
+    --border-accent: #3b82f6;
+    --text-primary: #e8edf5;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-blue: #3b82f6;
+    --accent-blue-light: #60a5fa;
+    --accent-cyan: #22d3ee;
+    --accent-green: #34d399;
+    --accent-emerald: #10b981;
+    --accent-yellow: #fbbf24;
+    --accent-orange: #f97316;
+    --accent-red: #ef4444;
+    --accent-purple: #a78bfa;
+    --accent-pink: #f472b6;
+    --gradient-blue: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    --gradient-green: linear-gradient(135deg, #10b981, #22d3ee);
+    --gradient-warm: linear-gradient(135deg, #f97316, #fbbf24);
+    --gradient-red: linear-gradient(135deg, #ef4444, #f97316);
+    --gradient-emerald: linear-gradient(135deg, #059669, #10b981);
+    --gradient-hero: linear-gradient(135deg, #0a0e1a 0%, #0d1528 30%, #1a1e2e 60%, #0f172a 100%);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+    --shadow-lg: 0 8px 30px rgba(0,0,0,0.5);
+    --shadow-glow-blue: 0 0 20px rgba(59,130,246,0.15);
+    --shadow-glow-green: 0 0 20px rgba(16,185,129,0.15);
+    --shadow-glow-red: 0 0 20px rgba(239,68,68,0.15);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; font-size: 16px; scroll-padding-top: 70px; }
+
+  body {
+    font-family: 'IBM Plex Sans Thai', 'Noto Sans Thai', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: var(--border-primary); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent-blue); }
+
+  /* ===== NAVIGATION ===== */
+  .top-nav {
+    position: sticky; top: 0; z-index: 1000;
+    background: rgba(10,14,26,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-primary);
+    padding: 0 2rem; height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-size: 0.9rem; font-weight: 700;
+    text-decoration: none; color: var(--accent-blue);
+    transition: all 0.3s ease; margin-right: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    width: 60px; height: 32px; border-radius: 6px;
+    background: rgba(59,130,246,0.1); letter-spacing: 0.5px;
+  }
+  .nav-logo:hover { background: rgba(59,130,246,0.2); transform: scale(1.05); }
+  .nav-brand {
+    font-weight: 700; font-size: 1.1rem;
+    background: var(--gradient-blue);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .nav-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .nav-links a {
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 0.8rem; padding: 0.3rem 0.7rem;
+    border-radius: 6px; transition: all 0.2s; white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--accent-blue-light); background: rgba(59,130,246,0.1); }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    position: fixed; left: 0; top: 60px; bottom: 0;
+    width: 300px; background: var(--bg-secondary);
+    border-right: 1px solid var(--border-primary);
+    overflow-y: auto; padding: 1.5rem 0; z-index: 100;
+    transition: transform 0.3s;
+  }
+  .sidebar-title {
+    font-size: 0.75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--text-muted); padding: 0 1.5rem; margin-bottom: 1rem;
+  }
+  .toc-list { list-style: none; }
+  .toc-list li a {
+    display: block; padding: 0.5rem 1.5rem;
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 0.85rem; border-left: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .toc-list li a:hover {
+    color: var(--accent-blue-light);
+    background: rgba(59,130,246,0.05);
+    border-left-color: var(--accent-blue);
+  }
+  .toc-list li.toc-h3 a { padding-left: 2.5rem; font-size: 0.8rem; }
+  .toc-divider { height: 1px; background: var(--border-primary); margin: 0.5rem 1.5rem; }
+
+  /* ===== MAIN CONTENT ===== */
+  .main-content { margin-left: 300px; max-width: 900px; padding: 2rem 3rem 6rem; }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: var(--gradient-hero);
+    border-radius: var(--radius-xl);
+    padding: 4rem 3rem; margin-bottom: 3rem;
+    border: 1px solid rgba(59,130,246,0.2);
+    position: relative; overflow: hidden; text-align: center;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(59,130,246,0.06) 0%, transparent 60%),
+                radial-gradient(circle at 70% 50%, rgba(139,92,246,0.06) 0%, transparent 60%);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.3);
+    color: var(--accent-blue-light);
+    font-size: 0.8rem; font-weight: 600;
+    padding: 0.4rem 1.2rem; border-radius: 50px;
+    margin-bottom: 1.5rem; position: relative;
+  }
+  .hero h1 {
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 2.5rem; font-weight: 800;
+    line-height: 1.3; margin-bottom: 1rem; position: relative;
+  }
+  .hero h1 .gradient-text {
+    background: linear-gradient(135deg, #3b82f6, #a78bfa);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-subtitle {
+    font-size: 1.1rem; color: var(--text-secondary);
+    max-width: 700px; margin: 0 auto 2rem; position: relative;
+  }
+
+  /* ===== SECTION HEADERS ===== */
+  .section-header {
+    margin: 4rem 0 2rem; padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border-primary);
+  }
+  .section-header h2 {
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 1.8rem; font-weight: 800;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .section-number {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px; border-radius: 12px;
+    font-size: 1rem; font-weight: 700; color: #fff; flex-shrink: 0;
+  }
+  .section-number.blue { background: var(--gradient-blue); }
+  .section-number.green { background: var(--gradient-green); }
+  .section-number.warm { background: var(--gradient-warm); }
+  .section-number.purple { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+  .section-number.emerald { background: var(--gradient-emerald); }
+  .section-number.red { background: var(--gradient-red); }
+  .section-number.cyan { background: linear-gradient(135deg, #06b6d4, #22d3ee); }
+  .section-number.gold { background: linear-gradient(135deg, #d97706, #fbbf24); }
+  .section-number.pink { background: linear-gradient(135deg, #db2777, #f472b6); }
+  .section-number.teal { background: linear-gradient(135deg, #0d9488, #2dd4bf); }
+  .section-number.indigo { background: linear-gradient(135deg, #4f46e5, #818cf8); }
+  .section-number.rose { background: linear-gradient(135deg, #e11d48, #fb7185); }
+  .section-number.lime { background: linear-gradient(135deg, #65a30d, #a3e635); }
+  .section-number.slate { background: linear-gradient(135deg, #475569, #94a3b8); }
+
+  h3 {
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 1.35rem; font-weight: 700;
+    margin: 2.5rem 0 1rem;
+    color: var(--accent-blue-light);
+  }
+  h4 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 2rem 0 0.8rem;
+    color: var(--accent-cyan);
+  }
+  p { margin-bottom: 1rem; color: var(--text-secondary); }
+  strong { color: var(--text-primary); font-weight: 600; }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: 2rem; margin: 1.5rem 0;
+    transition: all 0.3s;
+  }
+  .card:hover { border-color: rgba(59,130,246,0.3); box-shadow: var(--shadow-glow-blue); }
+  .card-title {
+    font-size: 1.1rem; font-weight: 700;
+    margin-bottom: 1rem; display: flex;
+    align-items: center; gap: 0.6rem;
+  }
+
+  /* ===== GRID LAYOUTS ===== */
+  .two-col { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin: 2rem 0; }
+  .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 2rem 0; }
+  .four-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 2rem 0; }
+  .col-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem; transition: all 0.3s;
+  }
+  .col-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .col-card.blue-accent { border-top: 3px solid var(--accent-blue); }
+  .col-card.green-accent { border-top: 3px solid var(--accent-green); }
+  .col-card.purple-accent { border-top: 3px solid var(--accent-purple); }
+  .col-card.warm-accent { border-top: 3px solid var(--accent-orange); }
+  .col-card.cyan-accent { border-top: 3px solid var(--accent-cyan); }
+  .col-card.red-accent { border-top: 3px solid var(--accent-red); }
+  .col-card.emerald-accent { border-top: 3px solid var(--accent-emerald); }
+  .col-card.gold-accent { border-top: 3px solid var(--accent-yellow); }
+  .col-card.pink-accent { border-top: 3px solid var(--accent-pink); }
+  .col-card h4 { margin-top: 0; font-size: 1rem; }
+  .col-card ul { list-style: none; margin-top: 0.8rem; }
+  .col-card ul li { padding: 0.3rem 0; font-size: 0.9rem; color: var(--text-secondary); }
+  .col-card ul li::before { content: '•'; margin-right: 0.5rem; color: var(--accent-blue); }
+
+  /* ===== FORMULA / CODE BLOCKS ===== */
+  .formula-block {
+    background: var(--bg-code);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: 1.5rem 2rem; margin: 1.5rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem; line-height: 1.9;
+    color: var(--text-secondary);
+    overflow-x: auto; position: relative;
+    white-space: pre-wrap; word-wrap: break-word;
+  }
+  .formula-block .tag {
+    position: absolute; top: 0.8rem; right: 1rem;
+    font-size: 0.65rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px;
+    padding: 0.2rem 0.6rem; border-radius: 4px;
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+  }
+  .formula-block .tag.concept { background: rgba(34,211,238,0.15); color: var(--accent-cyan); }
+  .formula-block .tag.formula { background: rgba(59,130,246,0.15); color: var(--accent-blue-light); }
+  .formula-block .tag.example { background: rgba(16,185,129,0.15); color: var(--accent-green); }
+  .formula-block .tag.data { background: rgba(167,139,250,0.15); color: var(--accent-purple); }
+  .formula-block .tag.flow { background: rgba(249,115,22,0.15); color: var(--accent-orange); }
+  .formula-block .tag.signal { background: rgba(244,114,182,0.15); color: var(--accent-pink); }
+  .formula-block .tag.warning { background: rgba(239,68,68,0.15); color: var(--accent-red); }
+  .formula-block .tag.matrix { background: rgba(251,191,36,0.15); color: var(--accent-yellow); }
+  .formula-block .tag.timeline { background: rgba(96,165,250,0.15); color: var(--accent-blue-light); }
+  .formula-block .tag.dashboard { background: rgba(52,211,153,0.15); color: var(--accent-green); }
+  .formula-block .tag.checklist { background: rgba(34,211,238,0.15); color: var(--accent-cyan); }
+  .formula-block .tag.workflow { background: rgba(167,139,250,0.15); color: var(--accent-purple); }
+  .formula-block .highlight { color: var(--accent-cyan); font-weight: 500; }
+  .formula-block .val { color: var(--accent-yellow); }
+  .formula-block .ok { color: var(--accent-green); }
+  .formula-block .warn { color: var(--accent-orange); }
+  .formula-block .bad { color: var(--accent-red); }
+  .formula-block .comment { color: var(--text-muted); }
+  .formula-block .label { color: var(--accent-purple); font-weight: 500; }
+
+  /* ===== DIAGRAM BLOCK ===== */
+  .diagram-block {
+    background: var(--bg-code);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: 2rem; margin: 1.5rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem; line-height: 1.6;
+    color: var(--text-secondary);
+    overflow-x: auto;
+    white-space: pre; text-align: center;
+  }
+
+  /* ===== INFO BOXES ===== */
+  .info-box {
+    border-radius: var(--radius-md);
+    padding: 1.2rem 1.5rem; margin: 1.5rem 0;
+    font-size: 0.92rem;
+  }
+  .info-box.tip { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); color: var(--accent-green); }
+  .info-box.warning { background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2); color: var(--accent-orange); }
+  .info-box.danger { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); color: var(--accent-red); }
+  .info-box.info { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); color: var(--accent-blue-light); }
+  .info-box.observe { background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.2); color: var(--accent-purple); }
+  .info-box .box-title { font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+
+  /* ===== QUOTE ===== */
+  .quote-block {
+    background: var(--bg-card);
+    border-left: 4px solid var(--accent-purple);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    padding: 1.5rem 2rem; margin: 2rem 0;
+    font-style: italic; color: var(--text-secondary);
+  }
+  .quote-block .author {
+    display: block; margin-top: 0.8rem;
+    font-style: normal; font-weight: 600;
+    color: var(--accent-purple); font-size: 0.9rem;
+  }
+
+  /* ===== TABLE ===== */
+  .table-wrapper {
+    overflow-x: auto; margin: 1.5rem 0;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-primary);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  thead { background: rgba(59,130,246,0.1); }
+  thead.red-head { background: rgba(239,68,68,0.1); }
+  thead.green-head { background: rgba(16,185,129,0.1); }
+  thead.warn-head { background: rgba(249,115,22,0.1); }
+  thead.purple-head { background: rgba(139,92,246,0.1); }
+  thead.gold-head { background: rgba(251,191,36,0.1); }
+  th {
+    padding: 0.8rem 1rem; text-align: left;
+    font-weight: 600; color: var(--accent-blue-light);
+    border-bottom: 2px solid var(--border-primary); white-space: nowrap;
+  }
+  thead.red-head th { color: var(--accent-red); }
+  thead.green-head th { color: var(--accent-green); }
+  thead.warn-head th { color: var(--accent-orange); }
+  thead.purple-head th { color: var(--accent-purple); }
+  thead.gold-head th { color: var(--accent-yellow); }
+  td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid rgba(42,53,80,0.5);
+    color: var(--text-secondary);
+  }
+  tbody tr:hover { background: rgba(59,130,246,0.03); }
+
+  /* ===== CHECKLIST BOX ===== */
+  .checklist-box {
+    background: var(--bg-code);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: 2rem; margin: 1.5rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem; line-height: 2;
+    color: var(--text-secondary);
+    white-space: pre-wrap; word-wrap: break-word;
+  }
+
+  /* ===== PRINCIPLE CARDS ===== */
+  .principle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0; }
+  .principle-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: 1.2rem 1.5rem;
+    display: flex; gap: 1rem; align-items: flex-start;
+    transition: all 0.3s;
+  }
+  .principle-card:hover { border-color: rgba(59,130,246,0.3); box-shadow: var(--shadow-glow-blue); }
+  .principle-num {
+    background: var(--gradient-blue);
+    color: #fff; font-weight: 700; font-size: 0.85rem;
+    padding: 0.3rem 0.6rem; border-radius: 6px;
+    flex-shrink: 0; white-space: nowrap;
+  }
+
+  /* ===== BACK TO TOP ===== */
+  .back-to-top {
+    position: fixed; bottom: 2rem; right: 2rem;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--gradient-blue); color: #fff;
+    border: none; cursor: pointer; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow-lg);
+    opacity: 0; transition: opacity 0.3s; z-index: 1000;
+  }
+  .back-to-top.visible { opacity: 1; }
+
+  .progress-bar { position: fixed; top: 60px; left: 300px; right: 0; height: 3px; z-index: 999; background: transparent; }
+  .progress-bar .fill { height: 100%; background: var(--gradient-blue); width: 0%; transition: width 0.1s; }
+
+  /* ===== HAMBURGER ===== */
+  .hamburger-btn {
+    display: none; flex-direction: column;
+    justify-content: center; align-items: center;
+    width: 36px; height: 36px;
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 8px; cursor: pointer;
+    gap: 5px; padding: 0; transition: all 0.3s ease; flex-shrink: 0;
+  }
+  .hamburger-btn:hover { background: rgba(59,130,246,0.2); }
+  .hamburger-btn span {
+    display: block; width: 18px; height: 2px;
+    background: var(--accent-blue-light);
+    border-radius: 2px; transition: all 0.3s ease;
+  }
+  .hamburger-btn.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger-btn.active span:nth-child(2) { opacity: 0; }
+  .hamburger-btn.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+  .mobile-menu-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); z-index: 998;
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .mobile-menu-overlay.open { display: block; opacity: 1; }
+  .mobile-menu {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: 300px; max-width: 85vw;
+    background: var(--bg-secondary); z-index: 999;
+    overflow-y: auto; padding: 1.5rem 0;
+    transform: translateX(100%); transition: transform 0.3s ease;
+    border-left: 1px solid var(--border-primary);
+    box-shadow: -4px 0 20px rgba(0,0,0,0.3);
+  }
+  .mobile-menu.open { transform: translateX(0); }
+  .mobile-menu .mm-title {
+    font-size: 0.75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--text-muted); padding: 0.5rem 1.5rem; margin-bottom: 0.5rem;
+  }
+  .mobile-menu .mm-list { list-style: none; padding: 0; margin: 0; }
+  .mobile-menu .mm-list li a {
+    display: block; padding: 0.6rem 1.5rem;
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 0.88rem; border-left: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .mobile-menu .mm-list li a:hover {
+    color: var(--accent-blue-light);
+    background: rgba(59,130,246,0.05);
+    border-left-color: var(--accent-blue);
+  }
+  .mobile-menu .mm-list li.sub a { padding-left: 2.5rem; font-size: 0.82rem; }
+  .mm-divider { height: 1px; background: var(--border-primary); margin: 0.5rem 1.5rem; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1024px) {
+    .hamburger-btn { display: flex; }
+    .nav-links { display: none; }
+    .sidebar { transform: translateX(-100%); }
+    .main-content { margin-left: 0; padding: 1.5rem; }
+    .progress-bar { left: 0; }
+    .two-col, .three-col, .four-col { grid-template-columns: 1fr; }
+    .principle-grid { grid-template-columns: 1fr; }
+    .hero { padding: 2.5rem 1.5rem; }
+    .hero h1 { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="fill" id="progressFill"></div></div>
+
+<!-- ===== TOP NAVIGATION ===== -->
+<nav class="top-nav">
+  <a href="/" class="nav-logo" title="กลับหน้าหลัก">HOME</a>
+  <div class="nav-brand">🌐 ภาค 7 — Intermarket Analysis</div>
+  <div class="nav-links">
+    <a href="#sec1">ทฤษฎี</a>
+    <a href="#sec2">พันธบัตร</a>
+    <a href="#sec3">ค่าเงิน</a>
+    <a href="#sec4">โภคภัณฑ์</a>
+    <a href="#sec5">หุ้น</a>
+    <a href="#sec6">วัฏจักร</a>
+    <a href="#sec7">Fund Flow</a>
+    <a href="#sec8">Correlation</a>
+    <a href="#sec9">Divergence</a>
+    <a href="#sec10">หุ้นไทย</a>
+    <a href="#sec11">Dashboard</a>
+    <a href="#sec12">กรณีศึกษา</a>
+    <a href="#sec13">ข้อผิดพลาด</a>
+    <a href="#sec14">Checklist</a>
+  </div>
+  <button class="hamburger-btn" id="hamburgerBtn" aria-label="เปิดเมนู">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mm-title">สารบัญ</div>
+  <ul class="mm-list">
+    <li><a href="#sec1">1. รากฐานทฤษฎี</a></li>
+    <li class="sub"><a href="#four-markets">4 ตลาดหลัก</a></li>
+    <li class="sub"><a href="#core-relationships">ความสัมพันธ์พื้นฐาน</a></li>
+    <li class="sub"><a href="#regimes">Inflationary vs Deflationary</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#sec2">2. ตลาดพันธบัตร</a></li>
+    <li class="sub"><a href="#us10y">US 10-Year Yield</a></li>
+    <li class="sub"><a href="#yield-curve">Yield Curve</a></li>
+    <li class="sub"><a href="#credit-spread">Credit Spread</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#sec3">3. ตลาดค่าเงิน</a></li>
+    <li class="sub"><a href="#dxy">DXY</a></li>
+    <li class="sub"><a href="#usdthb">USD/THB</a></li>
+    <li class="sub"><a href="#usdjpy">USD/JPY &amp; Carry Trade</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#sec4">4. สินค้าโภคภัณฑ์</a></li>
+    <li class="sub"><a href="#oil">น้ำมันดิบ</a></li>
+    <li class="sub"><a href="#gold">ทองคำ</a></li>
+    <li class="sub"><a href="#copper">ทองแดง Dr. Copper</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#sec5">5. ตลาดหุ้น</a></li>
+    <li class="sub"><a href="#global-indices">ดัชนีโลก</a></li>
+    <li class="sub"><a href="#sector-rotation-global">Sector Rotation</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#sec6">6. วัฏจักรเศรษฐกิจ</a></li>
+    <li class="sub"><a href="#business-cycle">Business Cycle</a></li>
+    <li class="sub"><a href="#investment-clock">Investment Clock</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#sec7">7. Fund Flow Analysis</a></li>
+    <li class="sub"><a href="#thai-fund-flow">Fund Flow ไทย</a></li>
+    <li class="sub"><a href="#fund-flow-matrix">Decision Matrix</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#sec8">8. Correlation Matrix</a></li>
+    <li><a href="#sec9">9. Divergence</a></li>
+    <li><a href="#sec10">10. ตลาดหุ้นไทย</a></li>
+    <li><a href="#sec11">11. Dashboard</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#sec12">12. กรณีศึกษา</a></li>
+    <li class="sub"><a href="#case1">Yen Carry Trade 2024</a></li>
+    <li class="sub"><a href="#case2">Stock-Bond 2022</a></li>
+    <li class="sub"><a href="#case3">Gold ATH 2024-25</a></li>
+    <li class="sub"><a href="#case4">SET Fund Flow</a></li>
+    <li class="sub"><a href="#case5">Inverted Yield Curve</a></li>
+    <li class="sub"><a href="#case6">Liberation Day Tariff</a></li>
+    <li><div class="mm-divider"></div></li>
+    <li><a href="#sec13">13. ข้อผิดพลาด</a></li>
+    <li><a href="#sec14">14. Checklist &amp; Workflow</a></li>
+    <li><a href="#golden-rules">10 กฎทอง</a></li>
+  </ul>
+</div>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar">
+  <div class="sidebar-title">สารบัญ</div>
+  <ul class="toc-list">
+    <li><a href="#sec1">1. รากฐานทฤษฎี Intermarket</a></li>
+    <li class="toc-h3"><a href="#four-markets">4 ตลาดหลัก</a></li>
+    <li class="toc-h3"><a href="#core-relationships">ความสัมพันธ์พื้นฐาน</a></li>
+    <li class="toc-h3"><a href="#regimes">Inflationary vs Deflationary</a></li>
+    <li><a href="#sec2">2. ตลาดพันธบัตร</a></li>
+    <li class="toc-h3"><a href="#us10y">US 10-Year Yield</a></li>
+    <li class="toc-h3"><a href="#yield-curve">Yield Curve</a></li>
+    <li class="toc-h3"><a href="#credit-spread">Credit Spread</a></li>
+    <li class="toc-h3"><a href="#bond-sector">Bond vs หุ้นแต่ละกลุ่ม</a></li>
+    <li><a href="#sec3">3. ตลาดค่าเงิน</a></li>
+    <li class="toc-h3"><a href="#dxy">DXY</a></li>
+    <li class="toc-h3"><a href="#usdthb">USD/THB</a></li>
+    <li class="toc-h3"><a href="#usdjpy">USD/JPY &amp; Carry Trade</a></li>
+    <li class="toc-h3"><a href="#reer">REER</a></li>
+    <li><a href="#sec4">4. สินค้าโภคภัณฑ์</a></li>
+    <li class="toc-h3"><a href="#oil">น้ำมันดิบ</a></li>
+    <li class="toc-h3"><a href="#gold">ทองคำ</a></li>
+    <li class="toc-h3"><a href="#copper">ทองแดง Dr. Copper</a></li>
+    <li class="toc-h3"><a href="#agri">สินค้าเกษตร</a></li>
+    <li><a href="#sec5">5. ตลาดหุ้น</a></li>
+    <li class="toc-h3"><a href="#global-indices">ดัชนีโลก</a></li>
+    <li class="toc-h3"><a href="#sector-rotation-global">Sector Rotation</a></li>
+    <li><a href="#sec6">6. วัฏจักรเศรษฐกิจ</a></li>
+    <li class="toc-h3"><a href="#business-cycle">Business Cycle 4 ระยะ</a></li>
+    <li class="toc-h3"><a href="#investment-clock">Investment Clock</a></li>
+    <li><a href="#sec7">7. Fund Flow Analysis</a></li>
+    <li class="toc-h3"><a href="#thai-fund-flow">Fund Flow ไทย</a></li>
+    <li class="toc-h3"><a href="#fund-flow-matrix">Decision Matrix</a></li>
+    <li><a href="#sec8">8. Correlation Matrix</a></li>
+    <li><a href="#sec9">9. Divergence</a></li>
+    <li><a href="#sec10">10. ตลาดหุ้นไทย</a></li>
+    <li><a href="#sec11">11. Dashboard</a></li>
+    <li><a href="#sec12">12. กรณีศึกษา</a></li>
+    <li class="toc-h3"><a href="#case1">Yen Carry Trade 2024</a></li>
+    <li class="toc-h3"><a href="#case2">Stock-Bond 2022</a></li>
+    <li class="toc-h3"><a href="#case3">Gold ATH 2024-25</a></li>
+    <li class="toc-h3"><a href="#case4">SET Fund Flow</a></li>
+    <li class="toc-h3"><a href="#case5">Inverted Yield Curve</a></li>
+    <li class="toc-h3"><a href="#case6">Liberation Day Tariff</a></li>
+    <li><a href="#sec13">13. ข้อผิดพลาด</a></li>
+    <li><a href="#sec14">14. Checklist &amp; Workflow</a></li>
+    <li class="toc-h3"><a href="#golden-rules">10 กฎทอง</a></li>
+  </ul>
+</aside>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="main-content">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">ภาค 7 — Intermarket Analysis</div>
+  <h1>อ่านจักรวาลการเงินให้ออก<br><span class="gradient-text">ก่อนกดซื้อหุ้นแม้แต่ตัวเดียว</span></h1>
+  <p class="hero-subtitle">เข้าใจความสัมพันธ์ระหว่างพันธบัตร ค่าเงิน สินค้าโภคภัณฑ์ และตลาดหุ้น — เพื่อเห็นสิ่งที่คนอื่นมองไม่เห็น</p>
+</section>
+
+<div class="quote-block">
+  "ตลาดการเงินเป็นระบบนิเวศที่เชื่อมโยงกัน ไม่มีตลาดไหนเคลื่อนไหวอย่างอิสระ ถ้าคุณเข้าใจความสัมพันธ์เหล่านี้ คุณจะเห็นสิ่งที่คนอื่นมองไม่เห็น"
+  <span class="author">— John J. Murphy</span>
+</div>
+
+<p>นักลงทุนรายย่อยส่วนใหญ่มองแค่ "หุ้นตัวเดียว" — ดูกราฟ ดูงบ แล้วกดซื้อ แต่นักลงทุนมืออาชีพมองกว้างกว่านั้นมาก พวกเขาดู <strong>ระบบนิเวศการเงินทั้งระบบ</strong> ก่อนตัดสินใจแม้แต่เรื่องเดียว</p>
+
+<p>ลองนึกภาพแบบนี้ — คุณกำลังจะออกเรือไปตกปลา คุณจะดูแค่เบ็ดกับเหยื่อ? หรือคุณจะดูสภาพอากาศ กระแสน้ำ ทิศลม ระดับน้ำขึ้นน้ำลง ก่อน? ตลาดการเงินก็เหมือนกัน — หุ้นตัวเดียวคือเรือลำเล็กๆ ที่ลอยอยู่ในมหาสมุทรของตลาดพันธบัตร ค่าเงิน สินค้าโภคภัณฑ์ และนโยบายการเงินโลก</p>
+
+<!-- ============================================================ -->
+<!-- SECTION 1: FOUNDATION                                        -->
+<!-- ============================================================ -->
+<div class="section-header" id="sec1">
+  <h2><span class="section-number blue">1</span> รากฐานทฤษฎี Intermarket Analysis</h2>
+</div>
+
+<h3 id="four-markets">John Murphy และ 4 ตลาดหลัก</h3>
+
+<p>John J. Murphy เป็นผู้บุกเบิก Intermarket Analysis ในหนังสือ <em>"Intermarket Technical Analysis"</em> (1991) แนวคิดหลักคือ — <strong>ตลาดการเงินทั้ง 4 ตลาดเชื่อมโยงกันเป็นระบบ ไม่มีตลาดไหนเคลื่อนไหวอย่างอิสระ</strong></p>
+
+<div class="four-col">
+  <div class="col-card blue-accent">
+    <h4>📊 พันธบัตร</h4>
+    <p style="font-size:0.85rem; color:var(--text-secondary);">Bonds</p>
+    <ul>
+      <li>Yield = ต้นทุนของเงิน</li>
+      <li>กำหนดราคาทุกสิ่ง</li>
+      <li>Leading Indicator</li>
+    </ul>
+  </div>
+  <div class="col-card green-accent">
+    <h4>📈 หุ้น</h4>
+    <p style="font-size:0.85rem; color:var(--text-secondary);">Stocks</p>
+    <ul>
+      <li>ผลตอบแทนจากธุรกิจ</li>
+      <li>สะท้อนความคาดหวัง</li>
+      <li>ปลายทางของแรงกระทบ</li>
+    </ul>
+  </div>
+  <div class="col-card purple-accent">
+    <h4>💱 ค่าเงิน</h4>
+    <p style="font-size:0.85rem; color:var(--text-secondary);">Currencies</p>
+    <ul>
+      <li>มูลค่าของสกุลเงิน</li>
+      <li>สายเลือดเงินทุนโลก</li>
+      <li>กำหนดทิศทาง Fund Flow</li>
+    </ul>
+  </div>
+  <div class="col-card warm-accent">
+    <h4>🛢️ สินค้าโภคภัณฑ์</h4>
+    <p style="font-size:0.85rem; color:var(--text-secondary);">Commodities</p>
+    <ul>
+      <li>เงินเฟ้อและอุปสงค์จริง</li>
+      <li>สัญญาณจากโลกจริง</li>
+      <li>ชีพจรเศรษฐกิจ</li>
+    </ul>
+  </div>
+</div>
+
+<h3 id="core-relationships">ความสัมพันธ์พื้นฐาน — "กฎ" ที่ต้องจำ</h3>
+
+<p>ความสัมพันธ์เหล่านี้ไม่ได้เป็นจริง 100% ตลอดเวลา แต่เป็น <strong>แนวโน้มหลัก</strong> ที่เกิดขึ้นบ่อยที่สุดในประวัติศาสตร์:</p>
+
+<div class="formula-block">
+  <span class="tag concept">CORE RULES</span>
+<span class="highlight">ความสัมพันธ์หลัก (ในสภาวะปกติ):</span>
+
+<span class="val">1. พันธบัตร ↔ หุ้น</span>         → มักสวนทางกัน (<span class="bad">Inverse</span>)
+   Bond Price ขึ้น (Yield ลง) → หุ้นมักขึ้นตาม
+   Bond Price ลง (Yield ขึ้น) → หุ้นมักถูกกดดัน
+
+<span class="val">2. ดอลลาร์ ↔ สินค้าโภคภัณฑ์</span>  → มักสวนทางกัน (<span class="bad">Inverse</span>)
+   ดอลลาร์แข็ง → สินค้าโภคภัณฑ์มักลง
+   ดอลลาร์อ่อน → สินค้าโภคภัณฑ์มักขึ้น
+
+<span class="val">3. สินค้าโภคภัณฑ์ ↔ Bond Yield</span> → มักไปทางเดียวกัน (<span class="ok">Positive</span>)
+   สินค้าโภคภัณฑ์ขึ้น → เงินเฟ้อสูงขึ้น → Bond Yield ขึ้น
+
+<span class="val">4. Bond Yield ↔ ค่าเงิน</span>     → มักไปทางเดียวกัน (<span class="ok">Positive</span>)
+   Yield สูง → ดึงดูดเงินทุน → ค่าเงินแข็ง
+</div>
+
+<h3 id="regimes">สภาวะ Inflationary vs Deflationary — กฎเปลี่ยนตามสภาพแวดล้อม</h3>
+
+<div class="info-box warning">
+  <div class="box-title">⚠️ สิ่งสำคัญที่สุดที่ต้องเข้าใจ</div>
+  ความสัมพันธ์ระหว่างตลาดไม่คงที่ตลอดเวลา มันเปลี่ยนไปตามสภาพแวดล้อมทางเศรษฐกิจ ต้องระบุให้ได้ว่าตอนนี้อยู่ใน Regime ไหน
+</div>
+
+<div class="two-col">
+  <div class="col-card green-accent">
+    <h4>🌟 Goldilocks</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">เศรษฐกิจดี เงินเฟ้อต่ำ</p>
+    <ul>
+      <li>หุ้นขึ้นทุกกลุ่ม (โดยเฉพาะ Growth)</li>
+      <li>Bond Yield ทรงตัว-ขึ้นเล็กน้อย</li>
+      <li style="color:var(--accent-green);">ผู้ชนะ: หุ้นเทค, Growth, หุ้นเล็ก</li>
+      <li style="color:var(--accent-red);">ผู้แพ้: ทองคำ, สินทรัพย์ปลอดภัย</li>
+    </ul>
+  </div>
+  <div class="col-card warm-accent">
+    <h4>🔥 Inflationary</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">เงินเฟ้อสูง</p>
+    <ul>
+      <li>สินค้าโภคภัณฑ์ ↑ → Bond Yield ↑</li>
+      <li>ธนาคารกลางขึ้นดอกเบี้ย</li>
+      <li style="color:var(--accent-green);">ผู้ชนะ: พลังงาน, วัตถุดิบ, ทองคำ</li>
+      <li style="color:var(--accent-red);">ผู้แพ้: หุ้นเทค, Growth, พันธบัตรยาว</li>
+    </ul>
+  </div>
+  <div class="col-card blue-accent">
+    <h4>❄️ Deflationary</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">เงินฝืด/เศรษฐกิจถดถอย</p>
+    <ul>
+      <li>สินค้าโภคภัณฑ์ ↓ → Bond Yield ↓</li>
+      <li>ธนาคารกลางลดดอกเบี้ย</li>
+      <li style="color:var(--accent-green);">ผู้ชนะ: พันธบัตรรัฐบาล, ทองคำ, เงินสด</li>
+      <li style="color:var(--accent-red);">ผู้แพ้: หุ้นวัฏจักร, สินค้าโภคภัณฑ์</li>
+    </ul>
+  </div>
+  <div class="col-card red-accent">
+    <h4>💀 Stagflation</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">เศรษฐกิจชะลอ + เงินเฟ้อสูง</p>
+    <ul>
+      <li>สถานการณ์เลวร้ายที่สุด</li>
+      <li>หุ้นลง + พันธบัตรลง + โภคภัณฑ์ขึ้น</li>
+      <li style="color:var(--accent-green);">ผู้ชนะ: ทองคำ, โภคภัณฑ์, เงินสด</li>
+      <li style="color:var(--accent-red);">ผู้แพ้: หุ้นเกือบทุกกลุ่ม, พันธบัตร</li>
+    </ul>
+  </div>
+</div>
+
+<h4>วิธีระบุว่าอยู่ในสภาวะไหน</h4>
+
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr><th>ตัวชี้วัด</th><th>Goldilocks</th><th>Inflationary</th><th>Deflationary</th><th>Stagflation</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>GDP Growth</strong></td><td>สูง (&gt;3%)</td><td>ปานกลาง-สูง</td><td>ต่ำ/ติดลบ</td><td>ต่ำ (&lt;1%)</td></tr>
+      <tr><td><strong>CPI (เงินเฟ้อ)</strong></td><td>ต่ำ (1-2%)</td><td>สูง (&gt;3%)</td><td>ต่ำ/ติดลบ</td><td>สูง (&gt;4%)</td></tr>
+      <tr><td><strong>อัตราดอกเบี้ย</strong></td><td>ต่ำ-ปานกลาง</td><td>ขาขึ้น</td><td>ขาลง</td><td>สูงแต่ไม่ลด</td></tr>
+      <tr><td><strong>Bond Yield</strong></td><td>ทรงตัว</td><td>ขาขึ้น</td><td>ขาลง</td><td>ผันผวนสูง</td></tr>
+      <tr><td><strong>น้ำมัน</strong></td><td>ทรงตัว</td><td>ขาขึ้น</td><td>ขาลง</td><td>ขาขึ้น</td></tr>
+      <tr><td><strong>ทองคำ</strong></td><td>ทรงตัว-ลง</td><td>ขึ้น</td><td>ขึ้น</td><td>ขึ้นแรง</td></tr>
+      <tr><td><strong>หุ้น</strong></td><td>ขึ้นทุกกลุ่ม</td><td>เลือกกลุ่ม</td><td>ลงทุกกลุ่ม</td><td>ลงเกือบทุกกลุ่ม</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: BONDS                                             -->
+<!-- ============================================================ -->
+<div class="section-header" id="sec2">
+  <h2><span class="section-number green">2</span> ตลาดพันธบัตร — หัวใจของทุกสิ่ง</h2>
+</div>
+
+<p>ถ้าคุณต้องเลือกดูแค่ตลาดเดียวนอกจากตลาดหุ้น ให้ดู <strong>ตลาดพันธบัตร</strong> เพราะมันคือ "ราคาของเงิน" — ทุกสิ่งในระบบเศรษฐกิจถูกกำหนดจากอัตราดอกเบี้ย</p>
+
+<div class="formula-block">
+  <span class="tag flow">IMPACT CHAIN</span>
+<span class="highlight">ทำไม Bond Yield เป็น "ราคาของทุกสิ่ง":</span>
+
+<span class="val">Bond Yield ↑ (ดอกเบี้ยสูงขึ้น)</span>
+│
+├── ต้นทุนการกู้ยืมของบริษัท ↑
+│   ├── กำไรสุทธิ ↓ (จ่ายดอกเบี้ยมากขึ้น)
+│   ├── การลงทุนขยายธุรกิจ ↓ (กู้แพง)
+│   └── บริษัทที่มีหนี้มาก ถูกกระทบหนัก
+│
+├── <span class="warn">Discount Rate สำหรับ DCF ↑</span>
+│   ├── มูลค่าปัจจุบันของกำไรในอนาคต ↓
+│   ├── หุ้น Growth ถูกกระทบ<span class="bad">มากที่สุด</span>
+│   └── หุ้น Value ถูกกระทบน้อยกว่า
+│
+├── ต้นทุนสินเชื่อผู้บริโภค ↑
+│   ├── ผ่อนบ้าน ผ่อนรถ แพงขึ้น
+│   └── กระทบหุ้นค้าปลีก อสังหาฯ รถยนต์
+│
+├── ผลตอบแทนพันธบัตร ↑ (ดึงดูดเงินจากหุ้น)
+│   ├── <span class="comment">"ทำไมต้องเสี่ยงลงทุนหุ้น ถ้าพันธบัตรให้ 5%?"</span>
+│   └── กดดัน P/E ของตลาดหุ้นโดยรวม
+│
+└── ค่าเงินแข็งขึ้น (ดึงดูดเงินทุนต่างชาติ)
+    └── <span class="bad">แย่กับ Emerging Markets (เงินไหลออก)</span>
+</div>
+
+<h3 id="us10y">US 10-Year Treasury Yield — ตัวชี้วัดสำคัญที่สุดของโลก</h3>
+
+<div class="card">
+  <div class="card-title">🏛️ ทำไมพันธบัตรสหรัฐ 10 ปีถึงสำคัญที่สุด</div>
+  <ul style="list-style:none;">
+    <li style="padding:0.4rem 0; color:var(--text-secondary);">• เป็น <strong>Benchmark</strong> ของอัตราดอกเบี้ยทั่วโลก — ทุกประเทศอ้างอิงจากนี้</li>
+    <li style="padding:0.4rem 0; color:var(--text-secondary);">• เป็น <strong>"Risk-Free Rate"</strong> ที่ใช้ในการคำนวณ DCF, CAPM, Equity Risk Premium</li>
+    <li style="padding:0.4rem 0; color:var(--text-secondary);">• ตลาดพันธบัตรสหรัฐใหญ่ที่สุดในโลก (&gt;$25 trillion) — สภาพคล่องสูงสุด</li>
+    <li style="padding:0.4rem 0; color:var(--text-secondary);">• เป็นตัวกำหนด Mortgage Rate ในสหรัฐ ซึ่งกระทบเศรษฐกิจโลก</li>
+  </ul>
+</div>
+
+<div class="formula-block">
+  <span class="tag data">YIELD LEVELS</span>
+<span class="highlight">ระดับ US 10Y Yield และผลกระทบ:</span>
+
+<span class="ok">&lt; 2.0%</span>  → ดอกเบี้ยต่ำมาก → หนุนหุ้น Growth อย่างแรง
+         → "TINA" (There Is No Alternative) — ไม่มีทางเลือกอื่นนอกจากหุ้น
+         → P/E ของตลาดสูงได้ (25-30x)
+
+<span class="val">2.0-3.5%</span> → ดอกเบี้ยปานกลาง → หุ้นยังไปได้ แต่ต้องเลือกกลุ่ม
+          → หุ้น Value เริ่มน่าสนใจกว่า Growth
+          → P/E ของตลาดอยู่ในระดับปกติ (15-22x)
+
+<span class="warn">3.5-4.5%</span> → ดอกเบี้ยสูง → กดดันหุ้น Growth อย่างชัดเจน
+          → พันธบัตรเริ่มเป็นคู่แข่งที่น่ากลัวของหุ้น
+          → P/E ของตลาดถูกกดดัน (12-18x)
+
+<span class="bad">&gt; 4.5%</span>  → ดอกเบี้ยสูงมาก → กดดันหุ้นทุกกลุ่ม
+          → ความเสี่ยงเศรษฐกิจถดถอยสูง
+          → เงินไหลออกจาก Emerging Markets
+</div>
+
+<h3 id="yield-curve">Yield Curve — เส้นอัตราผลตอบแทน</h3>
+
+<p>Yield Curve คือกราฟที่แสดงอัตราผลตอบแทนของพันธบัตรที่มีอายุต่างกัน — เป็นเครื่องมือทำนายเศรษฐกิจที่แม่นยำที่สุดตัวหนึ่ง</p>
+
+<div class="three-col">
+  <div class="col-card green-accent">
+    <h4>📈 Normal Curve</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">ดอกเบี้ยระยะยาว &gt; ระยะสั้น</p>
+    <ul>
+      <li>เศรษฐกิจแข็งแรง</li>
+      <li>ตลาดคาดว่าจะเติบโตต่อ</li>
+      <li style="color:var(--accent-green);">หุ้นมักทำผลงานดี</li>
+    </ul>
+  </div>
+  <div class="col-card warm-accent">
+    <h4>➡️ Flat Curve</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">ดอกเบี้ยระยะสั้น ≈ ระยะยาว</p>
+    <ul>
+      <li>ตลาดไม่แน่ใจเรื่องอนาคต</li>
+      <li>⚠️ สัญญาณเตือนเศรษฐกิจชะลอ</li>
+      <li style="color:var(--accent-orange);">มักเกิดก่อน Inverted</li>
+    </ul>
+  </div>
+  <div class="col-card red-accent">
+    <h4>📉 Inverted Curve</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">ดอกเบี้ยระยะสั้น &gt; ระยะยาว</p>
+    <ul>
+      <li>⚠️⚠️⚠️ สัญญาณเตือน Recession</li>
+      <li>ทำนายถูกทุกครั้งในรอบ 50 ปี</li>
+      <li style="color:var(--accent-red);">Lead Time 6-24 เดือน</li>
+    </ul>
+  </div>
+</div>
+
+<div class="info-box danger">
+  <div class="box-title">🚨 Inverted Yield Curve — สัญญาณเตือนที่แม่นยำที่สุด</div>
+  <strong>2Y-10Y Spread:</strong> Spread &gt; 0 → ปกติ | Spread &lt; 0 → Inverted → สัญญาณเตือนถดถอย<br>
+  <strong>3M-10Y Spread:</strong> Fed ใช้ตัวนี้เป็นหลัก แม่นยำกว่า 2Y-10Y เล็กน้อย<br>
+  <strong>สิ่งที่ต้องระวัง:</strong> Recession มักเกิดหลัง Un-inversion (กลับมา Normal) ไม่ใช่ระหว่าง Inversion
+</div>
+
+<h3 id="credit-spread">Credit Spread — วัดความกลัวของตลาดตราสารหนี้</h3>
+
+<p>Credit Spread = Yield หุ้นกู้เอกชน - Yield พันธบัตรรัฐบาล — เป็น <strong>Leading Indicator</strong> ของตลาดหุ้น</p>
+
+<div class="formula-block">
+  <span class="tag signal">CREDIT SPREAD</span>
+<span class="highlight">ICE BofA US High Yield OAS (Option-Adjusted Spread):</span>
+
+<span class="ok">&lt; 3%</span>   → ตลาดมั่นใจมาก (อาจ Complacent เกินไป)
+<span class="val">3-5%</span>   → ปกติ
+<span class="warn">5-8%</span>   → เริ่มกังวล
+<span class="bad">&gt; 8%</span>   → ตื่นตระหนก (มักเป็นจุดต่ำสุดของตลาดหุ้น)
+
+<span class="comment">Credit Spread มักเป็น Leading Indicator ของตลาดหุ้น</span>
+<span class="comment">— เริ่มกว้างขึ้นก่อนที่หุ้นจะลง</span>
+<span class="comment">— เริ่มแคบลงก่อนที่หุ้นจะฟื้น</span>
+</div>
+
+<h3 id="bond-sector">ผลกระทบของ Bond Yield ต่อหุ้นแต่ละกลุ่ม</h3>
+
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr><th>กลุ่มหุ้น</th><th>Yield ขึ้น</th><th>Yield ลง</th><th>เหตุผล</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>หุ้นเทค/Growth</strong></td><td style="color:var(--accent-red);">❌ แย่มาก</td><td style="color:var(--accent-green);">✅ ดีมาก</td><td>กำไรอยู่ในอนาคตไกล Discount Rate กระทบหนัก</td></tr>
+      <tr><td><strong>หุ้นธนาคาร</strong></td><td style="color:var(--accent-green);">✅ ดี</td><td style="color:var(--accent-red);">❌ แย่</td><td>NIM เพิ่มขึ้นเมื่อ Yield ขึ้น</td></tr>
+      <tr><td><strong>หุ้นอสังหาฯ</strong></td><td style="color:var(--accent-red);">❌ แย่</td><td style="color:var(--accent-green);">✅ ดี</td><td>ต้นทุนสินเชื่อบ้านเพิ่ม</td></tr>
+      <tr><td><strong>REITs</strong></td><td style="color:var(--accent-red);">❌ แย่</td><td style="color:var(--accent-green);">✅ ดี</td><td>Dividend Yield ต้องแข่งกับ Bond Yield</td></tr>
+      <tr><td><strong>หุ้นสาธารณูปโภค</strong></td><td style="color:var(--accent-red);">❌ แย่</td><td style="color:var(--accent-green);">✅ ดี</td><td>เป็น Bond Proxy — Dividend Yield สูง</td></tr>
+      <tr><td><strong>หุ้นพลังงาน</strong></td><td style="color:var(--accent-green);">✅ มักดี</td><td style="color:var(--accent-red);">❌ มักแย่</td><td>Yield ขึ้นมักมาพร้อมเงินเฟ้อ</td></tr>
+      <tr><td><strong>หุ้น Defensive</strong></td><td>กลางๆ</td><td style="color:var(--accent-green);">✅ ดี</td><td>ที่หลบภัยเมื่อเศรษฐกิจชะลอ</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: CURRENCIES                                        -->
+<!-- ============================================================ -->
+<div class="section-header" id="sec3">
+  <h2><span class="section-number purple">3</span> ตลาดค่าเงิน — สายเลือดของเงินทุนโลก</h2>
+</div>
+
+<p>ค่าเงินคือ "ราคา" ของสกุลเงินหนึ่งเทียบกับอีกสกุลหนึ่ง มันสะท้อนทุกอย่าง — นโยบายการเงิน เศรษฐกิจ การค้าระหว่างประเทศ และที่สำคัญที่สุดคือ <strong>ทิศทางการไหลของเงินทุน</strong></p>
+
+<h3 id="dxy">DXY (US Dollar Index) — ราชาของค่าเงิน</h3>
+
+<p>DXY วัดความแข็งแกร่งของดอลลาร์สหรัฐเทียบกับตะกร้า 6 สกุลเงินหลัก (EUR 57.6%, JPY 13.6%, GBP 11.9%, CAD 9.1%, SEK 4.2%, CHF 3.6%)</p>
+
+<div class="formula-block">
+  <span class="tag flow">DXY vs EM</span>
+<span class="highlight">DXY กับตลาดหุ้น Emerging Markets (รวมถึงไทย):</span>
+
+<span class="bad">DXY แข็ง (ขึ้น):</span>
+├── เงินทุนไหลกลับสหรัฐ (Repatriation)
+├── นักลงทุนต่างชาติขายหุ้น EM → ซื้อดอลลาร์กลับ
+├── ค่าเงิน EM อ่อน (รวมถึงบาท)
+├── สินค้าโภคภัณฑ์ถูกกดดัน
+└── ผลกระทบ: <span class="bad">SET มักลง, ต่างชาติขายสุทธิ</span>
+
+<span class="ok">DXY อ่อน (ลง):</span>
+├── เงินทุนไหลออกจากสหรัฐ → หาผลตอบแทนที่สูงกว่า
+├── นักลงทุนต่างชาติซื้อหุ้น EM
+├── ค่าเงิน EM แข็ง (รวมถึงบาท)
+└── ผลกระทบ: <span class="ok">SET มักขึ้น, ต่างชาติซื้อสุทธิ</span>
+
+<span class="highlight">ระดับ DXY ที่ต้องจับตา:</span>
+├── DXY &gt; 105 → ดอลลาร์แข็งมาก → <span class="bad">กดดัน EM หนัก</span>
+├── DXY 95-105 → ปกติ
+├── DXY &lt; 95  → ดอลลาร์อ่อน → <span class="ok">หนุน EM</span>
+└── DXY &lt; 90  → ดอลลาร์อ่อนมาก → <span class="ok">เงินไหลเข้า EM แรง</span>
+</div>
+
+<h3 id="usdthb">USD/THB — ค่าเงินบาทกับตลาดหุ้นไทย</h3>
+
+<p>ค่าเงินบาทเป็นปัจจัยสำคัญที่สุดปัจจัยหนึ่งของตลาดหุ้นไทย เพราะต่างชาติถือหุ้นไทยประมาณ 25-30% ของมูลค่าตลาด</p>
+
+<div class="two-col">
+  <div class="col-card green-accent">
+    <h4>💪 บาทแข็ง (USD/THB ลดลง)</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">สัญญาณ: เงินทุนต่างชาติไหลเข้า</p>
+    <ul>
+      <li style="color:var(--accent-green);">✅ หุ้นนำเข้า (ต้นทุนวัตถุดิบถูกลง)</li>
+      <li style="color:var(--accent-green);">✅ หุ้นที่มีหนี้เป็น USD (สายการบิน)</li>
+      <li style="color:var(--accent-green);">✅ ตลาดหุ้นโดยรวม</li>
+      <li style="color:var(--accent-red);">❌ หุ้นส่งออก (CPF, TU)</li>
+    </ul>
+  </div>
+  <div class="col-card red-accent">
+    <h4>📉 บาทอ่อน (USD/THB เพิ่มขึ้น)</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">สัญญาณ: เงินทุนต่างชาติไหลออก</p>
+    <ul>
+      <li style="color:var(--accent-green);">✅ หุ้นส่งออก (รายได้แปลงเป็นบาทมากขึ้น)</li>
+      <li style="color:var(--accent-green);">✅ หุ้นท่องเที่ยว</li>
+      <li style="color:var(--accent-red);">❌ หุ้นนำเข้า (ต้นทุนแพงขึ้น)</li>
+      <li style="color:var(--accent-red);">❌ หุ้นที่มีหนี้เป็น USD</li>
+    </ul>
+  </div>
+</div>
+
+<h3 id="usdjpy">USD/JPY — เยนญี่ปุ่น (Carry Trade Indicator)</h3>
+
+<div class="card">
+  <div class="card-title">🇯🇵 Carry Trade คืออะไร</div>
+  <p>กู้เงินในสกุลที่ดอกเบี้ยต่ำ (เช่น เยน 0%) → นำไปลงทุนในสกุลที่ดอกเบี้ยสูง (เช่น ดอลลาร์ 5%) → กำไรจากส่วนต่างดอกเบี้ย + กำไรจากค่าเงิน — เป็นแหล่งเงินทุนสำคัญที่ไหลเข้า EM รวมถึงไทย</p>
+</div>
+
+<div class="info-box danger">
+  <div class="box-title">🚨 เยนแข็งขึ้นอย่างรวดเร็ว = Carry Trade Unwind</div>
+  เมื่อ USD/JPY ลดลงเร็ว → นักลงทุนรีบขายสินทรัพย์ทั่วโลก → ซื้อเยนคืน → กระทบตลาดหุ้นทั่วโลก รวมถึง SET<br>
+  <strong>ตัวอย่าง:</strong> สิงหาคม 2024 เยนแข็งขึ้นเร็ว → Nikkei -12.4% ในวันเดียว → ตลาดทั่วโลกร่วง
+</div>
+
+<h4>สกุลเงินอื่นที่ต้องจับตา</h4>
+
+<div class="three-col">
+  <div class="col-card purple-accent">
+    <h4>��🇳 USD/CNY — หยวนจีน</h4>
+    <ul>
+      <li>หยวนอ่อน → จีนกระตุ้นเศรษฐกิจ</li>
+      <li>สินค้าจีนถูกลง → กดดันผู้ผลิตอื่น</li>
+      <li>กดดันค่าเงินในภูมิภาค</li>
+      <li>หยวนแข็ง → เงินทุนไหลเข้าเอเชีย</li>
+    </ul>
+  </div>
+  <div class="col-card blue-accent">
+    <h4>🇪🇺 EUR/USD — ยูโร</h4>
+    <ul>
+      <li>ยูโรแข็ง → มักมาพร้อม DXY อ่อน</li>
+      <li>หนุน EM ทางอ้อม</li>
+      <li>ยูโรอ่อน → DXY แข็ง</li>
+      <li>กดดัน EM ทางอ้อม</li>
+    </ul>
+  </div>
+  <div class="col-card emerald-accent">
+    <h4 id="reer">📊 REER</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">Real Effective Exchange Rate</p>
+    <ul>
+      <li>REER สูง → ค่าเงินแข็งเกินจริง</li>
+      <li>REER ต่ำ → ค่าเงินอ่อนเกินจริง</li>
+      <li>ดูข้อมูลที่ bot.or.th</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: COMMODITIES                                       -->
+<!-- ============================================================ -->
+<div class="section-header" id="sec4">
+  <h2><span class="section-number warm">4</span> ตลาดสินค้าโภคภัณฑ์ — สัญญาณจากโลกแห่งความจริง</h2>
+</div>
+
+<p>สินค้าโภคภัณฑ์คือ "โลกแห่งความจริง" ของเศรษฐกิจ — ในขณะที่หุ้นและพันธบัตรเป็นสินทรัพย์ทางการเงิน สินค้าโภคภัณฑ์คือสิ่งที่คนใช้จริง กินจริง เผาจริง ราคาของมันสะท้อนอุปสงค์-อุปทานที่แท้จริงของเศรษฐกิจ</p>
+
+<h3 id="oil">น้ำมันดิบ — ชีพจรของเศรษฐกิจโลก</h3>
+
+<div class="two-col">
+  <div class="col-card blue-accent">
+    <h4>🇺🇸 WTI (West Texas Intermediate)</h4>
+    <ul>
+      <li>Benchmark ของอเมริกาเหนือ</li>
+      <li>ซื้อขายที่ NYMEX (New York)</li>
+      <li>มักถูกกว่า Brent เล็กน้อย</li>
+    </ul>
+  </div>
+  <div class="col-card warm-accent">
+    <h4>🇬🇧 Brent Crude</h4>
+    <ul>
+      <li>Benchmark ของยุโรปและเอเชีย</li>
+      <li>ซื้อขายที่ ICE (London)</li>
+      <li>ราคาอ้างอิงสำหรับน้ำมันที่ไทยนำเข้า</li>
+    </ul>
+  </div>
+</div>
+
+<div class="formula-block">
+  <span class="tag flow">OIL IMPACT</span>
+<span class="highlight">ผลกระทบของราคาน้ำมันต่อหุ้นไทย:</span>
+
+<span class="val">น้ำมันขึ้น:</span>
+├── <span class="ok">หุ้นที่ได้ประโยชน์:</span>
+│   ├── PTTEP (สำรวจและผลิตปิโตรเลียม)
+│   ├── PTT (ปิโตรเลียมครบวงจร)
+│   ├── BANPU (ถ่านหิน + พลังงาน)
+│   └── หุ้นพลังงานทดแทน
+│
+├── <span class="bad">หุ้นที่เสียประโยชน์:</span>
+│   ├── สายการบิน (AAV, BA, NOK) — น้ำมัน 30-40% ของต้นทุน
+│   ├── หุ้นขนส่ง — ต้นทุนเชื้อเพลิงสูงขึ้น
+│   ├── หุ้นปิโตรเคมี (IRPC, PTTGC) — ต้นทุนวัตถุดิบสูง
+│   └── หุ้นโรงไฟฟ้าที่ใช้ก๊าซ
+│
+└── <span class="warn">ผลกระทบต่อเศรษฐกิจ:</span>
+    ├── เงินเฟ้อสูงขึ้น → กนง. อาจขึ้นดอกเบี้ย
+    ├── ต้นทุนการผลิตสูงขึ้น → กำไรบริษัทลดลง
+    └── กำลังซื้อผู้บริโภคลดลง → กระทบหุ้นค้าปลีก
+</div>
+
+<div class="table-wrapper">
+  <table>
+    <thead class="warn-head">
+      <tr><th>ระดับราคา (Brent)</th><th>ผลกระทบ</th><th>ควรทำอย่างไร</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>&lt; $50</td><td>ถูกมาก — อาจสะท้อนเศรษฐกิจถดถอย</td><td>ระวังหุ้นพลังงาน แต่ดีกับสายการบิน</td></tr>
+      <tr><td>$50-70</td><td>ระดับสมดุล — ไม่กดดันเศรษฐกิจ</td><td>ปกติ ไม่ต้องปรับพอร์ตเพราะน้ำมัน</td></tr>
+      <tr><td>$70-90</td><td>เริ่มกดดัน — เงินเฟ้อเริ่มเพิ่ม</td><td>เพิ่มน้ำหนักหุ้นพลังงาน ลดสายการบิน</td></tr>
+      <tr><td>$90-120</td><td>กดดันหนัก — เงินเฟ้อสูง</td><td>Overweight พลังงาน ระวังหุ้นวัฏจักร</td></tr>
+      <tr><td>&gt; $120</td><td style="color:var(--accent-red);">วิกฤตพลังงาน</td><td>ลด Position โดยรวม ถือเงินสดมากขึ้น</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 id="gold">ทองคำ — เทอร์โมมิเตอร์วัดความกลัว</h3>
+
+<p>ทองคำไม่ใช่แค่โลหะมีค่า มันคือ <strong>สินทรัพย์ปลอดภัย (Safe Haven)</strong> ที่บอกว่านักลงทุนทั่วโลกกลัวแค่ไหน</p>
+
+<div class="card">
+  <div class="card-title">🥇 4 ปัจจัยที่ขับเคลื่อนราคาทองคำ</div>
+  <div class="two-col" style="margin-top:1rem;">
+    <div>
+      <h4 style="margin-top:0;">1. Real Interest Rate</h4>
+      <p style="font-size:0.9rem;">Real Rate = Nominal Rate - Inflation<br>Real Rate ลง → ทองขึ้น | Real Rate ขึ้น → ทองลง<br><strong>ปัจจัยสำคัญที่สุดของราคาทอง</strong></p>
+    </div>
+    <div>
+      <h4 style="margin-top:0;">2. ดอลลาร์สหรัฐ</h4>
+      <p style="font-size:0.9rem;">ดอลลาร์อ่อน → ทองขึ้น (ทองถูกลงสำหรับคนอื่น)<br>ดอลลาร์แข็ง → ทองลง</p>
+    </div>
+    <div>
+      <h4 style="margin-top:0;">3. ความกลัว/ความไม่แน่นอน</h4>
+      <p style="font-size:0.9rem;">สงคราม วิกฤตการเงิน โรคระบาด → ทองขึ้น<br>ทองคำเป็น "ประกันภัย" ของพอร์ต</p>
+    </div>
+    <div>
+      <h4 style="margin-top:0;">4. ธนาคารกลางซื้อทอง</h4>
+      <p style="font-size:0.9rem;">จีน รัสเซีย อินเดีย ซื้อทองเพิ่มต่อเนื่อง<br>De-dollarization → แรงซื้อระยะยาว</p>
+    </div>
+  </div>
+</div>
+
+<h4>ทองคำกับตลาดหุ้น — 4 สถานการณ์</h4>
+
+<div class="two-col">
+  <div class="col-card red-accent">
+    <h4>⚠️ ทองขึ้น + หุ้นลง</h4>
+    <p style="font-size:0.85rem; color:var(--accent-red);"><strong>Risk-off ชัดเจน</strong></p>
+    <ul>
+      <li>นักลงทุนหนีจากหุ้นไปทอง</li>
+      <li>ตลาดกลัวจริง</li>
+      <li>ควรลด Position หุ้น เพิ่มเงินสด</li>
+    </ul>
+  </div>
+  <div class="col-card warm-accent">
+    <h4>🔥 ทองขึ้น + หุ้นขึ้น</h4>
+    <p style="font-size:0.85rem; color:var(--accent-orange);"><strong>เงินเฟ้อ</strong></p>
+    <ul>
+      <li>ทั้งสองขึ้นเพราะเงินด้อยค่า</li>
+      <li>ดู Bond Yield ประกอบ</li>
+      <li>ระวัง — มักจบไม่สวย</li>
+    </ul>
+  </div>
+  <div class="col-card green-accent">
+    <h4>✅ ทองลง + หุ้นขึ้น</h4>
+    <p style="font-size:0.85rem; color:var(--accent-green);"><strong>Risk-on ชัดเจน</strong></p>
+    <ul>
+      <li>นักลงทุนมั่นใจ</li>
+      <li>ไม่ต้องการ Safe Haven</li>
+      <li>เพิ่ม Position หุ้นได้</li>
+    </ul>
+  </div>
+  <div class="col-card pink-accent">
+    <h4>💀 ทองลง + หุ้นลง</h4>
+    <p style="font-size:0.85rem; color:var(--accent-red);"><strong>Liquidity Crisis</strong></p>
+    <ul>
+      <li>⚠️⚠️ อันตรายมาก — ทุกอย่างถูกขาย</li>
+      <li>ต้องการเงินสดเท่านั้น</li>
+      <li>ถือเงินสด 100% จนนิ่ง</li>
+    </ul>
+  </div>
+</div>
+
+<h3 id="copper">ทองแดง — "Dr. Copper" ผู้ทำนายเศรษฐกิจ</h3>
+
+<p>ทองแดงถูกเรียกว่า "Dr. Copper" เพราะมันทำนายสุขภาพเศรษฐกิจได้ดีมาก — ใช้ในการก่อสร้าง อิเล็กทรอนิกส์ รถยนต์ สายไฟ</p>
+
+<div class="formula-block">
+  <span class="tag signal">DR. COPPER</span>
+<span class="highlight">Copper/Gold Ratio — ตัวชี้วัดที่ทรงพลัง:</span>
+
+ทองแดง/ทองคำ <span class="ok">ขึ้น</span> → เศรษฐกิจแข็งแกร่ง (Risk-on)
+ทองแดง/ทองคำ <span class="bad">ลง</span> → เศรษฐกิจอ่อนแอ (Risk-off)
+
+<span class="comment">เป็น Leading Indicator ที่ดีมากสำหรับ Bond Yield</span>
+<span class="comment">(Copper/Gold Ratio มักเคลื่อนไหวไปทางเดียวกับ US 10Y Yield)</span>
+</div>
+
+<h3 id="agri">สินค้าเกษตร — กระทบหุ้นอาหารและเงินเฟ้อ</h3>
+
+<div class="table-wrapper">
+  <table>
+    <thead class="green-head">
+      <tr><th>สินค้าเกษตร</th><th>ความสำคัญของไทย</th><th>หุ้นที่กระทบ</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>🌾 ข้าว</strong></td><td>ผู้ส่งออกรายใหญ่ของโลก</td><td>หุ้นเกษตร</td></tr>
+      <tr><td><strong>🍬 น้ำตาล</strong></td><td>ผู้ส่งออกอันดับ 2 ของโลก</td><td>KSL, KTIS, BRR</td></tr>
+      <tr><td><strong>🌳 ยางพารา</strong></td><td>ผู้ผลิตอันดับ 1 ของโลก</td><td>STA, NER</td></tr>
+      <tr><td><strong>🌴 ปาล์มน้ำมัน</strong></td><td>ผู้ผลิตรายสำคัญ</td><td>UVAN, TVO, LST</td></tr>
+      <tr><td><strong>🥔 มันสำปะหลัง</strong></td><td>ผู้ส่งออกรายใหญ่</td><td>TIPCO, SPC</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: STOCK MARKETS                                     -->
+<!-- ============================================================ -->
+<div class="section-header" id="sec5">
+  <h2><span class="section-number cyan">5</span> ตลาดหุ้น — ปลายทางของทุกแรงกระทบ</h2>
+</div>
+
+<p>ตลาดหุ้นไทยไม่ได้อยู่โดดเดี่ยว มันเป็นส่วนหนึ่งของ "ห่วงโซ่" ตลาดหุ้นโลก</p>
+
+<h3 id="global-indices">ลำดับการเปิดตลาดและดัชนีที่ต้องติดตาม</h3>
+
+<div class="formula-block">
+  <span class="tag timeline">MARKET HOURS</span>
+<span class="highlight">ลำดับการเปิดตลาดในแต่ละวัน (เวลาไทย):</span>
+
+06:00  ตลาดออสเตรเลีย (ASX) เปิด
+08:00  ตลาดญี่ปุ่น (Nikkei) เปิด
+08:30  ตลาดเกาหลี (KOSPI) เปิด
+09:00  ตลาดจีน (Shanghai, Shenzhen) เปิด
+09:30  ตลาดฮ่องกง (Hang Seng) เปิด
+<span class="ok">10:00  ตลาดไทย (SET) เปิด ← เราอยู่ตรงนี้</span>
+10:30  ตลาดอินเดีย (Nifty) เปิด
+14:00  ตลาดยุโรป (DAX, FTSE, CAC) เปิด
+20:30  ตลาดสหรัฐ (NYSE, Nasdaq) เปิด
+03:00  ตลาดสหรัฐปิด
+
+<span class="highlight">ผลกระทบ:</span>
+├── สิ่งที่เกิดใน Wall Street เมื่อคืน → กระทบเอเชียเช้านี้
+├── Nikkei เปิดก่อน SET 2 ชม. → เป็น Leading Indicator ของเอเชีย
+├── ตลาดจีน/ฮ่องกง → กระทบ Sentiment ภูมิภาค
+├── ตลาดยุโรปเปิดช่วงบ่ายไทย → กระทบ SET ช่วงบ่าย
+└── วงจรนี้หมุนทุกวัน ไม่มีวันหยุด
+</div>
+
+<h4>S&P 500 — ดัชนีที่สำคัญที่สุดของโลก</h4>
+
+<div class="card">
+  <div class="card-title">🇺🇸 S&P 500</div>
+  <ul style="list-style:none;">
+    <li style="padding:0.3rem 0; color:var(--text-secondary);">• ครอบคลุม 500 บริษัทใหญ่ที่สุดในสหรัฐ — คิดเป็น ~60% ของมูลค่าตลาดหุ้นโลก</li>
+    <li style="padding:0.3rem 0; color:var(--text-secondary);">• เป็น Benchmark ที่กองทุนทั่วโลกใช้อ้างอิง</li>
+    <li style="padding:0.3rem 0; color:var(--text-secondary);">• ราคาเทียบกับ MA200 → เหนือ = ขาขึ้น, ใต้ = ขาลง</li>
+    <li style="padding:0.3rem 0; color:var(--text-secondary);">• ลงจาก High &gt;10% = <span style="color:var(--accent-orange);">Correction</span> | &gt;20% = <span style="color:var(--accent-red);">Bear Market</span></li>
+  </ul>
+</div>
+
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr><th>ดัชนี</th><th>Correlation กับ SET</th><th>เหตุผล</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Nikkei 225</strong></td><td>ปานกลาง-สูง</td><td>เปิดก่อน SET เป็น Leading Indicator ของเอเชีย</td></tr>
+      <tr><td><strong>Hang Seng</strong></td><td style="color:var(--accent-green);">สูง</td><td>สะท้อนเศรษฐกิจจีน คู่ค้าอันดับ 1 ของไทย</td></tr>
+      <tr><td><strong>Shanghai Composite</strong></td><td>ปานกลาง</td><td>สะท้อนเศรษฐกิจจีนโดยตรง</td></tr>
+      <tr><td><strong>KOSPI</strong></td><td>ปานกลาง</td><td>สะท้อน Semiconductor Cycle</td></tr>
+      <tr><td><strong>MSCI EM</strong></td><td style="color:var(--accent-green);">สูงมาก</td><td>SET เป็นส่วนหนึ่งของ MSCI EM โดยตรง</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 id="sector-rotation-global">Sector Rotation ระหว่างประเทศ</h3>
+
+<div class="two-col">
+  <div class="col-card green-accent">
+    <h4>🟢 Risk-on (มั่นใจ)</h4>
+    <ul>
+      <li>เงินไหลจาก: สหรัฐ, ญี่ปุ่น, ยุโรป (DM)</li>
+      <li>เงินไหลไป: เอเชีย, ลาตินอเมริกา (EM)</li>
+      <li>เหตุผล: หาผลตอบแทนที่สูงกว่า</li>
+      <li>สัญญาณ: DXY อ่อน, MSCI EM Outperform</li>
+    </ul>
+  </div>
+  <div class="col-card red-accent">
+    <h4>🔴 Risk-off (กลัว)</h4>
+    <ul>
+      <li>เงินไหลจาก: Emerging Markets</li>
+      <li>เงินไหลไป: US Treasuries, เยน, ฟรังก์สวิส</li>
+      <li>เหตุผล: Flight to Safety</li>
+      <li>สัญญาณ: DXY แข็ง, VIX สูง</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: BUSINESS CYCLE                                    -->
+<!-- ============================================================ -->
+<div class="section-header" id="sec6">
+  <h2><span class="section-number emerald">6</span> วัฏจักรเศรษฐกิจและ Intermarket Rotation</h2>
+</div>
+
+<h3 id="business-cycle">Business Cycle 4 ระยะ และ Asset Class Rotation</h3>
+
+<p>เศรษฐกิจเคลื่อนไหวเป็นวัฏจักร และสินทรัพย์แต่ละประเภทจะทำผลงานดีในช่วงที่ต่างกัน</p>
+
+<div class="two-col">
+  <div class="col-card green-accent">
+    <h4>🌱 ระยะที่ 1: Early Recovery</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">เพิ่งผ่านจุดต่ำสุด เริ่มฟื้นตัว | เงินเฟ้อต่ำ | ดอกเบี้ยต่ำ</p>
+    <ul>
+      <li style="color:var(--accent-green);">✅ หุ้น Cyclical, Small Cap</li>
+      <li style="color:var(--accent-green);">✅ หุ้นกู้ High Yield</li>
+      <li style="color:var(--accent-green);">✅ อสังหาริมทรัพย์</li>
+      <li style="color:var(--accent-red);">❌ เงินสด, สินค้าโภคภัณฑ์</li>
+    </ul>
+    <p style="font-size:0.82rem; color:var(--accent-cyan); margin-top:0.5rem;"><strong>หุ้นไทย:</strong> ธนาคาร, อสังหาฯ, รถยนต์, ค้าปลีก</p>
+  </div>
+  <div class="col-card blue-accent">
+    <h4>🚀 ระยะที่ 2: Mid-Cycle Expansion</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">เติบโตแข็งแกร่ง | เงินเฟ้อเริ่มเพิ่ม | ดอกเบี้ยเริ่มขึ้น</p>
+    <ul>
+      <li style="color:var(--accent-green);">✅ หุ้นทุกกลุ่ม</li>
+      <li style="color:var(--accent-green);">✅ สินค้าโภคภัณฑ์</li>
+      <li style="color:var(--accent-red);">❌ พันธบัตรระยะยาว</li>
+      <li style="color:var(--accent-red);">❌ ทองคำ</li>
+    </ul>
+    <p style="font-size:0.82rem; color:var(--accent-cyan); margin-top:0.5rem;"><strong>หุ้นไทย:</strong> พลังงาน, ปิโตรเคมี, วัสดุก่อสร้าง, เทคโนโลยี</p>
+  </div>
+  <div class="col-card warm-accent">
+    <h4>🔥 ระยะที่ 3: Late Cycle</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">ยังโตแต่เริ่มชะลอ | เงินเฟ้อสูง | ดอกเบี้ยสูง</p>
+    <ul>
+      <li style="color:var(--accent-green);">✅ สินค้าโภคภัณฑ์</li>
+      <li style="color:var(--accent-green);">✅ หุ้น Defensive</li>
+      <li style="color:var(--accent-green);">✅ เงินสด (ดอกเบี้ยสูง)</li>
+      <li style="color:var(--accent-red);">❌ หุ้น Growth / Small Cap</li>
+    </ul>
+    <p style="font-size:0.82rem; color:var(--accent-cyan); margin-top:0.5rem;"><strong>หุ้นไทย:</strong> พลังงาน, สาธารณูปโภค, โรงพยาบาล, อาหาร</p>
+  </div>
+  <div class="col-card red-accent">
+    <h4>❄️ ระยะที่ 4: Recession</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">เศรษฐกิจหดตัว | เงินเฟ้อลดลง | ดอกเบี้ยลง</p>
+    <ul>
+      <li style="color:var(--accent-green);">✅ พันธบัตรรัฐบาล</li>
+      <li style="color:var(--accent-green);">✅ ทองคำ, เงินสด</li>
+      <li style="color:var(--accent-red);">❌ หุ้นเกือบทุกกลุ่ม</li>
+      <li style="color:var(--accent-red);">❌ สินค้าโภคภัณฑ์, High Yield</li>
+    </ul>
+    <p style="font-size:0.82rem; color:var(--accent-cyan); margin-top:0.5rem;"><strong>หุ้นไทย:</strong> โรงพยาบาล, อาหาร, สาธารณูปโภค</p>
+  </div>
+</div>
+
+<h3 id="investment-clock">Investment Clock — นาฬิกาการลงทุน</h3>
+
+<div class="diagram-block">
+                        เงินเฟ้อสูง
+                            │
+               Late Cycle   │   Stagflation
+             (สินค้าโภคภัณฑ์) │  (ทองคำ, เงินสด)
+                            │
+  เศรษฐกิจดี ───────────────┼─────────────── เศรษฐกิจแย่
+                            │
+              Mid-Cycle     │   Early Recovery
+              (หุ้น)         │   (หุ้น Cyclical)
+                            │
+                        เงินเฟ้อต่ำ
+
+  ทิศทางการหมุน: ทวนเข็มนาฬิกา
+  Early Recovery → Mid-Cycle → Late Cycle → Recession → วนใหม่
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: FUND FLOW                                         -->
+<!-- ============================================================ -->
+<div class="section-header" id="sec7">
+  <h2><span class="section-number gold">7</span> Fund Flow Analysis — ติดตามเงินทุนไหลข้ามโลก</h2>
+</div>
+
+<p>ตลาดหุ้นไทยเป็นตลาดขนาดเล็กเมื่อเทียบกับตลาดโลก (Market Cap ~$500B vs S&P 500 $40T+) ดังนั้น <strong>เงินทุนต่างชาติที่ไหลเข้า-ออกแม้เพียงเล็กน้อยก็กระทบ SET ได้อย่างมาก</strong></p>
+
+<h3 id="thai-fund-flow">โครงสร้างนักลงทุนในตลาดหุ้นไทย</h3>
+
+<div class="formula-block">
+  <span class="tag data">STRUCTURE</span>
+<span class="highlight">โครงสร้างนักลงทุนในตลาดหุ้นไทย:</span>
+
+<span class="val">นักลงทุนต่างชาติ (Foreign)</span>     ~25-30%
+├── กองทุน Global/EM           ~15%
+├── กองทุน Asia ex-Japan       ~5%
+├── กองทุน ASEAN/Thailand      ~3%
+└── Proprietary Trading        ~5%
+
+<span class="val">นักลงทุนสถาบันไทย (Local Inst)</span> ~10-15%
+├── กองทุนรวม                  ~5%
+├── ประกันชีวิต/ประกันภัย       ~3%
+└── กบข./กองทุนสำรองเลี้ยงชีพ   ~3%
+
+<span class="val">บัญชีบริษัทหลักทรัพย์</span>          ~10-15%
+
+<span class="val">นักลงทุนรายย่อย (Retail)</span>       ~40-50%
+</div>
+
+<h4>การอ่าน Net Buy/Sell รายวัน</h4>
+
+<div class="formula-block">
+  <span class="tag signal">INTERPRETATION</span>
+<span class="highlight">การตีความ Fund Flow:</span>
+
+<span class="ok">ต่างชาติซื้อ + รายย่อยขาย</span> → สัญญาณบวกที่แข็งแกร่งที่สุด
+   (Smart Money ซื้อ, Dumb Money ขาย)
+
+<span class="bad">ต่างชาติขาย + รายย่อยซื้อ</span> → สัญญาณลบที่อันตรายที่สุด
+   (Smart Money ขาย, Dumb Money ซื้อ)
+
+<span class="ok">ต่างชาติซื้อ + สถาบันซื้อ</span>  → สัญญาณบวกมาก
+<span class="bad">ต่างชาติขาย + สถาบันขาย</span>  → สัญญาณลบมาก
+
+<span class="warn">ต่างชาติซื้อสุทธิสะสม 10 วันติด:</span>
+├── เงินกำลังไหลเข้าอย่างต่อเนื่อง
+├── มักเกิดเมื่อ DXY อ่อน + EM Sentiment ดี
+└── SET มักขึ้นตาม
+
+<span class="warn">ต่างชาติขายสุทธิสะสม 10 วันติด:</span>
+├── เงินกำลังไหลออกอย่างต่อเนื่อง
+├── มักเกิดเมื่อ DXY แข็ง + Risk-off ทั่วโลก
+└── อย่าสวนทาง — รอจนเห็นสัญญาณว่าการขายชะลอลง
+</div>
+
+<h3 id="fund-flow-matrix">Fund Flow Decision Matrix</h3>
+
+<div class="table-wrapper">
+  <table>
+    <thead class="purple-head">
+      <tr><th></th><th>ต่างชาติซื้อสุทธิ</th><th>ต่างชาติขายสุทธิ</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>สถาบันซื้อสุทธิ</strong></td>
+        <td style="color:var(--accent-green);">🟢🟢 สัญญาณบวกมากที่สุด<br>→ เพิ่ม Position</td>
+        <td style="color:var(--accent-yellow);">🟡 สัญญาณผสม<br>→ ดูว่าใครถูก ระวัง</td>
+      </tr>
+      <tr>
+        <td><strong>สถาบันขายสุทธิ</strong></td>
+        <td style="color:var(--accent-yellow);">🟡 สัญญาณผสม<br>→ ดูว่าใครถูก ระวัง</td>
+        <td style="color:var(--accent-red);">🔴🔴 สัญญาณลบมากที่สุด<br>→ ลด Position</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="info-box observe">
+  <div class="box-title">🔮 รายย่อยเป็น Contrarian Indicator</div>
+  รายย่อยซื้อหนักมาก (&gt;3,000 ล้าน/วัน) → ⚠️ ตลาดอาจใกล้จุดสูงสุด<br>
+  รายย่อยขายหนักมาก (&gt;3,000 ล้าน/วัน) → อาจเป็นโอกาสซื้อ<br>
+  <strong>รายย่อยมักผิดที่จุดกลับตัวสำคัญ</strong> (ซื้อที่ยอด ขายที่ก้น)
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: CORRELATION                                       -->
+<!-- ============================================================ -->
+<div class="section-header" id="sec8">
+  <h2><span class="section-number pink">8</span> Correlation Matrix — วัดความสัมพันธ์เป็นตัวเลข</h2>
+</div>
+
+<div class="formula-block">
+  <span class="tag concept">CORRELATION</span>
+<span class="highlight">ค่า Correlation:</span>
+
+<span class="ok">+1.0</span> = เคลื่อนไหวไปทางเดียวกันเสมอ (Perfect Positive)
+<span class="val">+0.5</span> = มักไปทางเดียวกัน แต่ไม่เสมอ
+ <span class="comment">0.0</span> = ไม่มีความสัมพันธ์กัน
+<span class="val">-0.5</span> = มักไปคนละทาง แต่ไม่เสมอ
+<span class="bad">-1.0</span> = เคลื่อนไหวสวนทางกันเสมอ (Perfect Negative)
+</div>
+
+<h3>Correlation Matrix ที่นักลงทุนไทยต้องรู้</h3>
+
+<div class="table-wrapper">
+  <table>
+    <thead class="gold-head">
+      <tr><th></th><th>SET</th><th>S&P500</th><th>Nikkei</th><th>HSI</th><th>Gold</th><th>Oil</th><th>USD/THB</th><th>US10Y</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>SET</strong></td><td>1.00</td><td>0.55</td><td>0.50</td><td>0.60</td><td>-0.15</td><td>0.30</td><td style="color:var(--accent-red);">-0.55</td><td>-0.20</td></tr>
+      <tr><td><strong>S&P 500</strong></td><td></td><td>1.00</td><td>0.65</td><td>0.55</td><td>-0.20</td><td>0.25</td><td>-0.10</td><td>0.10</td></tr>
+      <tr><td><strong>Nikkei</strong></td><td></td><td></td><td>1.00</td><td>0.55</td><td>-0.15</td><td>0.20</td><td>-0.05</td><td>0.15</td></tr>
+      <tr><td><strong>Hang Seng</strong></td><td></td><td></td><td></td><td>1.00</td><td>-0.10</td><td>0.25</td><td>-0.20</td><td>-0.05</td></tr>
+      <tr><td><strong>Gold</strong></td><td></td><td></td><td></td><td></td><td>1.00</td><td>-0.10</td><td>0.15</td><td style="color:var(--accent-red);">-0.35</td></tr>
+      <tr><td><strong>Oil</strong></td><td></td><td></td><td></td><td></td><td></td><td>1.00</td><td>-0.05</td><td>0.30</td></tr>
+      <tr><td><strong>USD/THB</strong></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1.00</td><td>0.20</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="info-box warning">
+  <div class="box-title">⚠️ Correlation ไม่คงที่ — กับดักที่ต้องระวัง</div>
+  <strong>1. Correlation เปลี่ยนตามเวลา</strong> — ในภาวะปกติ SET กับ Gold อาจมี Correlation -0.15 แต่ในวิกฤตอาจกลายเป็น +0.50<br>
+  <strong>2. Correlation ≠ Causation</strong> — แค่เพราะ A กับ B เคลื่อนไหวไปด้วยกัน ไม่ได้แปลว่า A ทำให้ B เกิด<br>
+  <strong>3. Tail Correlation สูงกว่า Normal</strong> — ในวิกฤต Correlation ของทุกสินทรัพย์พุ่งเข้าหา +1 การกระจายความเสี่ยงอาจไม่ช่วย<br>
+  <strong>ต้องมีเงินสดเป็นส่วนหนึ่งของพอร์ตเสมอ (Correlation = 0)</strong>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: BUSINESS CYCLE                                    -->
+<!-- ============================================================ -->
+<div class="section-header" id="sec6">
+  <h2><span class="section-number emerald">6</span> วัฏจักรเศรษฐกิจและ Intermarket Rotation</h2>
+</div>
+
+<p>เศรษฐกิจเคลื่อนไหวเป็นวัฏจักร และสินทรัพย์แต่ละประเภทจะทำผลงานดีในช่วงที่ต่างกัน</p>
+
+<h3 id="business-cycle">Business Cycle 4 ระยะ</h3>
+
+<div class="two-col">
+  <div class="col-card green-accent">
+    <h4>🌱 ระยะที่ 1: Early Recovery</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">เพิ่งผ่านจุดต่ำสุด เริ่มฟื้นตัว | เงินเฟ้อต่ำ | ดอกเบี้ยต่ำ</p>
+    <ul>
+      <li style="color:var(--accent-green);">ดีที่สุด: หุ้น Cyclical, Small Cap, หุ้นกู้ HY</li>
+      <li style="color:var(--accent-red);">แย่ที่สุด: เงินสด, สินค้าโภคภัณฑ์</li>
+      <li>หุ้นไทย: ธนาคาร, อสังหาฯ, รถยนต์, ค้าปลีก</li>
+    </ul>
+  </div>
+  <div class="col-card blue-accent">
+    <h4>🚀 ระยะที่ 2: Mid-Cycle Expansion</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">เติบโตแข็งแกร่ง | เงินเฟ้อเริ่มเพิ่ม | ดอกเบี้ยเริ่มขึ้น</p>
+    <ul>
+      <li style="color:var(--accent-green);">ดีที่สุด: หุ้นทุกกลุ่ม, สินค้าโภคภัณฑ์</li>
+      <li style="color:var(--accent-red);">แย่ที่สุด: พันธบัตรระยะยาว, ทองคำ</li>
+      <li>หุ้นไทย: พลังงาน, ปิโตรเคมี, วัสดุก่อสร้าง</li>
+    </ul>
+  </div>
+  <div class="col-card warm-accent">
+    <h4>🔥 ระยะที่ 3: Late Cycle</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">ยังโตแต่เริ่มชะลอ | เงินเฟ้อสูง | ดอกเบี้ยสูง</p>
+    <ul>
+      <li style="color:var(--accent-green);">ดีที่สุด: สินค้าโภคภัณฑ์, Defensive, เงินสด</li>
+      <li style="color:var(--accent-red);">แย่ที่สุด: หุ้น Growth, Small Cap, อสังหาฯ</li>
+      <li>หุ้นไทย: พลังงาน, สาธารณูปโภค, โรงพยาบาล</li>
+    </ul>
+  </div>
+  <div class="col-card red-accent">
+    <h4>❄️ ระยะที่ 4: Recession</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">หดตัว | เงินเฟ้อลดลง | ดอกเบี้ยลง</p>
+    <ul>
+      <li style="color:var(--accent-green);">ดีที่สุด: พันธบัตรรัฐบาล, ทองคำ, เงินสด</li>
+      <li style="color:var(--accent-red);">แย่ที่สุด: หุ้นเกือบทุกกลุ่ม, โภคภัณฑ์, HY Bond</li>
+      <li>หุ้นไทย: โรงพยาบาล, อาหาร, สาธารณูปโภค</li>
+    </ul>
+  </div>
+</div>
+
+<h3 id="investment-clock">Investment Clock — นาฬิกาการลงทุน</h3>
+
+<div class="diagram-block">
+                        เงินเฟ้อสูง
+                            │
+               Late Cycle   │   Stagflation
+             (สินค้าโภคภัณฑ์) │  (ทองคำ, เงินสด)
+                            │
+  เศรษฐกิจดี ───────────────┼─────────────── เศรษฐกิจแย่
+                            │
+              Mid-Cycle     │   Early Recovery
+              (หุ้น)         │   (หุ้น Cyclical)
+                            │
+                        เงินเฟ้อต่ำ
+
+  ทิศทางการหมุน: ทวนเข็มนาฬิกา
+  Early Recovery → Mid-Cycle → Late Cycle → Recession → วนใหม่
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: FUND FLOW                                         -->
+<!-- ============================================================ -->
+<div class="section-header" id="sec7">
+  <h2><span class="section-number gold">7</span> Fund Flow Analysis — ติดตามเงินทุนไหลข้ามโลก</h2>
+</div>
+
+<p>ตลาดหุ้นไทยเป็นตลาดขนาดเล็กเมื่อเทียบกับตลาดโลก (Market Cap ~$500B vs S&P 500 $40+T) ดังนั้น <strong>เงินทุนต่างชาติที่ไหลเข้า-ออกแม้เพียงเล็กน้อยก็กระทบ SET ได้อย่างมาก</strong></p>
+
+<h3 id="thai-fund-flow">โครงสร้างนักลงทุนในตลาดหุ้นไทย</h3>
+
+<div class="formula-block">
+  <span class="tag data">STRUCTURE</span>
+<span class="highlight">โครงสร้างนักลงทุนในตลาดหุ้นไทย:</span>
+
+<span class="val">นักลงทุนต่างชาติ (Foreign)</span>     ~25-30%
+├── กองทุน Global/EM           ~15%
+├── กองทุน Asia ex-Japan       ~5%
+├── กองทุน ASEAN/Thailand      ~3%
+└── Proprietary Trading        ~5%
+
+<span class="val">นักลงทุนสถาบันไทย (Local Inst)</span> ~10-15%
+├── กองทุนรวม                  ~5%
+├── ประกันชีวิต/ประกันภัย       ~3%
+└── กบข./กองทุนสำรองเลี้ยงชีพ   ~3%
+
+<span class="val">บัญชีบริษัทหลักทรัพย์</span>          ~10-15%
+
+<span class="val">นักลงทุนรายย่อย (Retail)</span>       ~40-50%
+</div>
+
+<h4>การตีความ Fund Flow รายวัน</h4>
+
+<div class="formula-block">
+  <span class="tag signal">INTERPRETATION</span>
+<span class="highlight">การตีความ Net Buy/Sell:</span>
+
+<span class="ok">ต่างชาติซื้อ + รายย่อยขาย</span> → สัญญาณบวกที่แข็งแกร่งที่สุด
+   (Smart Money ซื้อ, Dumb Money ขาย)
+
+<span class="bad">ต่างชาติขาย + รายย่อยซื้อ</span> → สัญญาณลบที่อันตรายที่สุด
+   (Smart Money ขาย, Dumb Money ซื้อ)
+
+<span class="ok">ต่างชาติซื้อ + สถาบันซื้อ</span> → สัญญาณบวกมาก
+<span class="bad">ต่างชาติขาย + สถาบันขาย</span> → สัญญาณลบมาก
+
+<span class="warn">ต่างชาติซื้อสุทธิสะสม 10 วันติด:</span>
+├── เงินกำลังไหลเข้าอย่างต่อเนื่อง
+├── มักเกิดเมื่อ DXY อ่อน + EM Sentiment ดี
+└── SET มักขึ้นตาม
+
+<span class="warn">ต่างชาติขายสุทธิสะสม 10 วันติด:</span>
+├── เงินกำลังไหลออกอย่างต่อเนื่อง
+├── มักเกิดเมื่อ DXY แข็ง + Risk-off ทั่วโลก
+└── อย่าสวนทาง — รอจนเห็นสัญญาณว่าการขายชะลอลง
+</div>
+
+<h3 id="fund-flow-matrix">Fund Flow Decision Matrix</h3>
+
+<div class="table-wrapper">
+  <table>
+    <thead class="purple-head">
+      <tr><th></th><th>ต่างชาติซื้อสุทธิ</th><th>ต่างชาติขายสุทธิ</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>สถาบันซื้อสุทธิ</strong></td>
+        <td style="color:var(--accent-green);">🟢🟢 สัญญาณบวกมากที่สุด → เพิ่ม Position</td>
+        <td style="color:var(--accent-yellow);">🟡 สัญญาณผสม → ระวัง ดูว่าใครถูก</td>
+      </tr>
+      <tr>
+        <td><strong>สถาบันขายสุทธิ</strong></td>
+        <td style="color:var(--accent-yellow);">🟡 สัญญาณผสม → ระวัง ดูว่าใครถูก</td>
+        <td style="color:var(--accent-red);">🔴🔴 สัญญาณลบมากที่สุด → ลด Position</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="info-box observe">
+  <div class="box-title">🔮 รายย่อยเป็น Contrarian Indicator</div>
+  • รายย่อยซื้อหนักมาก (&gt;3,000 ล้าน/วัน) → ⚠️ ตลาดอาจใกล้จุดสูงสุด<br>
+  • รายย่อยขายหนักมาก (&gt;3,000 ล้าน/วัน) → อาจเป็นโอกาสซื้อ<br>
+  • รายย่อยมักผิดที่จุดกลับตัวสำคัญ (ซื้อที่ยอด ขายที่ก้น)
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: CORRELATION MATRIX                                -->
+<!-- ============================================================ -->
+<div class="section-header" id="sec8">
+  <h2><span class="section-number cyan">8</span> Correlation Matrix — วัดความสัมพันธ์เป็นตัวเลข</h2>
+</div>
+
+<h3>Correlation คืออะไร</h3>
+
+<div class="formula-block">
+  <span class="tag concept">CORRELATION</span>
+<span class="highlight">ค่า Correlation:</span>
+
+<span class="ok">+1.0</span> = เคลื่อนไหวไปทางเดียวกันเสมอ (Perfect Positive)
+<span class="val">+0.5</span> = มักไปทางเดียวกัน แต่ไม่เสมอ
+<span class="comment"> 0.0</span> = ไม่มีความสัมพันธ์กัน
+<span class="warn">-0.5</span> = มักไปคนละทาง แต่ไม่เสมอ
+<span class="bad">-1.0</span> = เคลื่อนไหวสวนทางกันเสมอ (Perfect Negative)
+</div>
+
+<h3>Correlation Matrix ที่นักลงทุนไทยต้องรู้</h3>
+
+<div class="formula-block">
+  <span class="tag matrix">CORRELATION MATRIX</span>
+<span class="highlight">ตาราง Correlation โดยประมาณ (ค่าเฉลี่ยระยะยาว):</span>
+
+              SET    S&P500  Nikkei  HSI    Gold   Oil    USD/THB  US10Y
+SET           <span class="val">1.00</span>
+S&P 500       <span class="ok">0.55</span>   1.00
+Nikkei        <span class="ok">0.50</span>   0.65   1.00
+Hang Seng     <span class="ok">0.60</span>   0.55   0.55   1.00
+Gold         <span class="warn">-0.15</span>  -0.20  -0.15  -0.10   1.00
+Oil           <span class="val">0.30</span>   0.25   0.20   0.25  -0.10   1.00
+USD/THB      <span class="bad">-0.55</span>  -0.10  -0.05  -0.20   0.15  -0.05   1.00
+US 10Y Yield <span class="warn">-0.20</span>   0.10   0.15  -0.05  -0.35   0.30   0.20    1.00
+
+<span class="highlight">การอ่าน:</span>
+├── SET กับ USD/THB มี Correlation <span class="bad">-0.55</span> → บาทอ่อน SET มักลง (สูงมาก)
+├── SET กับ Hang Seng มี Correlation <span class="ok">0.60</span> → ไปทางเดียวกันบ่อย
+├── SET กับ Gold มี Correlation <span class="warn">-0.15</span> → ความสัมพันธ์น้อย
+├── Gold กับ US 10Y Yield มี Correlation <span class="bad">-0.35</span> → ทองมักสวนทาง Yield
+└── Oil กับ US 10Y Yield มี Correlation <span class="val">0.30</span> → น้ำมันขึ้น Yield มักขึ้นตาม
+</div>
+
+<h3>⚠️ Correlation ไม่คงที่ — กับดักที่ต้องระวัง</h3>
+
+<div class="info-box danger">
+  <div class="box-title">🚨 ปัญหาสำคัญที่สุดของ Correlation</div>
+  <strong>1. Correlation เปลี่ยนตามเวลา</strong> — ในภาวะปกติ SET กับ Gold อาจมี Correlation -0.15 แต่ในภาวะวิกฤตอาจกลายเป็น +0.50 (ทุกอย่างลงพร้อมกัน)<br>
+  <strong>2. Correlation ≠ Causation</strong> — แค่เพราะ A กับ B เคลื่อนไหวไปด้วยกัน ไม่ได้แปลว่า A ทำให้ B เกิด<br>
+  <strong>3. Tail Correlation สูงกว่า Normal</strong> — ในภาวะวิกฤต Correlation ของทุกสินทรัพย์พุ่งเข้าหา +1 การกระจายความเสี่ยงอาจไม่ช่วย
+</div>
+
+<h4>Rolling Correlation — ดู Correlation ที่เปลี่ยนแปลง</h4>
+
+<div class="formula-block">
+  <span class="tag signal">ROLLING CORRELATION</span>
+<span class="highlight">วิธีทำ Rolling Correlation:</span>
+1. คำนวณ Correlation ของ SET กับ S&P 500 ย้อนหลัง 60 วัน
+2. เลื่อนหน้าต่างไปทีละวัน
+3. Plot เป็นกราฟ
+
+<span class="highlight">การตีความ:</span>
+├── Correlation เพิ่มขึ้นเข้าหา +1 → ตลาดกำลัง "เชื่อมต่อ" กันมากขึ้น
+│   → <span class="warn">มักเกิดในช่วง Risk-off → ระวัง</span>
+├── Correlation ลดลงเข้าหา 0 → ตลาดเริ่ม "แยกตัว"
+│   → ปัจจัยเฉพาะของแต่ละตลาดสำคัญมากขึ้น
+└── Correlation เปลี่ยนเครื่องหมาย (จาก + เป็น -) → <span class="bad">Regime Change</span>
+    → ต้องทบทวนกลยุทธ์ทั้งหมด
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: DIVERGENCE                                        -->
+<!-- ============================================================ -->
+<div class="section-header" id="sec9">
+  <h2><span class="section-number pink">9</span> Intermarket Divergence — สัญญาณเตือนที่ทรงพลังที่สุด</h2>
+</div>
+
+<p>Intermarket Divergence เกิดขึ้นเมื่อตลาดที่ปกติเคลื่อนไหวไปด้วยกัน เริ่มเคลื่อนไหวสวนทางกัน — นี่คือ <strong>สัญญาณเตือนที่ทรงพลังที่สุด</strong> ใน Intermarket Analysis</p>
+
+<div class="formula-block">
+  <span class="tag warning">DIVERGENCE SIGNALS</span>
+<span class="highlight">Divergence ที่ต้องจับตา:</span>
+
+<span class="bad">1. หุ้นขึ้น + Bond Yield ลง</span> (ปกติไปทางเดียวกัน)
+   ├── ตลาดพันธบัตรกำลังบอกว่าเศรษฐกิจจะชะลอ
+   └── ⚠️ ตลาดพันธบัตรมักถูกก่อน → ระวังหุ้นจะลงตาม
+
+<span class="bad">2. หุ้นขึ้น + ทองแดงลง</span>
+   ├── Dr. Copper บอกว่าเศรษฐกิจจริงกำลังชะลอ
+   └── ⚠️ ทองแดงมักถูกก่อน → ระวังหุ้นจะลงตาม
+
+<span class="bad">3. หุ้นขึ้น + Breadth ลง</span> (A/D Line ลง)
+   ├── ดัชนีขึ้นเพราะหุ้นใหญ่ไม่กี่ตัว
+   └── ⚠️ ขาขึ้นที่แคบ → ไม่ยั่งยืน
+
+<span class="bad">4. SET ขึ้น + ต่างชาติขายสุทธิต่อเนื่อง</span>
+   ├── SET ขึ้นจากแรงซื้อรายย่อย ไม่ใช่ Smart Money
+   └── ⚠️ ขาขึ้นที่ไม่มี Smart Money หนุน → อันตราย
+
+<span class="bad">5. น้ำมันขึ้น + หุ้นพลังงานไม่ขึ้น</span>
+   ├── ตลาดไม่เชื่อว่าน้ำมันจะขึ้นต่อ
+   └── ⚠️ อาจเป็นสัญญาณว่าน้ำมันจะกลับลง
+
+<span class="bad">6. DXY ลง + SET ไม่ขึ้น</span>
+   ├── ปกติ DXY ลง → เงินไหลเข้า EM → SET ขึ้น
+   └── ⚠️ มีปัญหาเฉพาะของไทย ต้องหาสาเหตุ
+</div>
+
+<h3>วิธีใช้ Divergence ในการตัดสินใจ</h3>
+
+<div class="formula-block">
+  <span class="tag workflow">DIVERGENCE WORKFLOW</span>
+<span class="highlight">เมื่อเห็น Divergence:</span>
+
+<span class="val">ขั้นตอนที่ 1: ยืนยันว่าเป็น Divergence จริง</span>
+├── ดูข้อมูลอย่างน้อย 2-4 สัปดาห์ ไม่ใช่แค่ 1-2 วัน
+├── Divergence ที่เกิดแค่ 1-2 วันอาจเป็นแค่ Noise
+└── ยิ่ง Divergence นานยิ่งเป็นสัญญาณที่แข็งแกร่ง
+
+<span class="val">ขั้นตอนที่ 2: ประเมินความรุนแรง</span>
+├── Divergence เล็กน้อย → จับตาดู ยังไม่ต้องทำอะไร
+├── Divergence ชัดเจน → เริ่มลด Position Size
+└── Divergence รุนแรง + หลายตลาดพร้อมกัน → ลด Position อย่างจริงจัง
+
+<span class="val">ขั้นตอนที่ 3: ตัดสินใจ</span>
+├── ไม่ต้องรีบ — Divergence มักใช้เวลาหลายสัปดาห์ถึงหลายเดือน
+├── ใช้ Divergence เป็น "สัญญาณเตือน" ไม่ใช่ "สัญญาณซื้อ/ขาย"
+├── รวมกับสัญญาณอื่น (Technical, Fundamental) ก่อนตัดสินใจ
+└── ถ้า Divergence หายไป → สัญญาณเตือนยกเลิก
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: THAI MARKET                                      -->
+<!-- ============================================================ -->
+<div class="section-header" id="sec10">
+  <h2><span class="section-number emerald">10</span> การนำ Intermarket Analysis มาใช้กับตลาดหุ้นไทย</h2>
+</div>
+
+<h3>ปัจจัย Intermarket ที่กระทบ SET มากที่สุด (เรียงตามความสำคัญ)</h3>
+
+<div class="formula-block">
+  <span class="tag data">SET FACTORS</span>
+<span class="highlight">เรียงตามความสำคัญ:</span>
+
+<span class="val">อันดับ 1: Fund Flow ต่างชาติ</span>
+├── Correlation กับ SET สูงที่สุด
+├── กำหนดทิศทาง SET ในระยะสั้น-กลาง
+└── ดูทุกวัน ที่ set.or.th
+
+<span class="val">อันดับ 2: DXY / USD/THB</span>
+├── ดอลลาร์แข็ง = เงินไหลออก = SET ลง
+├── ดอลลาร์อ่อน = เงินไหลเข้า = SET ขึ้น
+└── ดูทุกวัน ที่ investing.com
+
+<span class="val">อันดับ 3: US 10-Year Treasury Yield</span>
+├── Yield ขึ้นเร็ว → กดดัน EM ทั้งภูมิภาค
+└── ดูทุกวัน ที่ cnbc.com
+
+<span class="val">อันดับ 4: ราคาน้ำมัน</span>
+├── กระทบหุ้นพลังงาน (สัดส่วนใหญ่ใน SET)
+└── ดูทุกวัน ที่ investing.com
+
+<span class="val">อันดับ 5: ตลาดหุ้นจีน/ฮ่องกง</span>
+├── จีนเป็นคู่ค้าอันดับ 1 ของไทย
+└── ดูทุกวัน ที่ cnbc.com
+
+<span class="val">อันดับ 6: ทองคำ</span>
+├── สัญญาณ Risk-on/Risk-off
+└── ดูทุกวัน ที่ goldprice.org
+
+<span class="val">อันดับ 7: VIX (Fear Index)</span>
+├── VIX สูง → เงินไหลออก EM
+└── ดูทุกวัน ที่ cboe.com
+</div>
+
+<h3>Intermarket → Sector Selection สำหรับหุ้นไทย</h3>
+
+<div class="two-col">
+  <div class="col-card green-accent">
+    <h4>🌟 สถานการณ์ 1: Goldilocks / Risk-on</h4>
+    <p style="font-size:0.82rem; color:var(--text-muted);">DXY ลง + Bond Yield ลง + น้ำมันทรง + ทองลง</p>
+    <ul>
+      <li style="color:var(--accent-green);">เพิ่ม: ธนาคาร, อสังหาฯ, เทค, หุ้นเล็ก-กลาง</li>
+      <li style="color:var(--accent-red);">ลด: Defensive, เงินสด</li>
+    </ul>
+  </div>
+  <div class="col-card warm-accent">
+    <h4>🔥 สถานการณ์ 2: Inflationary / Late Cycle</h4>
+    <p style="font-size:0.82rem; color:var(--text-muted);">DXY ขึ้น + Bond Yield ขึ้น + น้ำมันขึ้น + ทองลง</p>
+    <ul>
+      <li style="color:var(--accent-green);">เพิ่ม: พลังงาน, ธนาคาร, หุ้นส่งออก</li>
+      <li style="color:var(--accent-red);">ลด: อสังหาฯ, REITs, เทค, สายการบิน</li>
+    </ul>
+  </div>
+  <div class="col-card blue-accent">
+    <h4>❄️ สถานการณ์ 3: Risk-off / Recession Fear</h4>
+    <p style="font-size:0.82rem; color:var(--text-muted);">DXY ขึ้น + Bond Yield ลง + น้ำมันลง + ทองขึ้น</p>
+    <ul>
+      <li style="color:var(--accent-green);">เพิ่ม: โรงพยาบาล, อาหาร, สาธารณูปโภค, เงินสด</li>
+      <li style="color:var(--accent-red);">ลด: หุ้นวัฏจักรทั้งหมด</li>
+    </ul>
+  </div>
+  <div class="col-card red-accent">
+    <h4>💀 สถานการณ์ 4: Stagflation</h4>
+    <p style="font-size:0.82rem; color:var(--text-muted);">DXY ลง + Bond Yield ขึ้น + น้ำมันขึ้น + ทองขึ้น</p>
+    <ul>
+      <li style="color:var(--accent-green);">เพิ่ม: พลังงาน, ทองคำ, สินค้าเกษตร, เงินสด</li>
+      <li style="color:var(--accent-red);">ลด: เทค, อสังหาฯ, หุ้นหนี้สูง</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: DASHBOARD                                        -->
+<!-- ============================================================ -->
+<div class="section-header" id="sec11">
+  <h2><span class="section-number gold">11</span> Intermarket Dashboard — ระบบติดตามรายวัน</h2>
+</div>
+
+<p>ใช้ Scorecard นี้ทุกเช้าก่อนตลาดเปิด (ใช้เวลา 10-15 นาที):</p>
+
+<div class="checklist-box">
+<span class="highlight">═══════════ INTERMARKET DASHBOARD ═══════════</span>
+
+<span class="label">ตลาดหุ้นโลก:</span>
+  S&P 500: _____ (___%)  🟢/🟡/🔴
+  Nasdaq:  _____ (___%)  🟢/🟡/🔴
+  Nikkei:  _____ (___%)  🟢/🟡/🔴
+  Hang Seng: _____ (___%)  🟢/🟡/🔴
+
+<span class="label">พันธบัตร:</span>
+  US 10Y Yield: _____%  (เปลี่ยนแปลง ___bp)
+  2Y-10Y Spread: ___bp  (Normal/Flat/Inverted)
+  Credit Spread (HY OAS): ___bp
+
+<span class="label">ค่าเงิน:</span>
+  DXY:     _____ (___%)  แข็ง/อ่อน
+  USD/THB: _____ (___%)  บาทแข็ง/อ่อน
+  USD/JPY: _____ (___%)  เยนแข็ง/อ่อน
+
+<span class="label">สินค้าโภคภัณฑ์:</span>
+  น้ำมัน Brent: $_____ (___%)
+  ทองคำ:       $_____ (___%)
+  ทองแดง:      $_____ (___%)
+
+<span class="label">ตัวชี้วัดความกลัว:</span>
+  VIX: _____ (ต่ำ/ปกติ/สูง/วิกฤต)
+
+<span class="label">Fund Flow:</span>
+  ต่างชาติ (เมื่อวาน): ซื้อ/ขายสุทธิ _____ ล้านบาท
+  ต่างชาติ (สะสม 5 วัน): _____ ล้านบาท
+
+<span class="label">Divergence Check:</span>
+  □ หุ้นขึ้น + Bond Yield ลง?
+  □ หุ้นขึ้น + ทองแดงลง?
+  □ SET ขึ้น + ต่างชาติขาย?
+  □ DXY ลง + SET ไม่ขึ้น?
+
+<span class="highlight">═══════════ สรุป ═══════════</span>
+  สภาวะตลาด: Goldilocks / Inflationary / Deflationary / Stagflation
+  Intermarket Signal: <span class="ok">Bullish</span> / <span class="val">Neutral</span> / <span class="bad">Bearish</span>
+  แผนวันนี้: เชิงรุก / ระวัง / ป้องกัน
+</div>
+
+<h3>แหล่งข้อมูลสำหรับ Dashboard (ฟรี)</h3>
+
+<div class="table-wrapper">
+  <table>
+    <thead class="green-head">
+      <tr><th>ข้อมูล</th><th>แหล่งที่มา</th><th>URL</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>ตลาดหุ้นโลก</td><td>Investing.com</td><td>investing.com/indices/major-indices</td></tr>
+      <tr><td>Bond Yield</td><td>CNBC</td><td>cnbc.com/bonds</td></tr>
+      <tr><td>DXY, ค่าเงิน</td><td>Investing.com</td><td>investing.com/currencies</td></tr>
+      <tr><td>น้ำมัน, ทองคำ</td><td>Investing.com</td><td>investing.com/commodities</td></tr>
+      <tr><td>VIX</td><td>CBOE</td><td>cboe.com/vix</td></tr>
+      <tr><td>Fund Flow ไทย</td><td>SET</td><td>set.or.th → Market Data</td></tr>
+      <tr><td>USD/THB</td><td>BOT</td><td>bot.or.th</td></tr>
+      <tr><td>ปฏิทินเศรษฐกิจ</td><td>Investing.com</td><td>investing.com/economic-calendar</td></tr>
+      <tr><td>Credit Spread</td><td>FRED</td><td>fred.stlouisfed.org</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 12: CASE STUDIES                                     -->
+<!-- ============================================================ -->
+<div class="section-header" id="sec12">
+  <h2><span class="section-number red">12</span> กรณีศึกษา — วิกฤตและโอกาสที่ Intermarket บอกล่วงหน้า</h2>
+</div>
+
+<p>ทฤษฎี Intermarket Analysis จะไม่มีความหมายอะไรเลย ถ้าคุณไม่เห็นว่ามันทำงานจริงในสนามรบ กรณีศึกษาเหล่านี้คือ "บทเรียนราคาแพง" ที่คนอื่นจ่ายไปแล้ว — คุณแค่ต้องเรียนรู้จากมัน</p>
+
+<h3 id="case1">กรณีศึกษาที่ 1: Yen Carry Trade Unwind — สิงหาคม 2024</h3>
+
+<div class="card">
+  <div class="card-title">🇯🇵 เหตุการณ์</div>
+  <p>วันที่ 5 สิงหาคม 2024 ตลาดหุ้นทั่วโลกร่วงหนัก Nikkei 225 ดิ่งลงกว่า <strong>12.4%</strong> ในวันเดียว — หนักที่สุดนับตั้งแต่ปี 1987 เมื่อ BOJ ขึ้นดอกเบี้ยจาก 0-0.1% เป็น 0.25% ทำให้เกิด Carry Trade Unwind ครั้งใหญ่</p>
+</div>
+
+<div class="formula-block">
+  <span class="tag timeline">TIMELINE</span>
+<span class="highlight">Timeline ของเหตุการณ์:</span>
+
+31 ก.ค. 2024: BOJ ขึ้นดอกเบี้ยเป็น 0.25% (ตลาดไม่คาดคิด)
+              USD/JPY เริ่มลดลงเร็ว (เยนแข็งขึ้น)
+
+1-2 ส.ค. 2024: USD/JPY ลงต่อเนื่อง
+               US 10Y Yield ลดลง 55bp (จาก 4.28% เป็น 3.73%)
+
+<span class="bad">5 ส.ค. 2024: "Black Monday" ของเอเชีย</span>
+├── Nikkei <span class="bad">-12.4%</span> (วันเดียว)
+├── KOSPI -8.8%
+├── SET -2.1%
+├── S&P 500 -3.0%
+├── VIX พุ่งจาก 23 เป็น <span class="bad">65</span> (สูงสุดนับตั้งแต่ COVID)
+└── Bitcoin -15%
+
+สัปดาห์ถัดมา: ตลาดเริ่มฟื้นตัว
+              Nikkei ดีดกลับ <span class="ok">+10%</span> ใน 2 วัน
+</div>
+
+<h4>สัญญาณ Intermarket ที่บอกล่วงหน้า</h4>
+
+<div class="principle-grid">
+  <div class="principle-card">
+    <span class="principle-num">สัญญาณ 1</span>
+    <div><strong>USD/JPY ลดลงเร็วผิดปกติ</strong><br><span style="font-size:0.85rem; color:var(--text-secondary);">เยนแข็งขึ้นจาก 162 → 150 ใน 2-3 สัปดาห์ = Carry Trade Unwind</span></div>
+  </div>
+  <div class="principle-card">
+    <span class="principle-num">สัญญาณ 2</span>
+    <div><strong>US Bond Yield ลดลงเร็ว</strong><br><span style="font-size:0.85rem; color:var(--text-secondary);">US 10Y ลดลง 55bp ในไม่กี่วัน = ตลาดกลัว Recession</span></div>
+  </div>
+  <div class="principle-card">
+    <span class="principle-num">สัญญาณ 3</span>
+    <div><strong>VIX เริ่มขยับขึ้นก่อนหน้า</strong><br><span style="font-size:0.85rem; color:var(--text-secondary);">VIX จาก 12 → 23 ก่อนวัน Black Monday = Early Warning</span></div>
+  </div>
+  <div class="principle-card">
+    <span class="principle-num">สัญญาณ 4</span>
+    <div><strong>Divergence หุ้น vs พันธบัตร</strong><br><span style="font-size:0.85rem; color:var(--text-secondary);">หุ้นยังใกล้ High แต่ Bond Yield ลงเร็ว = ตลาดพันธบัตรเห็นก่อน</span></div>
+  </div>
+</div>
+
+<div class="info-box tip">
+  <div class="box-title">💡 บทเรียนสำหรับนักลงทุนไทย</div>
+  1. ติดตาม USD/JPY เสมอ — เยนแข็งเร็ว = อันตรายสำหรับทุกตลาดในเอเชีย<br>
+  2. Bond Yield ลงเร็ว = สัญญาณ Risk-off<br>
+  3. VIX เป็น Early Warning — ขยับขึ้นก่อนตลาดลง = เวลาลด Position<br>
+  4. วิกฤตจาก Carry Trade Unwind มักรุนแรงแต่สั้น — ถ้ามีเงินสดพร้อม อาจเป็นโอกาสซื้อ
+</div>
+
+<h3 id="case2">กรณีศึกษาที่ 2: Stock-Bond Correlation Breakdown 2022</h3>
+
+<div class="card">
+  <div class="card-title">📉 ปีที่ทุกอย่างลงพร้อมกัน</div>
+  <p>ปี 2022 เป็นปีที่เลวร้ายที่สุดสำหรับพอร์ต 60/40 ในรอบหลายทศวรรษ — S&P 500 ลง 19.4% และ US Aggregate Bond Index ลงเกือบ 13% ในปีเดียวกัน เพราะ Fed ขึ้นดอกเบี้ยจาก 0.25% เป็น 4.50% ภายในปีเดียว</p>
+</div>
+
+<div class="formula-block">
+  <span class="tag concept">CORRELATION SHIFT</span>
+<span class="highlight">ทำไม Correlation เปลี่ยน:</span>
+
+<span class="ok">ภาวะปกติ (เงินเฟ้อต่ำ):</span>
+├── หุ้นลง → นักลงทุนหนีไปพันธบัตร → พันธบัตรขึ้น
+├── Correlation เป็นลบ → กระจายความเสี่ยงได้
+└── พอร์ต 60/40 ทำงานดี
+
+<span class="bad">ภาวะเงินเฟ้อสูง (2022):</span>
+├── Fed ขึ้นดอกเบี้ยเร็ว → Bond Yield พุ่ง → ราคาพันธบัตรลง
+├── Bond Yield พุ่ง → กดดันหุ้น (Discount Rate สูงขึ้น)
+├── ทั้งหุ้นและพันธบัตรลงพร้อมกัน
+├── Correlation กลายเป็นบวก → กระจายความเสี่ยงไม่ได้
+└── <span class="bad">พอร์ต 60/40 พังทลาย</span>
+
+<span class="warn">ผลกระทบต่อตลาดไทย:</span>
+├── SET ลดลงจาก ~1,700 เป็น ~1,550
+├── ต่างชาติขายสุทธิหุ้นไทยต่อเนื่อง
+├── บาทอ่อนค่าจาก 33 เป็น 38 ต่อดอลลาร์
+├── DXY พุ่งจาก 96 → 114 (สูงสุดในรอบ 20 ปี)
+└── แทบไม่มีที่หลบ
+</div>
+
+<div class="info-box warning">
+  <div class="box-title">⚠️ บทเรียนสำคัญ</div>
+  1. ในภาวะเงินเฟ้อสูง กฎ Intermarket เปลี่ยน — หุ้นกับพันธบัตรอาจลงพร้อมกัน<br>
+  2. สินค้าโภคภัณฑ์เป็น Leading Indicator ของเงินเฟ้อ<br>
+  3. เมื่อ Correlation เปลี่ยน ต้องเปลี่ยนกลยุทธ์ — ถือเงินสดมากขึ้น<br>
+  4. DXY ที่พุ่งขึ้นเร็ว = ต้องลด Position ใน EM ทันที
+</div>
+
+<h3 id="case3">กรณีศึกษาที่ 3: ทองคำทำ All-Time High ต่อเนื่อง 2024-2025</h3>
+
+<div class="card">
+  <div class="card-title">🥇 De-dollarization และ Geopolitical Risk</div>
+  <p>ทองคำทำราคาสูงสุดเป็นประวัติการณ์ต่อเนื่อง ทะลุ $2,000, $2,500, $3,000 และพุ่งเกิน $4,000 ต่อออนซ์ ทั้งที่ Bond Yield ยังสูงและดอลลาร์ไม่ได้อ่อนมาก — ขัดกับทฤษฎีเดิม</p>
+</div>
+
+<div class="formula-block">
+  <span class="tag concept">STRUCTURAL SHIFT</span>
+<span class="highlight">ทำไมทองขึ้นทั้งที่ "ไม่ควรขึ้น" ตามทฤษฎีเดิม:</span>
+
+<span class="warn">ทฤษฎีเดิม:</span>
+├── Real Interest Rate สูง → ทองควรลง
+├── ดอลลาร์ไม่ได้อ่อนมาก → ทองไม่ควรขึ้นแรง
+└── ตลาดหุ้นยังดี → ไม่ต้องการ Safe Haven
+
+<span class="ok">ความจริงที่เกิดขึ้น:</span>
+├── ธนาคารกลางซื้อทองเป็น "ประกันภัย" จาก Geopolitical Risk
+│   ├── สงครามรัสเซีย-ยูเครน → รัสเซียถูก Freeze ทุนสำรอง
+│   ├── ความตึงเครียดจีน-สหรัฐ → จีนกลัวถูก Sanction
+│   └── De-dollarization → ลดการพึ่งพาดอลลาร์ในทุนสำรอง
+├── ETF Inflow กลับมาแรง
+├── อุปสงค์ทองคำทั่วโลกทะลุ 5,000 ตันเป็นครั้งแรก
+└── นโยบาย Tariff สร้างความไม่แน่นอนเพิ่ม
+
+<span class="highlight">บทเรียน:</span>
+├── Intermarket Relationship ไม่คงที่ตลอดกาล
+├── Structural Shift สำคัญกว่า Cyclical Pattern
+├── Geopolitical Risk ประเมินค่าไม่ได้ แต่กระทบราคามหาศาล
+└── ต้องมี "ประกันภัย" ในพอร์ตเสมอ (ทองคำ 5-10%)
+</div>
+
+<h3 id="case4">กรณีศึกษาที่ 4: SET กับ Foreign Fund Flow 2024-2025</h3>
+
+<div class="card">
+  <div class="card-title">🇹🇭 เมื่อเงินต่างชาติไหลออกไม่หยุด</div>
+  <p>ต่างชาติขายสุทธิหุ้นไทยมากกว่า 4,200 ล้านดอลลาร์ในรอบ 12 เดือน มากที่สุดในอาเซียน SET ลดลงอย่างมีนัยสำคัญ ขณะที่ตลาดหุ้นสหรัฐทำ All-Time High</p>
+</div>
+
+<div class="formula-block">
+  <span class="tag flow">OUTFLOW FACTORS</span>
+<span class="highlight">ปัจจัย Intermarket ที่กดดัน SET:</span>
+
+<span class="bad">1. US Exceptionalism</span>
+├── เศรษฐกิจสหรัฐแข็งแกร่งกว่าที่คาด
+├── AI Boom ดึงเงินเข้าหุ้นเทคสหรัฐ
+└── เงินทุนไหลกลับสหรัฐ ไม่ออกมาหา EM
+
+<span class="bad">2. ส่วนต่างดอกเบี้ย</span>
+├── Fed Funds Rate 5.25-5.50% vs ไทย 2.25%
+└── Carry Trade กลับทิศ (เงินไหลจาก EM กลับ DM)
+
+<span class="bad">3. ปัจจัยเฉพาะของไทย</span>
+├── ความไม่แน่นอนทางการเมือง
+├── GDP เติบโตช้ากว่าเพื่อนบ้าน (1.9% ในปี 2024)
+├── หนี้ครัวเรือนสูง (~91% ของ GDP)
+└── ขาดหุ้น New Economy ที่ดึงดูดนักลงทุน
+
+<span class="bad">4. Tariff Risk</span>
+├── นโยบาย Tariff กดดัน EM ทั้งภูมิภาค
+└── ไทยพึ่งพาการส่งออกสูง
+</div>
+
+<div class="info-box tip">
+  <div class="box-title">💡 บทเรียนสำคัญ</div>
+  1. Fund Flow คือปัจจัยอันดับ 1 ของ SET — ถ้าต่างชาติยังขาย SET ยากจะขึ้น<br>
+  2. อย่าสวนทาง Fund Flow — "ซื้อเมื่อต่างชาติขาย" ถ้าขายต่อเนื่องหลายเดือน คุณจะขาดทุนหนัก<br>
+  3. ดู DXY ก่อนดู SET — ถ้า DXY ยังแข็ง อย่าคาดหวังว่าเงินจะไหลเข้า EM<br>
+  4. ปัจจัยเฉพาะของประเทศสำคัญ — แม้ EM โดยรวมจะดี SET อาจ Underperform
+</div>
+
+<h3 id="case5">กรณีศึกษาที่ 5: Inverted Yield Curve 2022-2024</h3>
+
+<div class="card">
+  <div class="card-title">📊 สัญญาณเตือนที่ "ผิด" หรือ "ยังไม่ถึงเวลา"?</div>
+  <p>Yield Curve (2Y-10Y Spread) Invert ตั้งแต่กรกฎาคม 2022 นานกว่า 2 ปี — นานที่สุดในประวัติศาสตร์ นักวิเคราะห์คาดว่าจะเกิด Recession แต่เศรษฐกิจสหรัฐกลับยังเติบโตได้ดี</p>
+</div>
+
+<div class="formula-block">
+  <span class="tag timeline">ANALYSIS</span>
+<span class="highlight">ทำไม Recession ไม่เกิดทันที:</span>
+
+<span class="val">1. Fiscal Stimulus ขนาดใหญ่</span>
+├── รัฐบาลสหรัฐใช้จ่ายมหาศาล (Deficit &gt; $1.5 trillion/ปี)
+└── ชดเชยผลกระทบจากดอกเบี้ยสูง
+
+<span class="val">2. ตลาดแรงงานแข็งแกร่งผิดปกติ</span>
+├── อัตราว่างงานต่ำมาก (~3.5-4%)
+└── ผู้บริโภคยังมีรายได้ ยังใช้จ่าย
+
+<span class="val">3. AI Investment Boom</span>
+├── การลงทุนใน AI สร้างอุปสงค์ใหม่
+└── ชดเชยการชะลอตัวในภาคอื่น
+
+<span class="warn">4. Yield Curve อาจยังไม่ "ผิด"</span>
+├── ในอดีต Recession มักเกิด 6-24 เดือนหลัง Inversion
+├── สิ่งที่น่ากลัวกว่า Inversion คือ <span class="bad">Un-inversion</span>
+│   (เมื่อ Curve กลับมา Normal = Fed เริ่มลดดอกเบี้ย = เศรษฐกิจอ่อนแอจริง)
+└── ก.ย. 2024: Yield Curve กลับมา Normal → ต้องรอดูต่อ
+</div>
+
+<div class="info-box info">
+  <div class="box-title">📌 บทเรียนสำคัญ</div>
+  1. Inverted Yield Curve เป็น Warning ไม่ใช่ Timing Tool — บอกว่า "ระวัง" แต่ไม่บอกว่า "เมื่อไหร่"<br>
+  2. อย่า Short ตลาดแค่เพราะ Yield Curve Invert — Lead Time อาจนานมาก<br>
+  3. ดู Un-inversion ด้วย — อาจเป็นสัญญาณที่อันตรายกว่า<br>
+  4. ใช้ร่วมกับสัญญาณอื่น — อย่าพึ่งตัวชี้วัดเดียว
+</div>
+
+<h3 id="case6">กรณีศึกษาที่ 6: Liberation Day Tariff — เมษายน 2025</h3>
+
+<div class="card">
+  <div class="card-title">🇺🇸 Structural Shock จากนโยบายการค้า</div>
+  <p>วันที่ 2 เมษายน 2025 สหรัฐประกาศ "Liberation Day" Tariff กำหนดภาษีนำเข้าขั้นต่ำ 10% กับทุกประเทศ และสูงกว่านั้นมากสำหรับบางประเทศ (จีน 34%, อินเดีย 50%, ไทย 36%)</p>
+</div>
+
+<div class="formula-block">
+  <span class="tag signal">INTERMARKET REACTION</span>
+<span class="highlight">ผลกระทบ Intermarket:</span>
+
+<span class="bad">ตลาดหุ้น:</span>
+├── S&P 500 ลดลงอย่างรวดเร็ว
+├── ตลาดหุ้น EM ถูกกดดันหนัก
+└── หุ้นส่งออกทั่วโลกถูกเทขาย
+
+<span class="warn">ค่าเงิน:</span>
+├── ดอลลาร์ผันผวนสูง (แข็งขึ้นจาก Risk-off)
+├── ค่าเงิน EM อ่อนค่า
+└── บาทอ่อนค่าตาม
+
+<span class="val">สินค้าโภคภัณฑ์:</span>
+├── น้ำมันลง (กลัวอุปสงค์ลด)
+├── ทองแดงลง (กลัวการค้าโลกหดตัว)
+└── <span class="ok">ทองคำขึ้น (Safe Haven)</span>
+
+<span class="ok">พันธบัตร:</span>
+├── US Bond Yield ลดลง (Flight to Safety)
+└── Credit Spread กว้างขึ้น
+
+<span class="highlight">Pattern: Classic Risk-off</span>
+ทองคำขึ้น + หุ้นลง + Bond Yield ลง + ดอลลาร์แข็ง + VIX พุ่ง
+
+<span class="warn">สิ่งที่ต่างจาก Risk-off ปกติ:</span>
+├── Tariff เป็น "Structural Shock" ไม่ใช่ "Cyclical Shock"
+├── ไม่สามารถแก้ได้ด้วยการลดดอกเบี้ย
+└── กระทบ Supply Chain ระยะยาว
+</div>
+
+<div class="info-box danger">
+  <div class="box-title">🚨 บทเรียนสำคัญ</div>
+  1. Geopolitical/Policy Shock ไม่สามารถทำนายได้จาก Chart — ต้องติดตามข่าวและนโยบาย<br>
+  2. เมื่อเกิด Shock ให้ดู Intermarket Reaction ก่อน — ถ้าทุกตลาดบอก Risk-off พร้อมกัน ให้เชื่อ<br>
+  3. อย่ารีบซื้อ Dip จาก Policy Shock — อาจมีผลกระทบระยะยาว<br>
+  4. มีเงินสดพร้อมเสมอ — วิกฤตคือโอกาส แต่ต้องมีเงินสดถึงจะคว้าโอกาสได้
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 13: COMMON MISTAKES                                  -->
+<!-- ============================================================ -->
+<div class="section-header" id="sec13">
+  <h2><span class="section-number indigo">13</span> ข้อผิดพลาดที่พบบ่อยและวิธีหลีกเลี่ยง</h2>
+</div>
+
+<div class="formula-block">
+  <span class="tag warning">MISTAKE #1</span>
+<span class="highlight">ยึดติดกับ Correlation ในอดีต</span>
+
+<span class="bad">ผิด:</span> "ทองคำต้องลงเมื่อ Real Rate ขึ้น เพราะมันเป็นแบบนั้นมาตลอด"
+<span class="ok">ถูก:</span> "ทองคำมักลงเมื่อ Real Rate ขึ้น แต่ต้องดูว่ามีปัจจัยอื่นที่เปลี่ยนไปหรือไม่"
+
+<span class="warn">ตัวอย่างจริง:</span>
+├── ปี 2024-2025 ทองขึ้นทั้งที่ Real Rate สูง
+├── เพราะ Central Bank Buying เป็นปัจจัยใหม่ที่แรงกว่า Real Rate
+└── คนที่ Short ทองเพราะยึดติดกับ Correlation เดิม ขาดทุนหนัก
+
+<span class="ok">วิธีหลีกเลี่ยง:</span>
+├── ใช้ Rolling Correlation แทน Static Correlation
+├── ตรวจสอบว่า Correlation ยังใช้ได้อยู่หรือไม่ทุก 3-6 เดือน
+└── ถ้า Correlation เปลี่ยน → ปรับ Framework ไม่ใช่ฝืนเชื่อของเดิม
+</div>
+
+<div class="formula-block">
+  <span class="tag warning">MISTAKE #2</span>
+<span class="highlight">สับสนระหว่าง Correlation กับ Causation</span>
+
+<span class="bad">ผิด:</span> "SET ลงเพราะน้ำมันขึ้น"
+<span class="ok">ถูก:</span> "SET ลงพร้อมกับที่น้ำมันขึ้น แต่สาเหตุจริงอาจเป็นเพราะ
+      ดอลลาร์แข็งค่า ซึ่งทำให้ทั้งน้ำมันขึ้น (ในสกุลอื่น)
+      และเงินไหลออก EM (SET ลง)"
+
+<span class="ok">วิธีหลีกเลี่ยง:</span>
+├── หาสาเหตุรากฐาน (Root Cause) เสมอ
+├── ถามว่า "อะไรทำให้ทั้ง A และ B เคลื่อนไหว?"
+└── ดูหลายตลาดพร้อมกัน ไม่ใช่แค่ 2 ตลาด
+</div>
+
+<div class="formula-block">
+  <span class="tag warning">MISTAKE #3</span>
+<span class="highlight">ดูแค่ตลาดเดียวแล้วสรุป</span>
+
+<span class="bad">ผิด:</span> "S&P 500 ขึ้นเมื่อคืน SET ต้องขึ้นวันนี้"
+<span class="ok">ถูก:</span> "S&P 500 ขึ้นเมื่อคืน แต่ต้องดูด้วยว่า:
+      - DXY เป็นอย่างไร? (ถ้าแข็ง อาจกดดัน SET)
+      - Bond Yield เป็นอย่างไร? (ถ้าขึ้นเร็ว อาจกดดัน EM)
+      - Fund Flow เป็นอย่างไร? (ต่างชาติยังขายอยู่หรือไม่)
+      - ตลาดจีน/ฮ่องกงเป็นอย่างไร?"
+
+<span class="ok">วิธีหลีกเลี่ยง:</span>
+├── ใช้ Intermarket Dashboard ทุกเช้า
+├── ดูอย่างน้อย 5-7 ตลาดก่อนสรุป
+└── จำไว้ว่า SET มีปัจจัยเฉพาะของตัวเอง
+</div>
+
+<div class="formula-block">
+  <span class="tag warning">MISTAKE #4</span>
+<span class="highlight">Overreact ต่อข้อมูลรายวัน</span>
+
+<span class="bad">ผิด:</span> "ต่างชาติขายสุทธิ 500 ล้านวันนี้ ต้องรีบขายหุ้น!"
+<span class="ok">ถูก:</span> "ต่างชาติขายสุทธิ 500 ล้านวันนี้ แต่ต้องดูแนวโน้ม:
+      - สะสม 5 วันเป็นอย่างไร?
+      - สะสม 20 วันเป็นอย่างไร?
+      - เป็นการขายเฉพาะหุ้นบางตัว หรือขายทั้งตลาด?"
+
+<span class="ok">วิธีหลีกเลี่ยง:</span>
+├── ดูข้อมูลสะสม (Cumulative) ไม่ใช่แค่รายวัน
+├── ใช้ Moving Average ของ Fund Flow (5-day, 20-day)
+├── Divergence ต้องเกิดอย่างน้อย 2-4 สัปดาห์ถึงจะน่าเชื่อถือ
+└── ข้อมูลรายวันมี Noise สูง — ดูแนวโน้มสำคัญกว่า
+</div>
+
+<div class="formula-block">
+  <span class="tag warning">MISTAKE #5</span>
+<span class="highlight">ละเลย Regime Change</span>
+
+<span class="bad">ผิด:</span> "กลยุทธ์นี้ทำกำไรได้ดีมาตลอด 2 ปี ไม่ต้องเปลี่ยน"
+<span class="ok">ถูก:</span> "กลยุทธ์นี้ทำกำไรได้ดีใน Regime ที่ผ่านมา
+      แต่ถ้า Regime เปลี่ยน กลยุทธ์อาจไม่ทำงานอีกต่อไป"
+
+<span class="warn">สัญญาณว่า Regime กำลังเปลี่ยน:</span>
+├── Correlation ระหว่างตลาดเปลี่ยนอย่างมีนัยสำคัญ
+├── สินทรัพย์ที่เคยเป็น Leader กลายเป็น Laggard
+├── VIX เปลี่ยนระดับ (เช่น จากเฉลี่ย 15 เป็นเฉลี่ย 25)
+├── Yield Curve เปลี่ยนรูปร่าง
+└── นโยบายธนาคารกลางเปลี่ยนทิศทาง
+</div>
+
+<div class="formula-block">
+  <span class="tag warning">MISTAKE #6</span>
+<span class="highlight">ใช้ Intermarket Analysis เป็น Timing Tool</span>
+
+<span class="bad">ผิด:</span> "Bond Yield เริ่มขึ้น ต้องขายหุ้นเทคทันที!"
+<span class="ok">ถูก:</span> "Bond Yield เริ่มขึ้น → เป็นสัญญาณเตือน
+      → เริ่มลด Position Size ทีละน้อย
+      → รอสัญญาณยืนยันจาก Technical ก่อนขายทั้งหมด"
+
+<span class="ok">วิธีหลีกเลี่ยง:</span>
+├── ใช้ Intermarket เป็น "ทิศทาง" ไม่ใช่ "จังหวะ"
+├── บอกว่า "ลมพัดไปทางไหน" ไม่ได้บอกว่า "เรือจะถึงฝั่งเมื่อไหร่"
+├── ใช้ Technical Analysis สำหรับ Timing
+└── ใช้ Intermarket สำหรับ Direction และ Position Sizing
+</div>
+
+<div class="formula-block">
+  <span class="tag warning">MISTAKE #7</span>
+<span class="highlight">ละเลยปัจจัยเฉพาะของประเทศ/บริษัท</span>
+
+<span class="bad">ผิด:</span> "Intermarket บอกว่า Risk-on ต้องซื้อหุ้นไทยทุกตัว"
+<span class="ok">ถูก:</span> "Intermarket บอกว่า Risk-on → สภาพแวดล้อมเอื้อต่อหุ้น
+      แต่ต้องดูปัจจัยเฉพาะด้วย"
+
+<span class="ok">วิธีหลีกเลี่ยง:</span>
+├── Intermarket = ภาพใหญ่ (Top-down)
+├── Fundamental + Technical = ภาพเล็ก (Bottom-up)
+├── ต้องใช้ทั้งสองอย่างประกอบกัน
+└── Intermarket ดี + Fundamental ดี + Technical ดี = สัญญาณที่แข็งแกร่งที่สุด
+</div>
+
+<div class="formula-block">
+  <span class="tag warning">MISTAKE #8</span>
+<span class="highlight">Information Overload — ดูมากเกินไปจนตัดสินใจไม่ได้</span>
+
+<span class="ok">ตัวชี้วัดหลักที่ต้องดู (เรียงตามความสำคัญ):</span>
+1. Fund Flow ต่างชาติ (ทุกวัน)
+2. DXY / USD/THB (ทุกวัน)
+3. US 10Y Yield (ทุกวัน)
+4. ราคาน้ำมัน (ทุกวัน)
+5. VIX (ทุกวัน)
+6. ตลาดจีน/ฮ่องกง (ทุกวัน)
+7. Credit Spread (ทุกสัปดาห์)
+
+<span class="ok">วิธีหลีกเลี่ยง:</span>
+├── ใช้ Dashboard ที่ออกแบบไว้แล้ว
+├── ใช้เวลาไม่เกิน 15 นาทีต่อวัน
+├── ถ้าทุกอย่างปกติ → ไม่ต้องทำอะไร
+└── ทำอะไรเมื่อเห็น Divergence หรือ Extreme Reading เท่านั้น
+</div>
+
+<div class="two-col">
+  <div class="col-card red-accent">
+    <h4>❌ Mistake #9: ไม่แยก Noise กับ Signal</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">Noise (ไม่ต้องทำอะไร):</p>
+    <ul>
+      <li>เกิดแค่ 1-2 วัน แล้วกลับมาปกติ</li>
+      <li>เกิดในตลาดเดียว ตลาดอื่นไม่ยืนยัน</li>
+      <li>ไม่มีเหตุผลพื้นฐานรองรับ</li>
+      <li>ขนาดเล็ก (เช่น Bond Yield ขยับ 5bp)</li>
+    </ul>
+    <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.8rem;">Signal (ต้องให้ความสนใจ):</p>
+    <ul>
+      <li>เกิดต่อเนื่อง 1-2 สัปดาห์ขึ้นไป</li>
+      <li>เกิดในหลายตลาดพร้อมกัน (Confirmation)</li>
+      <li>มีเหตุผลพื้นฐานรองรับ</li>
+      <li>ขนาดใหญ่ (เช่น Bond Yield ขยับ 30-50bp)</li>
+    </ul>
+  </div>
+  <div class="col-card green-accent">
+    <h4>✅ Mistake #10: ไม่มีแผนรับมือล่วงหน้า</h4>
+    <p style="font-size:0.85rem; color:var(--text-muted);">ตัวอย่างแผนรับมือ:</p>
+    <ul>
+      <li><strong>ถ้า VIX &gt; 30:</strong> ลด Position 50%, เพิ่มเงินสด 40%</li>
+      <li><strong>ถ้าต่างชาติขาย &gt;5,000 ล้าน/วัน 3 วันติด:</strong> ลด Position 30%, ย้ายไป Defensive</li>
+      <li><strong>ถ้า DXY ทะลุ 110:</strong> ลด Position ใน EM ทั้งหมด</li>
+    </ul>
+    <p style="font-size:0.85rem; color:var(--accent-green); margin-top:0.8rem;">แผนที่เขียนไว้ตอนใจเย็น ดีกว่าการตัดสินใจตอนตื่นตระหนก</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 14: CHECKLIST & WORKFLOW                              -->
+<!-- ============================================================ -->
+<div class="section-header" id="sec14">
+  <h2><span class="section-number teal">14</span> Checklist และ Workflow สำหรับ Intermarket Analysis</h2>
+</div>
+
+<h3>Daily Intermarket Checklist (ทุกเช้าก่อนตลาดเปิด — 10-15 นาที)</h3>
+
+<div class="checklist-box">
+<span class="highlight">═══════════ DAILY INTERMARKET CHECKLIST ═══════════</span>
+<span class="comment">เวลา: 08:30-09:30 (ก่อนตลาดเปิด)</span>
+
+☐ 1. <span class="label">ตลาดสหรัฐเมื่อคืน</span>
+   S&P 500: ___% | Nasdaq: ___% | VIX: ___
+   สรุป: 🟢 บวก / 🟡 ทรงตัว / 🔴 ลบ
+
+☐ 2. <span class="label">ตลาดเอเชียเช้านี้</span>
+   Nikkei: ___% | Hang Seng: ___% | Shanghai: ___%
+   สรุป: 🟢 บวก / 🟡 ทรงตัว / 🔴 ลบ
+
+☐ 3. <span class="label">Bond Yield</span>
+   US 10Y: ___% (เปลี่ยน ___bp)
+   ทิศทาง: ขึ้น / ลง / ทรงตัว
+   Yield Curve: Normal / Flat / Inverted
+
+☐ 4. <span class="label">ค่าเงิน</span>
+   DXY: ___ (___%) | USD/THB: ___ (___%)
+   ดอลลาร์: แข็ง / อ่อน / ทรงตัว
+
+☐ 5. <span class="label">สินค้าโภคภัณฑ์</span>
+   น้ำมัน Brent: $___ (___%)
+   ทองคำ: $___ (___%)
+   ทองแดง: $___ (___%)
+
+☐ 6. <span class="label">Fund Flow (เมื่อวาน)</span>
+   ต่างชาติ: ซื้อ/ขาย ___ ล้านบาท
+   สะสม 5 วัน: ___ ล้านบาท
+   แนวโน้ม: ซื้อต่อเนื่อง / ขายต่อเนื่อง / สลับไปมา
+
+☐ 7. <span class="label">Divergence Check</span>
+   มี Divergence ที่น่ากังวลหรือไม่? ☐ ไม่มี ☐ มี:___
+
+☐ 8. <span class="label">ปฏิทินเศรษฐกิจวันนี้</span>
+   มีข้อมูลสำคัญออกวันนี้หรือไม่? ☐ ไม่มี ☐ มี:___
+
+<span class="highlight">═══════════ สรุปและแผนวันนี้ ═══════════</span>
+
+Intermarket Bias: 🟢 <span class="ok">Bullish</span> / 🟡 <span class="val">Neutral</span> / 🔴 <span class="bad">Bearish</span>
+
+แผนวันนี้:
+☐ เชิงรุก (เพิ่ม Position ได้)
+☐ ปกติ (ทำตามแผนเดิม)
+☐ ระวัง (ลด Position Size)
+☐ ป้องกัน (ถือเงินสดเป็นหลัก)
+</div>
+
+<h3>Intermarket Analysis Workflow — ขั้นตอนปฏิบัติ</h3>
+
+<div class="formula-block">
+  <span class="tag workflow">5-STEP WORKFLOW</span>
+<span class="highlight">ขั้นตอนที่ 1: SCAN — สแกนภาพรวม (5 นาที)</span>
+├── ดูตลาดหุ้นโลก (S&P 500, Nikkei, HSI)
+├── ดู Bond Yield (US 10Y)
+├── ดูค่าเงิน (DXY, USD/THB)
+├── ดูสินค้าโภคภัณฑ์ (น้ำมัน, ทองคำ)
+└── ดู VIX
+       │
+       ▼
+<span class="highlight">ขั้นตอนที่ 2: IDENTIFY — ระบุสถานะ (3 นาที)</span>
+├── ตลาดอยู่ใน Regime ไหน?
+│   (Goldilocks / Inflationary / Deflationary / Stagflation)
+├── Fund Flow เป็นอย่างไร?
+└── มี Divergence หรือไม่?
+       │
+       ▼
+<span class="highlight">ขั้นตอนที่ 3: ASSESS — ประเมินผลกระทบ (3 นาที)</span>
+├── Intermarket Bias เป็นอย่างไร?
+├── กลุ่มหุ้นไหนได้ประโยชน์/เสียประโยชน์?
+└── ระดับความเสี่ยงเป็นอย่างไร?
+       │
+       ▼
+<span class="highlight">ขั้นตอนที่ 4: ACT — ตัดสินใจ (2 นาที)</span>
+├── ปรับ Position Size หรือไม่?
+├── ปรับ Sector Allocation หรือไม่?
+├── ปรับ Stop Loss หรือไม่?
+└── มีอะไรต้องทำวันนี้หรือไม่?
+       │
+       ▼
+<span class="highlight">ขั้นตอนที่ 5: RECORD — บันทึก (2 นาที)</span>
+├── บันทึกลง Dashboard
+├── บันทึกสิ่งที่สังเกตเห็น
+└── บันทึกการตัดสินใจและเหตุผล
+
+<span class="val">รวมเวลา: ~15 นาที/วัน</span>
+</div>
+
+<h3>Decision Framework — เมื่อ Intermarket บอกอะไร ควรทำอะไร</h3>
+
+<div class="four-col">
+  <div class="col-card green-accent">
+    <h4>🟢 All Green</h4>
+    <p style="font-size:0.82rem; color:var(--text-muted);">ทุกอย่างเป็นบวก</p>
+    <ul>
+      <li>Position: 80-100%</li>
+      <li>Sector: Growth, Cyclical</li>
+      <li>Stop Loss: ปกติ</li>
+      <li>เงินสด: 0-20%</li>
+    </ul>
+  </div>
+  <div class="col-card gold-accent">
+    <h4>🟡 Mixed</h4>
+    <p style="font-size:0.82rem; color:var(--text-muted);">สัญญาณผสม</p>
+    <ul>
+      <li>Position: 50-70%</li>
+      <li>Sector: Quality, Defensive</li>
+      <li>Stop Loss: แน่นขึ้น</li>
+      <li>เงินสด: 30-40%</li>
+    </ul>
+  </div>
+  <div class="col-card warm-accent">
+    <h4>🟠 Warning</h4>
+    <p style="font-size:0.82rem; color:var(--text-muted);">สัญญาณเตือน</p>
+    <ul>
+      <li>Position: 20-40%</li>
+      <li>Sector: Defensive เท่านั้น</li>
+      <li>Stop Loss: แน่นมาก</li>
+      <li>เงินสด: 50-70%</li>
+    </ul>
+  </div>
+  <div class="col-card red-accent">
+    <h4>🔴 Crisis</h4>
+    <p style="font-size:0.82rem; color:var(--text-muted);">วิกฤต</p>
+    <ul>
+      <li>Position: 0-20%</li>
+      <li>ถือเงินสดเป็นหลัก</li>
+      <li>ขายหุ้นอ่อนแอทั้งหมด</li>
+      <li>เงินสด: 80-100%</li>
+    </ul>
+  </div>
+</div>
+
+<div class="info-box tip">
+  <div class="box-title">💡 สัญญาณว่าวิกฤตกำลังจะจบ</div>
+  • VIX เริ่มลดลงจากจุดสูงสุด<br>
+  • Credit Spread เริ่มแคบลง<br>
+  • ต่างชาติเริ่มชะลอการขาย<br>
+  • Bond Yield เริ่มทรงตัว<br>
+  • ทองคำเริ่มลง (ไม่ต้องการ Safe Haven แล้ว)
+</div>
+
+<!-- ============================================================ -->
+<!-- 10 GOLDEN RULES                                              -->
+<!-- ============================================================ -->
+<h3 id="golden-rules">สรุป: 10 กฎทองของ Intermarket Analysis</h3>
+
+<div class="principle-grid">
+  <div class="principle-card">
+    <span class="principle-num">กฎ 1</span>
+    <div><strong>ดูภาพใหญ่ก่อนภาพเล็กเสมอ</strong><br><span style="font-size:0.85rem; color:var(--text-secondary);">Intermarket → Sector → หุ้นรายตัว</span></div>
+  </div>
+  <div class="principle-card">
+    <span class="principle-num">กฎ 2</span>
+    <div><strong>Fund Flow คือราชาของตลาดหุ้นไทย</strong><br><span style="font-size:0.85rem; color:var(--text-secondary);">ติดตามทุกวัน ไม่มีข้อยกเว้น</span></div>
+  </div>
+  <div class="principle-card">
+    <span class="principle-num">กฎ 3</span>
+    <div><strong>DXY คือเข็มทิศของ Emerging Markets</strong><br><span style="font-size:0.85rem; color:var(--text-secondary);">ดอลลาร์แข็ง = ระวัง, ดอลลาร์อ่อน = โอกาส</span></div>
+  </div>
+  <div class="principle-card">
+    <span class="principle-num">กฎ 4</span>
+    <div><strong>Bond Yield คือราคาของทุกสิ่ง</strong><br><span style="font-size:0.85rem; color:var(--text-secondary);">Yield ขึ้นเร็ว = อันตราย, Yield ลงเร็ว = Risk-off</span></div>
+  </div>
+  <div class="principle-card">
+    <span class="principle-num">กฎ 5</span>
+    <div><strong>Divergence คือสัญญาณเตือนที่ทรงพลังที่สุด</strong><br><span style="font-size:0.85rem; color:var(--text-secondary);">เมื่อตลาดที่ควรไปด้วยกันเริ่มแยกทาง = ระวัง</span></div>
+  </div>
+  <div class="principle-card">
+    <span class="principle-num">กฎ 6</span>
+    <div><strong>Correlation เปลี่ยนตามเวลา</strong><br><span style="font-size:0.85rem; color:var(--text-secondary);">อย่ายึดติดกับกฎเดิม ตรวจสอบเสมอ</span></div>
+  </div>
+  <div class="principle-card">
+    <span class="principle-num">กฎ 7</span>
+    <div><strong>ใช้ Intermarket เป็นทิศทาง ไม่ใช่จังหวะ</strong><br><span style="font-size:0.85rem; color:var(--text-secondary);">บอกว่า "ลมพัดไปทางไหน" ไม่ใช่ "เมื่อไหร่ถึงฝั่ง"</span></div>
+  </div>
+  <div class="principle-card">
+    <span class="principle-num">กฎ 8</span>
+    <div><strong>มีแผนรับมือล่วงหน้า</strong><br><span style="font-size:0.85rem; color:var(--text-secondary);">เขียนไว้ตอนใจเย็น ทำตามตอนตลาดวุ่นวาย</span></div>
+  </div>
+  <div class="principle-card">
+    <span class="principle-num">กฎ 9</span>
+    <div><strong>อย่าดูมากเกินไป</strong><br><span style="font-size:0.85rem; color:var(--text-secondary);">5-7 ตัวชี้วัดหลัก 15 นาทีต่อวัน เพียงพอ</span></div>
+  </div>
+  <div class="principle-card">
+    <span class="principle-num">กฎ 10</span>
+    <div><strong>เงินสดคือ Position</strong><br><span style="font-size:0.85rem; color:var(--text-secondary);">การถือเงินสดไม่ใช่ "ไม่ทำอะไร" — มันคือการตัดสินใจที่ชาญฉลาด</span></div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CLOSING                                                      -->
+<!-- ============================================================ -->
+<div class="section-header">
+  <h2>สรุปบทที่ 7</h2>
+</div>
+
+<p>Intermarket Analysis ไม่ใช่เรื่องยากเกินไปสำหรับนักลงทุนรายย่อย แต่มันต้องการ <strong>วินัย</strong> ในการติดตามข้อมูลทุกวัน และ <strong>ความอ่อนน้อม</strong> ที่จะยอมรับว่าตลาดเปลี่ยนแปลงตลอดเวลา</p>
+
+<div class="card">
+  <div class="card-title">📚 สิ่งที่คุณได้เรียนรู้ในบทนี้</div>
+  <ul style="list-style:none;">
+    <li style="padding:0.3rem 0; color:var(--text-secondary);">✅ <strong>ทฤษฎีพื้นฐาน</strong> — ตลาด 4 ตลาดเชื่อมโยงกันอย่างไร</li>
+    <li style="padding:0.3rem 0; color:var(--text-secondary);">✅ <strong>ตลาดพันธบัตร</strong> — ทำไม Bond Yield เป็น "ราคาของทุกสิ่ง"</li>
+    <li style="padding:0.3rem 0; color:var(--text-secondary);">✅ <strong>ตลาดค่าเงิน</strong> — DXY และ USD/THB กระทบ SET อย่างไร</li>
+    <li style="padding:0.3rem 0; color:var(--text-secondary);">✅ <strong>สินค้าโภคภัณฑ์</strong> — น้ำมัน ทองคำ ทองแดง บอกอะไรเกี่ยวกับเศรษฐกิจ</li>
+    <li style="padding:0.3rem 0; color:var(--text-secondary);">✅ <strong>วัฏจักรเศรษฐกิจ</strong> — สินทรัพย์ไหนดีในแต่ละช่วง</li>
+    <li style="padding:0.3rem 0; color:var(--text-secondary);">✅ <strong>Fund Flow</strong> — ทำไมเงินต่างชาติสำคัญที่สุดสำหรับ SET</li>
+    <li style="padding:0.3rem 0; color:var(--text-secondary);">✅ <strong>Correlation และ Divergence</strong> — วัดความสัมพันธ์และจับสัญญาณเตือน</li>
+    <li style="padding:0.3rem 0; color:var(--text-secondary);">✅ <strong>กรณีศึกษาจริง</strong> — บทเรียนจากเหตุการณ์ล่าสุดที่เกิดขึ้นจริง</li>
+    <li style="padding:0.3rem 0; color:var(--text-secondary);">✅ <strong>ข้อผิดพลาดที่ต้องหลีกเลี่ยง</strong> — 10 กับดักที่นักลงทุนมักตกลงไป</li>
+    <li style="padding:0.3rem 0; color:var(--text-secondary);">✅ <strong>เครื่องมือปฏิบัติ</strong> — Dashboard, Checklist, Workflow ที่ใช้ได้ทันที</li>
+  </ul>
+</div>
+
+<div class="info-box info">
+  <div class="box-title">📋 สิ่งที่ต้องทำต่อ</div>
+  1. เริ่มกรอก Daily Intermarket Dashboard ทุกเช้า (ใช้เวลาแค่ 15 นาที)<br>
+  2. ทำ Weekly Review ทุกสัปดาห์ (ใช้เวลา 30-45 นาที)<br>
+  3. ฝึกจับ Divergence — ย้อนดูกราฟในอดีตว่า Divergence เกิดก่อนจุดกลับตัวจริงหรือไม่<br>
+  4. สร้างแผนรับมือสำหรับ 5 สถานการณ์ที่อาจเกิดขึ้น<br>
+  5. ทำต่อเนื่องอย่างน้อย 3 เดือน — Intermarket Analysis ต้องใช้เวลาฝึกฝน
+</div>
+
+<div class="quote-block">
+  "ตลาดการเงินเป็นระบบนิเวศที่เชื่อมโยงกัน ไม่มีตลาดไหนเคลื่อนไหวอย่างอิสระ ถ้าคุณเข้าใจความสัมพันธ์เหล่านี้ คุณจะเห็นสิ่งที่คนอื่นมองไม่เห็น"
+  <span class="author">— John J. Murphy</span>
+</div>
+
+<div class="quote-block">
+  "ในระยะสั้น ตลาดถูกขับเคลื่อนด้วยเงินทุน ในระยะยาว ตลาดถูกขับเคลื่อนด้วยพื้นฐาน Intermarket Analysis ช่วยให้คุณเห็นทั้งสองอย่าง"
+  <span class="author">— บทสรุป</span>
+</div>
+
+<div class="quote-block">
+  "อย่าถามว่าตลาดจะไปทางไหน จงถามว่าเงินกำลังไหลไปทางไหน — แล้วตามมันไป"
+  <span class="author">— หลักการ Fund Flow</span>
+</div>
+
+</main>
+
+<!-- ===== BACK TO TOP ===== -->
+<button class="back-to-top" id="backToTop" aria-label="กลับขึ้นด้านบน">↑</button>
+
+<script>
+  // Hamburger menu toggle
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+  function toggleMenu() {
+    hamburgerBtn.classList.toggle('active');
+    mobileMenu.classList.toggle('open');
+    mobileMenuOverlay.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  }
+  function closeMenu() {
+    hamburgerBtn.classList.remove('active');
+    mobileMenu.classList.remove('open');
+    mobileMenuOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  hamburgerBtn.addEventListener('click', toggleMenu);
+  mobileMenuOverlay.addEventListener('click', closeMenu);
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', closeMenu);
+  });
+
+  // Trim leading whitespace from formula-block elements
+  document.querySelectorAll('.formula-block, .tree').forEach(el => {
+    const lines = el.innerHTML.split('\n');
+    let minIndent = Infinity;
+    lines.forEach(line => {
+      if (line.trim().length > 0) {
+        const indent = line.match(/^(\s*)/)[1].length;
+        if (indent < minIndent) minIndent = indent;
+      }
+    });
+    if (minIndent > 0 && minIndent < Infinity) {
+      el.innerHTML = lines.map(line => line.slice(minIndent)).join('\n');
+    }
+    el.innerHTML = el.innerHTML.replace(/^\s*\n/, '').replace(/\n\s*$/, '');
+  });
+
+  // Back to top visibility
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('backToTop');
+    btn.classList.toggle('visible', window.scrollY > 400);
+  });
+  document.getElementById('backToTop').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Smooth scroll for TOC
+  document.querySelectorAll('.toc-list a, .nav-links a').forEach(a => {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Active TOC highlight
+  const sections = document.querySelectorAll('[id]');
+  const tocLinks = document.querySelectorAll('.toc-list a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const top = section.offsetTop - 100;
+      if (window.scrollY >= top) current = section.getAttribute('id');
+    });
+    tocLinks.forEach(link => {
+      link.style.borderLeftColor = link.getAttribute('href') === '#' + current ? '#3b82f6' : 'transparent';
+      link.style.color = link.getAttribute('href') === '#' + current ? '#60a5fa' : '';
+    });
+  });
+
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const fill = document.getElementById('progressFill');
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    fill.style.width = progress + '%';
+  });
+</script>
+<script src="/theme.js"></script>
+</body>
+</html>
