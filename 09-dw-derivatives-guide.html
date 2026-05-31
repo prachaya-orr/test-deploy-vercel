@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ภาค 9: DW, Warrant และอนุพันธ์</title>
+<link rel="stylesheet" href="/guide-base.css">
+</head>
+<body>
+<nav class="top-nav">
+  <a href="/" class="nav-logo" title="กลับหน้าหลัก">HOME</a>
+  <div class="nav-brand">📊 ภาค 9 — DW, Warrant & อนุพันธ์</div>
+</nav>
+
+<main class="page-wrap">
+
+<h1 id="9-dw-warrant">ภาค 9: DW, Warrant และอนุพันธ์ — เครื่องมือที่กินคุณได้เร็วกว่าที่คิด</h1>
+<hr />
+<h2 id="_1">บทนำ: ทำไมภาคนี้ถึงสำคัญแต่คนน้อยพูดถึง</h2>
+<p>DW (Derivative Warrant), Warrant, TFEX Futures, SET50 Index Options — เครื่องมือเหล่านี้ถูกขายให้นักลงทุนรายย่อยในฐานะ "ทางลัดทำกำไรเร็ว" และ "เครื่องมือ Hedging" — แต่ความจริงคือ <strong>มันคือเครื่องมือที่กินเงินคุณได้เร็วกว่าหุ้น 5-10 เท่า</strong></p>
+<p>จากสถิติของ TFEX และโบรกเกอร์ในไทย:<br />
+- <strong>80% ของนักเทรด DW ขาดทุนภายใน 1 ปีแรก</strong><br />
+- <strong>Average Holding Period ของ DW &lt; 5 วัน</strong><br />
+- <strong>70% ของ DW หมดอายุที่ราคา 0</strong> — กลายเป็นกระดาษเปล่า</p>
+<p>ในขณะที่หุ้นปกติ ถ้าซื้อหุ้นพื้นฐานดี อาจขาดทุน 30-50% แต่ยังเหลืออยู่ — DW ที่ผิดพลาดสามารถ <strong>เสียทุนทั้งหมด 100% ภายในไม่กี่วัน</strong></p>
+<blockquote>
+<p><strong>คำเตือนสำคัญ:</strong> ภาคนี้ไม่ได้เขียนเพื่อสนับสนุนให้เทรด DW/Warrant แต่เพื่อให้คุณเข้าใจว่า — ถ้าจะเทรด ต้องเข้าใจอะไรบ้าง และถ้าไม่เทรด ทำไมถึงไม่ควรเทรด</p>
+</blockquote>
+<hr />
+<h2 id="36-dw-derivative-warrant">บทที่ 36: รู้จัก DW (Derivative Warrant) — ลูกผสมระหว่างสิทธิและสัญญา</h2>
+<h3 id="dw">DW คืออะไร</h3>
+<p><strong>DW = Derivative Warrant</strong> คือ "ใบแสดงสิทธิอนุพันธ์" ออกโดยสถาบันการเงิน (ที่เรียกว่า Issuer) เพื่อให้สิทธิแก่ผู้ถือในการซื้อหรือขายหุ้นอ้างอิง (Underlying Stock) หรือดัชนี ตามราคาใช้สิทธิ (Exercise Price/Strike) ที่กำหนด ในเวลาที่กำหนด</p>
+<p><strong>ประเภทของ DW:</strong></p>
+<table>
+<thead>
+<tr>
+<th>ประเภท</th>
+<th>สัญลักษณ์</th>
+<th>ทำกำไรเมื่อ</th>
+<th>คล้ายอะไร</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Call DW</td>
+<td>ลงท้าย C</td>
+<td>ราคาหุ้นแม่ขึ้น</td>
+<td>Call Option</td>
+</tr>
+<tr>
+<td>Put DW</td>
+<td>ลงท้าย P</td>
+<td>ราคาหุ้นแม่ลง</td>
+<td>Put Option</td>
+</tr>
+</tbody>
+</table>
+<p><strong>โครงสร้างชื่อ DW:</strong></p>
+<pre><code>PTT13C2406A
+│   ││││├──┴── ชุดที่ A (กรณีออกหลายชุดเดือนเดียวกัน)
+│   ││├┴────── 06 = หมดอายุเดือน 6 (มิ.ย.)
+│   │├──────── 24 = ปี 2024
+│   ├───────── C = Call (P = Put)
+│   └────────── 13 = รหัส Issuer (เช่น 13 = บัวหลวง, 28 = KGI)
+└───────────── หุ้นแม่ (PTT)
+</code></pre>
+<h3 id="issuer">Issuer สำคัญในตลาดไทย</h3>
+<table>
+<thead>
+<tr>
+<th>รหัส</th>
+<th>ชื่อย่อ</th>
+<th>บริษัท</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td>KS</td>
+<td>บล. กสิกรไทย</td>
+</tr>
+<tr>
+<td>06</td>
+<td>KGI</td>
+<td>บล. KGI (เป็น Top Issuer)</td>
+</tr>
+<tr>
+<td>13</td>
+<td>BLS</td>
+<td>บัวหลวง</td>
+</tr>
+<tr>
+<td>23</td>
+<td>MACQ</td>
+<td>Macquarie</td>
+</tr>
+<tr>
+<td>28</td>
+<td>KGI</td>
+<td>KGI Securities (เป็น Top Issuer)</td>
+</tr>
+<tr>
+<td>41</td>
+<td>YUANTA</td>
+<td>บล. หยวนต้า</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ข้อสังเกต:</strong> Issuer แต่ละรายมีพฤติกรรมการตั้งราคา DW แตกต่างกัน บางรายตั้งราคาตาม Theoretical Value มากกว่า บางรายตั้งห่างให้ตัวเองได้กำไร</p>
+<hr />
+<h2 id="37-8-dw">บทที่ 37: 8 ปัจจัยที่กำหนดราคา DW</h2>
+<h3 id="greeks">Greeks — ตัวแปรที่ต้องเข้าใจ</h3>
+<pre><code>+--------------------------------------------------+
+|              THE GREEKS OF DW                       |
++--------------------------------------------------+
+|                                                    |
+|  Delta (Δ)                                         |
+|  └── ราคา DW เปลี่ยนเท่าไหร่ เมื่อหุ้นแม่ +1 บาท   |
+|                                                    |
+|  Gamma (Γ)                                         |
+|  └── Delta เปลี่ยนเท่าไหร่ เมื่อหุ้นแม่ขยับ          |
+|                                                    |
+|  Theta (Θ) — ตัวร้ายที่สุด                          |
+|  └── ราคา DW ลดลงเท่าไหร่ ทุกวันที่ผ่านไป (Time Decay)|
+|                                                    |
+|  Vega (V)                                          |
+|  └── ราคา DW เปลี่ยนเท่าไหร่ เมื่อ Volatility ขยับ |
+|                                                    |
+|  Rho (ρ)                                           |
+|  └── ราคา DW เปลี่ยนเท่าไหร่ เมื่อดอกเบี้ยขยับ      |
+|       (กระทบน้อยในไทย)                              |
++--------------------------------------------------+
+</code></pre>
+<h3 id="1-underlying-price-delta">1. ราคาหุ้นแม่ (Underlying Price) — Delta</h3>
+<p><strong>Call DW:</strong> หุ้นแม่ขึ้น → DW ขึ้น (Delta &gt; 0)<br />
+<strong>Put DW:</strong> หุ้นแม่ลง → DW ขึ้น (Delta &lt; 0)</p>
+<p><strong>ค่า Delta ทั่วไป:</strong><br />
+- DW ที่ใกล้หมดอายุและ ITM (In-the-Money): Delta ใกล้ 1.0<br />
+- DW ที่ ATM (At-the-Money): Delta ประมาณ 0.5<br />
+- DW ที่ OTM (Out-of-the-Money): Delta ใกล้ 0</p>
+<p><strong>ตัวอย่าง:</strong></p>
+<pre><code>PTT ราคา 35 บาท
+PTT13C2406A — Strike 38 บาท
+หมดอายุอีก 30 วัน
+Delta = 0.40
+
+ถ้าหุ้นแม่ขึ้น 1 บาท (35 → 36)
+DW จะขึ้น 0.40 บาท (ในทางทฤษฎี)
+
+ถ้า DW ราคา 1.50 บาท → ขึ้นเป็น 1.90 บาท (กำไร 26%!)
+แต่หุ้นแม่ขึ้นแค่ 2.86%
+นี่คือ &quot;Leverage Effect&quot;
+</code></pre>
+<h3 id="2-time-decay-theta-dw">2. Time Decay (Theta) — ศัตรูตัวฉกรรจ์ของผู้ถือ DW</h3>
+<p><strong>กฎ:</strong> <strong>DW เสียมูลค่าทุกวัน</strong> แม้ราคาหุ้นแม่จะไม่ขยับ</p>
+<pre><code>DW อายุยาว vs DW ใกล้หมดอายุ:
+
+180 วันก่อนหมดอายุ: Theta = -0.005 บาท/วัน (เสียวันละ 0.5 สตางค์)
+60 วันก่อนหมดอายุ:  Theta = -0.015 บาท/วัน (เสียวันละ 1.5 สตางค์)
+30 วันก่อนหมดอายุ:  Theta = -0.025 บาท/วัน (เสียวันละ 2.5 สตางค์)
+14 วันก่อนหมดอายุ:  Theta = -0.040 บาท/วัน (เสียวันละ 4 สตางค์)
+7 วันก่อนหมดอายุ:   Theta = -0.060 บาท/วัน (เร่งความเร็ว)
+1 วันก่อนหมดอายุ:   Theta = พังทลาย ราคามักลงครึ่งหนึ่ง
+
+ยิ่งใกล้หมดอายุ Theta ยิ่งโหด
+</code></pre>
+<p><strong>กราฟ Time Decay:</strong></p>
+<pre><code>ราคา DW
+  |
+  |\
+  | \____
+  |      \____
+  |           \___
+  |               \__
+  |                  \_
+  |                    \___
+  |                        \____
+  |                              \_______
+  |________________________________________  เวลา
+  Day 1   Day 30  Day 60  Day 90  Day 180
+
+Time Decay ไม่ใช่เส้นตรง — เร่งขึ้นเมื่อใกล้หมดอายุ
+</code></pre>
+<p><strong>ตัวอย่าง:</strong></p>
+<pre><code>DW ราคา 2 บาท เหลืออายุ 90 วัน
+ถ้าหุ้นแม่ไม่ขยับเลย:
+- หลัง 30 วัน: DW อาจเหลือ 1.50 บาท (-25%)
+- หลัง 60 วัน: DW อาจเหลือ 0.80 บาท (-60%)
+- หลัง 90 วัน (หมดอายุ): DW อาจเหลือ 0 บาท (-100%) ถ้า OTM
+
+แม้คุณ &quot;เดาทิศทางถูก&quot; แต่ถ้าราคาขยับช้ากว่า Theta — คุณก็ขาดทุน
+</code></pre>
+<blockquote>
+<p><strong>ข้อสังเกต:</strong> นี่คือเหตุผลที่ DW ไม่ใช่เครื่องมือสำหรับ "ถือยาว" — คุณต่อสู้กับเวลาทุกวินาที</p>
+</blockquote>
+<h3 id="3-implied-volatility-iv-issuer">3. Implied Volatility (IV) — ตัวแปรที่ Issuer ควบคุมได้</h3>
+<p><strong>Implied Volatility คืออะไร:</strong> ความผันผวนที่ Issuer "คาดการณ์" ว่าหุ้นแม่จะขยับ</p>
+<p><strong>กฎสำคัญ:</strong><br />
+- IV สูง → DW แพง<br />
+- IV ต่ำ → DW ถูก<br />
+- ก่อนข่าวสำคัญ Issuer มักดัน IV ให้สูง → DW แพง<br />
+- หลังข่าวออก IV ลดลง → DW ราคาตก แม้หุ้นแม่ขึ้น (เรียกว่า <strong>IV Crush</strong>)</p>
+<p><strong>กลโกงของ Issuer:</strong></p>
+<pre><code>Day -5 (ก่อนงบออก):
+  IV = 30% → DW ราคา 2.00 บาท
+  คนเริ่มซื้อ DW เก็งงบ
+
+Day -1 (วันก่อนงบ):
+  IV = 50% (Issuer ดันขึ้น) → DW ราคา 3.00 บาท
+  คนซื้อต่อเนื่อง
+
+Day 0 (วันงบออก, หุ้นแม่ขึ้น 5%):
+  หุ้นแม่ +5% → ทฤษฎี DW ควร +20%
+  แต่ IV ลดเหลือ 25% (Crush) → DW ราคา 2.50 บาท
+  คุณเดาทิศถูก แต่ DW กลับลง 17% จาก 3.00!
+</code></pre>
+<p><strong>ตรวจสอบ IV ก่อนซื้อ:</strong><br />
+- ใช้ Settrade DW Stat — ดู Historical IV<br />
+- ถ้า IV ปัจจุบัน &gt; IV เฉลี่ย 30 วัน → แพงเกินไป</p>
+<h3 id="4-conversion-ratio">4. Conversion Ratio (อัตราการใช้สิทธิ)</h3>
+<p><strong>คือ:</strong> จำนวน DW ที่ต้องใช้แลก 1 หุ้นแม่</p>
+<p><strong>ตัวอย่าง:</strong><br />
+- DW Conversion Ratio = 1:1 → 1 DW = 1 หุ้นแม่<br />
+- DW Conversion Ratio = 5:1 → 5 DW = 1 หุ้นแม่<br />
+- DW Conversion Ratio = 10:1 → 10 DW = 1 หุ้นแม่</p>
+<p><strong>ผลกระทบ:</strong></p>
+<pre><code>หุ้นแม่ราคา 50 บาท
+DW Strike 55 บาท (Call)
+Conversion 5:1
+
+Effective Leverage = (50/5) ÷ (DW Premium) = ?
+
+ถ้า DW ราคา 0.50 บาท
+Effective Leverage = 10/0.50 = 20x
+
+หุ้นแม่ +1% → DW อาจ +20%
+หุ้นแม่ -1% → DW อาจ -20%
+
+Conversion Ratio สูง = Leverage สูง = ความเสี่ยงสูง
+</code></pre>
+<h3 id="5-strike-price-moneyness">5. Strike Price และ Moneyness</h3>
+<p><strong>Moneyness = ความสัมพันธ์ระหว่างราคาหุ้นกับ Strike</strong></p>
+<p><strong>Call DW:</strong><br />
+- ITM (In-the-Money): ราคาหุ้น &gt; Strike → DW มี "Intrinsic Value"<br />
+- ATM (At-the-Money): ราคาหุ้น ≈ Strike → ราคา DW เป็น Time Value ล้วน<br />
+- OTM (Out-of-the-Money): ราคาหุ้น &lt; Strike → DW ไม่มี Intrinsic Value</p>
+<p><strong>ผลกระทบต่อความเสี่ยง:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Moneyness</th>
+<th>ราคา DW</th>
+<th>Leverage</th>
+<th>ความเสี่ยง</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deep ITM (&gt;+10%)</td>
+<td>แพง</td>
+<td>ต่ำ (~1.5-2x)</td>
+<td>ต่ำ</td>
+</tr>
+<tr>
+<td>Mild ITM (+5%)</td>
+<td>ปานกลาง</td>
+<td>ปานกลาง (3-5x)</td>
+<td>ปานกลาง</td>
+</tr>
+<tr>
+<td>ATM</td>
+<td>กลาง-ถูก</td>
+<td>สูง (5-10x)</td>
+<td>สูง</td>
+</tr>
+<tr>
+<td>Mild OTM (-5%)</td>
+<td>ถูก</td>
+<td>สูงมาก (10-15x)</td>
+<td>สูงมาก</td>
+</tr>
+<tr>
+<td>Deep OTM (-15%)</td>
+<td>ถูกมาก</td>
+<td>สูงมาก (20-50x)</td>
+<td>เกือบแน่นอนว่าเสีย 100%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>กฎทอง:</strong> Deep OTM DW = "ตั๋วลอตเตอรี่" ส่วนใหญ่เสีย แต่ Pay-off สูงเมื่อถูก</p>
+<h3 id="6-bid-ask-spread">6. Bid-Ask Spread — ค่าใช้จ่ายซ่อนเร้น</h3>
+<p><strong>Spread:</strong> ส่วนต่างระหว่างราคาขาย (Bid) และราคาซื้อ (Offer)</p>
+<p><strong>ใน DW Spread กว้างกว่าหุ้นมาก:</strong></p>
+<pre><code>หุ้น PTT:
+  Bid: 35.00, Offer: 35.25 → Spread = 0.7%
+
+DW PTT13C2406A:
+  Bid: 0.50, Offer: 0.55 → Spread = 10%!
+
+ถ้าซื้อ Offer แล้วขาย Bid ทันที:
+  ขาดทุนทันที 9% (จากค่า Spread อย่างเดียว)
+</code></pre>
+<p><strong>ทำไม Spread กว้าง:</strong><br />
+- Issuer เป็น Market Maker หลัก = กำหนดราคาเอง<br />
+- DW มีคนซื้อขายน้อย = สภาพคล่องต่ำ<br />
+- Issuer ทำกำไรจาก Spread</p>
+<p><strong>กฎ:</strong><br />
+- ถ้า Spread &gt; 5% → ไม่ควรซื้อ<br />
+- DW ที่ใกล้หมดอายุ Spread กว้างมาก<br />
+- DW Deep OTM Spread กว้างมาก</p>
+<h3 id="7-effective-gearing-leverage">7. Effective Gearing (Leverage)</h3>
+<p><strong>Gearing คือ:</strong> Leverage ที่ DW ให้</p>
+<pre><code>สูตร: Effective Gearing = Delta × (ราคาหุ้นแม่ / ราคา DW × Conversion Ratio)
+
+ตัวอย่าง:
+หุ้น PTT 35 บาท
+DW PTT13C2406A ราคา 0.50, Conversion 10:1, Delta 0.40
+
+Effective Gearing = 0.40 × (35 / (0.50 × 10)) = 0.40 × 7 = 2.8x
+
+หุ้นแม่ขยับ 1% → DW จะขยับประมาณ 2.8%
+</code></pre>
+<p><strong>กฎความเสี่ยง:</strong><br />
+- Gearing 2-3x: ปานกลาง เหมาะกับมือใหม่<br />
+- Gearing 5-7x: สูง ต้องมีประสบการณ์<br />
+- Gearing &gt; 10x: เสี่ยงมาก ส่วนใหญ่เสีย 100%</p>
+<h3 id="8-issuer">8. ความ "ไม่สม่ำเสมอ" ของ Issuer</h3>
+<p><strong>ปัญหาที่พบบ่อย:</strong><br />
+- Issuer ไม่ตั้ง Bid/Offer ตามทฤษฎี<br />
+- Issuer ไม่ทำราคา (Withdraw Quotation) ตอนที่ตลาดผันผวน<br />
+- Issuer ตั้ง Spread กว้างผิดปกติเมื่อ DW ใกล้หมดอายุ<br />
+- Issuer "Skew" ราคาเข้าข้างตัวเอง</p>
+<p><strong>ดูได้จากไหน:</strong><br />
+- Settrade DW Center → ดู Issuer Score<br />
+- ดู Quotation Quality (% ของเวลาที่มี Bid/Offer)</p>
+<hr />
+<h2 id="38-dw">บทที่ 38: การปั่นหุ้นแม่เพื่อบงการ DW</h2>
+<h3 id="dw_1">กลไก: ปั่นหุ้นเพื่อทำเงินจาก DW</h3>
+<p><strong>สถานการณ์:</strong></p>
+<pre><code>ผู้ปั่นมี DW Call ของหุ้น XYZ จำนวนมาก
+DW ใกล้หมดอายุ 7 วัน — ต้องเร่งราคาให้พุ่งเร็ว
+
+แผนการ:
+1. เช้า: ซื้อหุ้นแม่จำนวนมาก ดันราคาขึ้น 5%
+2. กลางวัน: ปล่อยข่าวบวกในกลุ่มไลน์
+3. บ่าย: ดันต่ออีก 3-5% ปิดที่ Top
+4. เย็น: ขาย DW ทำกำไร
+5. วันถัดไป: ขายหุ้นแม่ ทำกำไรอีก 1 รอบ
+</code></pre>
+<p><strong>ผลของกลยุทธ์นี้:</strong><br />
+- ผู้ปั่น: กำไรจาก DW (มี Leverage 5-10x) + กำไรหุ้น<br />
+- เหยื่อที่ไล่ซื้อหุ้นที่ Top: ขาดทุน<br />
+- เหยื่อที่ซื้อ DW Call ในวันนั้น: เห็นราคาวิ่งเลย FOMO ซื้อ → ติดดอย DW</p>
+<h3 id="dw_2">สัญญาณการปั่นหุ้นแม่เพื่อ DW</h3>
+<table>
+<thead>
+<tr>
+<th>สัญญาณ</th>
+<th>คำอธิบาย</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>มี DW ใกล้หมดอายุ + Volume DW สูงผิดปกติ</td>
+<td>บอกว่ามีคนเก็บ DW จำนวนมาก</td>
+</tr>
+<tr>
+<td>หุ้นแม่ถูกขับเคลื่อนเฉพาะวันที่ DW มี Volume สูง</td>
+<td>ไม่ใช่ความบังเอิญ</td>
+</tr>
+<tr>
+<td>หุ้นแม่วิ่งสวนทางตลาด</td>
+<td>ถูกบงการเฉพาะตัว</td>
+</tr>
+<tr>
+<td>Block Trade ในหุ้นแม่ขนาดใหญ่ผิดปกติ</td>
+<td>อาจเป็น Hedging ของ Issuer หรือ ผู้ปั่น</td>
+</tr>
+<tr>
+<td>ราคาหุ้นแม่ตกหลังจาก DW หมดอายุพอดี</td>
+<td>ไม่มีเหตุผลให้ดันต่อ</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_2">เครื่องมือตรวจสอบ</h3>
+<p><strong>Settrade DW Top Volume:</strong><br />
+- ดู DW ที่มี Volume สูงสุดของวัน<br />
+- ถ้า DW ของหุ้นตัวหนึ่งครองหลายอันดับ → น่าสงสัย</p>
+<p><strong>DW Issuance Analysis:</strong><br />
+- ดูว่า Issuer ออก DW ของหุ้นนี้กี่ชุด<br />
+- ถ้าออกชุดใหม่ทุกเดือน + Volume สูง → มีคนจ้องเทรด</p>
+<hr />
+<h2 id="39-tfex-futures">บทที่ 39: TFEX Futures — เครื่องมือที่กินทุนได้รวดเร็ว</h2>
+<h3 id="tfex">TFEX คืออะไร</h3>
+<p><strong>TFEX = Thailand Futures Exchange</strong> ตลาดอนุพันธ์ไทย ซื้อขาย Futures Contract</p>
+<p><strong>Products หลัก:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Product</th>
+<th>สัญลักษณ์</th>
+<th>Underlying</th>
+<th>Multiplier</th>
+<th>Lot Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SET50 Index Futures</td>
+<td>S50</td>
+<td>SET50 Index</td>
+<td>200 บาท/จุด</td>
+<td>1 contract</td>
+</tr>
+<tr>
+<td>Single Stock Futures</td>
+<td>XX (เช่น PTTQ)</td>
+<td>หุ้นรายตัว</td>
+<td>100 บาท/บาท</td>
+<td>1 contract</td>
+</tr>
+<tr>
+<td>Gold Futures</td>
+<td>GF, GO, GF10</td>
+<td>ทองคำโลก</td>
+<td>50/200/300 บาท/$</td>
+<td>1 contract</td>
+</tr>
+<tr>
+<td>USD Futures</td>
+<td>USD</td>
+<td>USD/THB</td>
+<td>1,000 USD</td>
+<td>1 contract</td>
+</tr>
+<tr>
+<td>Silver Futures</td>
+<td>SVF</td>
+<td>Silver</td>
+<td>100 บาท/$</td>
+<td>1 contract</td>
+</tr>
+<tr>
+<td>Rubber Futures</td>
+<td>RSS3</td>
+<td>ยางพาราRSS3</td>
+<td>5,000 กก.</td>
+<td>1 contract</td>
+</tr>
+</tbody>
+</table>
+<h3 id="margin-leverage">Margin และ Leverage</h3>
+<p><strong>Initial Margin:</strong> เงินมัดจำที่ต้องวางก่อนเปิด Position</p>
+<p><strong>ตัวอย่าง:</strong> SET50 Futures</p>
+<pre><code>SET50 Index = 1,000 จุด
+Multiplier = 200 บาท/จุด
+มูลค่า Contract = 1,000 × 200 = 200,000 บาท
+
+Initial Margin (ประมาณ 7-10%) = 20,000 บาท
+Maintenance Margin = 14,000 บาท
+
+Leverage = 200,000 / 20,000 = 10x
+
+ถ้า SET50 ขยับ 1% (10 จุด)
+P&amp;L = 10 × 200 = 2,000 บาท
+% ของ Margin = 2,000 / 20,000 = 10%
+
+SET50 ขยับ 1% → กำไร/ขาดทุน 10% ของ Margin
+SET50 ขยับ 5% → กำไร/ขาดทุน 50%
+SET50 ขยับ 10% → Liquidation!
+</code></pre>
+<h3 id="margin-call-force-close">Margin Call และ Force Close</h3>
+<p><strong>Margin Call:</strong> เมื่อ Equity ใน Account ต่ำกว่า Maintenance Margin</p>
+<pre><code>ตัวอย่าง:
+Long S50 Future 1 contract
+Initial Margin: 20,000 บาท (ฝากเข้า Account)
+Maintenance Margin: 14,000 บาท
+
+Day 1: SET50 ลง 30 จุด
+P&amp;L = -30 × 200 = -6,000 บาท
+Equity = 20,000 - 6,000 = 14,000 บาท ← ถึง Maintenance!
+
+Day 2: SET50 ลงอีก 5 จุด
+P&amp;L = -1,000 บาท
+Equity = 13,000 บาท ← ต่ำกว่า Maintenance
+
+โบรกเกอร์ Margin Call:
+&quot;กรุณาฝากเงินเพิ่ม 7,000 บาท ภายใน 1 วันทำการ
+หากไม่ฝาก โบรกเกอร์จะปิด Position ทันที (Force Close)&quot;
+
+ถ้าไม่ฝาก:
+โบรกเกอร์ปิด Position อัตโนมัติ ขาดทุนรวม 7,000 บาท
+(35% ของ Initial Margin)
+</code></pre>
+<h3 id="single-stock-futures-ssf-short">Single Stock Futures (SSF) — เครื่องมือ Short หุ้นไทย</h3>
+<p><strong>ทำไม SSF น่าสนใจ:</strong><br />
+- Short หุ้นได้โดยไม่ต้อง Borrow<br />
+- Leverage 5-10x<br />
+- ใช้ Hedge พอร์ตได้</p>
+<p><strong>แต่...:</strong><br />
+- สภาพคล่องต่ำกว่าหุ้นแม่ 10-100 เท่า<br />
+- Spread กว้างกว่าหุ้น<br />
+- Funding Cost สูง (ถ้าถือนาน)<br />
+- หุ้นปั่นใน SSF ผันผวนกว่าหุ้นจริง</p>
+<p><strong>ตัวอย่างเหตุการณ์ SSF เคยเกิด:</strong><br />
+- หุ้นแม่ Ceiling +30% → SSF Ceiling +30% แต่อาจไม่มีคนซื้อ Short<br />
+- หุ้นแม่ Floor -30% → ถ้าคุณ Long SSF — Margin Call ภายในวันเดียว</p>
+<hr />
+<h2 id="40-options-tfex">บทที่ 40: Options บน TFEX — เครื่องมือที่ซับซ้อนที่สุด</h2>
+<h3 id="set50-index-options">SET50 Index Options</h3>
+<p><strong>Options คืออะไร:</strong> สัญญาที่ให้สิทธิ (ไม่ใช่ภาระ) ในการซื้อหรือขาย Underlying ที่ราคาที่ตกลง</p>
+<p><strong>ประเภท:</strong><br />
+- Call Option: สิทธิซื้อ<br />
+- Put Option: สิทธิขาย</p>
+<p><strong>Strategies พื้นฐาน:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Bias</th>
+<th>Max Profit</th>
+<th>Max Loss</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Long Call</td>
+<td>Bullish</td>
+<td>Unlimited</td>
+<td>Premium ที่จ่าย</td>
+</tr>
+<tr>
+<td>Long Put</td>
+<td>Bearish</td>
+<td>Strike - Premium</td>
+<td>Premium ที่จ่าย</td>
+</tr>
+<tr>
+<td>Short Call</td>
+<td>Bearish/Neutral</td>
+<td>Premium</td>
+<td>Unlimited!</td>
+</tr>
+<tr>
+<td>Short Put</td>
+<td>Bullish/Neutral</td>
+<td>Premium</td>
+<td>Strike - Premium</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>คำเตือน:</strong> <strong>Short Call โดยไม่มี Hedging = Naked Short Call</strong> = ความเสี่ยงไม่จำกัด ห้ามทำเด็ดขาดถ้าไม่ใช่ผู้เชี่ยวชาญ</p>
+</blockquote>
+<h3 id="greeks-options">Greeks ของ Options</h3>
+<p><strong>Greeks ที่สำคัญ (เพิ่มเติมจาก DW):</strong></p>
+<pre><code>+--------------------------------------------------+
+|             OPTIONS GREEKS DEEP DIVE                |
++--------------------------------------------------+
+|                                                    |
+|  Delta (Δ): -1 ถึง +1                              |
+|  └── Probability of expiring ITM (โดยประมาณ)      |
+|                                                    |
+|  Gamma (Γ): สูงสุดที่ ATM                          |
+|  └── ความเร่งของ Delta                              |
+|                                                    |
+|  Theta (Θ): มักเป็นลบ                              |
+|  └── เสียมูลค่าทุกวัน (ผู้ขาย Option ได้)         |
+|                                                    |
+|  Vega (V): สูงเมื่อ DTE (Days to Expiry) ยาว      |
+|  └── Sensitivity ต่อ Implied Volatility            |
+|                                                    |
+|  Rho (ρ): กระทบน้อยในไทย                           |
+|  └── Sensitivity ต่ออัตราดอกเบี้ย                   |
++--------------------------------------------------+
+</code></pre>
+<h3 id="multi-leg">กลยุทธ์ Multi-Leg ที่นิยม</h3>
+<p><strong>1. Bull Call Spread (ซื้อ Call ใน Strike ต่ำ + ขาย Call ใน Strike สูง)</strong></p>
+<pre><code>ใช้เมื่อ: Bullish ปานกลาง ต้องการลดต้นทุน
+
+ตัวอย่าง:
+SET50 = 1,000
+Buy Call Strike 1,000 จ่าย 30 บาท
+Sell Call Strike 1,050 รับ 10 บาท
+Net Debit = 20 บาท
+
+Max Profit = (1,050 - 1,000) - 20 = 30 บาท
+Max Loss = 20 บาท
+Break-even = 1,020
+</code></pre>
+<p><strong>2. Iron Condor (ขาย Call OTM + ขาย Put OTM)</strong></p>
+<pre><code>ใช้เมื่อ: คาดว่าราคาจะ Sideway
+
+ตัวอย่าง:
+SET50 = 1,000
+Sell Call Strike 1,050 รับ 10
+Buy Call Strike 1,100 จ่าย 3
+Sell Put Strike 950 รับ 12
+Buy Put Strike 900 จ่าย 4
+Net Credit = (10 - 3) + (12 - 4) = 15 บาท
+
+Max Profit = 15 บาท (ถ้า SET50 อยู่ในช่วง 950-1050)
+Max Loss = 50 - 15 = 35 บาท (ถ้าหลุด 900 หรือ 1100)
+</code></pre>
+<blockquote>
+<p><strong>ข้อสังเกต:</strong> กลยุทธ์ Multi-Leg ลดความเสี่ยงแต่ลดกำไรด้วย ในไทย สภาพคล่องของ Option บางคู่ต่ำมาก — Spread กว้าง ทำให้กลยุทธ์ที่ดูดีในกระดาษ ใช้จริงไม่คุ้ม</p>
+</blockquote>
+<hr />
+<h2 id="41">บทที่ 41: รูปแบบการขาดทุนที่พบบ่อยที่สุด</h2>
+<h3 id="pattern-1-dw">Pattern 1: ซื้อ DW ก่อนงบ</h3>
+<pre><code>สิ่งที่นักลงทุนคิด:
+&quot;งบดี → หุ้นจะขึ้น → DW Call จะกำไร 100%&quot;
+
+สิ่งที่เกิดจริง:
+Day -3: ซื้อ DW Call ราคา 1.50 (IV = 35%)
+Day 0:  งบออก กำไรดีจริง หุ้นแม่ +3%
+        แต่ IV ลดเหลือ 20% (Crush)
+        DW ราคา = 1.30 (-13%!)
+
+แม้ทายถูก ก็ยังขาดทุน
+</code></pre>
+<h3 id="pattern-2-dw">Pattern 2: ถือ DW ผ่านวันหยุดยาว</h3>
+<pre><code>ก่อนวันหยุด 5 วัน:
+DW ราคา 2.00 บาท
+Theta = -0.02/วัน
+
+หลังวันหยุด 5 วัน:
+หุ้นแม่ราคาเดิม
+DW ราคา = 1.90 (-5%)
+ค่า Theta หลายวันรวมกัน
+</code></pre>
+<h3 id="pattern-3-stop-loss-spread">Pattern 3: ตั้ง Stop Loss แต่ Spread กว้าง</h3>
+<pre><code>ซื้อ DW ที่ Offer 1.00
+Bid อยู่ที่ 0.92
+
+ตั้ง Stop Loss ที่ -10% = 0.90
+แต่ Bid ปัจจุบันแล้ว = 0.92 (ใกล้ Stop)
+
+Bid ลงมาที่ 0.90 → Trigger Stop
+Market Order Sell → ได้จริงที่ 0.85 (Slippage)
+
+ขาดทุนจริง = -15% ทั้งที่ตั้ง Stop ไว้ -10%
+</code></pre>
+<h3 id="pattern-4-short-dw-issuer-quote">Pattern 4: Short DW Issuer Quote</h3>
+<pre><code>Issuer ตั้ง Spread ปกติ Bid 0.90 / Offer 1.00
+ตลาดผันผวนแรง → Issuer Withdraw Quote
+
+5 นาทีต่อมา Issuer กลับมา:
+Bid 0.50 / Offer 1.00 (Spread กว้างผิดปกติ)
+
+คนที่ต้องขายตอนนี้ = ขายที่ 0.50 (-50%!)
+</code></pre>
+<h3 id="pattern-5-roll-over-future">Pattern 5: หลุดยุค Roll Over Future</h3>
+<pre><code>ถือ S50 Long ผ่านวันหมดอายุ Future
+Position หมดอายุ ต้อง Roll Over ไป Series ใหม่
+
+Roll Over ถูก Charge:
+- ค่า Commission 2 รอบ
+- Spread ระหว่าง Series เก่า-ใหม่
+- ถ้า Roll Over วันที่ Volume ต่ำ → Slippage หนัก
+
+ค่าใช้จ่าย Roll Over = 1-2% ของ Notional ทุกครั้ง
+</code></pre>
+<hr />
+<h2 id="42-dwfuture">บทที่ 42: เมื่อไหร่ DW/Future ก็ "อาจจะ" สมเหตุสมผล</h2>
+<h3 id="hedge">ใช้เพื่อ Hedge</h3>
+<p><strong>สถานการณ์:</strong> มีพอร์ตหุ้น 5 ล้านบาท กังวลตลาดจะลง</p>
+<p><strong>กลยุทธ์:</strong><br />
+- Short S50 Future จำนวนเหมาะสมเพื่อ Hedge<br />
+- คำนวณ: Beta ของพอร์ต × มูลค่าพอร์ต / Notional ของ Future</p>
+<p><strong>ตัวอย่าง:</strong></p>
+<pre><code>พอร์ต 5,000,000 บาท, Beta = 1.2
+S50 Future Notional = 1,000 × 200 = 200,000 บาท
+
+จำนวน Future ที่ Short = (5,000,000 × 1.2) / 200,000 = 30 contracts
+
+ถ้าตลาดลง 10% (SET50 -100 จุด):
+- พอร์ตหุ้น: -10% × 1.2 = -12% = -600,000
+- Future P&amp;L: +100 × 200 × 30 = +600,000
+- Net: 0 (Hedge สำเร็จ)
+</code></pre>
+<h3 id="speculate-day-trade">ใช้เพื่อ Speculate ในกรอบเวลาสั้น (Day Trade)</h3>
+<p><strong>กฎ:</strong><br />
+- ใช้เงินไม่เกิน 5% ของพอร์ตทั้งหมด<br />
+- ถือไม่เกิน 1-2 วัน (หลีกเลี่ยง Theta)<br />
+- ตั้ง Stop Loss ก่อนซื้อ<br />
+- มี Edge ที่ชัดเจน (ไม่ใช่แค่ "เก็งกำไร")</p>
+<h3 id="leverage-conviction-trade">ใช้เพื่อ Leverage ใน Conviction Trade</h3>
+<p><strong>สถานการณ์:</strong> มั่นใจสูงว่าหุ้นจะวิ่งเร็วใน 5-10 วัน (เช่น Earnings Surprise)</p>
+<p><strong>ทางเลือก:</strong><br />
+- ซื้อหุ้นแม่ (เสี่ยงต่ำ ผลตอบแทนต่ำ)<br />
+- ซื้อ DW ITM (เสี่ยงปานกลาง ผลตอบแทนสูงกว่า)<br />
+- ซื้อ DW ATM (เสี่ยงสูง ผลตอบแทนสูงมาก)<br />
+- ซื้อ DW OTM (เสี่ยงสูงมาก เกือบเป็น "ลอตเตอรี่")</p>
+<p><strong>ข้อแนะนำ:</strong> ถ้าจะใช้ DW เพื่อ Leverage — เลือก <strong>DW ITM ที่อายุยาว 60-90 วัน</strong> เพื่อลดผลของ Theta</p>
+<hr />
+<h2 id="43-anti-manipulation-checklist-dw">บทที่ 43: Anti-Manipulation Checklist สำหรับนักเทรด DW</h2>
+<pre><code>+--------------------------------------------------+
+|       DW PRE-TRADE CHECKLIST 18 ข้อ                |
++--------------------------------------------------+
+|                                                    |
+|  === DW STRUCTURE (6 ข้อ) ===                       |
+|  [ ] 1. อายุเหลือ &gt; 30 วัน (หลีกเลี่ยง Theta โหด)  |
+|  [ ] 2. Moneyness: ITM หรือ ATM (หลีกเลี่ยง Deep OTM)|
+|  [ ] 3. Effective Gearing 2-5x (ไม่เกิน 7x)         |
+|  [ ] 4. Implied Volatility &lt; ค่าเฉลี่ย 30 วัน        |
+|  [ ] 5. Conversion Ratio ≤ 5:1                      |
+|  [ ] 6. Issuer มี Quote ครบ 95% ของเวลา            |
+|                                                    |
+|  === LIQUIDITY (4 ข้อ) ===                          |
+|  [ ] 7. Bid-Ask Spread &lt; 5%                         |
+|  [ ] 8. Daily Volume &gt; 10,000 หน่วย                |
+|  [ ] 9. มี Order Book ทั้ง 2 ฝั่งหนาแน่น             |
+|  [ ] 10. ไม่มีการ Withdraw Quote บ่อย              |
+|                                                    |
+|  === UNDERLYING (4 ข้อ) ===                         |
+|  [ ] 11. หุ้นแม่ไม่อยู่ในเครื่องหมาย C, NP          |
+|  [ ] 12. Implied Volatility ของหุ้นแม่สมเหตุสมผล    |
+|  [ ] 13. ไม่มีข่าวร้ายรอประกาศ                      |
+|  [ ] 14. หุ้นแม่ไม่ Ceiling/Floor 2 วันติด          |
+|                                                    |
+|  === RISK MANAGEMENT (4 ข้อ) ===                    |
+|  [ ] 15. Position Size &lt; 3% ของพอร์ต                |
+|  [ ] 16. มีแผน Stop Loss ก่อนซื้อ                   |
+|  [ ] 17. มีแผน Take Profit เป็นขั้น                 |
+|  [ ] 18. มี Time Stop (ขายถ้าไม่วิ่งภายใน X วัน)    |
+|                                                    |
++--------------------------------------------------+
+
+เกณฑ์ผ่าน:
+- ผ่าน 17/18 → ลงทุนได้
+- ผ่าน 14-16 → ระวัง ลด Size 50%
+- ผ่าน &lt; 14 → ไม่ควรลงทุน
+</code></pre>
+<hr />
+<h2 id="44-12-dwfuturesoptions">บทที่ 44: สรุปกฎ 12 ข้อสำหรับนักเทรด DW/Futures/Options</h2>
+<pre><code>1. DW ไม่ใช่หุ้น — มันคือ &quot;ตั๋ว&quot; ที่หมดอายุได้
+2. Theta คือศัตรู — เวลาเป็นเงิน (ของคนอื่น)
+3. IV Crush คือกับดัก — อย่าซื้อ DW ก่อนข่าวสำคัญ
+4. Spread คือต้นทุนซ่อนเร้น — ต้องคำนวณก่อนเทรด
+5. Issuer มีอำนาจ — เขาตั้งราคาได้ตามใจ
+6. Leverage = ความเสี่ยง — ไม่ใช่กำไรอย่างเดียว
+7. Stop Loss ต้องตั้งไกลกว่าหุ้น (เพราะ Volatility สูงกว่า)
+8. Position Size ต้องเล็กกว่าหุ้น (เพราะ Leverage สูงกว่า)
+9. ไม่มี &quot;ซื้อแล้วถือยาว&quot; ใน DW — ต้อง Active Management
+10. การ Hedge ที่ดีคือไม่ลงทุนเกินความสามารถ — ไม่ใช่ใช้ DW
+11. ถ้าไม่เข้าใจ Greeks — อย่าเล่น
+12. ถ้าเล่นแล้วขาดทุน 3 ครั้งติด — หยุด พักทบทวน
+</code></pre>
+<hr />
+<h2 id="_3">บทส่งท้าย</h2>
+<p>DW, Warrant, Future, Option คือเครื่องมือทางการเงินที่ "ทรงพลัง" — แต่พลังไม่ใช่สิ่งที่ทุกคนควรใช้</p>
+<blockquote>
+<p><strong>คำแนะนำสุดท้าย:</strong></p>
+<ul>
+<li><strong>ถ้าคุณเป็นมือใหม่</strong> — ห่างจาก DW/Future ก่อน อย่างน้อย 2-3 ปี ให้เข้าใจหุ้นปกติให้ดีก่อน</li>
+<li><strong>ถ้าคุณเป็นมือกลาง</strong> — ใช้เพื่อ Hedge เท่านั้น ไม่ใช่ Speculate</li>
+<li><strong>ถ้าคุณเป็นมือเก๋า</strong> — เข้าใจดีแล้วว่ากำไรจาก Leverage มาพร้อมกับความเสี่ยงที่ต้องบริหาร</li>
+</ul>
+</blockquote>
+<p>90% ของคนเสียเงินกับ DW เพราะคิดว่ามันคือ "ทางลัดทำกำไร" แต่ความจริงคือ — <strong>มันคือทางลัดสู่การเสียเงิน</strong> เครื่องมือเหล่านี้ถูกออกแบบโดยคนฉลาดในสถาบันการเงิน เพื่อให้สถาบันการเงินได้เปรียบ</p>
+<blockquote>
+<p><em>"ใน DW คุณไม่ได้แข่งกับนักลงทุนคนอื่น — คุณแข่งกับ Algorithm ของ Issuer ที่มี PhD จาก MIT และมี Capital ไม่จำกัด"</em></p>
+</blockquote>
+<hr />
+<p><strong>บทถัดไป:</strong> <a href="10-tax-cost-guide.html">ภาค 10: ภาษีและต้นทุนสำหรับนักลงทุนหุ้นไทย</a></p>
+<hr>
+<p style="text-align:center; color:#9ca3af; font-size:0.85rem; margin-top:2rem;">
+  เกมปั่นหุ้น: รู้ทัน สังเกต และรอดตาย — <a href="index.html">หน้าหลัก</a>
+</p>
+</main>
+
+<script src="/guide-base.js"></script>
+<script src="/theme.js"></script>
+</body>
+</html>

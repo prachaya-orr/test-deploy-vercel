@@ -187,6 +187,61 @@
       border-color: #e2e8f0 !important;
     }
 
+    /* ── guide-base.css simple pages ─────────────────────── */
+    [data-theme="light"] body {
+      background: var(--bg-primary) !important;
+      color: var(--text-primary) !important;
+    }
+    [data-theme="light"] h1,
+    [data-theme="light"] h2 {
+      color: var(--text-primary) !important;
+      border-bottom-color: var(--border-primary) !important;
+    }
+    [data-theme="light"] h3 { color: var(--accent-blue) !important; }
+    [data-theme="light"] h4 { color: var(--accent-cyan) !important; }
+    [data-theme="light"] p,
+    [data-theme="light"] li,
+    [data-theme="light"] td { color: var(--text-secondary) !important; }
+    [data-theme="light"] strong { color: var(--text-primary) !important; }
+    [data-theme="light"] em { color: var(--text-primary) !important; }
+    [data-theme="light"] a { color: var(--accent-blue) !important; }
+    [data-theme="light"] a:hover { color: var(--accent-cyan) !important; }
+    [data-theme="light"] hr { border-top-color: var(--border-primary) !important; }
+    [data-theme="light"] code {
+      background: #f1f5f9 !important;
+      color: #be185d !important;
+      border-color: #e2e8f0 !important;
+    }
+    [data-theme="light"] pre,
+    [data-theme="light"] .code-block {
+      background: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+      color: #334155 !important;
+    }
+    [data-theme="light"] table { color: var(--text-secondary) !important; }
+    [data-theme="light"] th { color: var(--accent-blue) !important; }
+    [data-theme="light"] blockquote {
+      background: #f8fafc !important;
+      color: var(--text-secondary) !important;
+    }
+    [data-theme="light"] .toc {
+      background: #ffffff !important;
+      border-color: #e2e8f0 !important;
+    }
+    [data-theme="light"] .back-home {
+      background: rgba(37,99,235,0.08) !important;
+      color: var(--accent-blue) !important;
+      border-color: rgba(37,99,235,0.2) !important;
+    }
+    [data-theme="light"] .back-home:hover {
+      background: rgba(37,99,235,0.14) !important;
+    }
+    [data-theme="light"] .page-footer {
+      color: var(--text-muted) !important;
+      border-top-color: var(--border-primary) !important;
+    }
+    [data-theme="light"] .subtitle { color: var(--text-secondary) !important; }
+
     /* ── Theme toggle button ─────────────────────────── */
     .theme-toggle {
       display: flex;

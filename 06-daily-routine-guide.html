@@ -1,0 +1,2452 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ภาค 6: การเตรียมตัวในแต่ละวัน — กิจวัตรของนักลงทุนที่มีระบบ</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-card: #1a2235;
+    --bg-card-hover: #1f2a40;
+    --bg-code: #0d1321;
+    --border-primary: #2a3550;
+    --border-accent: #3b82f6;
+    --text-primary: #e8edf5;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-blue: #3b82f6;
+    --accent-blue-light: #60a5fa;
+    --accent-cyan: #22d3ee;
+    --accent-green: #34d399;
+    --accent-emerald: #10b981;
+    --accent-yellow: #fbbf24;
+    --accent-orange: #f97316;
+    --accent-red: #ef4444;
+    --accent-purple: #a78bfa;
+    --accent-pink: #f472b6;
+    --gradient-blue: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    --gradient-green: linear-gradient(135deg, #10b981, #22d3ee);
+    --gradient-warm: linear-gradient(135deg, #f97316, #fbbf24);
+    --gradient-red: linear-gradient(135deg, #ef4444, #f97316);
+    --gradient-emerald: linear-gradient(135deg, #059669, #10b981);
+    --gradient-hero: linear-gradient(135deg, #0a0e1a 0%, #0d1528 30%, #1a1e2e 60%, #0f172a 100%);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+    --shadow-lg: 0 8px 30px rgba(0,0,0,0.5);
+    --shadow-glow-blue: 0 0 20px rgba(59,130,246,0.15);
+    --shadow-glow-green: 0 0 20px rgba(16,185,129,0.15);
+    --shadow-glow-red: 0 0 20px rgba(239,68,68,0.15);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; font-size: 16px; scroll-padding-top: 70px; }
+
+  body {
+    font-family: 'IBM Plex Sans Thai', 'Noto Sans Thai', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: var(--border-primary); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent-blue); }
+
+  .top-nav {
+    position: sticky; top: 0; z-index: 1000;
+    background: rgba(10,14,26,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-primary);
+    padding: 0 2rem; height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-size: 0.9rem; font-weight: 700;
+    text-decoration: none; color: var(--accent-blue);
+    transition: all 0.3s ease; margin-right: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    width: 60px; height: 32px; border-radius: 6px;
+    background: rgba(59,130,246,0.1); letter-spacing: 0.5px;
+  }
+  .nav-logo:hover { background: rgba(59,130,246,0.2); transform: scale(1.05); }
+  .nav-brand {
+    font-weight: 700; font-size: 1.1rem;
+    background: var(--gradient-blue);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .nav-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .nav-links a {
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 0.8rem; padding: 0.3rem 0.7rem;
+    border-radius: 6px; transition: all 0.2s; white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--accent-blue-light); background: rgba(59,130,246,0.1); }
+
+  .sidebar {
+    position: fixed; left: 0; top: 60px; bottom: 0;
+    width: 300px; background: var(--bg-secondary);
+    border-right: 1px solid var(--border-primary);
+    overflow-y: auto; padding: 1.5rem 0; z-index: 100;
+    transition: transform 0.3s;
+  }
+  .sidebar-title {
+    font-size: 0.75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--text-muted); padding: 0 1.5rem; margin-bottom: 1rem;
+  }
+  .toc-list { list-style: none; }
+  .toc-list li a {
+    display: block; padding: 0.5rem 1.5rem;
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 0.85rem; border-left: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .toc-list li a:hover {
+    color: var(--accent-blue-light);
+    background: rgba(59,130,246,0.05);
+    border-left-color: var(--accent-blue);
+  }
+  .toc-list li.toc-h3 a { padding-left: 2.5rem; font-size: 0.8rem; }
+  .toc-divider { height: 1px; background: var(--border-primary); margin: 0.5rem 1.5rem; }
+
+  .main-content { margin-left: 300px; max-width: 900px; padding: 2rem 3rem 6rem; }
+
+  .hero {
+    background: var(--gradient-hero);
+    border-radius: var(--radius-xl);
+    padding: 4rem 3rem; margin-bottom: 3rem;
+    border: 1px solid rgba(59,130,246,0.2);
+    position: relative; overflow: hidden; text-align: center;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(59,130,246,0.06) 0%, transparent 60%),
+                radial-gradient(circle at 70% 50%, rgba(139,92,246,0.06) 0%, transparent 60%);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.3);
+    color: var(--accent-blue-light);
+    font-size: 0.8rem; font-weight: 600;
+    padding: 0.4rem 1.2rem; border-radius: 50px;
+    margin-bottom: 1.5rem; position: relative;
+  }
+  .hero h1 {
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 2.5rem; font-weight: 800;
+    line-height: 1.3; margin-bottom: 1rem; position: relative;
+  }
+  .hero h1 .gradient-text {
+    background: linear-gradient(135deg, #3b82f6, #a78bfa);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-subtitle {
+    font-size: 1.1rem; color: var(--text-secondary);
+    max-width: 700px; margin: 0 auto 2rem; position: relative;
+  }
+
+  .section-header {
+    margin: 4rem 0 2rem; padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border-primary);
+  }
+  .section-header h2 {
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 1.8rem; font-weight: 800;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .section-number {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px; border-radius: 12px;
+    font-size: 1rem; font-weight: 700; color: #fff; flex-shrink: 0;
+  }
+  .section-number.blue { background: var(--gradient-blue); }
+  .section-number.green { background: var(--gradient-green); }
+  .section-number.warm { background: var(--gradient-warm); }
+  .section-number.purple { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+  .section-number.emerald { background: var(--gradient-emerald); }
+  .section-number.red { background: var(--gradient-red); }
+  .section-number.cyan { background: linear-gradient(135deg, #06b6d4, #22d3ee); }
+  .section-number.gold { background: linear-gradient(135deg, #d97706, #fbbf24); }
+  .section-number.pink { background: linear-gradient(135deg, #db2777, #f472b6); }
+  .section-number.teal { background: linear-gradient(135deg, #0d9488, #2dd4bf); }
+  .section-number.indigo { background: linear-gradient(135deg, #4f46e5, #818cf8); }
+
+  h3 {
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 1.35rem; font-weight: 700;
+    margin: 2.5rem 0 1rem;
+    color: var(--accent-blue-light);
+  }
+  h4 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 2rem 0 0.8rem;
+    color: var(--accent-cyan);
+  }
+  p { margin-bottom: 1rem; color: var(--text-secondary); }
+  strong { color: var(--text-primary); font-weight: 600; }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: 2rem; margin: 1.5rem 0;
+    transition: all 0.3s;
+  }
+  .card:hover { border-color: rgba(59,130,246,0.3); box-shadow: var(--shadow-glow-blue); }
+  .card-title {
+    font-size: 1.1rem; font-weight: 700;
+    margin-bottom: 1rem; display: flex;
+    align-items: center; gap: 0.6rem;
+  }
+
+  .two-col { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin: 2rem 0; }
+  .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 2rem 0; }
+  .four-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 2rem 0; }
+  .five-col { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin: 2rem 0; }
+  .col-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem; transition: all 0.3s;
+  }
+  .col-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .col-card.blue-accent { border-top: 3px solid var(--accent-blue); }
+  .col-card.green-accent { border-top: 3px solid var(--accent-green); }
+  .col-card.purple-accent { border-top: 3px solid var(--accent-purple); }
+  .col-card.warm-accent { border-top: 3px solid var(--accent-orange); }
+  .col-card.cyan-accent { border-top: 3px solid var(--accent-cyan); }
+  .col-card.red-accent { border-top: 3px solid var(--accent-red); }
+  .col-card.emerald-accent { border-top: 3px solid var(--accent-emerald); }
+  .col-card.gold-accent { border-top: 3px solid var(--accent-yellow); }
+  .col-card.pink-accent { border-top: 3px solid var(--accent-pink); }
+  .col-card h4 { margin-top: 0; font-size: 1rem; }
+  .col-card ul { list-style: none; margin-top: 0.8rem; }
+  .col-card ul li { padding: 0.3rem 0; font-size: 0.9rem; color: var(--text-secondary); }
+  .col-card ul li::before { content: '\2022'; margin-right: 0.5rem; color: var(--accent-blue); }
+
+  .formula-block {
+    background: var(--bg-code);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: 1.5rem 2rem; margin: 1.5rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem; line-height: 1.9;
+    color: var(--text-secondary);
+    overflow-x: auto; position: relative;
+    white-space: pre-wrap; word-wrap: break-word;
+  }
+  .formula-block .tag {
+    position: absolute; top: 0.8rem; right: 1rem;
+    font-size: 0.65rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px;
+    padding: 0.2rem 0.6rem; border-radius: 4px;
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+  }
+  .formula-block .tag.concept { background: rgba(34,211,238,0.15); color: var(--accent-cyan); }
+  .formula-block .tag.formula { background: rgba(59,130,246,0.15); color: var(--accent-blue-light); }
+  .formula-block .tag.example { background: rgba(16,185,129,0.15); color: var(--accent-green); }
+  .formula-block .tag.data { background: rgba(167,139,250,0.15); color: var(--accent-purple); }
+  .formula-block .tag.flow { background: rgba(249,115,22,0.15); color: var(--accent-orange); }
+  .formula-block .tag.signal { background: rgba(244,114,182,0.15); color: var(--accent-pink); }
+  .formula-block .tag.warning { background: rgba(239,68,68,0.15); color: var(--accent-red); }
+  .formula-block .tag.timeline { background: rgba(96,165,250,0.15); color: var(--accent-blue-light); }
+  .formula-block .tag.dashboard { background: rgba(52,211,153,0.15); color: var(--accent-green); }
+  .formula-block .tag.checklist { background: rgba(34,211,238,0.15); color: var(--accent-cyan); }
+  .formula-block .tag.workflow { background: rgba(167,139,250,0.15); color: var(--accent-purple); }
+  .formula-block .highlight { color: var(--accent-cyan); font-weight: 500; }
+  .formula-block .val { color: var(--accent-yellow); }
+  .formula-block .ok { color: var(--accent-green); }
+  .formula-block .warn { color: var(--accent-orange); }
+  .formula-block .bad { color: var(--accent-red); }
+  .formula-block .comment { color: var(--text-muted); }
+  .formula-block .label { color: var(--accent-purple); font-weight: 500; }
+
+  .info-box {
+    border-radius: var(--radius-md);
+    padding: 1.2rem 1.5rem; margin: 1.5rem 0;
+    font-size: 0.92rem;
+  }
+  .info-box.tip { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); color: var(--accent-green); }
+  .info-box.warning { background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2); color: var(--accent-orange); }
+  .info-box.danger { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); color: var(--accent-red); }
+  .info-box.info { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); color: var(--accent-blue-light); }
+  .info-box .box-title { font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+
+  .quote-block {
+    background: var(--bg-card);
+    border-left: 4px solid var(--accent-purple);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    padding: 1.5rem 2rem; margin: 2rem 0;
+    font-style: italic; color: var(--text-secondary);
+  }
+  .quote-block .author {
+    display: block; margin-top: 0.8rem;
+    font-style: normal; font-weight: 600;
+    color: var(--accent-purple); font-size: 0.9rem;
+  }
+
+  .table-wrapper {
+    overflow-x: auto; margin: 1.5rem 0;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-primary);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  thead { background: rgba(59,130,246,0.1); }
+  thead.green-head { background: rgba(16,185,129,0.1); }
+  thead.warn-head { background: rgba(249,115,22,0.1); }
+  thead.red-head { background: rgba(239,68,68,0.1); }
+  thead.purple-head { background: rgba(139,92,246,0.1); }
+  th {
+    padding: 0.8rem 1rem; text-align: left;
+    font-weight: 600; color: var(--accent-blue-light);
+    border-bottom: 2px solid var(--border-primary); white-space: nowrap;
+  }
+  thead.green-head th { color: var(--accent-green); }
+  thead.warn-head th { color: var(--accent-orange); }
+  thead.red-head th { color: var(--accent-red); }
+  thead.purple-head th { color: var(--accent-purple); }
+  td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid rgba(42,53,80,0.5);
+    color: var(--text-secondary);
+  }
+  tbody tr:hover { background: rgba(59,130,246,0.03); }
+
+  .timeline-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: 2rem; margin: 2rem 0;
+  }
+  .timeline-item {
+    display: flex; gap: 1.2rem; padding: 1rem 0;
+    border-bottom: 1px solid rgba(42,53,80,0.3);
+  }
+  .timeline-item:last-child { border-bottom: none; }
+  .timeline-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--accent-cyan); white-space: nowrap;
+    min-width: 110px;
+  }
+  .timeline-icon { font-size: 1.2rem; flex-shrink: 0; }
+  .timeline-content { flex: 1; }
+  .timeline-content h5 {
+    font-size: 0.95rem; font-weight: 600;
+    color: var(--text-primary); margin-bottom: 0.3rem;
+  }
+  .timeline-content p {
+    font-size: 0.85rem; color: var(--text-secondary); margin: 0;
+  }
+
+  .checklist-box {
+    background: var(--bg-code);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: 2rem; margin: 1.5rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem; line-height: 2;
+    color: var(--text-secondary);
+    white-space: pre-wrap; word-wrap: break-word;
+  }
+
+  .mood-card {
+    background: var(--bg-code);
+    border: 2px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: 2rem; margin: 2rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem; line-height: 2;
+    color: var(--text-secondary);
+    white-space: pre-wrap;
+  }
+
+  .back-to-top {
+    position: fixed; bottom: 2rem; right: 2rem;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--gradient-blue); color: #fff;
+    border: none; cursor: pointer; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow-lg);
+    opacity: 0; transition: opacity 0.3s; z-index: 1000;
+  }
+  .back-to-top.visible { opacity: 1; }
+
+  .progress-bar { position: fixed; top: 60px; left: 300px; right: 0; height: 3px; z-index: 999; background: transparent; }
+  .progress-bar .fill { height: 100%; background: var(--gradient-blue); width: 0%; transition: width 0.1s; }
+
+  .hamburger-btn {
+    display: none; flex-direction: column;
+    justify-content: center; align-items: center;
+    width: 36px; height: 36px;
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 8px; cursor: pointer;
+    gap: 5px; padding: 0; transition: all 0.3s ease; flex-shrink: 0;
+  }
+  .hamburger-btn:hover { background: rgba(59,130,246,0.2); }
+  .hamburger-btn span {
+    display: block; width: 18px; height: 2px;
+    background: var(--accent-blue-light);
+    border-radius: 2px; transition: all 0.3s ease;
+  }
+
+  .do-dont-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+  .do-card, .dont-card {
+    border-radius: var(--radius-md); padding: 1.5rem;
+  }
+  .do-card { background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); }
+  .dont-card { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); }
+  .do-card h4 { color: var(--accent-green); margin-top: 0; }
+  .dont-card h4 { color: var(--accent-red); margin-top: 0; }
+  .do-card ul, .dont-card ul { list-style: none; margin-top: 0.8rem; }
+  .do-card ul li { padding: 0.4rem 0; font-size: 0.9rem; color: var(--accent-green); }
+  .do-card ul li::before { content: '\2713 '; font-weight: 700; }
+  .dont-card ul li { padding: 0.4rem 0; font-size: 0.9rem; color: var(--accent-red); }
+  .dont-card ul li::before { content: '\2717 '; font-weight: 700; }
+
+  .energy-bar {
+    display: flex; align-items: center; gap: 0.5rem; margin: 0.5rem 0;
+  }
+  .energy-bar .time-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem; color: var(--text-muted); min-width: 50px;
+  }
+  .energy-bar .bar {
+    height: 12px; border-radius: 6px; transition: width 0.5s;
+  }
+  .energy-bar .bar.high { background: var(--accent-green); }
+  .energy-bar .bar.medium { background: var(--accent-yellow); }
+  .energy-bar .bar.low { background: var(--accent-orange); }
+  .energy-bar .bar.critical { background: var(--accent-red); }
+  .energy-bar .pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem; color: var(--text-muted); min-width: 35px;
+  }
+
+  @media (max-width: 1024px) {
+    .hamburger-btn { display: flex; }
+    .nav-links { display: none; }
+    .sidebar { transform: translateX(-100%); }
+    .main-content { margin-left: 0; padding: 1.5rem; }
+    .progress-bar { left: 0; }
+    .two-col, .three-col, .four-col, .five-col { grid-template-columns: 1fr; }
+    .do-dont-grid { grid-template-columns: 1fr; }
+    .hero { padding: 2.5rem 1.5rem; }
+    .hero h1 { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="fill" id="progressFill"></div></div>
+
+<nav class="top-nav">
+  <a href="/" class="nav-logo" title="กลับหน้าหลัก">HOME</a>
+  <div class="nav-brand">📅 ภาค 6 — กิจวัตรประจำวัน</div>
+  <div class="nav-links">
+    <a href="#sec1">ทำไมต้องมีกิจวัตร</a>
+    <a href="#sec2">Timeline</a>
+    <a href="#sec3">Morning</a>
+    <a href="#sec4">Pre-Market</a>
+    <a href="#sec5">Pre-Open</a>
+    <a href="#sec6">ตลาดเปิด</a>
+    <a href="#sec7">พักเที่ยง</a>
+    <a href="#sec8">ช่วงบ่าย</a>
+    <a href="#sec9">After Market</a>
+    <a href="#sec10">Evening</a>
+    <a href="#sec11">หลัง 18:00</a>
+    <a href="#sec12">Journal</a>
+    <a href="#sec13">รายสัปดาห์</a>
+    <a href="#sec14">ระบบส่วนตัว</a>
+  </div>
+  <button class="hamburger-btn" id="hamburgerBtn" aria-label="เมนู">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<aside class="sidebar">
+  <div class="sidebar-title">สารบัญ ภาค 6</div>
+  <ul class="toc-list">
+    <li><a href="#sec1">1. ทำไมต้องมีกิจวัตร</a></li>
+    <li class="toc-h3"><a href="#benefits">5 ข้อดีของกิจวัตร</a></li>
+    <li class="toc-h3"><a href="#design-principles">หลักการออกแบบ</a></li>
+    <li><a href="#sec2">2. Timeline ทั้งวัน</a></li>
+    <li><a href="#sec3">3. Morning Routine 07:00-08:00</a></li>
+    <li class="toc-h3"><a href="#global-markets">ตลาดต่างประเทศ</a></li>
+    <li class="toc-h3"><a href="#macro-vars">สินค้าโภคภัณฑ์ + ค่าเงิน</a></li>
+    <li class="toc-h3"><a href="#news-filter">กรองข่าว</a></li>
+    <li class="toc-h3"><a href="#market-mood">Market Mood</a></li>
+    <li><a href="#sec4">4. Pre-Market 08:00-09:30</a></li>
+    <li class="toc-h3"><a href="#portfolio-check">Portfolio Check</a></li>
+    <li class="toc-h3"><a href="#watchlist-scan">Watchlist Scan</a></li>
+    <li class="toc-h3"><a href="#econ-calendar">ปฏิทินเศรษฐกิจ</a></li>
+    <li class="toc-h3"><a href="#daily-plan">แผนวันนี้</a></li>
+    <li><a href="#sec5">5. Pre-Open 09:30-10:00</a></li>
+    <li><a href="#sec6">6. ช่วงตลาดเปิด เช้า</a></li>
+    <li class="toc-h3"><a href="#first-30">30 นาทีแรก</a></li>
+    <li class="toc-h3"><a href="#mid-morning">กลางเช้า</a></li>
+    <li><a href="#sec7">7. พักเที่ยง</a></li>
+    <li><a href="#sec8">8. ช่วงบ่าย 14:30-16:30</a></li>
+    <li class="toc-h3"><a href="#last-30">30 นาทีสุดท้าย</a></li>
+    <li><a href="#sec9">9. After Market + Journal</a></li>
+    <li><a href="#sec10">10. Evening Review</a></li>
+    <li class="toc-h3"><a href="#chart-analysis">วิเคราะห์กราฟ</a></li>
+    <li class="toc-h3"><a href="#tomorrow-plan">แผนพรุ่งนี้</a></li>
+    <li class="toc-h3"><a href="#confidence-score">Confidence Scoring</a></li>
+    <li><a href="#sec11">11. กฎหลัง 18:00</a></li>
+    <li><a href="#sec12">12. Trading Journal</a></li>
+    <li class="toc-h3"><a href="#journal-template">Template</a></li>
+    <li class="toc-h3"><a href="#metrics">สถิติส่วนตัว</a></li>
+    <li class="toc-h3"><a href="#common-patterns">Pattern ของข้อผิดพลาด</a></li>
+    <li><a href="#sec13">13. รายสัปดาห์ + รายเดือน</a></li>
+    <li class="toc-h3"><a href="#saturday-review">Saturday Review</a></li>
+    <li class="toc-h3"><a href="#monthly-review">Monthly Review</a></li>
+    <li><a href="#sec14">14. ระบบส่วนตัว</a></li>
+    <li class="toc-h3"><a href="#investor-types">3 ประเภทนักลงทุน</a></li>
+    <li class="toc-h3"><a href="#tools">เครื่องมือ + Automation</a></li>
+    <li class="toc-h3"><a href="#kpi">KPI วัดระบบ</a></li>
+    <li><a href="#summary">สรุปตารางกิจวัตร</a></li>
+  </ul>
+</aside>
+
+<main class="main-content">
+
+<section class="hero">
+  <div class="hero-badge">ภาค 6 — การเตรียมตัวในแต่ละวัน</div>
+  <h1>กิจวัตรของ<br><span class="gradient-text">นักลงทุนที่มีระบบ</span></h1>
+  <p class="hero-subtitle">ความสำเร็จในตลาดหุ้นไม่ได้มาจาก "สัญชาตญาณ" แต่มาจาก "ระบบและกิจวัตรที่ทำซ้ำได้ทุกวัน" — เหมือนนักกีฬามืออาชีพที่ซ้อมทุกวัน ไม่ใช่แค่วันแข่ง</p>
+</section>
+
+<div class="quote-block">
+  "ระบบที่ดีที่สุดคือระบบที่คุณทำได้จริงทุกวัน — ระบบที่สมบูรณ์แบบแต่ทำไม่ได้ ไร้ค่า / ระบบที่ไม่สมบูรณ์แต่ทำได้ทุกวัน มีค่ามหาศาล"
+  <span class="author">— หลักปรัชญาของภาค 6</span>
+</div>
+
+<div class="section-header" id="sec1">
+  <h2><span class="section-number blue">1</span> ทำไมต้องมีกิจวัตร</h2>
+</div>
+
+<p>นักลงทุนที่ประสบความสำเร็จไม่ได้เก่งเพราะ "สัญชาตญาณ" แต่เพราะมี <strong>ระบบและกิจวัตรที่ทำซ้ำได้ทุกวัน</strong> เหมือนนักกีฬาที่ซ้อมทุกวัน ไม่ใช่แค่วันแข่ง</p>
+
+<p>ลองนึกถึงนักมวยมืออาชีพ — เขาไม่ได้ขึ้นเวทีแล้วค่อยคิดว่าจะต่อยอย่างไร ทุกท่า ทุกจังหวะ ถูกฝึกซ้อมจนเป็นอัตโนมัติ เมื่อเจอสถานการณ์จริง ร่างกายตอบสนองได้ทันทีโดยไม่ต้องคิด นักลงทุนก็เช่นกัน — เมื่อตลาดเปิด ทุกอย่างเคลื่อนไหวเร็ว ถ้าไม่มีแผนที่เตรียมไว้ล่วงหน้า คุณจะตัดสินใจจากอารมณ์ ซึ่งเป็นวิธีที่แพ้เสมอ</p>
+
+<h3 id="benefits">5 ข้อดีของการมีกิจวัตร</h3>
+
+<div class="five-col">
+  <div class="col-card blue-accent">
+    <h4>🧠 ลด Decision Fatigue</h4>
+    <ul>
+      <li>พลังงานตัดสินใจมีจำกัด</li>
+      <li>Steve Jobs ใส่เสื้อเหมือนเดิมทุกวัน</li>
+      <li>สมองยังมีพลังตอนต้องเทรดจริง</li>
+    </ul>
+  </div>
+  <div class="col-card green-accent">
+    <h4>📡 ไม่พลาดสัญญาณ</h4>
+    <ul>
+      <li>หุ้นไทยมีกว่า 800 ตัว</li>
+      <li>บังคับตรวจสอบสิ่งสำคัญทุกวัน</li>
+      <li>ไม่พลาด Breakout เพราะ "ขี้เกียจ"</li>
+    </ul>
+  </div>
+  <div class="col-card purple-accent">
+    <h4>⚡ ประหยัดเวลา</h4>
+    <ul>
+      <li>ไม่มีระบบ: 5-8 ชม./วัน</li>
+      <li>มีระบบ: 2-3 ชม./วัน</li>
+      <li>ข้อมูลครบถ้วนกว่า เพราะรู้ว่าดูอะไร</li>
+    </ul>
+  </div>
+  <div class="col-card warm-accent">
+    <h4>😌 ลดความเครียด</h4>
+    <ul>
+      <li>ความเครียดมาจาก "ไม่แน่นอน"</li>
+      <li>มีแผน = ไม่ตื่นตระหนก</li>
+      <li>Cortisol ต่ำ = นอนดี ตัดสินใจดี</li>
+    </ul>
+  </div>
+  <div class="col-card cyan-accent">
+    <h4>🔁 สร้างความสม่ำเสมอ</h4>
+    <ul>
+      <li>ผลระยะยาวมาจากความสม่ำเสมอ</li>
+      <li>1%/สัปดาห์ x 50 = +64%/ปี</li>
+      <li>Compounding คือพลังที่แท้จริง</li>
+    </ul>
+  </div>
+</div>
+
+<div class="info-box info">
+  <div class="box-title">💡 เปรียบเทียบตัวเลขจริง</div>
+  นักลงทุนที่ทำกำไร 1% ต่อสัปดาห์สม่ำเสมอ 50 สัปดาห์ = <strong>+64% ต่อปี</strong><br>
+  vs นักลงทุนที่ได้ +50% เดือนหนึ่ง แล้ว -40% อีกเดือน = <strong>ขาดทุนสุทธิ -10%</strong><br>
+  ความสม่ำเสมอชนะการเก็งกำไรถูกครั้งใหญ่เสมอ
+</div>
+
+<h3 id="design-principles">หลักการออกแบบกิจวัตรที่ดี</h3>
+
+<div class="formula-block">
+<span class="tag concept">DESIGN PRINCIPLES</span>
+<span class="highlight">กิจวัตรที่ดีต้อง:</span>
+
+├── <span class="val">ทำซ้ำได้ทุกวัน</span> — ไม่ซับซ้อนจนทำไม่ไหว
+├── <span class="val">ครอบคลุมทุกด้าน</span> — ข้อมูล, แผน, การดำเนินการ, การทบทวน
+├── <span class="val">มีความยืดหยุ่น</span> — ปรับได้ตามสถานการณ์ แต่โครงสร้างหลักไม่เปลี่ยน
+├── <span class="val">วัดผลได้</span> — รู้ว่าทำแล้วดีขึ้นหรือไม่
+└── <span class="val">ไม่กินเวลามากเกินไป</span> — เป้าหมาย 2-3 ชม./วัน ไม่ใช่ทั้งวัน
+</div>
+
+<div class="section-header" id="sec2">
+  <h2><span class="section-number cyan">2</span> Timeline ภาพรวมทั้งวัน</h2>
+</div>
+
+<p>ตารางเวลาต่อไปนี้เป็น <strong>แนวทาง</strong> ปรับได้ตามไลฟ์สไตล์ แต่ <strong>ลำดับขั้นตอน</strong> ไม่ควรเปลี่ยน — ต้องดูภาพรวมก่อน แล้วค่อยลงรายละเอียด</p>
+
+<div class="timeline-block">
+  <div class="timeline-item">
+    <div class="timeline-time">06:00-07:00</div>
+    <div class="timeline-icon">🌅</div>
+    <div class="timeline-content">
+      <h5>ตื่นนอน เตรียมตัว ออกกำลังกาย</h5>
+      <p>ลด Cortisol ก่อนเข้าสู่วันเทรด — สมองที่สดใสตัดสินใจได้ดีกว่า</p>
+    </div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-time">07:00-08:00</div>
+    <div class="timeline-icon">☀️</div>
+    <div class="timeline-content">
+      <h5>Morning Routine — ดูภาพรวมตลาดโลก</h5>
+      <p>ตลาดสหรัฐ (เมื่อคืน) + เอเชีย (เปิดแล้ว) + สินค้าโภคภัณฑ์ + ค่าเงิน → สร้าง Market Mood</p>
+    </div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-time">08:00-09:30</div>
+    <div class="timeline-icon">📊</div>
+    <div class="timeline-content">
+      <h5>Pre-Market — เตรียมแผนก่อนตลาดเปิด</h5>
+      <p>⭐ ช่วงสำคัญที่สุดของวัน — Portfolio Check + Watchlist + เขียนแผน A/B/C + Position Sizing</p>
+    </div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-time">09:30-10:00</div>
+    <div class="timeline-icon">🔔</div>
+    <div class="timeline-content">
+      <h5>Pre-Open — ดู Bid-Offer Call Auction</h5>
+      <p>ดู Projected Open + S50 Futures + ตัดสินใจสุดท้ายก่อนตลาดเปิด</p>
+    </div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-time">10:00-12:30</div>
+    <div class="timeline-icon">📈</div>
+    <div class="timeline-content">
+      <h5>ช่วงเช้า — ตลาดเปิด ดำเนินการตามแผน</h5>
+      <p>30 นาทีแรก (ผันผวน) → กลางเช้า (เข้าซื้อ) → ก่อนพัก (ระวัง Marking)</p>
+    </div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-time">12:30-14:30</div>
+    <div class="timeline-icon">🍚</div>
+    <div class="timeline-content">
+      <h5>พักเที่ยง — พักจริงๆ + สรุปช่วงเช้า</h5>
+      <p>กินข้าว เดินเล่น ให้สมองได้ Reset + สรุปช่วงเช้า 10 นาที</p>
+    </div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-time">14:30-16:30</div>
+    <div class="timeline-icon">📉</div>
+    <div class="timeline-content">
+      <h5>ช่วงบ่าย — ตลาดเปิดรอบบ่าย</h5>
+      <p>เปิดบ่าย → กลางบ่าย (เงียบ) → 30 นาทีสุดท้าย (ระวัง Marking the Close)</p>
+    </div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-time">16:30-17:00</div>
+    <div class="timeline-icon">📝</div>
+    <div class="timeline-content">
+      <h5>After Market — บันทึก Trading Journal ทันที</h5>
+      <p>⭐ ห้ามข้าม — ความทรงจำเรื่องอารมณ์เลือนหายใน 2-3 ชั่วโมง</p>
+    </div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-time">17:00-18:00</div>
+    <div class="timeline-icon">📖</div>
+    <div class="timeline-content">
+      <h5>Evening Review — วิเคราะห์กราฟ + วางแผนวันถัดไป</h5>
+      <p>ตรวจกราฟ Daily + สแกน Watchlist + Confidence Scoring สำหรับพรุ่งนี้</p>
+    </div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-time">18:00+</div>
+    <div class="timeline-icon">🧘</div>
+    <div class="timeline-content">
+      <h5>หยุดดูตลาด — ใช้ชีวิต พักผ่อน</h5>
+      <p>⭐ กฎศักดิ์สิทธิ์ — สมองล้าหลัง 18:00 ตัดสินใจแย่ลง 40-60%</p>
+    </div>
+  </div>
+</div>
+
+<div class="section-header" id="sec3">
+  <h2><span class="section-number gold">3</span> ☀️ Morning Routine (07:00-08:00)</h2>
+</div>
+
+<p>ก่อนจะดูหุ้นไทย ต้องรู้ก่อนว่า "โลกเป็นอย่างไร" เพราะตลาดหุ้นไทยไม่ได้อยู่โดดเดี่ยว — มันเป็นส่วนหนึ่งของระบบนิเวศการเงินโลก เงินทุนไหลข้ามประเทศทุกวัน สิ่งที่เกิดขึ้นใน Wall Street เมื่อคืนอาจกระทบหุ้นที่คุณถืออยู่ในเช้าวันนี้</p>
+
+<h3 id="global-markets">1) ตลาดหุ้นต่างประเทศ (ปิดเมื่อคืน)</h3>
+
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr>
+        <th>ตลาด</th>
+        <th>ดูอะไร</th>
+        <th>ผลกระทบต่อหุ้นไทย</th>
+        <th>วิธีตีความ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Dow Jones / S&P 500</strong></td><td>ดัชนีปิดบวกหรือลบ</td><td>ถ้าลงแรง หุ้นไทยมักเปิดลบตาม</td><td>ลง &gt; 1% = กระทบชัด, &gt; 2% = หนัก</td></tr>
+      <tr><td><strong>Nasdaq</strong></td><td>หุ้นเทคโนโลยี</td><td>กระทบหุ้นเทคไทย (DELTA, TRUE, JMART)</td><td>ดู Magnificent 7 เป็นหลัก</td></tr>
+      <tr><td><strong>Nikkei (ญี่ปุ่น)</strong></td><td>เปิดก่อนไทย 1 ชม.</td><td>Leading Indicator ของเอเชีย</td><td>ถ้า Nikkei เปิดลบหนัก SET มักตามลง</td></tr>
+      <tr><td><strong>Hang Seng</strong></td><td>ตลาดเอเชีย + จีน</td><td>กระทบ Sentiment ภูมิภาค</td><td>ตัวแทนของเศรษฐกิจจีน</td></tr>
+      <tr><td><strong>Shanghai Composite</strong></td><td>ตลาดจีน A-Share</td><td>กระทบหุ้นที่ทำธุรกิจกับจีน</td><td>จีนเป็นคู่ค้าอันดับ 1 ของไทย</td></tr>
+      <tr><td><strong>SET Futures (S50)</strong></td><td>บอกทิศทาง SET โดยตรง</td><td>Leading Indicator ของ SET</td><td>Futures ลบ &gt; 5 จุด = ตลาดมักเปิดลบ</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="info-box tip">
+  <div class="box-title">💡 วิธีดูอย่างมีประสิทธิภาพ</div>
+  ไม่ต้องดูทุกตลาดอย่างละเอียด — ดูแค่ว่า "บวกหรือลบ" และ "มากน้อยแค่ไหน"<br>
+  • ตลาดหลักทุกตลาดลบพร้อมกัน → สัญญาณ Risk-off ทั่วโลก ต้องระวัง<br>
+  • บวกลบคละกัน → ไม่มีทิศทางชัด ดูปัจจัยเฉพาะของไทย
+</div>
+
+<h3 id="macro-vars">2) สินค้าโภคภัณฑ์และตัวแปรมหภาค</h3>
+
+<div class="table-wrapper">
+  <table>
+    <thead class="warn-head">
+      <tr>
+        <th>สินค้า/ตัวแปร</th>
+        <th>ดูอะไร</th>
+        <th>กระทบกลุ่มไหน</th>
+        <th>ระดับที่ต้องระวัง</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>น้ำมันดิบ WTI</strong></td><td>ราคาขึ้นหรือลง</td><td>PTT, PTTEP, TOP, IRPC, BCP</td><td>เปลี่ยน &gt; 3% ต่อวัน</td></tr>
+      <tr><td><strong>Brent</strong></td><td>ราคาอ้างอิงเอเชีย</td><td>กลุ่มพลังงานทั้งหมด</td><td>ดู Spread กับ WTI</td></tr>
+      <tr><td><strong>ทองคำ (Gold)</strong></td><td>ราคาขึ้น = ตลาดกลัว</td><td>หุ้นทอง, สัญญาณ Risk-off</td><td>ขึ้น &gt; $20/วัน = ตลาดกลัวจริง</td></tr>
+      <tr><td><strong>USD/THB</strong></td><td>บาทแข็งหรืออ่อน</td><td>ส่งออก, ท่องเที่ยว, หนี้ USD</td><td>เปลี่ยน &gt; 0.3 บาท/วัน</td></tr>
+      <tr><td><strong>US 10Y Yield</strong></td><td>ขึ้น = กดดัน Growth</td><td>เทค, P/E สูง, REITs</td><td>เกิน 4.5% = กดดันหนัก</td></tr>
+      <tr><td><strong>DXY</strong></td><td>ดอลลาร์แข็ง/อ่อน</td><td>Fund Flow เข้า EM</td><td>&gt; 105 = เงินไหลออก EM</td></tr>
+      <tr><td><strong>VIX (Fear Index)</strong></td><td>ความกลัวของตลาด</td><td>Sentiment ทั่วโลก</td><td>&gt; 20 ระวัง, &gt; 30 วิกฤต</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="formula-block">
+<span class="tag concept">CORRELATION MAP</span>
+<span class="highlight">ความสัมพันธ์ที่ต้องจำ (Chain Reactions):</span>
+
+<span class="val">น้ำมันขึ้น</span>     → เงินเฟ้อสูงขึ้น → ดอกเบี้ยอาจขึ้น → <span class="bad">กดดันหุ้น Growth</span>
+<span class="val">ทองขึ้น</span>        → ตลาดกลัว → เงินไหลออกจากหุ้น → <span class="bad">ตลาดอาจลง</span>
+<span class="val">ดอลลาร์แข็ง</span>   → เงินไหลออก EM → ต่างชาติขายหุ้นไทย → <span class="bad">SET ลง</span>
+<span class="val">Bond Yield ขึ้น</span> → หุ้น P/E สูงถูกกดดัน → <span class="bad">หุ้น Growth ลง</span>
+<span class="val">VIX พุ่ง</span>       → ตลาดตื่นตระหนก → <span class="bad">ทุกอย่างลง (Correlation → 1)</span>
+</div>
+
+<h3 id="news-filter">3) ข่าวสำคัญ — แยกข่าวที่มีผลจริงออกจากข่าวขยะ</h3>
+
+<p>ข่าวมีหลายระดับ ไม่ใช่ทุกข่าวที่ต้องสนใจ — การกรองข่าวเป็นทักษะที่สำคัญที่สุดอย่างหนึ่ง</p>
+
+<div class="table-wrapper">
+  <table>
+    <thead class="purple-head">
+      <tr><th>ระดับข่าว</th><th>ตัวอย่าง</th><th>ผลกระทบ</th><th>ควรทำอย่างไร</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>🔴 <strong>วิกฤต</strong></td><td>สงคราม, วิกฤตการเงิน, โรคระบาด</td><td>สูงมาก</td><td>ลด Position ทันที รอดูสถานการณ์</td></tr>
+      <tr><td>🟠 <strong>สำคัญมาก</strong></td><td>Fed ขึ้น/ลดดอกเบี้ย, กนง., GDP</td><td>สูง</td><td>ปรับแผนตามผล อาจลด Position ก่อนประกาศ</td></tr>
+      <tr><td>🟡 <strong>สำคัญปานกลาง</strong></td><td>ข่าวบริษัทที่ถือ, นโยบายรัฐบาล</td><td>ปานกลาง</td><td>วิเคราะห์ผลกระทบ ปรับแผนถ้าจำเป็น</td></tr>
+      <tr><td>🟢 <strong>ข่าวทั่วไป</strong></td><td>ข่าวอุตสาหกรรม, บทวิเคราะห์</td><td>ต่ำ</td><td>อ่านเก็บข้อมูล ไม่ต้องเปลี่ยนแผน</td></tr>
+      <tr><td>⚫ <strong>ข่าวขยะ</strong></td><td>ข่าวลือกลุ่มไลน์, คลิกเบท</td><td>ไม่มี</td><td>ข้ามไป อย่าเสียเวลา</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="two-col">
+  <div class="col-card green-accent">
+    <h4>✅ แหล่งข้อมูลที่เชื่อถือได้</h4>
+    <ul>
+      <li><strong>Bloomberg / Reuters</strong> — มาตรฐานอุตสาหกรรม</li>
+      <li><strong>set.or.th</strong> — ข้อมูลทางการจากตลาดหลักทรัพย์</li>
+      <li><strong>sec.or.th</strong> — ก.ล.ต. (รายงาน 59-2)</li>
+      <li><strong>Financial Times</strong> — วิเคราะห์ลึก</li>
+      <li><strong>Investing.com</strong> — ปฏิทินเศรษฐกิจ</li>
+      <li><strong>CNBC</strong> — ข่าวเร็ว (บางครั้ง Sensational)</li>
+    </ul>
+  </div>
+  <div class="col-card red-accent">
+    <h4>❌ สิ่งที่ควรหลีกเลี่ยง</h4>
+    <ul>
+      <li>กลุ่มไลน์ "หุ้นเด็ด" — มักเป็นข่าวลือ</li>
+      <li>เพจ Facebook แนะนำหุ้น — ไม่มีความรับผิดชอบ</li>
+      <li>YouTube "การันตีกำไร" — ไม่มีใครการันตีได้</li>
+      <li>Twitter/X ที่ไม่ระบุแหล่ง — ข่าวลือแพร่เร็วที่สุด</li>
+      <li>เว็บที่ใช้คำคลุมเครือ ("คาดว่า", "มีแนวโน้ม")</li>
+      <li>ข่าวที่ไม่มี "ตัวเลข" ชัดเจน</li>
+    </ul>
+  </div>
+</div>
+
+<h3 id="market-mood">4) สรุปเป็น "Market Mood" วันนี้</h3>
+
+<div class="mood-card">╔═══════════════════════════════════════════════╗
+║          <span style="color:var(--accent-cyan);font-weight:700">Market Mood วันนี้</span>                     ║
+║          วันที่: ___________                    ║
+╠═══════════════════════════════════════════════╣
+║                                                 ║
+║  ตลาดสหรัฐ:   🟢 บวก / 🟡 ทรง / 🔴 ลบ          ║
+║  ตลาดเอเชีย:  🟢 บวก / 🟡 ทรง / 🔴 ลบ          ║
+║  น้ำมัน:      🟢 ขึ้น / 🟡 ทรง / 🔴 ลง          ║
+║  ทองคำ:      🟢 ลง(Risk-on) / 🔴 ขึ้น(Risk-off) ║
+║  ค่าเงินบาท:  บาทแข็ง / บาทอ่อน                 ║
+║  VIX:        ต่ำ(&lt;15) / ปกติ(15-20) / สูง(&gt;20) ║
+║  S50 Futures: บวก / ลบ ___ จุด                  ║
+║  ข่าวสำคัญ:  มี / ไม่มี                         ║
+║                                                 ║
+╠═══════════════════════════════════════════════╣
+║  สรุป Mood: <span style="color:var(--accent-green)">Bullish</span> / <span style="color:var(--accent-yellow)">Neutral</span> / <span style="color:var(--accent-red)">Bearish</span>     ║
+║  แผนวันนี้: เชิงรุก / ระวัง / รอดู              ║
+║  ระดับความมั่นใจ (1-10): ___                    ║
+╚═══════════════════════════════════════════════╝</div>
+
+<div class="formula-block">
+<span class="tag signal">MOOD INTERPRETATION</span>
+<span class="highlight">กฎการตีความ Market Mood:</span>
+
+<span class="ok">🟢 Bullish (เชิงรุก):</span>
+├── ตลาดสหรัฐบวก + เอเชียบวก + VIX ต่ำ + S50 Futures บวก
+├── ไม่มีข่าวร้ายสำคัญ
+└── → เปิดใจดูโอกาส ดำเนินการตามแผนซื้อ
+
+<span class="warn">🟡 Neutral (ระวัง):</span>
+├── สัญญาณผสม — บางตลาดบวก บางตลาดลบ
+├── มีข่าวที่ต้องติดตามแต่ยังไม่ชัดเจน
+└── → ดำเนินการตามแผนเดิม แต่ลด Position Size ลง 25-50%
+
+<span class="bad">🔴 Bearish (รอดู):</span>
+├── ตลาดสหรัฐลบหนัก + เอเชียลบ + VIX สูง + S50 Futures ลบ
+├── มีข่าวร้ายสำคัญ
+└── → ไม่ซื้อใหม่ ดูแค่หุ้นที่ถืออยู่ ตรวจสอบ Stop Loss
+
+<span class="bad">⚫ Crisis (วิกฤต):</span>
+├── ทุกตลาดลบหนัก + VIX &gt; 30 + ทองพุ่ง + Bond Yield ร่วง
+├── มีเหตุการณ์ไม่คาดฝัน (Black Swan)
+└── → ลด Position ทันที ถือเงินสดเป็นหลัก
+</div>
+
+<div class="info-box observe">
+  <div class="box-title">🎯 ข้อสังเกตสำคัญ</div>
+  Market Mood ไม่ได้บอกว่า "วันนี้ตลาดจะขึ้นหรือลง" — มันบอกว่า <strong>"วันนี้ควรเทรดด้วยท่าทีแบบไหน"</strong> ตลาดอาจเปิดลบแต่ปิดบวกก็ได้ แต่ถ้า Mood เป็น Bearish คุณจะไม่ไล่ซื้อตอนเปิดตลาด ซึ่งป้องกันความเสียหายได้มาก
+</div>
+
+<div class="section-header" id="sec4">
+  <h2><span class="section-number emerald">4</span> 📊 Pre-Market (08:00-09:30)</h2>
+</div>
+
+<div class="info-box danger">
+  <div class="box-title">⚠️ นี่คือช่วงที่สำคัญที่สุดของวัน</div>
+  ทุกการตัดสินใจควรเกิดขึ้นตอนนี้ ไม่ใช่ตอนตลาดเปิดแล้ว เพราะเมื่อตลาดเปิด ราคาเคลื่อนไหวเร็ว อารมณ์จะเข้ามาแทรก ถ้าไม่มีแผนที่ชัดเจน คุณจะตัดสินใจจาก <strong>System 1 (สมองเร็ว อารมณ์)</strong> แทน <strong>System 2 (สมองช้า เหตุผล)</strong>
+</div>
+
+<div class="quote-block">
+  "ตัดสินใจตอนที่ตลาดปิด ดำเนินการตอนที่ตลาดเปิด" — ไม่ใช่กลับกัน ถ้าคุณเพิ่งเริ่มคิดว่าจะซื้อหุ้นอะไรตอนตลาดเปิดแล้ว คุณสายเกินไป
+  <span class="author">— หลักการ Pre-Market</span>
+</div>
+
+<h3 id="portfolio-check">1) Portfolio Health Check — ตรวจหุ้นที่ถือทีละตัว</h3>
+
+<div class="checklist-box">┌─────────────────────────────────────────────────┐
+│  <span style="color:var(--accent-cyan);font-weight:700">Portfolio Health Check — หุ้น: ___________</span>      │
+├─────────────────────────────────────────────────┤
+│                                                  │
+│  <span style="color:var(--accent-purple);font-weight:700">1. ข่าวและเหตุการณ์</span>                           │
+│  □ มีข่าวจาก SET (set.or.th) ไหม?               │
+│    • ข่าวแจ้งตลาดหลักทรัพย์ (Filing)             │
+│    • มติที่ประชุมคณะกรรมการ                     │
+│    • รายงานผลประกอบการ                          │
+│  □ มีข่าวจากสื่อภายนอกไหม?                      │
+│  □ มีข่าวจากบริษัท (IR) ไหม?                    │
+│                                                  │
+│  <span style="color:var(--accent-purple);font-weight:700">2. เครื่องหมายและสถานะ</span>                        │
+│  □ SP (Suspension) — ห้ามซื้อขาย                │
+│  □ NP (Notice Pending) — รอชี้แจง               │
+│  □ NR (Notice Received) — ได้รับชี้แจงแล้ว      │
+│  □ C (Caution) — เตือนระวัง                     │
+│  □ H (Halt) — หยุดชั่วคราว                      │
+│  □ CM (Call Market) — ซื้อขายแบบ Call Market    │
+│  □ XD, XR, XW — ขึ้นเครื่องหมายสิทธิ             │
+│                                                  │
+│  <span style="color:var(--accent-purple);font-weight:700">3. ราคาและ Stop Loss</span>                          │
+│  □ ราคาปิดเมื่อวาน: ___________                 │
+│  □ Stop Loss ที่ตั้งไว้: ___________             │
+│  □ ระยะห่างจาก Stop Loss: ___%                  │
+│  □ ถ้าระยะห่าง &lt; 3% → <span style="color:var(--accent-red)">⚠️ เตรียมตัวขาย</span>         │
+│  □ ต้องปรับ Stop Loss ไหม?                      │
+│                                                  │
+│  <span style="color:var(--accent-purple);font-weight:700">4. สถานะทางเทคนิค (ดูเร็วๆ)</span>                   │
+│  □ ราคาอยู่เหนือหรือใต้ MA20?                   │
+│  □ RSI อยู่ในโซนไหน? (&lt;30 / 30-70 / &gt;70)       │
+│  □ มี Divergence ไหม?                           │
+│  □ ใกล้แนวรับหรือแนวต้านสำคัญไหม?              │
+│                                                  │
+│  <span style="color:var(--accent-purple);font-weight:700">5. สรุปสถานะ</span>                                   │
+│  □ 🟢 ดี / 🟡 ต้องจับตา / 🔴 อันตราย            │
+│  □ แผนวันนี้: ถือต่อ / ขายบางส่วน / ขายทั้งหมด  │
+│  □ เหตุผล: _________________________________    │
+└─────────────────────────────────────────────────┘</div>
+
+<div class="info-box warning">
+  <div class="box-title">⚠️ ข้อสังเกตเรื่องเครื่องหมาย</div>
+  • <strong>SP:</strong> ถ้าหุ้นที่ถือถูกขึ้น SP คุณจะซื้อขายไม่ได้จนกว่าจะถูกปลด เมื่อปลดเครื่องหมาย ราคามักร่วงแรงเพราะคนแห่ขาย<br>
+  • <strong>XD:</strong> วันที่ขึ้น XD ราคาจะลดลงเท่ากับเงินปันผล — อย่าตกใจว่าหุ้นลง มันเป็นเรื่องปกติ<br>
+  • <strong>C:</strong> หุ้นที่ถูกขึ้น C ต้องซื้อขายด้วยบัญชี Cash Balance เท่านั้น สภาพคล่องจะลดลงมาก
+</div>
+
+<h3 id="watchlist-scan">2) Watchlist Scan — หาโอกาสใหม่</h3>
+
+<p>สำหรับหุ้นที่กำลังจับตาดู ควรมี <strong>ไม่เกิน 10-15 ตัว</strong> — แบ่งเป็น Tier 1 (ใกล้จุดเข้ามาก 3-5 ตัว) และ Tier 2 (ยังต้องรอ)</p>
+
+<div class="checklist-box">┌─────────────────────────────────────────────────┐
+│  <span style="color:var(--accent-cyan);font-weight:700">Watchlist Scan — หุ้น: ___________</span>              │
+├─────────────────────────────────────────────────┤
+│  □ ราคาปิดเมื่อวาน: ___________                 │
+│  □ จุดเข้าซื้อที่วางแผนไว้: ___________          │
+│  □ ระยะห่างจากจุดเข้า: ___%                     │
+│                                                  │
+│  □ มีสัญญาณ Breakout ไหม?                       │
+│    • ราคาทะลุแนวต้าน?                           │
+│    • วอลุ่มเพิ่มขึ้น &gt; 2 เท่า?                  │
+│    • OBV ทำ New High?                           │
+│                                                  │
+│  □ มีข่าวที่เปลี่ยนมุมมองไหม?                   │
+│    • ข่าวดี → เร่งจุดเข้า?                      │
+│    • ข่าวร้าย → เอาออกจาก Watchlist?            │
+│                                                  │
+│  □ สถานะ: รอต่อ / ใกล้จุดเข้า / เอาออก          │
+└─────────────────────────────────────────────────┘</div>
+
+<h3 id="econ-calendar">3) ปฏิทินเศรษฐกิจ — รู้ล่วงหน้าว่าวันนี้มีอะไร</h3>
+
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr><th>เหตุการณ์</th><th>ผลกระทบ</th><th>ควรทำอย่างไร</th><th>แหล่งข้อมูล</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>ประชุม กนง. (ดอกเบี้ย)</strong></td><td>🔴 สูงมาก</td><td>ลด Position ก่อนประชุม หรือตั้ง SL แน่น</td><td>bot.or.th</td></tr>
+      <tr><td><strong>ประชุม Fed / FOMC</strong></td><td>🔴 สูงมาก</td><td>ผลออกตี 1 ของไทย กระทบวันรุ่งขึ้น</td><td>federalreserve.gov</td></tr>
+      <tr><td><strong>ประกาศ GDP, CPI</strong></td><td>🟠 สูง</td><td>ดูผลแล้วค่อยตัดสินใจ อย่าเดาล่วงหน้า</td><td>nesdc, bot</td></tr>
+      <tr><td><strong>Non-Farm Payroll (US)</strong></td><td>🟠 สูง</td><td>ผลออกคืนวันศุกร์ กระทบวันจันทร์</td><td>bls.gov</td></tr>
+      <tr><td><strong>วันหมดอายุ Futures</strong></td><td>🟡 กลาง</td><td>วอลุ่มผิดปกติ ราคาอาจถูกดัน</td><td>tfex.co.th</td></tr>
+      <tr><td><strong>วันขึ้น XD</strong></td><td>🟡 กลาง</td><td>ราคาจะลดลงเท่าเงินปันผล อย่าตกใจ</td><td>set.or.th</td></tr>
+      <tr><td><strong>ประกาศงบการเงิน</strong></td><td>🟠 สูง</td><td>ระวัง Gap Up/Down</td><td>set.or.th</td></tr>
+      <tr><td><strong>วัน Rebalance ดัชนี</strong></td><td>🟡 กลาง</td><td>วอลุ่มผิดปกติในหุ้นที่เพิ่ม/ถอด</td><td>set.or.th</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 id="daily-plan">4) เขียนแผนวันนี้ — ส่วนที่สำคัญที่สุด</h3>
+
+<div class="checklist-box">┌─────────────────────────────────────────────────┐
+│            <span style="color:var(--accent-cyan);font-weight:700">แผนการเทรดวันนี้</span>                       │
+│            วันที่: ___________                   │
+├─────────────────────────────────────────────────┤
+│  Market Mood: 🟢 Bullish / 🟡 Neutral / 🔴 Bearish│
+│                                                  │
+│  <span style="color:var(--accent-purple);font-weight:700">แผน A (ถ้าตลาดเป็นไปตามคาด):</span>                  │
+│  • ___________________________________________   │
+│                                                  │
+│  <span style="color:var(--accent-purple);font-weight:700">แผน B (ถ้าตลาดดีกว่าคาด):</span>                     │
+│  • ___________________________________________   │
+│                                                  │
+│  <span style="color:var(--accent-purple);font-weight:700">แผน C (ถ้าตลาดแย่กว่าคาด):</span>                    │
+│  • ___________________________________________   │
+│                                                  │
+│  <span style="color:var(--accent-green);font-weight:700">สิ่งที่จะซื้อวันนี้:</span>                           │
+│  • หุ้น: ___ ราคา: ___ จำนวน: ___ หุ้น           │
+│    เงื่อนไข: ________________________________    │
+│    Stop Loss: ___ เป้าหมาย: ___                 │
+│    Risk:Reward = ___:___                         │
+│                                                  │
+│  <span style="color:var(--accent-orange);font-weight:700">สิ่งที่จะขายวันนี้:</span>                           │
+│  • หุ้น: ___ ราคา: ___ จำนวน: ___ หุ้น           │
+│    เหตุผล: ถึงเป้า / ถึง SL / เปลี่ยนมุมมอง      │
+│                                                  │
+│  <span style="color:var(--accent-red);font-weight:700">สิ่งที่จะไม่ทำวันนี้ (สำคัญมาก):</span>                │
+│  1. ___________________________________________  │
+│  2. ___________________________________________  │
+│  3. ___________________________________________  │
+│                                                  │
+│  <span style="color:var(--accent-yellow);font-weight:700">งบประมาณวันนี้:</span>                               │
+│  • เงินสดที่ใช้ได้: ___________ บาท             │
+│  • จะใช้ไม่เกิน: ___________ บาท                │
+│  • เหลือเงินสดสำรอง: ___________ บาท            │
+└─────────────────────────────────────────────────┘</div>
+
+<div class="info-box observe">
+  <div class="box-title">🎯 สำคัญมาก — "สิ่งที่จะไม่ทำ"</div>
+  "สิ่งที่จะไม่ทำ" สำคัญพอๆ กับ "สิ่งที่จะทำ" เพราะ:<br>
+  • มนุษย์มีแนวโน้ม <strong>ทำมากเกินไป (Overtrading)</strong> มากกว่าทำน้อยเกินไป<br>
+  • ข้อผิดพลาดส่วนใหญ่มาจากการ <strong>"ทำสิ่งที่ไม่ควรทำ"</strong> ไม่ใช่จาก "ไม่ทำสิ่งที่ควรทำ"<br>
+  • การเขียนไว้ล่วงหน้าเป็นการ <strong>Pre-commitment</strong> ซึ่งเป็นเทคนิคทางจิตวิทยาที่ได้ผลดีมาก<br><br>
+  <strong>ตัวอย่าง:</strong><br>
+  "วันนี้จะไม่ไล่ซื้อหุ้นที่วิ่งไปแล้วเกิน 10%"<br>
+  "วันนี้จะไม่เพิ่ม Position ในหุ้นที่ขาดทุนอยู่"<br>
+  "วันนี้จะไม่เทรดเกิน 2 ครั้ง"<br>
+  "วันนี้จะไม่ดูกลุ่มไลน์หุ้นระหว่างตลาดเปิด"
+</div>
+
+<h3>5) ตรวจสอบ Position Sizing สุดท้าย</h3>
+
+<div class="formula-block">
+<span class="tag checklist">POSITION SIZING CHECK</span>
+<span class="highlight">ก่อนตลาดเปิด ตรวจสอบกฎ Risk Management:</span>
+
+<span class="ok">✅ เงินที่จะใช้ซื้อ ≤ 2% ของพอร์ตต่อเทรด</span> (ความเสี่ยง)
+<span class="ok">✅ หุ้นตัวเดียว ≤ 20% ของพอร์ต</span> (สัดส่วน)
+<span class="ok">✅ เงินสดคงเหลือ ≥ 20% ของพอร์ต</span> (สำรอง)
+<span class="ok">✅ Risk:Reward ≥ 1:2</span> (คุ้มค่า)
+
+<span class="warn">⚠️ ถ้า Market Mood เป็น Bearish</span> → ลด Position Size ลง 50%
+<span class="warn">⚠️ ถ้าอยู่ใน Drawdown &gt; 10%</span>      → ลด Position Size ลง 25%
+</div>
+
+<div class="section-header" id="sec5">
+  <h2><span class="section-number purple">5</span> 🔔 Pre-Open (09:30-10:00)</h2>
+</div>
+
+<p>ตลาดหุ้นไทยเปิดให้ส่งคำสั่งซื้อขายตั้งแต่ 09:30 น. แต่ยังไม่จับคู่จนกว่าจะ 10:00 น. (ใช้ระบบ Call Auction) ช่วง 30 นาทีนี้เป็นช่วงที่บอกอะไรได้เยอะมาก ถ้ารู้จักอ่าน</p>
+
+<div class="formula-block">
+<span class="tag flow">CALL AUCTION MECHANICS</span>
+<span class="highlight">กลไกของ Pre-open Session:</span>
+
+<span class="val">09:30 - 09:55</span>  ส่งคำสั่งได้ แก้ไขได้ ยกเลิกได้
+                 ระบบคำนวณ Projected Open Price ตลอดเวลา
+
+<span class="val">09:55 - 10:00</span>  <span class="warn">Random Matching Period</span>
+                 ระบบจะจับคู่ ณ เวลาสุ่มในช่วงนี้
+                 ไม่มีใครรู้ว่าจะจับคู่ตอนไหน
+                 → ป้องกันการ Manipulate ราคาเปิด
+</div>
+
+<div class="info-box warning">
+  <div class="box-title">⚠️ ข้อสังเกตสำคัญ</div>
+  ออเดอร์ที่ส่งช่วง Pre-open สามารถยกเลิกได้ตลอด ดังนั้น Bid-Offer ที่เห็นอาจไม่ใช่ของจริง — <strong>ผู้ปั่นมักใช้ช่วงนี้สร้างภาพลวง (Spoofing)</strong>
+</div>
+
+<h3>การตีความ Projected Open Price</h3>
+
+<div class="two-col">
+  <div class="col-card green-accent">
+    <h4>🟢 Gap Up (เปิดสูงกว่าวาน)</h4>
+    <ul>
+      <li><strong>&lt; 1%:</strong> ปกติ ไม่ต้องกังวล</li>
+      <li><strong>1-3%:</strong> มีข่าวดี หรือตลาดโลกบวก</li>
+      <li><strong>3-5%:</strong> ⚠️ ระวัง อาจเป็นจุดผู้ปั่นขายของ</li>
+      <li><strong>&gt; 5%:</strong> ⚠️⚠️ อันตราย อย่าไล่ซื้อ</li>
+    </ul>
+  </div>
+  <div class="col-card red-accent">
+    <h4>🔴 Gap Down (เปิดต่ำกว่าวาน)</h4>
+    <ul>
+      <li><strong>&lt; 1%:</strong> ปกติ ไม่ต้องตกใจ</li>
+      <li><strong>1-3%:</strong> ดูว่ามีข่าวร้ายจริงไหม</li>
+      <li><strong>3-5%:</strong> ถ้าไม่มีข่าวร้าย อาจเป็นโอกาส</li>
+      <li><strong>&gt; 5%:</strong> มีปัญหาจริง ดู Stop Loss ทันที</li>
+    </ul>
+  </div>
+</div>
+
+<h3>Bid-Offer ช่วง Pre-open — อ่านให้เป็น</h3>
+
+<div class="formula-block">
+<span class="tag warning">SPOOFING DETECTION</span>
+<span class="highlight">ออเดอร์ใหญ่ผิดปกติ:</span>
+
+<span class="label">Bid ใหญ่มาก</span> (เช่น 1 ล้านหุ้น ในหุ้นที่ปกติเทรดวันละ 5 แสนหุ้น)
+   <span class="bad">→ อาจเป็น Spoofing — วางเพื่อสร้างความมั่นใจ แล้วดึงออกก่อนจับคู่</span>
+
+<span class="label">Offer ใหญ่มาก</span>
+   <span class="bad">→ อาจเป็นคนต้องการขายจริง หรือ Spoofing เพื่อกดราคาเปิด</span>
+
+<span class="highlight">วิธีตรวจสอบ:</span> ดูว่าออเดอร์นั้นอยู่นานแค่ไหน
+   <span class="bad">• วางแล้วดึงออกภายใน 5 นาที → Spoofing</span>
+   <span class="ok">• อยู่ตลอด → น่าจะเป็นของจริง</span>
+
+<span class="highlight">การเปลี่ยนแปลงของ Projected Open:</span>
+├── ค่อยๆ ขยับขึ้น → มีแรงซื้อเข้ามาเรื่อยๆ
+├── ค่อยๆ ขยับลง → มีแรงขายเข้ามาเรื่อยๆ
+├── <span class="bad">กระโดดขึ้นลงรุนแรง → มีคนเล่นเกม ระวัง</span>
+└── นิ่ง → ไม่มีอะไรพิเศษ ตลาดปกติ
+</div>
+
+<h3>S50 Futures ช่วง Pre-open (เปิดก่อนตลาดหุ้น 15 นาที)</h3>
+
+<p>S50 Futures เปิดเทรดตั้งแต่ 09:45 น. (ก่อนตลาดหุ้น 15 นาที) ทำให้เป็น Leading Indicator ที่ดี</p>
+
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr><th>สัญญาณ</th><th>การตีความ</th><th>Basis (Futures - Spot)</th><th>ผลต่อตลาด</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Futures เปิด <strong style="color:var(--accent-green)">บวก</strong></td><td>ตลาดมองบวก</td><td>Basis บวก (Contango)</td><td>SET มักเปิดบวก</td></tr>
+      <tr><td>Futures เปิด <strong style="color:var(--accent-red)">ลบ &gt; 5 จุด</strong></td><td>ตลาดมองลบ</td><td>Basis ลบ (Backwardation)</td><td>SET มักเปิดลบ</td></tr>
+      <tr><td>Basis <strong style="color:var(--accent-red)">ลบมากผิดปกติ</strong></td><td>มีคนเปิด Short หนัก</td><td>—</td><td>⚠️ ตลาดอาจลงแรง</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>ตัดสินใจสุดท้ายก่อนตลาดเปิด</h3>
+
+<div class="formula-block">
+<span class="tag workflow">FINAL DECISION TREE</span>
+<span class="highlight">ราคาเปิดตรงตามแผนที่วางไว้?</span>
+
+<span class="ok">├── ✅ ตรงตามแผน</span>
+│   └── ดำเนินการตามแผน ไม่เปลี่ยนอะไร
+
+<span class="warn">├── 🟢 ดีกว่าคาด (เปิดสูงกว่าที่คิด)</span>
+│   ├── ⚠️ ระวัง อย่าโลภ ยึดแผนเดิม
+│   ├── ถ้าจะซื้อ → รอให้ราคานิ่งก่อน อย่าไล่ซื้อตอนเปิด
+│   └── ถ้าถือหุ้นอยู่ → พิจารณาขายบางส่วนทำกำไร
+
+<span class="warn">├── 🟡 แย่กว่าคาดเล็กน้อย</span>
+│   ├── ปรับราคาเข้าซื้อลงเล็กน้อย
+│   ├── ลด Position Size ลง 25%
+│   └── ยังดำเนินการตามแผนได้
+
+<span class="bad">└── 🔴 แย่กว่าคาดมาก</span>
+    ├── ยกเลิกแผนซื้อวันนี้ทั้งหมด
+    ├── ตรวจสอบ Stop Loss ของหุ้นที่ถืออยู่
+    ├── ถ้าหุ้นที่ถือ Gap Down ถึง SL → เตรียมขายทันที
+    └── รอดูสถานการณ์อย่างน้อย 30 นาที
+</div>
+
+<div class="info-box tip">
+  <div class="box-title">🎯 กฎเหล็ก</div>
+  <strong>ถ้าไม่แน่ใจ → ไม่ทำอะไร</strong> การ "ไม่ทำอะไร" เป็นการตัดสินใจที่ดีที่สุดในหลายสถานการณ์
+</div>
+
+<div class="section-header" id="sec6">
+  <h2><span class="section-number red">6</span> 📈 ช่วงตลาดเปิด เช้า (10:00-12:30)</h2>
+</div>
+
+<h3 id="first-30">30 นาทีแรก (10:00-10:30) — ช่วงที่ผันผวนที่สุด</h3>
+
+<div class="info-box danger">
+  <div class="box-title">🚨 ช่วงอันตรายที่สุดของวัน</div>
+  นี่คือช่วงที่อันตรายที่สุดและสำคัญที่สุดของวัน วอลุ่มสูงที่สุด ราคาแกว่งรุนแรงที่สุด และเป็นช่วงที่คนส่วนใหญ่ทำผิดพลาดมากที่สุด
+</div>
+
+<div class="formula-block">
+<span class="tag warning">FIRST 30 MIN CHARACTERISTICS</span>
+<span class="highlight">ลักษณะของ 30 นาทีแรก:</span>
+
+├── วอลุ่มสูงที่สุดของวัน (<span class="val">30-40%</span> ของวอลุ่มทั้งวัน อัดใน 30 นาทีนี้)
+├── ราคาแกว่งรุนแรง — ออเดอร์ข้ามคืนถูกจับคู่พร้อมกัน
+├── อารมณ์ตลาดยังไม่นิ่ง
+├── <span class="bad">ผู้ปั่นมักใช้ช่วงนี้สร้างภาพ</span>
+└── Spread กว้างกว่าปกติ — Market Order ได้ราคาแย่
+</div>
+
+<h4>เทคนิคของผู้ปั่นใน 30 นาทีแรก</h4>
+
+<div class="two-col">
+  <div class="col-card red-accent">
+    <h4>🎯 กลยุทธ์ "ดันแล้วทิ้ง"</h4>
+    <ol style="color:var(--text-secondary); font-size:0.88rem; padding-left:1.2rem;">
+      <li>ดันราคาเปิดให้ Gap Up 3-5% ด้วยออเดอร์ใหญ่ช่วง Pre-open</li>
+      <li>คนเห็นราคาวิ่ง → FOMO → ไล่ซื้อตาม</li>
+      <li>ผู้ปั่นเริ่มเทขายให้คนที่ไล่ซื้อ</li>
+      <li>ราคาค่อยๆ ไหลลงตลอดวัน</li>
+      <li>คนที่ซื้อตอนเปิด <strong>ติดดอย</strong></li>
+    </ol>
+  </div>
+  <div class="col-card warm-accent">
+    <h4>🎯 กลยุทธ์ "กดแล้วเก็บ" (Shakeout)</h4>
+    <ol style="color:var(--text-secondary); font-size:0.88rem; padding-left:1.2rem;">
+      <li>เทขายตอนเปิดให้ราคา Gap Down 2-3%</li>
+      <li>คนที่ตั้ง Stop Loss ถูก Trigger → ขายออก</li>
+      <li>ผู้ปั่นรับซื้อในราคาถูก</li>
+      <li>ราคาค่อยๆ ไต่กลับขึ้นตลอดวัน</li>
+      <li>คนที่ขายตอนเปิด <strong>เสียดาย</strong></li>
+    </ol>
+  </div>
+</div>
+
+<div class="do-dont-grid">
+  <div class="do-card">
+    <h4>✅ สิ่งที่ควรทำ</h4>
+    <ul>
+      <li>ดูทิศทางตลาด ยังไม่ต้องรีบซื้อ</li>
+      <li>ดูว่าหุ้นที่สนใจเปิดที่ราคาตรงตามแผนไหม</li>
+      <li>ดูวอลุ่ม — ผิดปกติไหม (&gt;5 เท่า = ผิดปกติ)</li>
+      <li>ตั้ง Limit Order รอ อย่าใช้ Market Order</li>
+      <li>ถ้าถึง Stop Loss → ขายทันที อย่ารอ</li>
+    </ul>
+  </div>
+  <div class="dont-card">
+    <h4>❌ สิ่งที่ไม่ควรทำ</h4>
+    <ul>
+      <li>ไล่ซื้อหุ้นที่เปิด Gap Up แรง</li>
+      <li>ตกใจขายเพราะ Gap Down (ถ้าไม่ถึง SL)</li>
+      <li>เปลี่ยนแผนเพราะเห็นราคาวิ่ง</li>
+      <li>ใช้ Market Order — Spread กว้างช่วงเปิด</li>
+      <li>ดูกลุ่มไลน์หุ้น — จะ FOMO หรือตื่นตระหนก</li>
+    </ul>
+  </div>
+</div>
+
+<h3 id="mid-morning">ช่วงกลางเช้า (10:30-11:30) — ช่วงที่ดีที่สุดสำหรับเข้าซื้อ</h3>
+
+<p>หลังจากความผันผวนช่วงเปิดสงบลง ตลาดจะเริ่มหาทิศทาง ช่วงนี้เป็นช่วงที่ <strong>ดีที่สุดสำหรับการเข้าซื้อ</strong> — ราคานิ่งกว่า Spread แคบลง ได้ราคาที่ดีกว่า</p>
+
+<div class="formula-block">
+<span class="tag workflow">ENTRY TECHNIQUES</span>
+<span class="highlight">เทคนิคการเข้าซื้อช่วงกลางเช้า:</span>
+
+<span class="label">วิธีที่ 1: รอ Pullback หลังเปิด</span>
+├── หุ้นเปิด Gap Up → รอให้ราคาย่อลงมา 1-2%
+├── ถ้าย่อแล้วมีแรงซื้อรับ (แท่งเทียนหางล่างยาว) → <span class="ok">เข้าซื้อ</span>
+└── Stop Loss ใต้จุดต่ำสุดของวัน
+
+<span class="label">วิธีที่ 2: รอ Breakout ช่วงเช้า</span>
+├── ดูราคาแกว่งในกรอบแคบ (10:00-10:45)
+├── ถ้าทะลุกรอบขึ้น + วอลุ่มเพิ่ม → <span class="ok">เข้าซื้อ</span>
+└── Stop Loss ใต้กรอบ
+
+<span class="label">วิธีที่ 3: ตั้ง Limit Order รอ</span>
+├── คำนวณราคาที่ต้องการซื้อจากแผน Pre-Market
+├── ตั้ง Limit Order ที่ราคานั้น
+└── ถ้าราคาลงมาถึง → ซื้อ / ถ้าไม่ถึง → ไม่ซื้อ (ไม่เป็นไร)
+</div>
+
+<h3>ช่วงก่อนพัก (11:30-12:30) — ช่วงที่ต้องระวัง</h3>
+
+<div class="info-box warning">
+  <div class="box-title">⚠️ สัญญาณที่ต้องระวัง</div>
+  • ราคาพุ่งขึ้นใน 15 นาทีสุดท้ายก่อนพัก โดยวอลุ่มน้อย → อาจเป็น <strong>Marking the Close ช่วงเช้า</strong> ไม่ใช่แรงซื้อจริง<br>
+  • ราคาร่วงลงใน 15 นาทีสุดท้าย → อาจมีคนต้องการกดราคาปิดเช้าให้ต่ำ เพื่อซื้อเพิ่มช่วงบ่าย<br>
+  • <strong>ถ้าจะซื้อ/ขาย ควรทำก่อน 11:30</strong> — หลังจากนั้นสภาพคล่องลดลง อาจได้ราคาไม่ดี
+</div>
+
+<div class="section-header" id="sec7">
+  <h2><span class="section-number teal">7</span> 🍚 พักเที่ยง (12:30-14:30)</h2>
+</div>
+
+<div class="info-box tip">
+  <div class="box-title">🧘 พักจริงๆ — นี่ไม่ใช่คำแนะนำ นี่คือกฎ</div>
+  • กินข้าว พักผ่อน อย่าจ้องหน้าจอ<br>
+  • งานวิจัยพบว่าผู้พิพากษาที่เพิ่งกินข้าวเที่ยงตัดสินคดีได้ดีกว่าผู้พิพากษาที่หิว (Decision Fatigue)<br>
+  • ออกไปเดินเล่น สูดอากาศ — การเปลี่ยนสภาพแวดล้อมช่วยให้สมอง Reset<br>
+  • <strong>อย่าดูราคาหุ้นระหว่างพัก</strong> — ตลาดปิดอยู่แล้ว ราคาไม่เปลี่ยน
+</div>
+
+<h3>สรุปช่วงเช้า (10 นาที หลังกินข้าวเสร็จ)</h3>
+
+<div class="checklist-box">┌─────────────────────────────────────────────────┐
+│          <span style="color:var(--accent-cyan);font-weight:700">สรุปช่วงเช้า</span>                            │
+├─────────────────────────────────────────────────┤
+│  SET Index: เปิด ___ ปิดเช้า ___ (___%)          │
+│  วอลุ่มเช้า: ___ ล้านบาท (เทียบค่าเฉลี่ย ___%)  │
+│                                                  │
+│  หุ้นที่ถือ:                                      │
+│  • ___ ราคาปัจจุบัน ___ (___%)                  │
+│                                                  │
+│  ดำเนินการตามแผนไหม?                            │
+│  □ ซื้อตามแผน: ใช่/ไม่/ยังไม่ถึงจุดเข้า          │
+│  □ ขายตามแผน: ใช่/ไม่/ยังไม่ถึงจุดขาย           │
+│                                                  │
+│  มีอะไรผิดปกติไหม?                              │
+│  • วอลุ่มผิดปกติ? ___                            │
+│  • ราคาเคลื่อนไหวผิดปกติ? ___                   │
+│  • มีข่าวออกระหว่างเช้า? ___                    │
+│                                                  │
+│  ต้องปรับแผนช่วงบ่ายไหม?                        │
+│  □ ไม่ — ดำเนินการตามแผนเดิม                   │
+│  □ ใช่ — ปรับอะไร: ___                          │
+└─────────────────────────────────────────────────┘</div>
+
+<div class="info-box observe">
+  <div class="box-title">🎯 ข้อสังเกต</div>
+  ข่าวที่ออกช่วงเที่ยงมักเป็นข่าวที่บริษัท <strong>จงใจปล่อยตอนตลาดปิด</strong> เพื่อให้คนมีเวลาย่อยข้อมูลก่อนตลาดเปิดบ่าย — ถ้าเป็นข่าวร้าย อาจกระทบราคาช่วงบ่าย
+</div>
+
+<div class="section-header" id="sec8">
+  <h2><span class="section-number pink">8</span> 📈 ช่วงบ่าย (14:30-16:30)</h2>
+</div>
+
+<h3>ช่วงเปิดบ่าย (14:30-15:00)</h3>
+
+<div class="formula-block">
+<span class="tag signal">AFTERNOON OPEN</span>
+<span class="highlight">ลักษณะช่วงเปิดบ่าย:</span>
+
+├── คล้ายช่วงเปิดเช้า แต่ <span class="ok">ผันผวนน้อยกว่า</span> (ไม่มีออเดอร์สะสมข้ามคืน)
+├── ดูว่าทิศทางเปลี่ยนจากช่วงเช้าไหม
+│   <span class="comment">• ถ้าเช้าลบ บ่ายเปิดบวก → อาจมีข่าวดีช่วงเที่ยง</span>
+├── ถ้ามีข่าวออกมาช่วงเที่ยง อาจกระทบราคาช่วงบ่าย
+└── <span class="label">ดูตลาดยุโรป:</span> DAX, FTSE เปิดช่วงบ่ายไทย
+    <span class="comment">• ถ้ายุโรปเปิดลบหนัก อาจกดดัน SET</span>
+</div>
+
+<h3>ช่วงกลางบ่าย (15:00-16:00) — ช่วงเงียบที่สุด</h3>
+
+<div class="two-col">
+  <div class="col-card red-accent">
+    <h4>❌ ไม่ใช่ช่วงที่ดีสำหรับเข้าซื้อ</h4>
+    <ul>
+      <li>ตลาดมักเงียบที่สุดของวัน</li>
+      <li>วอลุ่มต่ำ ราคาไม่ค่อยขยับ</li>
+      <li>สภาพคล่องต่ำ Spread กว้าง</li>
+      <li>อาจได้ราคาไม่ดี</li>
+    </ul>
+  </div>
+  <div class="col-card green-accent">
+    <h4>✅ เป็นช่วงที่ดีสำหรับวิเคราะห์</h4>
+    <ul>
+      <li>ทบทวนว่าวันนี้ทำตามแผนไหม</li>
+      <li>ดูกราฟ Intraday ของหุ้นที่ถือ</li>
+      <li>เตรียมคำสั่งสำหรับ 30 นาทีสุดท้าย</li>
+      <li>ดู Watchlist เพิ่มเติม</li>
+    </ul>
+  </div>
+</div>
+
+<h3 id="last-30">30 นาทีสุดท้าย (16:00-16:30) — ช่วงที่ต้องจับตาดู</h3>
+
+<div class="info-box danger">
+  <div class="box-title">⭐ ช่วงสำคัญอีกช่วงหนึ่ง</div>
+  ราคาปิดเป็นราคาที่ถูกบันทึกในกราฟ Daily และเป็นราคาที่ใช้คำนวณ NAV ของกองทุน — <strong>ผู้ปั่นมักดันราคาช่วงนี้ (Marking the Close)</strong>
+</div>
+
+<div class="formula-block">
+<span class="tag warning">MARKING THE CLOSE</span>
+<span class="highlight">ทำไมผู้ปั่นต้องดันราคาปิด:</span>
+
+├── ราคาปิดบันทึกในกราฟ Daily → ปิดสูง กราฟดูดี → คนอยากซื้อวันรุ่งขึ้น
+├── ราคาปิดใช้คำนวณ NAV กองทุน → ปิดสูง NAV ดี → กองทุนไม่ขาย
+├── ราคาปิดใช้คำนวณ Margin → ปิดสูง ไม่ถูก Force Sell
+└── ราคาปิดเป็น Reference Price สำหรับวันรุ่งขึ้น → กำหนดกรอบ Ceiling/Floor
+
+<span class="highlight">วิธีจับ Marking the Close:</span>
+├── <span class="bad">ราคาพุ่งขึ้นใน 10 นาทีสุดท้ายโดยไม่มีข่าว → น่าสงสัย</span>
+├── <span class="bad">วอลุ่มพุ่งใน 5 นาทีสุดท้าย → มีคนต้องการให้ปิดที่ระดับหนึ่ง</span>
+├── <span class="bad">ราคาพุ่งขึ้นแล้วกลับลงทันทีหลังปิดตลาด (ดูจาก ATC)</span>
+└── <span class="bad">เกิดซ้ำหลายวันติด → มีคนดันราคาอย่างเป็นระบบ</span>
+</div>
+
+<h4>สัญญาณจากราคาปิด</h4>
+
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr><th>ราคาปิด</th><th>วอลุ่ม</th><th>ความหมาย</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>ปิดใกล้<strong style="color:var(--accent-green)">จุดสูงสุดของวัน</strong></td><td>สูง</td><td>สัญญาณบวก (ถ้าไม่ใช่ Marking the Close)</td></tr>
+      <tr><td>ปิดใกล้<strong style="color:var(--accent-green)">จุดสูงสุดของวัน</strong></td><td>ต่ำ</td><td>⚠️ อาจเป็น Marking the Close</td></tr>
+      <tr><td>ปิดใกล้<strong style="color:var(--accent-red)">จุดต่ำสุดของวัน</strong></td><td>สูง</td><td>สัญญาณลบ มีแรงขายหนัก</td></tr>
+      <tr><td>ปิดใกล้<strong style="color:var(--accent-red)">จุดต่ำสุดของวัน</strong></td><td>ต่ำ</td><td>ตลาดไม่สนใจ ไม่มีนัยสำคัญ</td></tr>
+      <tr><td>ปิด<strong style="color:var(--accent-yellow)">กลางๆ ของวัน</strong></td><td>ปกติ</td><td>ตลาดลังเล ไม่มีทิศทางชัด</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="info-box tip">
+  <div class="box-title">💡 สิ่งที่ควรทำช่วง 30 นาทีสุดท้าย</div>
+  • ดูว่าหุ้นที่ถือจะปิดที่ราคาเท่าไหร่<br>
+  • ถ้าต้องขาย (ถึง SL หรือเป้าหมาย) → <strong>ขายก่อน 16:20</strong> (หลังจากนั้นสภาพคล่องลดลง)<br>
+  • ถ้าไม่มั่นใจว่าจะถือข้ามคืน → พิจารณาลด Position<br>
+  • <strong>อย่าซื้อใน 5 นาทีสุดท้าย</strong> — ราคาอาจถูกดันให้สูงเกินจริง
+</div>
+
+<div class="section-header" id="sec9">
+  <h2><span class="section-number indigo">9</span> 📝 After Market (16:30-17:00)</h2>
+</div>
+
+<div class="info-box danger">
+  <div class="box-title">⭐ ห้ามข้ามเด็ดขาด — เขียน Journal ทันที</div>
+  เมื่อตลาดปิดแล้ว สิ่งแรกที่ต้องทำคือ <strong>บันทึก Trading Journal ทันที</strong> — อย่ารอจนถึงเย็นหรือวันรุ่งขึ้น เพราะ <strong>ความทรงจำจะเลือนหายไปภายใน 2-3 ชั่วโมง</strong> โดยเฉพาะ "อารมณ์" ที่รู้สึกตอนเทรด ซึ่งเป็นข้อมูลที่มีค่ามากที่สุดในการพัฒนาตัวเอง
+</div>
+
+<h3>ทำไม Trading Journal ถึงสำคัญ</h3>
+
+<div class="two-col">
+  <div class="col-card red-accent">
+    <h4>❌ นักลงทุนที่ไม่มี Journal</h4>
+    <ul>
+      <li>ทำผิดซ้ำเดิม → ไม่รู้ว่าผิดตรงไหน</li>
+      <li>จำไม่ได้ว่าเคยตัดสินใจอย่างไร</li>
+      <li>ไม่รู้จุดแข็ง/จุดอ่อนของตัวเอง</li>
+      <li>ไม่มีสถิติ — ไม่รู้ระบบทำงานดีแค่ไหน</li>
+    </ul>
+  </div>
+  <div class="col-card green-accent">
+    <h4>✅ นักลงทุนที่มี Journal</h4>
+    <ul>
+      <li>เห็น Pattern ของข้อผิดพลาด</li>
+      <li>มีข้อมูลย้อนหลัง วิเคราะห์ได้</li>
+      <li>รู้จุดแข็ง/จุดอ่อน ปรับได้ตรงจุด</li>
+      <li>มีสถิติชัดเจน ปรับระบบได้อย่างมีหลักฐาน</li>
+    </ul>
+  </div>
+</div>
+
+<h3>Trading Journal Template — บันทึกทุกวัน</h3>
+
+<div class="checklist-box">┌──────────────────────────────────────────────────────┐
+│          <span style="color:var(--accent-cyan);font-weight:700">📝 TRADING JOURNAL</span>                         │
+│          วันที่: ___________                           │
+├──────────────────────────────────────────────────────┤
+│  <span style="color:var(--accent-purple);font-weight:700">ส่วนที่ 1: สรุปตลาดวันนี้</span>                        │
+│  SET: เปิด ___ สูงสุด ___ ต่ำสุด ___ ปิด ___           │
+│  เปลี่ยนแปลง: ___ จุด (___%)                          │
+│  วอลุ่ม: ___ ล้านบาท (เทียบค่าเฉลี่ย 20 วัน: ___%)    │
+│  Fund Flow ต่างชาติ: ซื้อ/ขายสุทธิ ___ ล้านบาท         │
+│  Market Mood ที่ประเมิน vs จริง: ___ vs ___            │
+│  ประเมินถูกไหม? □ ใช่ □ ไม่ (เพราะ: ___)              │
+├──────────────────────────────────────────────────────┤
+│  <span style="color:var(--accent-purple);font-weight:700">ส่วนที่ 2: การเทรดวันนี้</span>                         │
+│  เทรดที่ 1:                                           │
+│  • หุ้น: ___ ซื้อ/ขาย ที่ราคา: ___ จำนวน: ___ หุ้น     │
+│  • เวลา: ___                                          │
+│  • เหตุผล: ___________________________________        │
+│  • ตรงตามแผน? □ ใช่ □ ไม่                             │
+│  • ถ้าไม่ตรง เพราะอะไร: ___                            │
+│  • ผลลัพธ์: กำไร/ขาดทุน ___ บาท (___%)                │
+│  • <span style="color:var(--accent-yellow)">คะแนนการตัดสินใจ (1-10): ___</span>                     │
+│    <span style="color:var(--text-muted)">(ไม่เกี่ยวกับกำไร/ขาดทุน แต่เกี่ยวกับทำตามระบบไหม)</span>     │
+├──────────────────────────────────────────────────────┤
+│  <span style="color:var(--accent-purple);font-weight:700">ส่วนที่ 3: สถานะพอร์ต</span>                            │
+│  มูลค่าพอร์ตรวม: ___________ บาท                       │
+│  กำไร/ขาดทุนวันนี้: ___ บาท (___%)                    │
+│  กำไร/ขาดทุนสะสม (เดือน): ___ บาท (___%)              │
+│  เงินสดคงเหลือ: ___ (___% ของพอร์ต)                   │
+│  จำนวนหุ้นที่ถือ: ___ ตัว                              │
+│  Drawdown จากจุดสูงสุด: ____%                          │
+├──────────────────────────────────────────────────────┤
+│  <span style="color:var(--accent-purple);font-weight:700">ส่วนที่ 4: การติดตามอารมณ์</span>                       │
+│  ก่อนเปิด:    □ สงบ □ ตื่นเต้น □ กังวล □ กลัว □ โลภ   │
+│                ระดับ (1-10): ___                       │
+│  ระหว่างเทรด: □ สงบ □ FOMO □ หงุดหริด □ ใจร้อน        │
+│                ระดับ (1-10): ___                       │
+│                เหตุการณ์กระตุ้น: ___                    │
+│  หลังปิด:     □ พอใจ □ เสียดาย □ โกรธตัวเอง □ โล่งใจ   │
+│                ระดับ (1-10): ___                       │
+├──────────────────────────────────────────────────────┤
+│  <span style="color:var(--accent-purple);font-weight:700">ส่วนที่ 5: ข้อผิดพลาด</span>                            │
+│                                                       │
+│  <span style="color:var(--accent-red)">ด้านอารมณ์:</span>                                         │
+│  □ FOMO — ไล่ซื้อเพราะเห็นราคาวิ่ง                    │
+│  □ Revenge Trading — เทรดเพื่อเอาคืน                 │
+│  □ Overtrading — เทรดมากเกินไป                        │
+│  □ ไม่กล้าตัดขาดทุน                                   │
+│  □ ขายเร็วเกินไป                                      │
+│  □ ไม่กล้าเข้าซื้อ                                     │
+│                                                       │
+│  <span style="color:var(--accent-orange)">ด้านเทคนิค:</span>                                      │
+│  □ วิเคราะห์ผิด — อ่านกราฟ/ข่าวผิด                     │
+│  □ Position Size ผิด                                  │
+│  □ จุดเข้าผิด                                          │
+│  □ ไม่ตั้ง Stop Loss / ไม่ทำตาม                       │
+│  □ ใช้ Market Order ตอนไม่ควรใช้                       │
+│                                                       │
+│  <span style="color:var(--accent-yellow)">ด้านวินัย:</span>                                       │
+│  □ ไม่ทำตามแผน — เปลี่ยนแผนระหว่างเทรด               │
+│  □ ดูกลุ่มไลน์/โซเชียลระหว่างเทรด                    │
+│  □ เทรดนอกเวลาที่กำหนด                                │
+│  □ ไม่ทำ Pre-Market Routine                           │
+├──────────────────────────────────────────────────────┤
+│  <span style="color:var(--accent-purple);font-weight:700">ส่วนที่ 6: บทเรียน</span>                              │
+│  <span style="color:var(--accent-green)">สิ่งที่ทำได้ดี:</span>                                   │
+│  1. ___________________________________________       │
+│  2. ___________________________________________       │
+│  <span style="color:var(--accent-orange)">สิ่งที่ต้องปรับปรุง:</span>                              │
+│  1. ___________________________________________       │
+│  2. ___________________________________________       │
+│  <span style="color:var(--accent-cyan)">บทเรียนสำคัญวันนี้ (1 ประโยค):</span>                     │
+│  "___________________________________________"        │
+├──────────────────────────────────────────────────────┤
+│  <span style="color:var(--accent-purple);font-weight:700">ส่วนที่ 7: Performance Metrics</span>                    │
+│  จำนวนเทรด: ___                                       │
+│  Win/Loss: ___ ชนะ / ___ แพ้                          │
+│  Win Rate: ____%                                      │
+│  Profit Factor: ___                                   │
+│  <span style="color:var(--accent-yellow)">คะแนนวินัย (1-10): ___</span>                           │
+│    <span style="color:var(--text-muted)">(ทำตามแผน=10, เปลี่ยนแผนทุกอย่าง=1)</span>               │
+└──────────────────────────────────────────────────────┘</div>
+
+<h3>ตัวอย่าง Trading Journal ที่กรอกแล้ว</h3>
+
+<div class="checklist-box">┌──────────────────────────────────────────────────────┐
+│  <span style="color:var(--accent-cyan);font-weight:700">📝 TRADING JOURNAL — 15 มกราคม 2568</span>              │
+├──────────────────────────────────────────────────────┤
+│  SET: เปิด 1,385 สูงสุด 1,392 ต่ำสุด 1,380 ปิด 1,389  │
+│  เปลี่ยนแปลง: <span style="color:var(--accent-green)">+4 จุด (+0.29%)</span>                           │
+│  วอลุ่ม: 45,200 ลบ. (<span style="color:var(--accent-green)">+12%</span>)                              │
+│  Fund Flow ต่างชาติ: <span style="color:var(--accent-green)">ซื้อสุทธิ 1,200 ลบ.</span>                │
+│  Mood ประเมิน: Neutral → จริง: <span style="color:var(--accent-green)">Slightly Bullish</span>        │
+│  ประเมินถูกไหม? <span style="color:var(--accent-yellow)">ใกล้เคียง แต่ดีกว่าคาดเล็กน้อย</span>          │
+├──────────────────────────────────────────────────────┤
+│  เทรดที่ 1: DELTA ซื้อ ที่ 28.50 จำนวน 2,000 หุ้น      │
+│  เวลา: 10:42                                          │
+│  เหตุผล: <span style="color:var(--accent-green)">Breakout แนวต้าน 28.25 + วอลุ่ม 3x</span>             │
+│  ตรงตามแผน: <span style="color:var(--accent-green)">✅ ใช่</span> (วางแผนซื้อถ้าทะลุ 28.25)            │
+│  ผลลัพธ์: ยังถือ (ราคาปิด 29.00 <span style="color:var(--accent-green)">กำไร +1,000 บาท</span>)       │
+│  <span style="color:var(--accent-yellow)">คะแนนการตัดสินใจ: 8/10</span>                             │
+│    (หักเพราะเข้าช้าไป 0.25 บาท จากจุดที่วางแผน)       │
+├──────────────────────────────────────────────────────┤
+│  อารมณ์: ก่อน = สงบ (7/10)                            │
+│  ระหว่าง = ตื่นเต้นเล็กน้อย (6/10)                    │
+│  หลัง = พอใจ (8/10)                                   │
+├──────────────────────────────────────────────────────┤
+│  ข้อผิดพลาด: ไม่มีร้ายแรง                              │
+│  แต่เกือบไล่ซื้อ AOT ตอน 11:00 (<span style="color:var(--accent-orange)">FOMO เล็กน้อย</span>)         │
+│  — ยับยั้งได้                                          │
+├──────────────────────────────────────────────────────┤
+│  <span style="color:var(--accent-cyan)">บทเรียน: "การรอจุดเข้าที่วางแผนไว้ดีกว่าไล่ราคา"</span>       │
+│  <span style="color:var(--accent-yellow)">คะแนนวินัย: 8/10</span>                                 │
+└──────────────────────────────────────────────────────┘</div>
+
+<div class="info-box tip">
+  <div class="box-title">💡 เคล็ดลับการเขียน Journal ให้มีประสิทธิภาพ</div>
+  <strong>1. เขียนทันทีหลังตลาดปิด</strong> — ความทรงจำเรื่องอารมณ์เลือนหายใน 2-3 ชั่วโมง<br>
+  <strong>2. ซื่อสัตย์กับตัวเอง</strong> — อย่าแต่งเรื่อง อย่าหาข้อแก้ตัว<br>
+  <strong>3. แยก "คุณภาพการตัดสินใจ" ออกจาก "ผลลัพธ์"</strong> — การตัดสินใจที่ดีอาจขาดทุนได้ สิ่งที่ต้องปรับคือ <strong>กระบวนการ</strong><br>
+  <strong>4. หาสิ่งที่ทำได้ดีเสมอ</strong> — แม้วันที่แย่ที่สุด ก็ต้องหาอย่างน้อย 1 สิ่งที่ทำได้ดี<br>
+  <strong>5. ใช้เวลาไม่เกิน 15-20 นาที</strong> — ถ้านานกว่านี้ Template ซับซ้อนเกินไป
+</div>
+
+<div class="section-header" id="sec10">
+  <h2><span class="section-number emerald">10</span> 📖 Evening Review (17:00-18:00)</h2>
+</div>
+
+<p>หลังจากบันทึก Journal เสร็จ ให้เข้าสู่ช่วง Evening Review ซึ่งเป็นช่วงที่ "เตรียมตัวสำหรับวันพรุ่งนี้" — ทุกอย่างที่ทำตอนนี้จะทำให้ Morning Routine พรุ่งนี้เร็วขึ้นและมีประสิทธิภาพมากขึ้น</p>
+
+<h3 id="chart-analysis">ขั้นตอนที่ 1: วิเคราะห์กราฟหุ้นที่ถือ (20 นาที)</h3>
+
+<p>สำหรับหุ้นแต่ละตัวในพอร์ต วิเคราะห์กราฟ Daily อย่างเป็นระบบ — ตรวจทีละ Indicator:</p>
+
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr><th>#</th><th>Indicator</th><th>สัญญาณบวก</th><th>สัญญาณลบ</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><strong>แท่งเทียน</strong></td><td style="color:var(--accent-green)">Hammer, Bullish Engulfing, Morning Star</td><td style="color:var(--accent-red)">Shooting Star, Bearish Engulfing, Evening Star</td></tr>
+      <tr><td>2</td><td><strong>MA20</strong></td><td style="color:var(--accent-green)">ราคาอยู่เหนือ + ชี้ขึ้น</td><td style="color:var(--accent-red)">ราคาอยู่ใต้ + ชี้ลง</td></tr>
+      <tr><td>3</td><td><strong>MA50</strong></td><td style="color:var(--accent-green)">ราคาอยู่เหนือ</td><td style="color:var(--accent-red)">ราคาอยู่ใต้</td></tr>
+      <tr><td>4</td><td><strong>MA200</strong></td><td style="color:var(--accent-green)">ราคาอยู่เหนือ (Bull Market)</td><td style="color:var(--accent-red)">ราคาอยู่ใต้ (Bear Market)</td></tr>
+      <tr><td>5</td><td><strong>Volume</strong></td><td style="color:var(--accent-green)">วอลุ่มเพิ่มตอนราคาขึ้น</td><td style="color:var(--accent-red)">วอลุ่มเพิ่มตอนราคาลง</td></tr>
+      <tr><td>6</td><td><strong>RSI (14)</strong></td><td style="color:var(--accent-green)">40-60 ปกติ, &gt;50 แข็งแกร่ง</td><td style="color:var(--accent-red)">&lt;30 Oversold, &gt;70 Overbought</td></tr>
+      <tr><td>7</td><td><strong>MACD</strong></td><td style="color:var(--accent-green)">ตัดขึ้นเหนือ Signal</td><td style="color:var(--accent-red)">ตัดลงใต้ Signal</td></tr>
+      <tr><td>8</td><td><strong>OBV</strong></td><td style="color:var(--accent-green)">ทำ New High ก่อนราคา</td><td style="color:var(--accent-red)">ทำ New Low ก่อนราคา</td></tr>
+      <tr><td>9</td><td><strong>Bollinger Bands</strong></td><td style="color:var(--accent-green)">เดินตาม Upper Band</td><td style="color:var(--accent-red)">เดินตาม Lower Band</td></tr>
+      <tr><td>10</td><td><strong>แนวรับ/แนวต้าน</strong></td><td style="color:var(--accent-green)">ใกล้แนวรับ + สัญญาณกลับตัว</td><td style="color:var(--accent-red)">ใกล้แนวต้าน + อ่อนแรง</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h4>วิธีวิเคราะห์อย่างเป็นระบบ</h4>
+
+<div class="formula-block">
+<span class="tag workflow">ANALYSIS WORKFLOW</span>
+<span class="highlight">ขั้นตอนวิเคราะห์กราฟ (ทำเหมือนกันทุกตัว):</span>
+
+<span class="label">1. ดูภาพรวม (Zoom Out) — กราฟ Weekly</span>
+   └── ถามตัวเอง: "แนวโน้มใหญ่เป็นอย่างไร? ขาขึ้น ขาลง หรือ Sideway?"
+
+<span class="label">2. ดูภาพกลาง — กราฟ Daily (3 เดือน)</span>
+   └── ถามตัวเอง: "แนวโน้มระยะกลางเป็นอย่างไร? สอดคล้องกับ Weekly ไหม?"
+
+<span class="label">3. ดูรายละเอียด — กราฟ Daily (1 เดือน)</span>
+   └── ถามตัวเอง: "วันนี้ราคาทำอะไร? มีสัญญาณอะไรบ้าง?"
+
+<span class="label">4. ตรวจ Indicator ตาม Checklist</span>
+   └── นับว่ามีสัญญาณบวกกี่ข้อ สัญญาณลบกี่ข้อ
+
+<span class="label">5. สรุปสถานะ</span>
+   <span class="ok">├── สัญญาณบวก ≥ 7 → 🟢 แข็งแกร่ง</span>
+   <span class="warn">├── สัญญาณบวก 4-6 → 🟡 ปกติ/ต้องจับตา</span>
+   <span class="bad">└── สัญญาณบวก ≤ 3 → 🔴 อ่อนแอ/อันตราย</span>
+</div>
+
+<h3 id="tomorrow-plan">ขั้นตอนที่ 4: วางแผนวันพรุ่งนี้ — Confidence Scoring</h3>
+
+<p>ส่วนสำคัญที่สุดของ Evening Review คือการใช้ <strong>Confidence Scoring</strong> — ระบบคะแนนที่บังคับให้คิดอย่างเป็นระบบ ไม่ใช่แค่ "รู้สึกว่าดี"</p>
+
+<div class="checklist-box">┌──────────────────────────────────────────────────────┐
+│         <span style="color:var(--accent-cyan);font-weight:700">📋 แผนสำหรับวันพรุ่งนี้</span>                       │
+│         วันที่: ___________                            │
+├──────────────────────────────────────────────────────┤
+│  <span style="color:var(--accent-orange);font-weight:700">เหตุการณ์สำคัญพรุ่งนี้:</span>                          │
+│  □ ประชุม กนง./Fed? ___                               │
+│  □ ประกาศตัวเลขเศรษฐกิจ? ___                          │
+│  □ ประกาศงบบริษัทที่ถือ/สนใจ? ___                     │
+│  □ วันหมดอายุ Futures/Options? ___                    │
+│  □ วัน XD ของหุ้นที่ถือ? ___                           │
+├──────────────────────────────────────────────────────┤
+│  <span style="color:var(--accent-green);font-weight:700">แผนซื้อ:</span>                                        │
+│  หุ้น: ___ จุดเข้า: ___ SL: ___ เป้า: ___             │
+│  เงื่อนไข: ___________________________________        │
+│  Position Size: ___ หุ้น (___ บาท = ___%)             │
+│  Risk:Reward = ___:___                                │
+│  ระดับความมั่นใจ (1-10): ___                           │
+│  <span style="color:var(--accent-orange)">⚠️ ถ้า &lt; 7 → ลด Position Size ลง 50%</span>              │
+│  <span style="color:var(--accent-red)">⚠️ ถ้า &lt; 5 → ไม่ซื้อ รอโอกาสที่ดีกว่า</span>              │
+├──────────────────────────────────────────────────────┤
+│  <span style="color:var(--accent-yellow);font-weight:700">📊 Confidence Scoring (4 ปัจจัย):</span>                │
+│                                                       │
+│  1. ปัจจัยพื้นฐาน (1-10): ___                         │
+│     • กำไรเติบโต? P/E เหมาะสม? อุตสาหกรรมดี?        │
+│                                                       │
+│  2. ปัจจัยเทคนิค (1-10): ___                         │
+│     • แนวโน้มขาขึ้น? สัญญาณซื้อ? วอลุ่มสนับสนุน?     │
+│                                                       │
+│  3. ปัจจัยตลาด (1-10): ___                            │
+│     • Market Mood ดี? Fund Flow บวก? ไม่มีข่าวร้าย?   │
+│                                                       │
+│  4. ปัจจัยจิตวิทยา (1-10): ___                         │
+│     • รู้สึกสงบ? ไม่ FOMO? ไม่ Revenge Trade?        │
+│                                                       │
+│  <span style="color:var(--accent-cyan);font-weight:700">คะแนนรวม: ___ / 40</span>                                │
+├──────────────────────────────────────────────────────┤
+│  <span style="color:var(--accent-purple);font-weight:700">การตีความคะแนน:</span>                                 │
+│  <span style="color:var(--accent-green)">32-40 → เข้าซื้อเต็ม Position</span>                       │
+│  <span style="color:var(--accent-yellow)">24-31 → เข้าซื้อ 50-75% ของ Position ที่วางแผน</span>      │
+│  <span style="color:var(--accent-orange)">16-23 → เข้าซื้อ 25-50% หรือรอสัญญาณเพิ่ม</span>          │
+│  <span style="color:var(--accent-red)">&lt; 16  → ไม่ซื้อ รอโอกาสที่ดีกว่า</span>                     │
+└──────────────────────────────────────────────────────┘</div>
+
+<div class="info-box info">
+  <div class="box-title" id="confidence-score">💡 ทำไมต้องมี Confidence Scoring</div>
+  • <strong>ป้องกันการเข้าซื้อเมื่อไม่มั่นใจจริง</strong> — ถ้าคะแนนต่ำ ระบบบังคับให้ลด Position<br>
+  • <strong>บังคับให้คิดอย่างเป็นระบบ</strong> — ประเมินทุกด้าน ไม่ใช่แค่ "รู้สึกว่าดี"<br>
+  • <strong>สร้างข้อมูลย้อนหลัง</strong> — เห็นว่าเทรดที่คะแนนสูงได้ผลดีกว่าจริงไหม<br><br>
+  <strong>ตัวอย่าง:</strong> ถ้าพบว่าเทรดที่คะแนน &gt; 30 มี Win Rate 65% แต่เทรดที่คะแนน &lt; 20 มี Win Rate แค่ 35% → ก็รู้ว่าควรเทรดเฉพาะเมื่อคะแนนสูง
+</div>
+
+<div class="section-header" id="sec11">
+  <h2><span class="section-number warm">11</span> 🧘 กฎหลัง 18:00 — หยุดดูตลาด</h2>
+</div>
+
+<div class="info-box danger">
+  <div class="box-title">⚠️ นี่ไม่ใช่คำแนะนำ — เป็นกฎที่มีพื้นฐานทางประสาทวิทยา</div>
+  การหยุดดูตลาดหลัง 18:00 มีงานวิจัยทางประสาทวิทยาและจิตวิทยารองรับ — ไม่ใช่แค่ "ความคิดเห็น"
+</div>
+
+<h3>1) Decision Fatigue — ความเหนื่อยล้าจากการตัดสินใจ</h3>
+
+<p>งานวิจัยจาก <strong>Stanford University</strong> พบว่าคุณภาพการตัดสินใจลดลง <strong>40-60%</strong> เมื่อสมองเหนื่อยล้า — นี่คือเหตุผลที่ผู้พิพากษาตัดสินคดีแย่ลงในช่วงบ่าย และนักลงทุนที่เทรดตอนดึกมักขาดทุนมากกว่า</p>
+
+<div class="card">
+  <div class="card-title">📊 พลังงานสมองในการตัดสินใจตลอดวัน</div>
+  <div class="energy-bar">
+    <span class="time-label">07:00</span>
+    <div class="bar high" style="width:100%"></div>
+    <span class="pct">100%</span>
+    <span style="color:var(--accent-green); font-size:0.85rem; margin-left:0.5rem;">สดใส พร้อมวิเคราะห์</span>
+  </div>
+  <div class="energy-bar">
+    <span class="time-label">10:00</span>
+    <div class="bar high" style="width:90%"></div>
+    <span class="pct">90%</span>
+    <span style="color:var(--accent-green); font-size:0.85rem; margin-left:0.5rem;">ตลาดเปิด ตัดสินใจได้ดี</span>
+  </div>
+  <div class="energy-bar">
+    <span class="time-label">12:00</span>
+    <div class="bar medium" style="width:70%"></div>
+    <span class="pct">70%</span>
+    <span style="color:var(--accent-yellow); font-size:0.85rem; margin-left:0.5rem;">เริ่มล้า ต้องพักเที่ยง</span>
+  </div>
+  <div class="energy-bar">
+    <span class="time-label">14:30</span>
+    <div class="bar medium" style="width:60%"></div>
+    <span class="pct">60%</span>
+    <span style="color:var(--accent-yellow); font-size:0.85rem; margin-left:0.5rem;">กลับจากพัก ดีขึ้นเล็กน้อย</span>
+  </div>
+  <div class="energy-bar">
+    <span class="time-label">16:30</span>
+    <div class="bar low" style="width:40%"></div>
+    <span class="pct">40%</span>
+    <span style="color:var(--accent-orange); font-size:0.85rem; margin-left:0.5rem;">ตลาดปิด เริ่มล้ามาก</span>
+  </div>
+  <div class="energy-bar">
+    <span class="time-label">18:00</span>
+    <div class="bar low" style="width:30%"></div>
+    <span class="pct">30%</span>
+    <span style="color:var(--accent-orange); font-size:0.85rem; margin-left:0.5rem;">⚠️ อันตราย! ตัดสินใจแย่</span>
+  </div>
+  <div class="energy-bar">
+    <span class="time-label">20:00</span>
+    <div class="bar critical" style="width:20%"></div>
+    <span class="pct">20%</span>
+    <span style="color:var(--accent-red); font-size:0.85rem; margin-left:0.5rem;">❌ ไม่ควรตัดสินใจเรื่องเงิน</span>
+  </div>
+  <div class="energy-bar">
+    <span class="time-label">22:00</span>
+    <div class="bar critical" style="width:10%"></div>
+    <span class="pct">10%</span>
+    <span style="color:var(--accent-red); font-size:0.85rem; margin-left:0.5rem;">สมองต้องการพักผ่อน</span>
+  </div>
+</div>
+
+<h3>2) Cortisol และวงจรอุบาทว์</h3>
+
+<div class="formula-block">
+<span class="tag warning">STRESS HORMONE LOOP</span>
+<span class="highlight">Cortisol (ฮอร์โมนความเครียด):</span>
+
+<span class="label">ระดับปกติ:</span>
+├── เช้า: สูง (ช่วยให้ตื่นตัว พร้อมทำงาน)
+├── บ่าย: ลดลง (ร่างกายเริ่มผ่อนคลาย)
+└── เย็น-ค่ำ: ต่ำ (เตรียมพร้อมสำหรับการนอน)
+
+<span class="bad">ถ้าดูตลาดตอนค่ำ:</span>
+├── สมองรับข้อมูลที่กระตุ้นอารมณ์ (ราคา ข่าว โซเชียล)
+├── Cortisol พุ่งขึ้นผิดปกติ
+├── ร่างกายเข้าสู่ Fight-or-Flight Mode
+├── นอนไม่หลับ หรือหลับไม่สนิท
+├── วันรุ่งขึ้น: Cortisol ยังสูง → ตัดสินใจแย่ → ขาดทุน → เครียดมาก
+└── <span class="bad">วงจรอุบาทว์: เครียด → เทรดแย่ → ขาดทุน → เครียดมาก → เทรดแย่ลง</span>
+</div>
+
+<h3>3) Recency Bias — อคติจากข้อมูลล่าสุด</h3>
+
+<p>ถ้าดูข่าวหรือความเห็นในโซเชียลตอนค่ำ สมองจะให้น้ำหนักกับข้อมูลล่าสุดมากเกินไป:</p>
+
+<ul style="color:var(--text-secondary); padding-left:1.5rem;">
+  <li>อ่านข่าวร้ายตอนดึก → ตื่นมาตกใจ → ขายหุ้นตอนเปิดตลาด → ราคากลับขึ้น → เสียดาย</li>
+  <li>อ่านคนในกลุ่มไลน์แนะนำหุ้น → ตื่นมาอยากซื้อ → ซื้อโดยไม่ได้วิเคราะห์ → ขาดทุน</li>
+  <li>ดูกราฟตอนดึก → เห็น Pattern ที่ไม่มีจริง (Pareidolia) → วางแผนผิด</li>
+</ul>
+
+<div class="do-dont-grid">
+  <div class="dont-card">
+    <h4>❌ ห้ามทำหลัง 18:00</h4>
+    <ul>
+      <li>ดูราคาหุ้น (ตลาดปิดแล้ว)</li>
+      <li>ดูกลุ่มไลน์หุ้น (ข้อมูลส่วนใหญ่เป็นขยะ)</li>
+      <li>อ่านความเห็นในเว็บบอร์ดหุ้น</li>
+      <li>ดู YouTube/TikTok เกี่ยวกับหุ้น</li>
+      <li>คิดเรื่องหุ้นก่อนนอน</li>
+      <li>เปลี่ยนแผนที่วางไว้ตอนเย็น</li>
+      <li>ส่งคำสั่งซื้อขายล่วงหน้า</li>
+    </ul>
+  </div>
+  <div class="do-card">
+    <h4>✅ สิ่งที่ควรทำแทน</h4>
+    <ul>
+      <li>ออกกำลังกาย — ลด Cortisol</li>
+      <li>ใช้เวลากับครอบครัว/เพื่อน</li>
+      <li>อ่านหนังสือ (ไม่เกี่ยวกับหุ้น)</li>
+      <li>ทำงานอดิเรก</li>
+      <li>นั่งสมาธิ/Meditation</li>
+      <li>นอนให้เพียงพอ (7-8 ชั่วโมง)</li>
+      <li>เตรียมตัวสำหรับวันรุ่งขึ้น</li>
+    </ul>
+  </div>
+</div>
+
+<h3>ข้อยกเว้น — เมื่อไหร่ที่ดูได้หลัง 18:00</h3>
+
+<div class="formula-block">
+<span class="tag signal">EXCEPTIONS</span>
+<span class="highlight">ข้อยกเว้นที่ยอมรับได้:</span>
+
+<span class="val">1. เหตุการณ์วิกฤตระดับโลก</span> (สงคราม, วิกฤตการเงิน, ภัยธรรมชาติ)
+   → ดูข่าวได้ แต่ <span class="bad">ห้ามตัดสินใจซื้อขาย</span> รอถึงเช้าค่อยวิเคราะห์
+
+<span class="val">2. ประกาศผล Fed/FOMC</span> (ตี 1 ของไทย)
+   → ดูผลได้ แต่ <span class="bad">ห้ามเปลี่ยนแผน</span> รอถึงเช้าค่อยปรับ
+   → ถ้าผลออกแย่มาก ตั้ง Stop Loss ไว้ก่อนนอน
+
+<span class="val">3. ข่าวสำคัญของบริษัทที่ถือ</span> (ประกาศหลังตลาดปิด)
+   → อ่านข่าวได้ แต่ <span class="bad">ห้ามตัดสินใจทันที</span>
+   → จดบันทึกไว้ วิเคราะห์ตอนเช้า
+
+<span class="val">4. การอ่านหนังสือ/บทความเพื่อเรียนรู้</span> (ไม่ใช่ข่าวสด)
+   → อ่านหนังสือเกี่ยวกับการลงทุนได้
+   → แต่ต้องเป็นเนื้อหาการศึกษา ไม่ใช่ข่าวที่กระตุ้นอารมณ์
+</div>
+
+<div class="quote-block">
+  "ตลาดจะยังอยู่ตรงนั้นพรุ่งนี้ แต่สุขภาพจิตและร่างกายของคุณอาจไม่อยู่ ถ้าไม่ดูแลตัวเอง"
+  <span class="author">— หลักปรัชญาชีวิตนักลงทุน</span>
+</div>
+
+<div class="section-header" id="sec12">
+  <h2><span class="section-number blue">12</span> 📊 Trading Journal ขั้นสูง — สถิติและ Patterns</h2>
+</div>
+
+<h3 id="metrics">การคำนวณสถิติส่วนตัว</h3>
+
+<div class="formula-block">
+<span class="tag formula">METRIC 1</span>
+<span class="highlight">Win Rate (อัตราชนะ):</span>
+
+<span class="val">Win Rate = (จำนวนเทรดที่กำไร ÷ จำนวนเทรดทั้งหมด) × 100</span>
+
+<span class="label">ตัวอย่าง:</span> เทรด 20 ครั้ง กำไร 12 ครั้ง ขาดทุน 8 ครั้ง
+Win Rate = (12 ÷ 20) × 100 = <span class="ok">60%</span>
+
+<span class="highlight">เกณฑ์:</span>
+<span class="ok">├── &gt; 60% = ดีมาก</span>
+<span class="ok">├── 50-60% = ดี</span>
+<span class="warn">├── 40-50% = พอใช้ (ถ้า R:R ดี ก็ยังกำไรได้)</span>
+<span class="bad">└── &lt; 40% = ต้องปรับปรุง (ยกเว้น R:R &gt; 1:3)</span>
+</div>
+
+<div class="formula-block">
+<span class="tag formula">METRIC 2</span>
+<span class="highlight">Average R-Multiple (ค่าเฉลี่ย R):</span>
+
+<span class="label">R = ความเสี่ยงต่อเทรด</span> (ระยะจากจุดเข้าถึง Stop Loss)
+
+<span class="label">ตัวอย่าง:</span> ซื้อที่ 10.00 SL ที่ 9.50 → 1R = 0.50 บาท
+• ขายกำไรที่ 11.50 = กำไร 1.50 บาท = <span class="ok">+3R</span>
+• ขายขาดทุนที่ 9.50 = ขาดทุน 0.50 บาท = <span class="bad">-1R</span>
+
+<span class="val">Average R = ผลรวม R ÷ จำนวนเทรด</span>
+
+<span class="label">ตัวอย่าง 5 เทรด:</span> +3R, -1R, +2R, -1R, +1.5R
+Average R = (3 + (-1) + 2 + (-1) + 1.5) ÷ 5 = <span class="ok">+0.9R</span>
+
+<span class="highlight">เกณฑ์:</span>
+<span class="ok">├── &gt; 1.0R = ดีมาก</span>
+<span class="ok">├── 0.5-1.0R = ดี</span>
+<span class="warn">├── 0.1-0.5R = พอใช้</span>
+<span class="bad">└── &lt; 0R = ขาดทุน ต้องปรับปรุง</span>
+</div>
+
+<div class="formula-block">
+<span class="tag formula">METRIC 3</span>
+<span class="highlight">Expectancy (ค่าคาดหวังต่อเทรด):</span>
+
+<span class="val">Expectancy = (Win Rate × Average Win) - (Loss Rate × Average Loss)</span>
+
+<span class="label">ตัวอย่าง:</span>
+Win Rate = 55%, Average Win = 3,000 บาท
+Loss Rate = 45%, Average Loss = 2,000 บาท
+
+Expectancy = (0.55 × 3,000) - (0.45 × 2,000)
+           = 1,650 - 900
+           = <span class="ok">+750 บาท/เทรด</span>
+
+<span class="highlight">ความหมาย:</span> ทุกครั้งที่เทรด คาดหวังกำไรเฉลี่ย 750 บาท
+เทรด 200 ครั้ง/ปี = <span class="ok">กำไรคาดหวัง 150,000 บาท</span>
+
+<span class="bad">⚠️ Expectancy ต้องเป็นบวก ถ้าเป็นลบ = ระบบไม่ทำงาน</span>
+</div>
+
+<div class="formula-block">
+<span class="tag formula">METRIC 4</span>
+<span class="highlight">Profit Factor:</span>
+
+<span class="val">Profit Factor = กำไรรวมของเทรดที่ชนะ ÷ ขาดทุนรวมของเทรดที่แพ้</span>
+
+<span class="label">ตัวอย่าง:</span>
+กำไรรวม = 50,000 บาท (จาก 12 เทรดที่ชนะ)
+ขาดทุนรวม = 30,000 บาท (จาก 8 เทรดที่แพ้)
+Profit Factor = 50,000 ÷ 30,000 = <span class="ok">1.67</span>
+
+<span class="highlight">เกณฑ์:</span>
+<span class="ok">├── &gt; 2.0 = ดีมาก</span>
+<span class="ok">├── 1.5-2.0 = ดี</span>
+<span class="warn">├── 1.0-1.5 = พอใช้ (กำไรน้อย)</span>
+<span class="bad">└── &lt; 1.0 = ขาดทุน ต้องปรับปรุง</span>
+</div>
+
+<h3 id="common-patterns">Common Patterns ของข้อผิดพลาด</h3>
+
+<p>เมื่อทบทวน Journal ไปสักระยะ จะเริ่มเห็น Pattern ของข้อผิดพลาดที่ทำซ้ำ นี่คือ Pattern ที่พบบ่อยที่สุด:</p>
+
+<div class="table-wrapper">
+  <table>
+    <thead class="red-head">
+      <tr><th>Pattern</th><th>อาการ</th><th>สาเหตุ</th><th>วิธีแก้</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>FOMO Trading</strong></td>
+        <td>ซื้อหุ้นที่วิ่งไปแล้ว 10-20%</td>
+        <td>กลัวพลาดโอกาส</td>
+        <td>ไม่ซื้อหุ้นที่วิ่งไปแล้ว &gt; 5% จาก Breakout</td>
+      </tr>
+      <tr>
+        <td><strong>Revenge Trading</strong></td>
+        <td>เทรดทันทีหลังขาดทุน</td>
+        <td>อารมณ์โกรธ/เสียใจ</td>
+        <td>หลังขาดทุน ห้ามเทรด 24 ชั่วโมง</td>
+      </tr>
+      <tr>
+        <td><strong>Overtrading</strong></td>
+        <td>เทรด &gt; 3 ครั้งต่อวัน</td>
+        <td>เบื่อ/ใจร้อน</td>
+        <td>จำกัดเทรดไม่เกิน 2 ครั้งต่อวัน</td>
+      </tr>
+      <tr>
+        <td><strong>ไม่ตัดขาดทุน</strong></td>
+        <td>ถือหุ้นที่ถึง SL แล้วไม่ขาย</td>
+        <td>หวัง/ปฏิเสธความจริง</td>
+        <td>ใช้ Auto Stop Loss</td>
+      </tr>
+      <tr>
+        <td><strong>ขายเร็วเกินไป</strong></td>
+        <td>ขาย 3-5% ทั้งที่เป้า 15%</td>
+        <td>กลัวกำไรหาย</td>
+        <td>ขาย 50% ที่เป้าแรก ถือ 50% ไปเป้าที่สอง</td>
+      </tr>
+      <tr>
+        <td><strong>Analysis Paralysis</strong></td>
+        <td>วิเคราะห์มากจนไม่กล้าเข้า</td>
+        <td>กลัวผิดพลาด</td>
+        <td>ใช้ Confidence Score — ถ้า &gt; 7 ต้องเข้า</td>
+      </tr>
+      <tr>
+        <td><strong>Anchoring</strong></td>
+        <td>ยึดติดกับราคาที่เคยซื้อ</td>
+        <td>อคติทางจิตวิทยา</td>
+        <td>ถาม: "ถ้าไม่ได้ถือ จะซื้อที่ราคานี้ไหม?"</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section-header" id="sec13">
+  <h2><span class="section-number purple">13</span> 📅 กิจวัตรรายสัปดาห์และรายเดือน</h2>
+</div>
+
+<h3 id="saturday-review">Saturday Review — วันเสาร์ 3 ชั่วโมง</h3>
+
+<p>วันเสาร์เป็นวันที่ดีที่สุดสำหรับการทบทวน เพราะตลาดปิด สมองไม่ถูกกดดันจากราคาที่เคลื่อนไหว สามารถคิดอย่างมีเหตุผลได้เต็มที่</p>
+
+<div class="timeline-block">
+  <div class="timeline-item">
+    <div class="timeline-time">09:00-09:30</div>
+    <div class="timeline-icon">☕</div>
+    <div class="timeline-content">
+      <h5>Weekly Journal Review</h5>
+      <p>ทบทวน Journal ทั้งสัปดาห์ — ข้อผิดพลาดซ้ำ? คะแนนวินัย? ทำตามแผนกี่ %?</p>
+    </div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-time">09:30-10:30</div>
+    <div class="timeline-icon">📊</div>
+    <div class="timeline-content">
+      <h5>Weekly Chart Analysis</h5>
+      <p>วิเคราะห์กราฟ Weekly ของหุ้นที่ถือและ Watchlist — กราฟ Weekly กรองสัญญาณรบกวนได้ดีกว่า Daily</p>
+    </div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-time">10:30-11:00</div>
+    <div class="timeline-icon">📋</div>
+    <div class="timeline-content">
+      <h5>Watchlist Management</h5>
+      <p>เอาหุ้นที่ไม่น่าสนใจออก เพิ่มหุ้นใหม่ จัดลำดับ Tier 1 / Tier 2</p>
+    </div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-time">11:00-11:30</div>
+    <div class="timeline-icon">📰</div>
+    <div class="timeline-content">
+      <h5>Weekly News Digest</h5>
+      <p>สรุปข่าวสำคัญของสัปดาห์ — มีอะไรที่กระทบหุ้นที่ถือ? Narrative ของตลาดเปลี่ยนไหม?</p>
+    </div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-time">11:30-12:00</div>
+    <div class="timeline-icon">📝</div>
+    <div class="timeline-content">
+      <h5>Plan for Next Week</h5>
+      <p>วางแผนสัปดาห์หน้า — เหตุการณ์สำคัญ? เป้าหมาย? สิ่งที่ต้องระวัง?</p>
+    </div>
+  </div>
+</div>
+
+<h4>Portfolio Rebalancing Checklist (ทำทุก 2 สัปดาห์)</h4>
+
+<div class="checklist-box">┌──────────────────────────────────────────────────────┐
+│         <span style="color:var(--accent-cyan);font-weight:700">⚖️ Portfolio Rebalancing Checklist</span>            │
+├──────────────────────────────────────────────────────┤
+│  สัดส่วนพอร์ตปัจจุบัน:                                │
+│  หุ้น ___ : ___% (เป้า: ___%)                         │
+│  หุ้น ___ : ___% (เป้า: ___%)                         │
+│  เงินสด  : ___% (เป้า: ≥20%)                          │
+├──────────────────────────────────────────────────────┤
+│  ตรวจสอบ:                                             │
+│  □ มีหุ้นตัวไหน <span style="color:var(--accent-red)">เกิน 25%</span> ของพอร์ตไหม?                │
+│    → ถ้าใช่ ต้องลด Position                           │
+│  □ เงินสด <span style="color:var(--accent-red)">ต่ำกว่า 20%</span> ไหม?                             │
+│    → ถ้าใช่ ขายบางส่วนเพิ่มเงินสด                     │
+│  □ มีหุ้นที่ถือเกิน 3 เดือนโดยไม่มีผลตอบแทนไหม?      │
+│    → พิจารณาขาย นำเงินไปลงทุนที่อื่น                 │
+│  □ <span style="color:var(--accent-orange)">Sector Concentration</span> — กลุ่มเดียวเกิน 40%?          │
+│    → ไม่ควรถือหุ้นกลุ่มเดียวกัน &gt; 40%                │
+│  □ <span style="color:var(--accent-orange)">Correlation</span> — หุ้นที่ถือเคลื่อนไหวทางเดียวกันหมด? │
+│    → ถ้าใช่ ความเสี่ยงสูงกว่าที่คิด ต้องกระจาย        │
+└──────────────────────────────────────────────────────┘</div>
+
+<h3 id="monthly-review">Monthly Review — สิ้นเดือน 1 ชั่วโมง</h3>
+
+<div class="checklist-box">┌──────────────────────────────────────────────────────┐
+│     <span style="color:var(--accent-cyan);font-weight:700">📊 MONTHLY PERFORMANCE REVIEW</span>                    │
+│     เดือน: ___________                                 │
+├──────────────────────────────────────────────────────┤
+│  <span style="color:var(--accent-purple);font-weight:700">ผลตอบแทน:</span>                                        │
+│  ├── พอร์ต: ___% (เดือน) / ___% (YTD)                 │
+│  ├── SET: ___% (เดือน) / ___% (YTD)                   │
+│  ├── <span style="color:var(--accent-yellow)">Alpha (พอร์ต - SET):</span> ___% / ___%                 │
+│  └── เป้าหมายปี: ___% → ต้องทำอีก ___%                │
+├──────────────────────────────────────────────────────┤
+│  <span style="color:var(--accent-purple);font-weight:700">สถิติการเทรด:</span>                                    │
+│  ├── จำนวนเทรด: ___ (เฉลี่ย ___/สัปดาห์)             │
+│  ├── Win Rate: ____%                                  │
+│  ├── Avg R: ___                                       │
+│  ├── Profit Factor: ___                               │
+│  ├── Expectancy: ___ บาท/เทรด                        │
+│  ├── Max Drawdown: ____%                              │
+│  └── คะแนนวินัยเฉลี่ย: ___/10                         │
+├──────────────────────────────────────────────────────┤
+│  <span style="color:var(--accent-purple);font-weight:700">วิเคราะห์เชิงลึก:</span>                                │
+│  <span style="color:var(--accent-green)">เทรดที่ดีที่สุด:</span> ___                               │
+│  • ทำไมถึงดี: ___                                     │
+│  <span style="color:var(--accent-red)">เทรดที่แย่ที่สุด:</span> ___                               │
+│  • ทำไมถึงแย่: ___                                    │
+├──────────────────────────────────────────────────────┤
+│  <span style="color:var(--accent-purple);font-weight:700">Pattern ที่พบ:</span>                                   │
+│  □ เทรดช่วงเช้าดีกว่าช่วงบ่าย? ___                    │
+│  □ หุ้นกลุ่มไหนทำกำไรได้ดี? ___                       │
+│  □ หุ้นกลุ่มไหนมักขาดทุน? ___                         │
+│  □ วันไหนของสัปดาห์ที่เทรดได้ดี? ___                  │
+│  □ ข้อผิดพลาดที่เกิดซ้ำบ่อยที่สุด? ___                │
+├──────────────────────────────────────────────────────┤
+│  <span style="color:var(--accent-purple);font-weight:700">แผนเดือนหน้า:</span>                                    │
+│  • สิ่งที่จะทำเหมือนเดิม: ___                          │
+│  • สิ่งที่จะเปลี่ยน: ___                              │
+│  • เป้าหมาย: ___                                      │
+└──────────────────────────────────────────────────────┘</div>
+
+<h3>การอ่านงบการเงินช่วง Earnings Season</h3>
+
+<p>ตลาดหุ้นไทยมี Earnings Season หลักๆ 4 ครั้งต่อปี:</p>
+
+<div class="table-wrapper">
+  <table>
+    <thead class="green-head">
+      <tr><th>ช่วง</th><th>ประกาศงบ</th><th>Deadline</th><th>สิ่งที่ต้องทำ</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>กุมภาพันธ์</strong></td><td>งบ Q4 + งบปี</td><td>ภายใน 28 ก.พ.</td><td>วิเคราะห์ทั้งปี + แนวโน้มปีหน้า</td></tr>
+      <tr><td><strong>พฤษภาคม</strong></td><td>งบ Q1</td><td>ภายใน 15 พ.ค.</td><td>ดูว่าเริ่มปีดีไหม ตรงตามคาดไหม</td></tr>
+      <tr><td><strong>สิงหาคม</strong></td><td>งบ Q2 + ครึ่งปี</td><td>ภายใน 15 ส.ค.</td><td>ดูว่าครึ่งปีแรกเป็นอย่างไร ปรับประมาณการ</td></tr>
+      <tr><td><strong>พฤศจิกายน</strong></td><td>งบ Q3</td><td>ภายใน 15 พ.ย.</td><td>ดูว่าจะทำได้ตามเป้าทั้งปีไหม</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section-header" id="sec14">
+  <h2><span class="section-number indigo">14</span> ⚙️ การสร้างระบบส่วนตัว</h2>
+</div>
+
+<div class="quote-block">
+  ระบบที่ดีที่สุดคือระบบที่คุณทำได้จริงทุกวัน<br>
+  • ระบบที่สมบูรณ์แบบแต่ทำไม่ได้ = <strong>ไร้ค่า</strong><br>
+  • ระบบที่ไม่สมบูรณ์แต่ทำได้ทุกวัน = <strong>มีค่ามหาศาล</strong><br>
+  • เริ่มจากน้อย แล้วค่อยๆ เพิ่ม ดีกว่าเริ่มจากมากแล้วทำไม่ไหว
+  <span class="author">— หลักการออกแบบระบบส่วนตัว</span>
+</div>
+
+<h3 id="investor-types">การปรับระบบตามประเภทนักลงทุน</h3>
+
+<div class="three-col">
+  <div class="col-card blue-accent">
+    <h4>🎯 Full-time Investor</h4>
+    <p style="color:var(--text-muted); font-size:0.85rem;">ลงทุนเป็นอาชีพหลัก</p>
+    <ul>
+      <li>เวลาที่ใช้: <strong>~8 ชม./วัน</strong></li>
+      <li>เหมาะ: Day/Swing Trader</li>
+      <li>ข้อดี: ดูตลาดได้ตลอด</li>
+      <li>ข้อเสีย: เสี่ยง Overtrade</li>
+      <li>⚠️ ต้องมีวินัยสูง</li>
+    </ul>
+  </div>
+  <div class="col-card green-accent">
+    <h4>💼 Part-time Investor</h4>
+    <p style="color:var(--text-muted); font-size:0.85rem;">มีงานประจำ</p>
+    <ul>
+      <li>เวลาที่ใช้: <strong>~1.5-2 ชม./วัน</strong></li>
+      <li>เหมาะ: Swing/Position Trader</li>
+      <li>ข้อดี: ไม่ Overtrade</li>
+      <li>ข้อเสีย: ตอบสนองข่าวช้า</li>
+      <li>💡 ใช้ Alert + Limit Order</li>
+    </ul>
+  </div>
+  <div class="col-card purple-accent">
+    <h4>🌱 Long-term Investor</h4>
+    <p style="color:var(--text-muted); font-size:0.85rem;">เน้นลงทุนระยะยาว</p>
+    <ul>
+      <li>เวลาที่ใช้: <strong>~30 นาที/สัปดาห์</strong></li>
+      <li>เหมาะ: Value/DCA Investor</li>
+      <li>ข้อดี: ใช้เวลาน้อย ไม่เครียด</li>
+      <li>ข้อเสีย: ตอบสนองช้า</li>
+      <li>💡 Saturday Review เป็นหลัก</li>
+    </ul>
+  </div>
+</div>
+
+<h4>📅 ตาราง Part-time Investor (มีงานประจำ)</h4>
+
+<div class="checklist-box">┌──────────────────────────────────────────────────────┐
+│  <span style="color:var(--accent-cyan);font-weight:700">⏰ ตารางสำหรับ Part-time Investor</span>                │
+├──────────────────────────────────────────────────────┤
+│  06:30-07:00  <span style="color:var(--accent-yellow)">Morning Routine (ย่อ)</span>                  │
+│               ดู SET Futures, ตลาดสหรัฐ, ข่าว          │
+│               สรุป Market Mood ใน 5 นาที              │
+│                                                       │
+│  07:00-07:15  <span style="color:var(--accent-yellow)">Pre-Market (ย่อ)</span>                       │
+│               ดูหุ้นที่ถือ: มีข่าว? ใกล้ SL?          │
+│               ตั้ง Limit Order / Stop Loss ล่วงหน้า   │
+│                                                       │
+│  07:15-08:00  เดินทางไปทำงาน                          │
+│  09:55-10:05  แอบดู Pre-Open + ตลาดเปิด (5 นาที)      │
+│  12:00-12:15  พักเที่ยง — ดูสรุปเช้า (15 นาที)        │
+│                                                       │
+│  18:00-19:00  <span style="color:var(--accent-cyan)">Evening Review (หลังเลิกงาน)</span>           │
+│               บันทึก Journal + วิเคราะห์กราฟ +        │
+│               วางแผนพรุ่งนี้                           │
+│                                                       │
+│  19:00+       หยุด ใช้ชีวิต                           │
+│                                                       │
+│  <span style="color:var(--accent-green)">รวมเวลาที่ใช้: ~1.5-2 ชม./วัน</span>                      │
+└──────────────────────────────────────────────────────┘</div>
+
+<h3 id="tools">เครื่องมือและ Automation</h3>
+
+<h4>สำหรับการดูข้อมูลตลาด</h4>
+
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr><th>เครื่องมือ</th><th>ใช้ทำอะไร</th><th>ราคา</th><th>เหมาะกับใคร</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Settrade Streaming</strong></td><td>ดูราคาหุ้นไทย Real-time</td><td>ฟรี/Pro</td><td>ทุกคน</td></tr>
+      <tr><td><strong>TradingView</strong></td><td>วิเคราะห์กราฟ ตั้ง Alert</td><td>ฟรี/Pro</td><td>เน้นเทคนิค</td></tr>
+      <tr><td><strong>Investing.com</strong></td><td>ตลาดโลก ปฏิทินเศรษฐกิจ</td><td>ฟรี</td><td>ทุกคน</td></tr>
+      <tr><td><strong>Bloomberg</strong></td><td>ข่าวระดับมืออาชีพ</td><td>แพง</td><td>Full-time</td></tr>
+      <tr><td><strong>Jitta</strong></td><td>วิเคราะห์ปัจจัยพื้นฐาน</td><td>ฟรี/Pro</td><td>Value Investor</td></tr>
+      <tr><td><strong>StockRadars</strong></td><td>ข้อมูล + Screener</td><td>ฟรี/Pro</td><td>ทุกคน</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h4>สำหรับการบันทึก Trading Journal</h4>
+
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr><th>เครื่องมือ</th><th>ข้อดี</th><th>ข้อเสีย</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Google Sheets</strong></td><td>ฟรี ปรับแต่งได้ คำนวณสถิติได้</td><td>ต้องสร้าง Template เอง</td></tr>
+      <tr><td><strong>Notion</strong></td><td>ยืดหยุ่น ใส่รูปได้ Template สวย</td><td>ต้องเรียนรู้การใช้งาน</td></tr>
+      <tr><td><strong>สมุดจด</strong></td><td>เขียนมือช่วยจำ ไม่มี Distraction</td><td>ค้นหาย้อนหลังยาก</td></tr>
+      <tr><td><strong>Excel</strong></td><td>คำนวณสถิติได้ดี สร้างกราฟได้</td><td>ต้องสร้าง Template เอง</td></tr>
+      <tr><td><strong>Edgewonk</strong></td><td>ออกแบบมาสำหรับ Journal โดยเฉพาะ</td><td>มีค่าใช้จ่าย ภาษาอังกฤษ</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h4>Automation — ลดงานซ้ำซาก</h4>
+
+<div class="formula-block">
+<span class="tag workflow">AUTOMATION TIPS</span>
+<span class="highlight">4 วิธีลดงานซ้ำซาก:</span>
+
+<span class="label">1. ตั้ง Conditional Order ล่วงหน้า</span>
+├── Stop Loss Order ทันทีที่ซื้อ
+├── Take Profit Order ที่เป้าหมาย
+└── Trailing Stop — ปกป้องกำไรอัตโนมัติ
+
+<span class="label">2. สร้าง Template ที่ใช้ซ้ำได้</span>
+├── Trading Journal Template
+├── Weekly Review Template
+└── Pre-Market Checklist (Print ออกมาวางบนโต๊ะ)
+
+<span class="label">3. ใช้ Screener แทนการดูหุ้นทีละตัว</span>
+└── <span class="val">ตัวอย่าง:</span> "ราคาทะลุ MA20 + วอลุ่ม &gt; 2 เท่า + RSI 50-70"
+
+<span class="label">4. ตั้ง Calendar Reminder</span>
+├── ทุกวัน 07:00 — "Morning Routine"
+├── ทุกวัน 16:30 — "เขียน Journal"
+├── ทุกวันเสาร์ 09:00 — "Saturday Review"
+└── ทุกสิ้นเดือน — "Monthly Performance Review"
+</div>
+
+<h3 id="kpi">KPIs — วัดว่าระบบของคุณทำงานได้ดีหรือไม่</h3>
+
+<p>ระบบที่ดีต้องวัดผลได้ ไม่ใช่แค่ "รู้สึกว่าดี" — ใช้ตัวชี้วัดเหล่านี้:</p>
+
+<div class="table-wrapper">
+  <table>
+    <thead class="green-head">
+      <tr><th>KPI</th><th>วิธีวัด</th><th>เป้าหมาย</th><th>ความถี่</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>คะแนนวินัย</strong></td><td>ทำตามแผนกี่ %</td><td>≥ 80%</td><td>รายสัปดาห์</td></tr>
+      <tr><td><strong>Win Rate</strong></td><td>เทรดกำไร ÷ ทั้งหมด</td><td>≥ 50%</td><td>รายเดือน</td></tr>
+      <tr><td><strong>Profit Factor</strong></td><td>กำไรรวม ÷ ขาดทุนรวม</td><td>≥ 1.5</td><td>รายเดือน</td></tr>
+      <tr><td><strong>Average R</strong></td><td>ค่าเฉลี่ย R-Multiple</td><td>≥ 0.5R</td><td>รายเดือน</td></tr>
+      <tr><td><strong>Max Drawdown</strong></td><td>ขาดทุนสูงสุดจากจุดสูงสุด</td><td>≤ 15%</td><td>ตลอดเวลา</td></tr>
+      <tr><td><strong>Expectancy</strong></td><td>ค่าคาดหวังต่อเทรด</td><td>&gt; 0</td><td>รายเดือน</td></tr>
+      <tr><td><strong>ข้อผิดพลาดซ้ำ</strong></td><td>จำนวนที่เกิดซ้ำ</td><td>ลดลงทุกเดือน</td><td>รายเดือน</td></tr>
+      <tr><td><strong>เวลาที่ใช้</strong></td><td>ชั่วโมง/วัน</td><td>ตามแผน ±30 นาที</td><td>รายสัปดาห์</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h4>วิธีปรับระบบเมื่อไม่ได้ผล</h4>
+
+<div class="formula-block">
+<span class="tag workflow">TROUBLESHOOTING</span>
+<span class="highlight">ถ้าระบบไม่ได้ผล ให้วิเคราะห์ตามลำดับ:</span>
+
+<span class="val">1. ปัญหาด้านวินัย?</span> (คะแนนวินัย &lt; 80%)
+   <span class="ok">└── แก้: ลดความซับซ้อน ทำให้ง่ายขึ้น</span>
+       ถ้าทำตามไม่ได้ = ระบบยากเกินไป
+
+<span class="val">2. ปัญหาด้าน Win Rate?</span> (Win Rate &lt; 40%)
+   <span class="ok">└── แก้: ปรับเกณฑ์เข้าซื้อให้เข้มงวดขึ้น</span>
+       เทรดน้อยลง แต่เลือกเฉพาะโอกาสที่ดีจริงๆ
+
+<span class="val">3. ปัญหาด้าน Risk:Reward?</span> (Average R &lt; 0)
+   <span class="ok">└── แก้: ปรับ Stop Loss และเป้าหมาย</span>
+       ถือหุ้นกำไรนานขึ้น ตัดขาดทุนเร็วขึ้น
+
+<span class="val">4. ปัญหาด้าน Drawdown?</span> (Max DD &gt; 15%)
+   <span class="ok">└── แก้: ลด Position Size</span>
+       เพิ่มเงินสด ลดจำนวนหุ้นที่ถือพร้อมกัน
+
+<span class="val">5. ปัญหาด้านอารมณ์?</span> (ข้อผิดพลาดด้านอารมณ์เกิดบ่อย)
+   <span class="ok">└── แก้: ใช้ Automation มากขึ้น</span>
+       Auto Stop Loss, ลดเวลาดูตลาด, ฝึกสมาธิ
+</div>
+
+<div class="info-box info">
+  <div class="box-title">💡 หลักการสำคัญ</div>
+  <strong>ปรับทีละอย่าง อย่าเปลี่ยนทุกอย่างพร้อมกัน</strong> — ถ้าเปลี่ยนหลายอย่างพร้อมกัน จะไม่รู้ว่าอะไรที่ทำให้ดีขึ้นหรือแย่ลง เหมือนนักวิทยาศาสตร์ที่เปลี่ยนตัวแปรทีละตัว
+</div>
+
+<div class="section-header" id="summary">
+  <h2><span class="section-number rose">📋</span> สรุปตารางกิจวัตรประจำวัน</h2>
+</div>
+
+<p>ตารางนี้รวมทุกกิจกรรม พร้อม<strong>ระดับความสำคัญ</strong> เพื่อให้รู้ว่าอันไหนห้ามข้าม อันไหนข้ามได้ในวันที่ยุ่ง</p>
+
+<div class="table-wrapper">
+  <table>
+    <thead class="purple-head">
+      <tr>
+        <th>เวลา</th>
+        <th>กิจกรรม</th>
+        <th>เวลา</th>
+        <th>ความสำคัญ</th>
+        <th>ข้ามได้?</th>
+        <th>หมายเหตุ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>07:00-07:20</td><td>ดูตลาดโลก</td><td>20 นาที</td><td>⭐⭐⭐</td><td>ไม่ควร</td><td>ภาพรวม บวก/ลบ</td></tr>
+      <tr><td>07:20-07:35</td><td>สินค้าโภคภัณฑ์ + ค่าเงิน</td><td>15 นาที</td><td>⭐⭐</td><td>ได้</td><td>น้ำมัน ทอง VIX</td></tr>
+      <tr><td>07:35-07:50</td><td>ดูข่าวสำคัญ</td><td>15 นาที</td><td>⭐⭐⭐</td><td>ไม่ควร</td><td>เน้นข่าวที่กระทบหุ้น</td></tr>
+      <tr><td>07:50-08:00</td><td><strong style="color:var(--accent-yellow)">สรุป Market Mood</strong></td><td>10 นาที</td><td>⭐⭐⭐⭐</td><td style="color:var(--accent-red)">ห้ามข้าม</td><td>Bullish/Neutral/Bearish</td></tr>
+      <tr><td>08:00-08:30</td><td><strong style="color:var(--accent-yellow)">Portfolio Check</strong></td><td>30 นาที</td><td>⭐⭐⭐⭐⭐</td><td style="color:var(--accent-red)">ห้ามข้าม</td><td>ข่าว เครื่องหมาย SL</td></tr>
+      <tr><td>08:30-08:50</td><td>Watchlist Scan</td><td>20 นาที</td><td>⭐⭐⭐</td><td>ได้</td><td>ดูตัวที่ใกล้จุดเข้า</td></tr>
+      <tr><td>08:50-09:00</td><td>ปฏิทินเศรษฐกิจ</td><td>10 นาที</td><td>⭐⭐⭐</td><td>ไม่ควร</td><td>เหตุการณ์สำคัญวันนี้</td></tr>
+      <tr><td>09:00-09:25</td><td><strong style="color:var(--accent-yellow)">เขียนแผนวันนี้</strong></td><td>25 นาที</td><td>⭐⭐⭐⭐⭐</td><td style="color:var(--accent-red)">ห้ามข้าม</td><td>A/B/C + สิ่งที่จะไม่ทำ</td></tr>
+      <tr><td>09:25-09:30</td><td>Position Sizing Check</td><td>5 นาที</td><td>⭐⭐⭐⭐</td><td style="color:var(--accent-red)">ห้ามข้าม</td><td>กฎ Risk Management</td></tr>
+      <tr><td>09:30-10:00</td><td>Pre-Open Bid-Offer</td><td>30 นาที</td><td>⭐⭐⭐</td><td>ได้</td><td>Projected Open</td></tr>
+      <tr><td>10:00-10:30</td><td>30 นาทีแรก</td><td>30 นาที</td><td>⭐⭐⭐⭐</td><td>ไม่ควร</td><td>ดูแต่อย่าเพิ่งเทรด</td></tr>
+      <tr><td>10:30-11:30</td><td>กลางเช้า — เข้าซื้อ</td><td>60 นาที</td><td>⭐⭐⭐⭐</td><td>ได้</td><td>ช่วงที่ดีที่สุด</td></tr>
+      <tr><td>11:30-12:30</td><td>ก่อนพัก — ระวัง</td><td>60 นาที</td><td>⭐⭐</td><td>ได้</td><td>ระวัง Marking</td></tr>
+      <tr><td>12:30-14:30</td><td><strong style="color:var(--accent-yellow)">พักเที่ยง + สรุปเช้า</strong></td><td>120 นาที</td><td>⭐⭐⭐⭐</td><td style="color:var(--accent-red)">ห้ามข้าม</td><td>พักจริงๆ</td></tr>
+      <tr><td>14:30-15:00</td><td>ช่วงเปิดบ่าย</td><td>30 นาที</td><td>⭐⭐</td><td>ได้</td><td>ดูทิศทางเปลี่ยนไหม</td></tr>
+      <tr><td>15:00-16:00</td><td>กลางบ่าย — วิเคราะห์</td><td>60 นาที</td><td>⭐⭐</td><td>ได้</td><td>ตลาดเงียบ</td></tr>
+      <tr><td>16:00-16:30</td><td>30 นาทีสุดท้าย</td><td>30 นาที</td><td>⭐⭐⭐</td><td>ไม่ควร</td><td>ระวัง Marking the Close</td></tr>
+      <tr><td>16:30-17:00</td><td><strong style="color:var(--accent-yellow)">After Market + Journal</strong></td><td>30 นาที</td><td>⭐⭐⭐⭐⭐</td><td style="color:var(--accent-red)">ห้ามข้าม</td><td>บันทึกทันที</td></tr>
+      <tr><td>17:00-17:20</td><td>วิเคราะห์กราฟ</td><td>20 นาที</td><td>⭐⭐⭐⭐</td><td>ไม่ควร</td><td>Indicator Checklist</td></tr>
+      <tr><td>17:20-17:35</td><td>สแกน Watchlist</td><td>15 นาที</td><td>⭐⭐⭐</td><td>ได้</td><td>ตัวไหนน่าสนใจ</td></tr>
+      <tr><td>17:35-17:45</td><td>สแกนหุ้นใหม่</td><td>10 นาที</td><td>⭐⭐</td><td>ได้</td><td>ใช้ Screener</td></tr>
+      <tr><td>17:45-18:00</td><td>วางแผนพรุ่งนี้</td><td>15 นาที</td><td>⭐⭐⭐⭐</td><td>ไม่ควร</td><td>Confidence Scoring</td></tr>
+      <tr><td><strong style="color:var(--accent-red)">18:00+</strong></td><td><strong style="color:var(--accent-red)">หยุดดูตลาด</strong></td><td>-</td><td>⭐⭐⭐⭐⭐</td><td style="color:var(--accent-red)">ห้ามข้าม</td><td>สุขภาพจิตสำคัญ</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>สรุปเวลาที่ใช้ต่อวัน</h3>
+
+<div class="three-col">
+  <div class="col-card blue-accent">
+    <h4>🎯 Full-time Investor</h4>
+    <ul>
+      <li>Morning Routine: 1 ชม.</li>
+      <li>Pre-Market: 1.5 ชม.</li>
+      <li>Pre-Open: 0.5 ชม.</li>
+      <li>ช่วงเช้า: 2.5 ชม.</li>
+      <li>พักเที่ยง: 2 ชม.</li>
+      <li>ช่วงบ่าย: 2 ชม.</li>
+      <li>After Market: 0.5 ชม.</li>
+      <li>Evening Review: 1 ชม.</li>
+      <li><strong style="color:var(--accent-green)">รวม: ~11 ชม./วัน</strong></li>
+    </ul>
+  </div>
+  <div class="col-card green-accent">
+    <h4>💼 Part-time Investor</h4>
+    <ul>
+      <li>Morning Routine (ย่อ): 0.5 ชม.</li>
+      <li>แอบดูตลาด (2 ครั้ง): 0.25 ชม.</li>
+      <li>Evening Review: 1 ชม.</li>
+      <li><strong style="color:var(--accent-green)">รวม: ~1.75 ชม./วัน</strong></li>
+      <li style="margin-top:0.8rem; color:var(--text-muted);">💡 ใช้ Alert + Limit Order เพื่อไม่พลาดโอกาส</li>
+    </ul>
+  </div>
+  <div class="col-card purple-accent">
+    <h4>🌱 Long-term Investor</h4>
+    <ul>
+      <li>ดูข่าวเช้า: 5 นาที/วัน</li>
+      <li>Saturday Review: 2 ชม./สัปดาห์</li>
+      <li>Monthly Review: 3 ชม./เดือน</li>
+      <li><strong style="color:var(--accent-green)">รวม: ~30 นาที/สัปดาห์ (เฉลี่ย)</strong></li>
+      <li style="margin-top:0.8rem; color:var(--text-muted);">💡 เน้นปัจจัยพื้นฐาน + งบการเงิน</li>
+    </ul>
+  </div>
+</div>
+
+<h3>ระดับความสำคัญ — สรุป</h3>
+
+<div class="formula-block">
+<span class="tag checklist">PRIORITY LEVELS</span>
+<span class="bad">⭐⭐⭐⭐⭐ ห้ามข้ามเด็ดขาด (Critical):</span>
+├── เขียนแผนวันนี้ (ก่อนตลาดเปิด)
+├── ตรวจสอบหุ้นที่ถือ (Portfolio Check)
+├── เขียน Trading Journal (หลังตลาดปิด)
+└── หยุดดูตลาดหลัง 18:00
+
+<span class="warn">⭐⭐⭐⭐ สำคัญมาก (Important):</span>
+├── สรุป Market Mood
+├── ตรวจสอบ Position Sizing
+├── ดู 30 นาทีแรกของตลาด
+├── พักเที่ยง (จริงๆ)
+└── วางแผนวันพรุ่งนี้
+
+<span class="ok">⭐⭐⭐ สำคัญ (Recommended):</span>
+├── ดูตลาดโลก
+├── ดูข่าวสำคัญ
+├── ดูปฏิทินเศรษฐกิจ
+├── ตรวจสอบ Watchlist
+└── วิเคราะห์กราฟหุ้นที่ถือ
+
+<span class="comment">⭐⭐ ทำได้ก็ดี (Nice to have):</span>
+├── ดูสินค้าโภคภัณฑ์ ค่าเงิน
+├── ช่วงก่อนพักเที่ยง
+└── สแกนหาหุ้นใหม่
+</div>
+
+<div class="section-header">
+  <h2><span class="section-number gold">🎯</span> บทสรุปของภาค 6</h2>
+</div>
+
+<div class="card" style="background:var(--gradient-hero); border:2px solid rgba(59,130,246,0.3);">
+  <h3 style="color:var(--accent-blue-light); margin-top:0;">การลงทุนที่ประสบความสำเร็จไม่ได้มาจากการ "เก่ง"</h3>
+  <p>แต่มาจากการ <strong style="color:var(--accent-yellow)">"มีระบบ"</strong> — ระบบที่ทำซ้ำได้ทุกวัน วัดผลได้ และปรับปรุงได้อย่างต่อเนื่อง</p>
+  <p>กิจวัตรที่อธิบายมาทั้งหมดอาจดูเยอะ แต่เมื่อทำจนเป็นนิสัย จะใช้เวลาน้อยลงเรื่อยๆ เหมือนการขับรถ — ตอนแรกต้องคิดทุกขั้นตอน แต่เมื่อชำนาญแล้ว ทุกอย่างเป็นอัตโนมัติ</p>
+
+  <h4 style="color:var(--accent-green); margin-top:2rem;">เริ่มจากสิ่งที่สำคัญที่สุดก่อน — 3 ข้อ</h4>
+  <div class="three-col" style="margin:1rem 0;">
+    <div class="col-card green-accent" style="background:rgba(16,185,129,0.08);">
+      <h4 style="color:var(--accent-green);">1️⃣ เขียนแผนก่อนตลาดเปิด</h4>
+      <p style="font-size:0.9rem;">สำคัญที่สุดในการป้องกันการตัดสินใจจากอารมณ์</p>
+    </div>
+    <div class="col-card blue-accent" style="background:rgba(59,130,246,0.08);">
+      <h4 style="color:var(--accent-blue-light);">2️⃣ เขียน Journal หลังตลาดปิด</h4>
+      <p style="font-size:0.9rem;">เครื่องมือเดียวที่จะพัฒนาการลงทุนได้มากที่สุด</p>
+    </div>
+    <div class="col-card purple-accent" style="background:rgba(167,139,250,0.08);">
+      <h4 style="color:var(--accent-purple);">3️⃣ หยุดดูตลาดหลัง 18:00</h4>
+      <p style="font-size:0.9rem;">ปกป้องสุขภาพจิตและคุณภาพการตัดสินใจพรุ่งนี้</p>
+    </div>
+  </div>
+
+  <p style="text-align:center; font-size:1.05rem; margin-top:1.5rem; color:var(--accent-cyan); font-weight:600;">
+    แค่ 3 อย่างนี้ ถ้าทำได้สม่ำเสมอ จะเห็นผลลัพธ์ที่ดีขึ้นอย่างชัดเจนภายใน 3 เดือน<br>
+    แล้วค่อยเพิ่มกิจวัตรอื่นๆ ทีละอย่าง
+  </p>
+</div>
+
+<div class="quote-block" style="margin-top:3rem; border-left-color:var(--accent-yellow);">
+  <strong style="color:var(--accent-yellow); font-size:1.1rem;">จำไว้:</strong> ระบบที่ดีที่สุดคือระบบที่คุณทำได้จริงทุกวัน<br>
+  <strong>ไม่ใช่ระบบที่สมบูรณ์แบบแต่ทำไม่ไหว</strong>
+  <span class="author">— ปรัชญาสุดท้ายของภาค 6</span>
+</div>
+
+</main>
+
+<button class="back-to-top" id="backToTop" aria-label="กลับขึ้นด้านบน">↑</button>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', function() {
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (scrollTop / scrollHeight) * 100;
+    document.getElementById('progressFill').style.width = scrolled + '%';
+
+    const backToTop = document.getElementById('backToTop');
+    if (scrollTop > 300) backToTop.classList.add('visible');
+    else backToTop.classList.remove('visible');
+  });
+
+  document.getElementById('backToTop').addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Hamburger menu (if mobile menu markup added)
+  const hamburger = document.getElementById('hamburgerBtn');
+  if (hamburger) {
+    hamburger.addEventListener('click', function() {
+      this.classList.toggle('active');
+    });
+  }
+</script>
+<script src="/theme.js"></script>
+
+</body>
+</html>

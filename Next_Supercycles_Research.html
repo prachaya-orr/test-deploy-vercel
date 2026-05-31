@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Next Supercycles — Investment Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0a0c10;
+  --bg-card: #12151c;
+  --bg-card-hover: #181c26;
+  --border: #1e2330;
+  --border-glow: #2a3040;
+  --text-primary: #e8eaf0;
+  --text-secondary: #8b92a8;
+  --text-muted: #555d75;
+  --accent-gold: #d4a853;
+  --accent-gold-dim: #a07d3a;
+  --accent-copper: #c87941;
+  --accent-uranium: #4ade80;
+  --accent-uranium-dim: #166534;
+  --accent-silver: #94a3b8;
+  --accent-blue: #60a5fa;
+  --accent-blue-dim: #1e3a5f;
+  --accent-purple: #a78bfa;
+  --accent-red: #f87171;
+  --accent-amber: #fbbf24;
+  --gradient-gold: linear-gradient(135deg, #d4a853, #f0d78c);
+  --gradient-green: linear-gradient(135deg, #4ade80, #22d3ee);
+  --gradient-blue: linear-gradient(135deg, #60a5fa, #a78bfa);
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body: 'Outfit', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* Noise texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--border-glow); border-radius: 3px; }
+
+/* ─── HERO ─── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 900px;
+  background: radial-gradient(circle, rgba(212,168,83,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to top, var(--bg-deep), transparent);
+  pointer-events: none;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--accent-gold-dim);
+  border-radius: 100px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+  margin-bottom: 2rem;
+  animation: fadeDown 0.8s ease-out;
+}
+
+.hero-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-gold);
+  animation: pulse 2s infinite;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.8s ease-out 0.1s both;
+}
+
+.hero h1 em {
+  font-style: italic;
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin-bottom: 3rem;
+  animation: fadeUp 0.8s ease-out 0.2s both;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 3rem;
+  animation: fadeUp 0.8s ease-out 0.3s both;
+}
+
+.hero-stat {
+  text-align: center;
+}
+
+.hero-stat-value {
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+}
+
+.hero-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.25rem;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  animation: fadeUp 0.8s ease-out 0.5s both;
+  z-index: 1;
+}
+
+.scroll-hint .line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--text-muted), transparent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+
+/* ─── NAV ─── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 12, 16, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+}
+
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 0.75rem 0;
+}
+
+.nav-inner::-webkit-scrollbar { display: none; }
+
+.nav a {
+  flex-shrink: 0;
+  padding: 0.4rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.nav a:hover {
+  color: var(--text-primary);
+  background: var(--bg-card);
+}
+
+.nav a.active {
+  color: var(--accent-gold);
+  background: rgba(212, 168, 83, 0.1);
+}
+
+/* ─── LAYOUT ─── */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+section {
+  padding: 5rem 0;
+}
+
+/* ─── SECTION HEADERS ─── */
+.section-header {
+  margin-bottom: 3rem;
+}
+
+.section-number {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+
+.section-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 700px;
+}
+
+/* ─── FLOW DIAGRAM ─── */
+.flow-diagram {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.5rem;
+  margin: 3rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.flow-diagram::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-gold-dim), transparent);
+}
+
+.flow-nodes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+.flow-node {
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 500;
+  border: 1px solid;
+  position: relative;
+}
+
+.flow-node.ai { background: rgba(96,165,250,0.1); border-color: rgba(96,165,250,0.3); color: var(--accent-blue); }
+.flow-node.power { background: rgba(251,191,36,0.1); border-color: rgba(251,191,36,0.3); color: var(--accent-amber); }
+.flow-node.minerals { background: rgba(200,121,65,0.1); border-color: rgba(200,121,65,0.3); color: var(--accent-copper); }
+.flow-node.infra { background: rgba(74,222,128,0.1); border-color: rgba(74,222,128,0.3); color: var(--accent-uranium); }
+
+.flow-arrow {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  padding: 0 0.75rem;
+}
+
+.flow-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 1.5rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+}
+
+/* ─── KEY DATA CARDS ─── */
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.data-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.data-card:hover {
+  border-color: var(--border-glow);
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+}
+
+.data-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+}
+
+.data-card.gold::before { background: var(--gradient-gold); }
+.data-card.green::before { background: var(--gradient-green); }
+.data-card.blue::before { background: var(--gradient-blue); }
+
+.data-card-value {
+  font-family: var(--font-mono);
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.data-card-label {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.data-card-tag {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.tag-gold { background: rgba(212,168,83,0.15); color: var(--accent-gold); }
+.tag-green { background: rgba(74,222,128,0.15); color: var(--accent-uranium); }
+.tag-blue { background: rgba(96,165,250,0.15); color: var(--accent-blue); }
+.tag-red { background: rgba(248,113,113,0.15); color: var(--accent-red); }
+
+/* ─── TABLES ─── */
+.table-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 2rem 0;
+}
+
+.table-title {
+  padding: 1.25rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  padding: 0.85rem 1.5rem;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.01);
+}
+
+td {
+  padding: 0.85rem 1.5rem;
+  font-size: 0.88rem;
+  border-bottom: 1px solid rgba(30,35,48,0.5);
+  color: var(--text-secondary);
+}
+
+tr:last-child td { border-bottom: none; }
+
+tr:hover td { background: rgba(255,255,255,0.015); }
+
+td:first-child { color: var(--text-primary); font-weight: 500; }
+
+.ticker {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(212,168,83,0.1);
+  color: var(--accent-gold);
+  white-space: nowrap;
+}
+
+.stage-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+.stage-early { background: rgba(74,222,128,0.12); color: var(--accent-uranium); }
+.stage-mid { background: rgba(251,191,36,0.12); color: var(--accent-amber); }
+.stage-late { background: rgba(248,113,113,0.12); color: var(--accent-red); }
+
+/* ─── COMMODITY CARDS ─── */
+.commodity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.commodity-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.commodity-card:hover {
+  border-color: var(--border-glow);
+  transform: translateY(-3px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.commodity-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 1.25rem;
+}
+
+.commodity-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  margin-bottom: 0.25rem;
+}
+
+.commodity-card .tagline {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.commodity-card .price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.commodity-card .price {
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.commodity-card .change {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.change.up { color: var(--accent-uranium); }
+.change.down { color: var(--accent-red); }
+
+.commodity-card ul {
+  list-style: none;
+  margin-bottom: 1.25rem;
+}
+
+.commodity-card ul li {
+  padding: 0.3rem 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.commodity-card ul li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.commodity-card .tickers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+/* ─── CONNECTION DIAGRAM ─── */
+.connection-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3rem;
+  margin: 3rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.connection-section::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(212,168,83,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.connection-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 600px;
+  margin: 2rem auto 0;
+}
+
+.connection-node {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.connection-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.connection-dot::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 28px;
+  background: var(--border-glow);
+}
+
+.connection-node:last-child .connection-dot::after { display: none; }
+
+.connection-text {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+}
+
+.connection-text strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* ─── CAUTION BOX ─── */
+.caution-box {
+  background: rgba(248,113,113,0.05);
+  border: 1px solid rgba(248,113,113,0.2);
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.caution-box h3 {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-red);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.caution-box ul {
+  list-style: none;
+}
+
+.caution-box ul li {
+  padding: 0.4rem 0;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.caution-box ul li::before {
+  content: '⚠';
+  position: absolute;
+  left: 0;
+  font-size: 0.75rem;
+}
+
+/* ─── QUICK REF ─── */
+.quick-ref-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.quick-ref-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  transition: all 0.2s;
+}
+
+.quick-ref-item:hover {
+  border-color: var(--border-glow);
+  background: var(--bg-card-hover);
+}
+
+.quick-ref-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.quick-ref-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.quick-ref-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+
+.quick-ref-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.quick-ref-ticker {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+}
+
+/* ─── SOURCES ─── */
+.sources {
+  border-top: 1px solid var(--border);
+  padding-top: 3rem;
+  margin-top: 3rem;
+}
+
+.sources h3 {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.sources ul {
+  list-style: none;
+  columns: 2;
+  column-gap: 2rem;
+}
+
+.sources ul li {
+  padding: 0.3rem 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  break-inside: avoid;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  text-align: center;
+  padding: 3rem 2rem;
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+}
+
+footer p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes scrollLine {
+  0% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+  50% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+  50.1% { transform-origin: bottom; }
+  100% { opacity: 0; transform: scaleY(0); transform-origin: bottom; }
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .hero-stats { flex-direction: column; gap: 1.5rem; }
+  .flow-nodes { flex-direction: column; gap: 0.5rem; }
+  .flow-arrow { transform: rotate(90deg); padding: 0.25rem 0; }
+  .commodity-grid { grid-template-columns: 1fr; }
+  .sources ul { columns: 1; }
+  .connection-section { padding: 2rem 1.5rem; }
+  section { padding: 3rem 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HERO ═══════════ -->
+<div class="hero">
+  <div class="hero-badge">Investment Research • 15 April 2026</div>
+  <h1>The Next<br><em>Supercycles</em></h1>
+  <p class="hero-sub">Three supercycles are converging and feeding each other simultaneously — the biggest structural buildout since the China-driven commodity boom of the 2000s.</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-value">$3T</div>
+      <div class="hero-stat-label">AI Infra Buildout</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">$650B+</div>
+      <div class="hero-stat-label">2026 Hyperscaler Capex</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">100 GW</div>
+      <div class="hero-stat-label">New DC Capacity by 2030</div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="line"></div>
+  </div>
+</div>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#overview" class="active">Overview</a>
+    <a href="#ai-infra">AI Infrastructure</a>
+    <a href="#minerals">Critical Minerals</a>
+    <a href="#energy">Energy</a>
+    <a href="#connections">Connections</a>
+    <a href="#scorecard">Scorecard</a>
+    <a href="#quick-ref">What to Buy</a>
+    <a href="#caution">Caution</a>
+  </div>
+</nav>
+
+<!-- ═══════════ OVERVIEW ═══════════ -->
+<section id="overview">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-number">00 — Overview</div>
+      <h2 class="section-title">The Convergence</h2>
+      <p class="section-subtitle">AI Compute needs Power, Power needs Critical Minerals, Critical Minerals need Infrastructure — and it all loops back.</p>
+    </div>
+
+    <div class="flow-diagram fade-in">
+      <div class="flow-nodes">
+        <div class="flow-node ai">AI Compute</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node power">Power</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node minerals">Critical Minerals</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node infra">Infrastructure</div>
+        <div class="flow-arrow">↻</div>
+      </div>
+      <div class="flow-label">Self-reinforcing loop — each cycle feeds the next</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ AI INFRASTRUCTURE ═══════════ -->
+<section id="ai-infra">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-number">01 — Supercycle 1</div>
+      <h2 class="section-title">AI Infrastructure</h2>
+      <p class="section-subtitle">$3 Trillion buildout (2026–2030). The biggest structural capex cycle in a generation.</p>
+    </div>
+
+    <div class="data-grid fade-in">
+      <div class="data-card gold">
+        <div class="data-card-value" style="color: var(--accent-gold);">$650B+</div>
+        <div class="data-card-label">Big 4 hyperscaler capex in 2026</div>
+        <div class="data-card-tag tag-gold">CAPEX</div>
+      </div>
+      <div class="data-card blue">
+        <div class="data-card-value" style="color: var(--accent-blue);">39%</div>
+        <div class="data-card-label">AI share of US GDP growth (first 3Q 2025)</div>
+        <div class="data-card-tag tag-blue">GDP IMPACT</div>
+      </div>
+      <div class="data-card green">
+        <div class="data-card-value" style="color: var(--accent-uranium);">2×</div>
+        <div class="data-card-label">Data center capacity must double by 2030 (~100 GW new)</div>
+        <div class="data-card-tag tag-green">CAPACITY</div>
+      </div>
+      <div class="data-card gold">
+        <div class="data-card-value" style="color: var(--accent-gold);">580 TWh</div>
+        <div class="data-card-label">Projected DC electricity demand by 2028 (up from 176 TWh in 2023)</div>
+        <div class="data-card-tag tag-gold">POWER DEMAND</div>
+      </div>
+    </div>
+
+    <div class="table-wrap fade-in">
+      <div class="table-title">Value Chain — Chip to Grid</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>What It Covers</th>
+            <th>Key Stocks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Compute</td>
+            <td>GPUs, custom silicon, HBM</td>
+            <td><span class="ticker">NVDA</span> <span class="ticker">AMD</span> <span class="ticker">MU</span> SK Hynix</td>
+          </tr>
+          <tr>
+            <td>Power Management</td>
+            <td>Grid-to-chip, UPS, cooling</td>
+            <td><span class="ticker">ETN</span> <span class="ticker">VRT</span> Schneider Electric</td>
+          </tr>
+          <tr>
+            <td>Energy Generation</td>
+            <td>Baseload power, nuclear</td>
+            <td><span class="ticker">CEG</span> Talen Energy</td>
+          </tr>
+          <tr>
+            <td>Data Center REITs</td>
+            <td>Physical infrastructure</td>
+            <td><span class="ticker">EQIX</span> <span class="ticker">DLR</span></td>
+          </tr>
+          <tr>
+            <td>Materials</td>
+            <td>Copper cabling, infrastructure</td>
+            <td><span class="ticker">FCX</span> <span class="ticker">SCCO</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="fade-in" style="font-size: 0.88rem; color: var(--text-muted); margin-top: 1rem;">
+      <span class="stage-badge stage-early">EARLY INNINGS</span>&nbsp;&nbsp;5–10 year structural trend
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════ CRITICAL MINERALS ═══════════ -->
+<section id="minerals">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-number">02 — Supercycle 2</div>
+      <h2 class="section-title">Critical Minerals</h2>
+      <p class="section-subtitle">The physical bottleneck underneath everything. Supply cannot respond for 10–15 years.</p>
+    </div>
+
+    <div class="commodity-grid">
+      <!-- Copper -->
+      <div class="commodity-card fade-in">
+        <div class="commodity-icon" style="background: rgba(200,121,65,0.15);">🔶</div>
+        <h3 style="color: var(--accent-copper);">Copper</h3>
+        <div class="tagline">"The New Oil"</div>
+        <div class="price-row">
+          <div class="price" style="color: var(--accent-copper);">$5.85/lb</div>
+          <div class="change up">+23% YoY</div>
+        </div>
+        <ul>
+          <li>Peaked $6.11 in Jan 2026</li>
+          <li>AI data center demand: 572,000 tonnes/yr by 2028</li>
+          <li>New mines take 10–15 years to develop</li>
+        </ul>
+        <div class="tickers">
+          <span class="ticker">FCX</span>
+          <span class="ticker">SCCO</span>
+          <span class="ticker">COPX</span>
+        </div>
+      </div>
+
+      <!-- Uranium -->
+      <div class="commodity-card fade-in">
+        <div class="commodity-icon" style="background: rgba(74,222,128,0.15);">☢️</div>
+        <h3 style="color: var(--accent-uranium);">Uranium</h3>
+        <div class="tagline">The Nuclear Renaissance</div>
+        <div class="price-row">
+          <div class="price" style="color: var(--accent-uranium);">Nuclear</div>
+          <div class="change up">SMR Deployment</div>
+        </div>
+        <ul>
+          <li>SMRs deployed by Amazon, Google, Microsoft</li>
+          <li>Jensen Huang: SMRs powering DCs within 6–7 years</li>
+          <li>Long-term contracting cycle = sticky demand</li>
+        </ul>
+        <div class="tickers">
+          <span class="ticker">CCJ</span>
+          <span class="ticker">SMR</span>
+          <span class="ticker">NNE</span>
+          <span class="ticker">BWXT</span>
+          <span class="ticker">URA</span>
+        </div>
+      </div>
+
+      <!-- Rare Earths -->
+      <div class="commodity-card fade-in">
+        <div class="commodity-icon" style="background: rgba(167,139,250,0.15);">⚙️</div>
+        <h3 style="color: var(--accent-purple);">Rare Earth Elements</h3>
+        <div class="tagline">The Geopolitical Weapon</div>
+        <div class="price-row">
+          <div class="price" style="color: var(--accent-purple);">Strategic</div>
+          <div class="change up">Onshoring</div>
+        </div>
+        <ul>
+          <li>China controls processing; West scrambling to onshore</li>
+          <li>Used in EV motors, wind turbines, defense, electronics</li>
+          <li>Export controls = "strategic stockpiling" assets</li>
+        </ul>
+        <div class="tickers">
+          <span class="ticker">MP</span>
+          <span class="ticker">REMX</span>
+          <span style="font-size: 0.78rem; color: var(--text-muted);">Lynas Rare Earths</span>
+        </div>
+      </div>
+
+      <!-- Silver -->
+      <div class="commodity-card fade-in">
+        <div class="commodity-icon" style="background: rgba(148,163,184,0.15);">🪙</div>
+        <h3 style="color: var(--accent-silver);">Silver</h3>
+        <div class="tagline">The Stealth Play</div>
+        <div class="price-row">
+          <div class="price" style="color: var(--accent-silver);">$88.53/oz</div>
+          <div class="change up">+170% YoY</div>
+        </div>
+        <ul>
+          <li>Hit $117 record — industrial + monetary demand</li>
+          <li>Supply deficit for 5th consecutive year</li>
+          <li>70–75% of mined silver is byproduct — can't ramp</li>
+        </ul>
+        <div class="tickers">
+          <span class="ticker">PAAS</span>
+          <span class="ticker">AG</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ENERGY ═══════════ -->
+<section id="energy">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-number">03 — Supercycle 3</div>
+      <h2 class="section-title">Energy &amp; Electrification</h2>
+      <p class="section-subtitle">Power is the #1 constraint on AI, EVs, and industrial growth.</p>
+    </div>
+
+    <div class="data-grid fade-in">
+      <div class="data-card gold">
+        <div class="data-card-value" style="color: var(--accent-amber);">70%</div>
+        <div class="data-card-label">US grid approaching end of life</div>
+        <div class="data-card-tag tag-red">CRITICAL</div>
+      </div>
+      <div class="data-card blue">
+        <div class="data-card-value" style="color: var(--accent-blue);">300–1,000 MW</div>
+        <div class="data-card-label">Power sought per data center (1–3 year lead times)</div>
+        <div class="data-card-tag tag-blue">PER SITE</div>
+      </div>
+      <div class="data-card green">
+        <div class="data-card-value" style="color: var(--accent-uranium);">$2B</div>
+        <div class="data-card-label">Committed to US power equipment manufacturing (early 2026)</div>
+        <div class="data-card-tag tag-green">INVESTMENT</div>
+      </div>
+    </div>
+
+    <div class="table-wrap fade-in">
+      <div class="table-title">Key Energy Stocks</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Stock</th>
+            <th>Ticker</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Eaton</td>
+            <td><span class="ticker">ETN</span></td>
+            <td>Power management for AI factories (working with Nvidia)</td>
+          </tr>
+          <tr>
+            <td>Vertiv</td>
+            <td><span class="ticker">VRT</span></td>
+            <td>Liquid cooling + power conversion. Goldman Rule of 10 (+33% sales growth)</td>
+          </tr>
+          <tr>
+            <td>Quanta Services</td>
+            <td><span class="ticker">PWR</span></td>
+            <td>Grid infrastructure builder</td>
+          </tr>
+          <tr>
+            <td>NextEra Energy</td>
+            <td><span class="ticker">NEE</span></td>
+            <td>Renewables + nuclear restart deals</td>
+          </tr>
+          <tr>
+            <td>Vistra</td>
+            <td><span class="ticker">VST</span></td>
+            <td>Nuclear + natural gas power generation</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CONNECTIONS ═══════════ -->
+<section id="connections">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-number">04 — The Loop</div>
+      <h2 class="section-title">How They All Connect</h2>
+      <p class="section-subtitle">Each supercycle feeds the next. Self-reinforcing loop.</p>
+    </div>
+
+    <div class="connection-section fade-in">
+      <div class="connection-flow">
+        <div class="connection-node">
+          <div class="connection-dot" style="background: var(--accent-purple);"></div>
+          <div class="connection-text"><strong>DRAM Supercycle</strong> — happening now, fueling AI compute demand</div>
+        </div>
+        <div class="connection-node">
+          <div class="connection-dot" style="background: var(--accent-blue);"></div>
+          <div class="connection-text"><strong>AI Infrastructure</strong> — $3T buildout (2026–2030), more chips → more data centers</div>
+        </div>
+        <div class="connection-node">
+          <div class="connection-dot" style="background: var(--accent-amber);"></div>
+          <div class="connection-text"><strong>Energy / Power</strong> — grid, nuclear, utilities must scale to meet explosive demand</div>
+        </div>
+        <div class="connection-node">
+          <div class="connection-dot" style="background: var(--accent-copper);"></div>
+          <div class="connection-text"><strong>Critical Minerals</strong> — copper, uranium, rare earths, silver — the physical layer</div>
+        </div>
+      </div>
+      <p style="text-align: center; margin-top: 2rem; font-size: 0.85rem; color: var(--text-muted);">
+        More AI chips → more data centers → more power → more copper/uranium → more infrastructure spending ↻
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SCORECARD ═══════════ -->
+<section id="scorecard">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-number">05 — Scorecard</div>
+      <h2 class="section-title">Supercycle Scorecard</h2>
+    </div>
+
+    <div class="table-wrap fade-in" style="overflow-x: auto;">
+      <table>
+        <thead>
+          <tr>
+            <th>Supercycle</th>
+            <th>Inventories</th>
+            <th>Supply Response</th>
+            <th>Demand</th>
+            <th>Stage</th>
+            <th>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>DRAM / HBM</td>
+            <td>Depleted</td>
+            <td>Constrained</td>
+            <td>Explosive</td>
+            <td><span class="stage-badge stage-mid">Mid-cycle</span></td>
+            <td>2025–2027</td>
+          </tr>
+          <tr>
+            <td>AI Infrastructure</td>
+            <td>N/A</td>
+            <td>Building</td>
+            <td>Accelerating</td>
+            <td><span class="stage-badge stage-early">Early</span></td>
+            <td>2026–2030+</td>
+          </tr>
+          <tr>
+            <td>Copper</td>
+            <td>⚠️ Rising</td>
+            <td>10–15yr lag</td>
+            <td>Strong</td>
+            <td><span class="stage-badge stage-early">Early-Mid</span></td>
+            <td>2026–2035</td>
+          </tr>
+          <tr>
+            <td>Uranium</td>
+            <td>Tight</td>
+            <td>Very constrained</td>
+            <td>Structural</td>
+            <td><span class="stage-badge stage-early">Early</span></td>
+            <td>2026–2035+</td>
+          </tr>
+          <tr>
+            <td>Silver</td>
+            <td>Deficit 5yr</td>
+            <td>Can't ramp</td>
+            <td>Industrial + monetary</td>
+            <td><span class="stage-badge stage-early">Early-Mid</span></td>
+            <td>2026–2030</td>
+          </tr>
+          <tr>
+            <td>Electrification</td>
+            <td>Grid end-of-life</td>
+            <td>Massive capex needed</td>
+            <td>Explosive</td>
+            <td><span class="stage-badge stage-early">Very Early</span></td>
+            <td>2026–2040</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ QUICK REFERENCE ═══════════ -->
+<section id="quick-ref">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-number">06 — Quick Reference</div>
+      <h2 class="section-title">What to Buy for Each Supercycle</h2>
+    </div>
+
+    <div class="quick-ref-grid fade-in">
+      <div class="quick-ref-item">
+        <div class="quick-ref-icon" style="background: rgba(167,139,250,0.15);">💾</div>
+        <div class="quick-ref-info">
+          <div class="quick-ref-name">DRAM (current)</div>
+          <div class="quick-ref-desc">Micron</div>
+        </div>
+        <div class="quick-ref-ticker">MU</div>
+      </div>
+      <div class="quick-ref-item">
+        <div class="quick-ref-icon" style="background: rgba(96,165,250,0.15);">🏗️</div>
+        <div class="quick-ref-info">
+          <div class="quick-ref-name">AI Infrastructure</div>
+          <div class="quick-ref-desc">Vertiv, Eaton</div>
+        </div>
+        <div class="quick-ref-ticker">VRT, ETN</div>
+      </div>
+      <div class="quick-ref-item">
+        <div class="quick-ref-icon" style="background: rgba(74,222,128,0.15);">☢️</div>
+        <div class="quick-ref-info">
+          <div class="quick-ref-name">Nuclear Power</div>
+          <div class="quick-ref-desc">Cameco, NuScale</div>
+        </div>
+        <div class="quick-ref-ticker">CCJ, SMR</div>
+      </div>
+      <div class="quick-ref-item">
+        <div class="quick-ref-icon" style="background: rgba(200,121,65,0.15);">🔶</div>
+        <div class="quick-ref-info">
+          <div class="quick-ref-name">Copper</div>
+          <div class="quick-ref-desc">Freeport-McMoRan</div>
+        </div>
+        <div class="quick-ref-ticker">FCX</div>
+      </div>
+      <div class="quick-ref-item">
+        <div class="quick-ref-icon" style="background: rgba(74,222,128,0.15);">⚛️</div>
+        <div class="quick-ref-info">
+          <div class="quick-ref-name">Uranium (ETF)</div>
+          <div class="quick-ref-desc">Global X Uranium</div>
+        </div>
+        <div class="quick-ref-ticker">URA</div>
+      </div>
+      <div class="quick-ref-item">
+        <div class="quick-ref-icon" style="background: rgba(251,191,36,0.15);">⚡</div>
+        <div class="quick-ref-info">
+          <div class="quick-ref-name">Grid / Electrification</div>
+          <div class="quick-ref-desc">Quanta Services</div>
+        </div>
+        <div class="quick-ref-ticker">PWR</div>
+      </div>
+      <div class="quick-ref-item">
+        <div class="quick-ref-icon" style="background: rgba(148,163,184,0.15);">🪙</div>
+        <div class="quick-ref-info">
+          <div class="quick-ref-name">Silver</div>
+          <div class="quick-ref-desc">Pan American Silver</div>
+        </div>
+        <div class="quick-ref-ticker">PAAS</div>
+      </div>
+      <div class="quick-ref-item">
+        <div class="quick-ref-icon" style="background: rgba(212,168,83,0.15);">📦</div>
+        <div class="quick-ref-info">
+          <div class="quick-ref-name">Diversified Commodities</div>
+          <div class="quick-ref-desc">Materials ETF</div>
+        </div>
+        <div class="quick-ref-ticker">XLB</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CAUTION ═══════════ -->
+<section id="caution">
+  <div class="container">
+    <div class="caution-box fade-in">
+      <h3>⚠ Risk Factors &amp; Caution</h3>
+      <ul>
+        <li>BTIG warns: when a niche sector spawns dedicated ETFs (DRAM ETF launched Apr 2), it often signals late-stage for <em>that specific</em> cycle</li>
+        <li>Smarter move: look one step ahead in the chain — <strong>power/energy and critical minerals</strong> may offer better risk/reward than DRAM from here</li>
+        <li>Copper inventories rising despite high prices — watch LME warehouse stocks for confirmation</li>
+        <li>Always pair commodity thesis with USD strength monitoring (DXY near 100)</li>
+      </ul>
+    </div>
+
+    <!-- Sources -->
+    <div class="sources fade-in">
+      <h3>Sources</h3>
+      <ul>
+        <li>EBC Financial Group — AI Infrastructure &amp; Energy Supercycle Outlook 2026</li>
+        <li>EBC — Beyond Gold: Copper, Uranium, Rare Earths Supercycle</li>
+        <li>Sprott / Mining.com — Critical Minerals Drive New Commodity Supercycle</li>
+        <li>EnergyNow — The Commodities Supercycle is Here</li>
+        <li>St. Louis Fed — AI Contribution to GDP Growth</li>
+        <li>US Department of Energy — Data Center Electricity Demand Report</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <p><em>Disclaimer: This is research analysis, not financial advice. Always do your own due diligence before investing.</em></p>
+</footer>
+
+<!-- ═══════════ SCROLL ANIMATIONS ═══════════ -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Intersection Observer for fade-in animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const top = section.offsetTop - 120;
+      if (window.scrollY >= top) {
+        current = section.getAttribute('id');
+      }
+    });
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) {
+        link.classList.add('active');
+      }
+    });
+  });
+});
+</script>
+<script src="/theme.js"></script>
+</body>
+</html>

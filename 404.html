@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — ไม่พบหน้าที่คุณค้นหา</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;600;700&display=swap');
+
+:root {
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #111827;
+  --bg-card: #1a2235;
+  --border-primary: #2a3550;
+  --text-primary: #e8edf5;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent-blue: #3b82f6;
+  --accent-blue-light: #60a5fa;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+}
+.box { max-width: 600px; }
+.code {
+  font-size: 8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+h1 {
+  font-size: 1.8rem;
+  margin: 1rem 0;
+  color: var(--text-primary);
+}
+p {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+.home-btn {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: transform 0.2s;
+}
+.home-btn:hover { transform: translateY(-2px); }
+
+/* Theme toggle (rendered by theme.js but we ensure it lands somewhere visible) */
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 9999;
+  background: var(--bg-card);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 600px) {
+  .code { font-size: 5rem; }
+  h1 { font-size: 1.4rem; }
+}
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="code">404</div>
+  <h1>ไม่พบหน้าที่คุณค้นหา</h1>
+  <p>
+    หน้านี้อาจถูกย้าย ถูกลบ หรือคุณพิมพ์ URL ผิด<br>
+    กลับไปหน้าหลักเพื่อเลือกเนื้อหาที่ต้องการ
+  </p>
+  <a href="/" class="home-btn">← กลับหน้าหลัก</a>
+</div>
+<script src="/theme.js"></script>
+</body>
+</html>

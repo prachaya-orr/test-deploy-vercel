@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ภาค 8: Crypto และ DeFi Manipulation</title>
+<link rel="stylesheet" href="/guide-base.css">
+</head>
+<body>
+<nav class="top-nav">
+  <a href="/" class="nav-logo" title="กลับหน้าหลัก">HOME</a>
+  <div class="nav-brand">🪐 ภาค 8 — Crypto & DeFi Manipulation</div>
+</nav>
+
+<main class="page-wrap">
+
+<h1 id="8-crypto-defi-manipulation">ภาค 8: Crypto และ DeFi Manipulation — เกมเดิมในสนามใหม่</h1>
+<hr />
+<h2 id="_1">บทนำ: ทำไมต้องมีภาคนี้</h2>
+<p>ในตอนที่หนังสือเล่มนี้ถูกเขียน ตลาด Crypto มีมูลค่ารวมเกินกว่า 3.5 ล้านล้านดอลลาร์ มี Token ใหม่ๆ ถูกสร้างขึ้นวันละหลายร้อยตัว และมีนักลงทุนคนไทยจำนวนมหาศาลเข้ามาในตลาดนี้ — ส่วนใหญ่ "ขาดทุน"</p>
+<p>สิ่งที่น่าตกใจคือ <strong>เกมการปั่นใน Crypto นั้นเหมือนกับการปั่นหุ้นแทบทุกประการ</strong> — เพียงแต่ใช้เครื่องมือใหม่ คำศัพท์ใหม่ และเร็วกว่าหลายเท่า เหยื่อรายย่อยที่อ่านหนังสือเล่มนี้จบ จะพบว่ารูปแบบในตลาด Crypto คือสิ่งที่ตัวเองเคยเรียนรู้ไปแล้วในภาค 1-2</p>
+<p>แต่มี "ความแตกต่าง" 5 ข้อที่ต้องเข้าใจก่อนเข้าตลาด:</p>
+<ol>
+<li><strong>ไม่มี ก.ล.ต. คุ้มครอง</strong> — ตลาด Crypto ส่วนใหญ่ไม่มีหน่วยงานกำกับ การปั่นเป็นเรื่อง "ปกติ" ที่ทำกันได้อย่างเปิดเผย</li>
+<li><strong>เปิด 24/7</strong> — ราคาเคลื่อนไหวได้ตลอดเวลา การพักผ่อนคือความเสี่ยง</li>
+<li><strong>ผันผวนสูงกว่าหุ้น 5-10 เท่า</strong> — ราคาขึ้นลง 20-30% ในวันเดียวเป็นเรื่องปกติ</li>
+<li><strong>มี Smart Contract และ Oracle ที่ถูก Hack ได้</strong> — ความเสี่ยงทางเทคนิคที่หุ้นไม่มี</li>
+<li><strong>ผู้ปั่นและเหยื่อสามารถเป็นใครก็ได้บนโลก</strong> — ไม่จำเป็นต้องอยู่ในประเทศเดียวกัน</li>
+</ol>
+<blockquote>
+<p><strong>คำเตือนสำคัญ:</strong> หากคุณยังไม่อ่านภาค 1-3 ของหนังสือเล่มนี้ — โปรดกลับไปอ่านก่อน เพราะภาคนี้สมมติว่าคุณเข้าใจกลไกพื้นฐานของการปั่นหุ้นแล้ว</p>
+</blockquote>
+<hr />
+<h2 id="30-anatomy-crypto">บทที่ 30: Anatomy ของตลาด Crypto — โครงสร้างที่ต้องเข้าใจก่อน</h2>
+<h3 id="crypto">ระดับชั้นของตลาด Crypto</h3>
+<pre><code>+--------------------------------------------------+
+|              CRYPTO MARKET HIERARCHY               |
++--------------------------------------------------+
+|  Tier 1: Blue Chips (BTC, ETH)                    |
+|  - Market Cap &gt; $200B                              |
+|  - สภาพคล่องสูง ปั่นยาก                            |
+|  - เคลื่อนไหวตาม Macro                             |
++--------------------------------------------------+
+|  Tier 2: Established Altcoins                     |
+|  - Market Cap $10B-200B (SOL, BNB, XRP, ADA)      |
+|  - เริ่มมีอิทธิพลของ Whale                         |
+|  - ขยับตาม BTC แต่ Beta สูงกว่า                    |
++--------------------------------------------------+
+|  Tier 3: Mid-Cap Altcoins                          |
+|  - Market Cap $500M-10B                            |
+|  - ปั่นได้ ถ้ามีเงินพอ                              |
+|  - มักมี Story เฉพาะ (AI, Gaming, RWA)            |
++--------------------------------------------------+
+|  Tier 4: Small-Cap / Memecoin                     |
+|  - Market Cap &lt; $500M                              |
+|  - ปั่นได้ง่ายมาก สนามล่าเหยื่อ                   |
+|  - 90% สูญพันธุ์ภายใน 1 ปี                         |
++--------------------------------------------------+
+|  Tier 5: Micro-Cap / Newly Launched               |
+|  - Market Cap &lt; $10M                                |
+|  - 99% เป็นหลุมพราง                                |
+|  - Rug Pull, Honeypot, Ponzi                        |
++--------------------------------------------------+
+</code></pre>
+<p><strong>กฎทอง:</strong> ยิ่ง Tier ต่ำ = ปั่นได้ง่ายขึ้น = ความเสี่ยงสูงขึ้นแบบทวีคูณ</p>
+<h3 id="cex-vs-dex">CEX vs DEX — ใครคุมอะไร</h3>
+<table>
+<thead>
+<tr>
+<th>ประเภท</th>
+<th>ตัวอย่าง</th>
+<th>ใครคุม</th>
+<th>ความเสี่ยง</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CEX (Centralized Exchange)</td>
+<td>Binance, Coinbase, OKX, Bitkub</td>
+<td>บริษัท</td>
+<td>บริษัทล้ม (FTX), บัญชีถูกแช่แข็ง</td>
+</tr>
+<tr>
+<td>DEX (Decentralized Exchange)</td>
+<td>Uniswap, PancakeSwap, Raydium</td>
+<td>Smart Contract</td>
+<td>Smart Contract Bug, Slippage, MEV</td>
+</tr>
+<tr>
+<td>Hybrid (CeFi)</td>
+<td>Celsius, BlockFi (ล้มแล้ว)</td>
+<td>บริษัท + Crypto</td>
+<td>สูงสุด — ล้มแล้วเงินหายหมด</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>ข้อสังเกต:</strong> CEX ถูกปั่นในรูปแบบ Wash Trading และ Spoofing ได้เหมือนหุ้น แต่ DEX มีรูปแบบใหม่ที่หุ้นไม่มี เช่น Sandwich Attack, MEV Bot, Liquidity Pool Drain — ภาคนี้จะอธิบายทุกอย่าง</p>
+</blockquote>
+<hr />
+<h2 id="31-12-crypto">บทที่ 31: 12 รูปแบบการปั่นใน Crypto</h2>
+<h3 id="311-rug-pull">31.1 Rug Pull — การกระชากพรม (รูปแบบที่พบบ่อยที่สุด)</h3>
+<p><strong>นิยาม:</strong> ทีมพัฒนาสร้าง Token หรือโปรเจกต์ขึ้นมา ระดมเงินจากนักลงทุน แล้ว "หายตัว" พร้อมเงินทั้งหมด</p>
+<p><strong>กระบวนการ Rug Pull แบบคลาสสิก:</strong></p>
+<pre><code>Step 1: สร้าง Token + Smart Contract
+        └── Token Supply: 1,000,000,000
+        └── ทีมเก็บ 50% (Locked เพื่อหลอก) หรือ Unlocked
+
+Step 2: สร้าง Liquidity Pool บน DEX
+        └── ใส่ Token + ETH/BNB ในอัตราส่วน 50:50
+        └── ตั้งราคาเริ่มต้นที่ $0.0001
+
+Step 3: การตลาด
+        └── จ้าง Influencer พูดถึง
+        └── สร้าง Telegram/Discord ที่มี &quot;ความคึกคัก&quot; (จ้างคน)
+        └── ปล่อยข่าว &quot;Listing บน Exchange ใหญ่&quot; (ปลอม)
+        └── สร้าง Roadmap หรู Whitepaper สวย
+
+Step 4: ดันราคา
+        └── ทีมงาน + Whale ซื้อ Token เอง สร้างวอลุ่ม
+        └── ราคาพุ่ง 100x-1000x ในไม่กี่วัน
+        └── FOMO เริ่มขึ้น คนตามแห่ซื้อ
+
+Step 5: Rug Pull
+        └── ทีมงานเทขาย Token ทั้งหมดในเวลาไม่กี่นาที
+        └── ราคาดิ่งจาก $1 เหลือ $0.0001
+        └── Liquidity Pool ถูกถอนออก
+        └── เว็บไซต์หาย Telegram ถูกลบ
+</code></pre>
+<p><strong>สถิติที่น่าตกใจ:</strong> จากรายงานของ Chainalysis ปี 2023 — Rug Pull คิดเป็น 37% ของ Crypto Scam ทั้งหมด มูลค่าความเสียหายรวมกว่า $4.2 พันล้าน</p>
+<h3 id="12-rug-pull">12 สัญญาณเตือน Rug Pull</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>สัญญาณ</th>
+<th>ความเสี่ยง</th>
+<th>วิธีตรวจสอบ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>ทีมพัฒนาไม่เปิดเผยตัวตน (Anonymous Team)</td>
+<td>สูงมาก</td>
+<td>ดู LinkedIn, GitHub ของทีม</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Smart Contract ไม่ถูก Audit</td>
+<td>สูงมาก</td>
+<td>ดูใน CertiK, Hacken, OpenZeppelin</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Liquidity ไม่ Locked</td>
+<td>สูงมาก</td>
+<td>ตรวจที่ Unicrypt, Team Finance</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Token Distribution กระจุกตัว — Top 10 ถือ &gt; 50%</td>
+<td>สูง</td>
+<td>ดูใน Etherscan/BscScan → Holders</td>
+</tr>
+<tr>
+<td>5</td>
+<td>ราคาวิ่ง 100x ในไม่กี่วันโดยไม่มีพื้นฐาน</td>
+<td>สูง</td>
+<td>ดูกราฟใน DexTools, DexScreener</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Volume ส่วนใหญ่มาจาก Wallet ไม่กี่ตัว</td>
+<td>สูง</td>
+<td>ใช้ Chainalysis, Nansen</td>
+</tr>
+<tr>
+<td>7</td>
+<td>ไม่มี Whitepaper หรือ Whitepaper Copy-Paste</td>
+<td>กลาง-สูง</td>
+<td>อ่าน Whitepaper เปรียบเทียบ</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Telegram/Discord มีแต่คน Bullish ไม่มีใครถามคำถามเชิงเทคนิค</td>
+<td>กลาง</td>
+<td>สังเกตเองในกลุ่ม</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Roadmap ใช้คำสวยหรูแต่ไม่มีรายละเอียด</td>
+<td>กลาง</td>
+<td>อ่าน Roadmap</td>
+</tr>
+<tr>
+<td>10</td>
+<td>ใช้ Logo/Branding ที่คล้ายโปรเจกต์ดัง</td>
+<td>สูง</td>
+<td>Reverse Image Search</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Honey Pot — ซื้อได้แต่ขายไม่ได้</td>
+<td>สูงสุด</td>
+<td>ทดสอบที่ Honeypot.is</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Smart Contract มี Function "Mint" ที่เจ้าของเรียกได้</td>
+<td>สูงสุด</td>
+<td>ดู Contract ที่ Etherscan</td>
+</tr>
+</tbody>
+</table>
+<h3 id="honeypot">Honeypot — กับดักที่ขายไม่ได้</h3>
+<p><strong>กลไก:</strong> Smart Contract ถูกเขียนให้ <strong>ใครก็ตามที่ไม่ใช่เจ้าของไม่สามารถขาย Token ได้</strong> เหยื่อซื้อเข้าไปแต่ขายออกไม่ได้</p>
+<pre><code>Honeypot Logic ใน Smart Contract:
+
+function transfer(address to, uint amount) {
+    if (msg.sender != owner) {
+        // ไม่ทำอะไร หรือ revert
+        revert(&quot;Sale not allowed&quot;);
+    }
+    _transfer(msg.sender, to, amount);
+}
+</code></pre>
+<p><strong>วิธีตรวจสอบ:</strong><br />
+- ใช้ honeypot.is (Free Tool)<br />
+- ดู Transaction ใน Block Explorer — ถ้ามีแต่ "Buy" แต่ไม่มี "Sell" → Honeypot<br />
+- ทดลองซื้อด้วยเงินน้อยๆ แล้วลองขายดู (เสี่ยงเสียค่า Gas)</p>
+<blockquote>
+<p><strong>ข้อสังเกต:</strong> Honeypot มักวิ่งราคาขึ้นเรื่อยๆ ไม่มีลง เพราะไม่มีใครขายได้ ทำให้ดู "น่าซื้อ" — แต่นั่นแหละคือกับดัก</p>
+</blockquote>
+<hr />
+<h3 id="312-pump-and-dump-group">31.2 Pump and Dump Group — กลุ่มปั่นสาธารณะ</h3>
+<p><strong>ลักษณะ:</strong> กลุ่ม Telegram/Discord/X ที่นัดเวลากันซื้อ Token หนึ่งพร้อมกัน ดันราคาขึ้น แล้วขายทำกำไร</p>
+<p><strong>กระบวนการ:</strong></p>
+<pre><code>Step 1: Admin ของกลุ่มเลือก Token (มักเป็น Low Cap &lt; $10M)
+Step 2: Admin ซื้อ Token ก่อนล่วงหน้า 1-3 วัน (Pre-buy)
+Step 3: ประกาศวันเวลา &quot;Pump&quot; ในกลุ่มสมาชิก VIP ก่อน 30 นาที
+Step 4: ประกาศในกลุ่มสาธารณะตรงเวลานัด
+Step 5: ทุกคนแห่ซื้อพร้อมกัน ราคาพุ่ง 50-200%
+Step 6: Admin และ VIP เทขาย ทำกำไร
+Step 7: คนที่เข้าช้า &quot;ติดดอย&quot; ราคาดิ่งกลับ
+</code></pre>
+<p><strong>ผลของเกม:</strong><br />
+- <strong>Admin:</strong> กำไร 50-100% (ซื้อก่อน ขายก่อน)<br />
+- <strong>VIP Members:</strong> กำไร 30-50% (รู้ก่อน 30 นาที)<br />
+- <strong>Public Members:</strong> กำไร 0-20% หรือ ขาดทุน 20-50% (เข้าช้า ออกช้า)<br />
+- <strong>คนที่เข้าหลังประกาศ 5 นาที:</strong> ขาดทุน 30-70%</p>
+<blockquote>
+<p><strong>ข้อสังเกต:</strong> กลุ่ม Pump and Dump เกือบทั้งหมดออกแบบมาให้ Admin ได้กำไร — สมาชิกเป็นเพียง "เครื่องมือ" สร้างวอลุ่มและดันราคา ถ้าคุณคิดว่าตัวเอง "เร็วพอ" ที่จะกำไร — คุณคือเหยื่อ</p>
+</blockquote>
+<h3 id="cross-exchange-pump">Cross-Exchange Pump</h3>
+<p><strong>รูปแบบขั้นสูง:</strong> ปั่นบน Exchange เล็กก่อน รอราคาวิ่ง แล้วค่อย List บน Exchange ใหญ่ แล้วเทขาย</p>
+<pre><code>Phase 1 (Exchange เล็ก - Gate.io, MEXC):
+  - Token เปิด Trading ที่ราคา $0.01
+  - ปั่นราคาขึ้น $1 (100x) ในช่วง 2 สัปดาห์
+  - สร้าง &quot;ตำนาน&quot; ว่าเป็น Token ที่ &quot;ทำกำไร 100x&quot;
+
+Phase 2 (Exchange กลาง - KuCoin, Bitget):
+  - List บน Exchange กลาง คนที่เห็น &quot;ตำนาน&quot; แห่ซื้อ
+  - ราคาดันขึ้นต่ออีก 2-3x
+
+Phase 3 (Exchange ใหญ่ - Binance):
+  - List บน Binance — ราคาวิ่งทะลุ Top อีกครั้ง
+  - ผู้ปั่นเทขายทั้งหมดในวันแรกของการ List
+  - ราคาดิ่ง 70-90% ภายใน 1 สัปดาห์
+</code></pre>
+<hr />
+<h3 id="313-wash-trading-cex-dex">31.3 Wash Trading บน CEX และ DEX</h3>
+<p><strong>บน CEX:</strong> Exchange เองหรือผู้ปั่นใช้บัญชีหลายบัญชีซื้อขายกันเอง สร้างวอลุ่มปลอม</p>
+<p><strong>สถิติช็อค:</strong> จากการศึกษาของ Bitwise (2019) — ของวอลุ่ม Bitcoin จาก Exchange ทั้งหมด <strong>95% เป็น Wash Trading</strong> มีเพียง 10 Exchange เท่านั้นที่มีวอลุ่มจริง</p>
+<p><strong>วิธีตรวจสอบ:</strong><br />
+- ใช้ CoinMarketCap, CoinGecko ที่มีตัวกรอง "Adjusted Volume"<br />
+- ดู Order Book — ถ้าวอลุ่มสูงแต่ Order Book บาง = ผิดปกติ<br />
+- ดู Trade History — ถ้าขนาด order ซ้ำๆ ในเวลาที่ใกล้กันมาก = Bot Wash Trading</p>
+<p><strong>บน DEX:</strong> สร้าง Wallet หลายตัว ซื้อขายกันเองใน Pool</p>
+<pre><code>Wallet A → ขาย 1,000 Token ไปที่ Pool → ราคาลง 5%
+Wallet B → ซื้อ 1,000 Token จาก Pool → ราคาขึ้น 5%
+(ทั้ง A และ B เป็นเจ้าของเดียวกัน)
+
+ผลลัพธ์: Volume เพิ่ม แต่ราคาไม่เปลี่ยน
+ค่าใช้จ่าย: Gas Fee + Slippage (น้อยมาก)
+</code></pre>
+<blockquote>
+<p><strong>ข้อสังเกต:</strong> ใน Crypto บางโปรเจกต์มี "Volume Incentive" — แจกรางวัลให้ Token ที่มีวอลุ่มสูง ทำให้ Wash Trading กลายเป็นเรื่อง "คุ้มค่า" สำหรับผู้ปั่น</p>
+</blockquote>
+<hr />
+<h3 id="314-sandwich-attack-dex">31.4 Sandwich Attack — กับดักของ DEX</h3>
+<p><strong>กลไก:</strong> Bot จับ Transaction ที่จะส่งเข้า Mempool แล้ว "ใส่" Transaction ของตัวเองก่อนและหลัง เพื่อกินส่วนต่าง</p>
+<pre><code>+------------------------------------------+
+|         SANDWICH ATTACK FLOW               |
++------------------------------------------+
+|                                            |
+|  เหยื่อ: ส่ง Tx ซื้อ 100 ETH                |
+|         (ราคาคาดหวัง $3,000)               |
+|                                            |
+|  Bot เห็น Tx ใน Mempool:                   |
+|  └── ใส่ Tx ของตัวเอง (Front-run)         |
+|      ซื้อ 50 ETH ก่อน → ราคาขึ้นเป็น $3,015|
+|                                            |
+|  เหยื่อ Tx ทำงาน:                          |
+|  └── ซื้อ 100 ETH ที่ $3,015 (แพงขึ้น)     |
+|      ราคาขึ้นเป็น $3,030                   |
+|                                            |
+|  Bot ขายทันที (Back-run):                  |
+|  └── ขาย 50 ETH ที่ $3,030                |
+|      กำไร: $0.75 ต่อ ETH × 50 = $37.5     |
+|                                            |
+|  ผลของเหยื่อ:                              |
+|  ซื้อ ETH แพงกว่าที่ควร $1.5 × 100 = $150 |
++------------------------------------------+
+</code></pre>
+<p><strong>วิธีป้องกัน:</strong><br />
+1. ตั้ง Slippage ให้ต่ำ (0.5-1%) — ถ้า Slippage สูง Tx จะ Revert<br />
+2. ใช้ Private Mempool (Flashbots, MEV Blocker)<br />
+3. ใช้ DEX ที่มี MEV Protection (CowSwap, 1inch Fusion)<br />
+4. แบ่ง Order ขนาดใหญ่เป็นหลายๆ Order เล็ก<br />
+5. หลีกเลี่ยงการเทรด Token ที่มี Liquidity ต่ำ</p>
+<hr />
+<h3 id="315-insider-trading-cex-listing">31.5 Insider Trading ก่อน CEX Listing</h3>
+<p><strong>กลไก:</strong> พนักงาน Exchange หรือคนที่รู้ก่อนว่า Token จะถูก List ไปซื้อก่อนล่วงหน้า</p>
+<p><strong>ตัวอย่างที่เคยเกิดขึ้นจริง:</strong><br />
+- 2022: อดีตผู้จัดการ Coinbase ถูกจับข้อหา Insider Trading ใช้ข้อมูลภายในซื้อ Token ก่อน Listing 25 ครั้ง กำไรกว่า $1.5 ล้าน<br />
+- มีงานวิจัยจาก University of Technology Sydney พบว่า <strong>ราคา Token มักวิ่งขึ้น 5-15% ในชั่วโมงก่อน Coinbase ประกาศ Listing</strong></p>
+<p><strong>วิธีสังเกต:</strong><br />
+- ดู On-chain Activity — ถ้ามี Wallet ขนาดใหญ่ที่ไม่เคยเทรด Token นี้ มาซื้อก่อนข่าว → น่าสงสัย<br />
+- ใช้ Nansen Smart Money Tracker<br />
+- ดู Volume ผิดปกติใน 24 ชั่วโมงก่อนข่าว</p>
+<hr />
+<h3 id="316-liquidity-drain-attack">31.6 Liquidity Drain Attack</h3>
+<p><strong>กลไก:</strong> ผู้ปั่นเป็นเจ้าของ Liquidity Pool ส่วนใหญ่ ทำให้สามารถถอน Liquidity ออกได้ทุกเมื่อ ทำให้คนอื่นขาย Token ไม่ได้</p>
+<pre><code>ปกติ Pool มี:
+├── 10,000 TOKEN
+└── 100 ETH ($300,000)
+
+ผู้ปั่นถอน Liquidity 90%:
+├── เหลือ 1,000 TOKEN
+└── เหลือ 10 ETH ($30,000)
+
+ผลลัพธ์:
+├── ราคา TOKEN จาก $30 เหลือ $30 (ดูเหมือนเดิม)
+├── แต่ใครจะขาย 100 TOKEN จะ Slippage 100%
+├── Token แทบขายไม่ได้
+└── นี่คือ &quot;Soft Rug Pull&quot;
+</code></pre>
+<p><strong>วิธีตรวจสอบ:</strong><br />
+- ดู Liquidity ของ Pool ที่ DexTools, DexScreener<br />
+- ดูว่า LP Token (ใบรับรอง Liquidity) ถูก Lock หรือไม่<br />
+- ดูประวัติ Liquidity — ถ้ามีการเพิ่ม-ลด ผิดปกติ → ระวัง</p>
+<hr />
+<h3 id="317-memecoin-manipulation">31.7 Memecoin Manipulation</h3>
+<p><strong>ลักษณะของ Memecoin:</strong><br />
+- ไม่มี Utility (ใช้งานจริงไม่ได้)<br />
+- ขายความ "ตลก" หรือ "ติดเทรนด์"<br />
+- พึ่งกระแสและ Influencer 100%<br />
+- ราคาวิ่งจาก Sentiment ล้วนๆ</p>
+<p><strong>Lifecycle ของ Memecoin:</strong></p>
+<pre><code>Day 0:    Launch — ราคา $0.000001
+Day 1-3:  Pump Phase — Influencer พูดถึง ราคาวิ่ง 100-1000x
+Day 4-7:  FOMO Phase — รายย่อยแห่ซื้อ ราคาพุ่งสุด
+Day 8-14: Distribution Phase — Whale และ Influencer เริ่มเทขาย
+Day 15+:  Death Phase — ราคาดิ่ง 90-99% ไม่กลับมาอีก
+</code></pre>
+<p><strong>สถิติของ Memecoin:</strong><br />
+- 90% ของ Memecoin หายไปในเวลา 6 เดือน<br />
+- จากการวิเคราะห์ของ Chainalysis: คนที่ถือ Memecoin &gt; 1 เดือน — 95% ขาดทุน<br />
+- เฉพาะ Top 1% ของ Wallet ทำกำไรจาก Memecoin</p>
+<blockquote>
+<p><strong>ข้อสังเกต:</strong> Memecoin ไม่ใช่การลงทุน แต่เป็น "การพนัน" ถ้าจะเล่น ให้ใช้เงินที่พร้อมเสียทั้งหมด ไม่เกิน 1-2% ของพอร์ต</p>
+</blockquote>
+<hr />
+<h3 id="318-icoidoairdrop-scam">31.8 ICO/IDO/Airdrop Scam</h3>
+<p><strong>ICO Scam แบบคลาสสิก:</strong></p>
+<pre><code>Step 1: สร้าง Whitepaper สวย คัดลอกหรือซื้อ Template
+Step 2: จ้าง &quot;ที่ปรึกษา&quot; ปลอม (รูปจาก Stock Photo)
+Step 3: เปิดระดมทุน ICO รับ ETH/USDT
+Step 4: ระดมได้ $10M-$100M
+Step 5: หาย — ไม่ส่งมอบโปรเจกต์ ไม่คืนเงิน
+</code></pre>
+<p><strong>Airdrop Scam:</strong><br />
+- เหยื่อได้รับ Token "ฟรี" ในกระเป๋า<br />
+- เหยื่อพยายามขาย Token นั้น ต้อง Connect Wallet กับ Smart Contract<br />
+- Smart Contract ดูดเงินทั้งหมดจากกระเป๋า</p>
+<p><strong>Phishing Airdrop:</strong><br />
+- ส่ง Token ที่มีลิงก์ "เคลม" ใน Metadata<br />
+- เหยื่อกดลิงก์ → ไปหน้าปลอมของ Uniswap/PancakeSwap<br />
+- เหยื่อ Connect Wallet + Approve → กระเป๋าถูกดูด</p>
+<blockquote>
+<p><strong>คำเตือน:</strong> Token ที่ปรากฏในกระเป๋าของคุณโดยไม่ได้ขอ — <strong>ห้ามแตะต้องเด็ดขาด</strong> อย่าพยายามขาย อย่ากดลิงก์ใน Metadata</p>
+</blockquote>
+<hr />
+<h3 id="319-influencer-pump">31.9 Influencer Pump</h3>
+<p><strong>กลไก:</strong><br />
+1. ผู้ปั่นจ่ายเงินให้ Influencer ดัง (Twitter/X, YouTube, TikTok)<br />
+2. Influencer "แนะนำ" Token โดยไม่เปิดเผยว่ารับเงิน<br />
+3. Followers แห่ซื้อ ราคาพุ่ง<br />
+4. Influencer และผู้ปั่นเทขาย<br />
+5. ราคาดิ่ง</p>
+<p><strong>สัญญาณเตือน Influencer Pump:</strong><br />
+- Influencer พูดถึง Token แบบ "ฉับพลัน" โดยไม่เคยพูดมาก่อน<br />
+- ใช้คำศัพท์เหมือนกันหมดในหลายๆ Influencer (Script เดียวกัน)<br />
+- พูดถึง "100x potential", "Next Bitcoin", "Don't miss out"<br />
+- ไม่พูดถึงความเสี่ยงเลย<br />
+- พูดถึง Token ที่ Market Cap &lt; $50M</p>
+<p><strong>กรณีดัง:</strong><br />
+- 2018: DJ Khaled และ Floyd Mayweather ถูก SEC ปรับฐานโฆษณา ICO โดยไม่เปิดเผยว่ารับเงิน<br />
+- 2022: Kim Kardashian ถูก SEC ปรับ $1.26 ล้าน ฐานโพสต์โปรโมท EthereumMax โดยไม่เปิดเผย</p>
+<hr />
+<h3 id="3110-mev-maximal-extractable-value-manipulation">31.10 MEV (Maximal Extractable Value) Manipulation</h3>
+<p><strong>MEV คืออะไร:</strong> กำไรที่ Validator/Miner สามารถดึงออกมาได้จากการจัดเรียง Transaction ใน Block</p>
+<p><strong>รูปแบบ MEV:</strong></p>
+<table>
+<thead>
+<tr>
+<th>ประเภท</th>
+<th>กลไก</th>
+<th>ผลกระทบต่อรายย่อย</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sandwich Attack</td>
+<td>ใส่ Tx หน้า-หลัง</td>
+<td>ซื้อแพง ขายถูก</td>
+</tr>
+<tr>
+<td>Arbitrage</td>
+<td>จับส่วนต่างราคาข้าม DEX</td>
+<td>ทำให้ราคาเท่ากัน (กลาง)</td>
+</tr>
+<tr>
+<td>Liquidation MEV</td>
+<td>จับ Liquidation ก่อน</td>
+<td>เหยื่อถูก Liquidate ใน Bad Price</td>
+</tr>
+<tr>
+<td>Time-Bandit Attack</td>
+<td>Re-org Block เพื่อแย่ง MEV</td>
+<td>ทำให้ Tx Confirm ช้า</td>
+</tr>
+<tr>
+<td>JIT Liquidity</td>
+<td>Add+Remove Liquidity ในบล็อกเดียว</td>
+<td>กิน Fee ของ LP จริง</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total MEV Extracted (จาก Flashbots):</strong><br />
+- 2021-2024: รวมกว่า $1.6 พันล้าน ถูกดึงออกจากผู้ใช้ DeFi<br />
+- ส่วนใหญ่เป็น Sandwich Attack (60%)</p>
+<hr />
+<h3 id="3111-stablecoin-depegging-manipulation">31.11 Stablecoin Depegging Manipulation</h3>
+<p><strong>รูปแบบ:</strong> ผู้ปั่นโจมตี Stablecoin ให้หลุดราคา $1 เพื่อทำกำไรจากการ Short</p>
+<p><strong>กรณีดัง: UST/Luna Crash (พฤษภาคม 2022)</strong></p>
+<pre><code>ก่อนวิกฤต:
+├── UST = Algorithmic Stablecoin มี Market Cap $18B
+├── ผูกราคากับ LUNA ผ่าน Mint/Burn Mechanism
+└── Anchor Protocol จ่าย Yield 20% ดึงดูดเงินมหาศาล
+
+5 พฤษภาคม 2022:
+├── มีการเทขาย UST $200M ใน Curve Pool
+├── UST Depeg เล็กน้อย ($0.985)
+└── คนเริ่มกลัว เริ่ม Withdraw จาก Anchor
+
+7-9 พฤษภาคม 2022:
+├── ความกลัวขยายตัว (Bank Run)
+├── คน Mass Withdraw $5B ออกจาก Anchor
+├── UST Depeg หนักขึ้น ($0.60)
+└── Mint LUNA เพื่อ Burn UST → LUNA Hyperinflation
+
+10-15 พฤษภาคม 2022:
+├── LUNA จาก $80 → $0.0001 (-99.99%)
+├── UST จาก $1 → $0.10
+├── Market Cap หายไป $40 พันล้าน
+└── นักลงทุนหลายคนสูญเสียทั้งชีวิต
+</code></pre>
+<p><strong>บทเรียน:</strong><br />
+1. Algorithmic Stablecoin ไม่ใช่ Stable<br />
+2. Yield สูงผิดปกติ (20%) ไม่มีในโลกความเป็นจริง<br />
+3. การพึ่งพา Reflexivity (ราคา A กระทบ B กระทบ A) คือบ้านไพ่<br />
+4. แม้ Tier 1 Project ก็ล่มได้</p>
+<hr />
+<h3 id="3112-smart-contract-exploit-manipulation">31.12 Smart Contract Exploit + Manipulation</h3>
+<p><strong>รูปแบบ:</strong> Hacker ค้นพบช่องโหว่ของ Smart Contract แล้วใช้ประโยชน์</p>
+<p><strong>ตัวอย่างที่เคยเกิด:</strong></p>
+<table>
+<thead>
+<tr>
+<th>ปี</th>
+<th>โปรเจกต์</th>
+<th>มูลค่าเสียหาย</th>
+<th>รูปแบบ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2016</td>
+<td>The DAO</td>
+<td>$60M</td>
+<td>Reentrancy Attack</td>
+</tr>
+<tr>
+<td>2021</td>
+<td>Poly Network</td>
+<td>$611M</td>
+<td>Cross-chain Bridge Bug</td>
+</tr>
+<tr>
+<td>2022</td>
+<td>Ronin Bridge</td>
+<td>$625M</td>
+<td>Validator Key Compromise</td>
+</tr>
+<tr>
+<td>2022</td>
+<td>Wormhole</td>
+<td>$326M</td>
+<td>Signature Verification Bug</td>
+</tr>
+<tr>
+<td>2022</td>
+<td>BNB Bridge</td>
+<td>$586M</td>
+<td>Proof Verification Bug</td>
+</tr>
+<tr>
+<td>2023</td>
+<td>Euler Finance</td>
+<td>$197M</td>
+<td>Donation Attack</td>
+</tr>
+<tr>
+<td>2023</td>
+<td>Multichain</td>
+<td>$126M</td>
+<td>Private Key Leaked</td>
+</tr>
+</tbody>
+</table>
+<p><strong>บทเรียน:</strong><br />
+- แม้โปรเจกต์ใหญ่ที่ Audited ก็ถูก Hack ได้<br />
+- Cross-chain Bridge เป็นจุดเสี่ยงที่สุด<br />
+- Smart Contract ไม่มี "Customer Service" ให้กดอุทธรณ์</p>
+<hr />
+<h2 id="32-crypto-investor">บทที่ 32: เครื่องมือและแหล่งข้อมูลสำหรับ Crypto Investor</h2>
+<h3 id="tools">Tools ที่ขาดไม่ได้</h3>
+<p><strong>1. Block Explorers (ตรวจสอบ Transaction และ Wallet)</strong></p>
+<table>
+<thead>
+<tr>
+<th>เครือข่าย</th>
+<th>Explorer หลัก</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bitcoin</td>
+<td>Blockchain.com, Mempool.space</td>
+</tr>
+<tr>
+<td>Ethereum</td>
+<td>Etherscan.io</td>
+</tr>
+<tr>
+<td>BNB Chain</td>
+<td>BscScan.com</td>
+</tr>
+<tr>
+<td>Polygon</td>
+<td>PolygonScan.com</td>
+</tr>
+<tr>
+<td>Solana</td>
+<td>Solscan.io, Solana FM</td>
+</tr>
+<tr>
+<td>Avalanche</td>
+<td>SnowTrace.io</td>
+</tr>
+<tr>
+<td>Arbitrum</td>
+<td>Arbiscan.io</td>
+</tr>
+</tbody>
+</table>
+<p><strong>2. DeFi Analytics</strong></p>
+<table>
+<thead>
+<tr>
+<th>เครื่องมือ</th>
+<th>ใช้ทำอะไร</th>
+<th>ราคา</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DefiLlama</td>
+<td>TVL ของทุก Protocol</td>
+<td>ฟรี</td>
+</tr>
+<tr>
+<td>DexTools</td>
+<td>กราฟ + Wallet Tracker ของ Token ใหม่</td>
+<td>ฟรี/Pro</td>
+</tr>
+<tr>
+<td>DexScreener</td>
+<td>คล้าย DexTools</td>
+<td>ฟรี</td>
+</tr>
+<tr>
+<td>Nansen</td>
+<td>Smart Money Tracking</td>
+<td>$150/เดือน</td>
+</tr>
+<tr>
+<td>Arkham Intelligence</td>
+<td>Wallet Analysis + Tagging</td>
+<td>ฟรี/Pro</td>
+</tr>
+<tr>
+<td>Dune Analytics</td>
+<td>Custom On-chain Dashboard</td>
+<td>ฟรี</td>
+</tr>
+</tbody>
+</table>
+<p><strong>3. Security Tools</strong></p>
+<table>
+<thead>
+<tr>
+<th>เครื่องมือ</th>
+<th>ใช้ทำอะไร</th>
+<th>ราคา</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TokenSniffer</td>
+<td>สแกน Smart Contract หา Risk</td>
+<td>ฟรี</td>
+</tr>
+<tr>
+<td>GoPlus Security API</td>
+<td>ตรวจ Token Risk</td>
+<td>ฟรี</td>
+</tr>
+<tr>
+<td>Honeypot.is</td>
+<td>ตรวจ Honeypot</td>
+<td>ฟรี</td>
+</tr>
+<tr>
+<td>RugDoc</td>
+<td>Audit ขั้นพื้นฐาน</td>
+<td>ฟรี</td>
+</tr>
+<tr>
+<td>CertiK Skynet</td>
+<td>Real-time Monitoring</td>
+<td>ฟรี</td>
+</tr>
+</tbody>
+</table>
+<p><strong>4. Sentiment + News</strong></p>
+<table>
+<thead>
+<tr>
+<th>เครื่องมือ</th>
+<th>ใช้ทำอะไร</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Crypto Fear &amp; Greed Index</td>
+<td>วัดอารมณ์ตลาดรวม</td>
+</tr>
+<tr>
+<td>LunarCrush</td>
+<td>Social Volume ของ Token</td>
+</tr>
+<tr>
+<td>Santiment</td>
+<td>On-chain Sentiment</td>
+</tr>
+<tr>
+<td>The Block, CoinDesk</td>
+<td>News หลัก</td>
+</tr>
+<tr>
+<td>Glassnode</td>
+<td>On-chain Metrics ขั้นสูง</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="33-anti-manipulation-checklist-crypto">บทที่ 33: Anti-Manipulation Checklist สำหรับ Crypto</h2>
+<h3 id="token-checklist-25">ก่อนซื้อ Token ใหม่ — Checklist 25 ข้อ</h3>
+<pre><code>+--------------------------------------------------+
+|     CRYPTO PRE-INVESTMENT CHECKLIST                |
++--------------------------------------------------+
+|                                                    |
+|  === PROJECT FUNDAMENTALS (8 ข้อ) ===              |
+|  [ ] 1. ทีมเปิดเผยตัวตนชัดเจน + LinkedIn ตรวจได้   |
+|  [ ] 2. Whitepaper อ่านแล้วเข้าใจ ไม่ Copy-paste   |
+|  [ ] 3. Roadmap มีรายละเอียด ไม่ใช่แค่คำสวยหรู     |
+|  [ ] 4. มี Real Use Case ไม่ใช่แค่ &quot;Token เพื่อ Token&quot; |
+|  [ ] 5. มี GitHub Repository ที่ Active            |
+|  [ ] 6. มี Investor/Backer ที่น่าเชื่อถือ          |
+|  [ ] 7. มีพาร์ทเนอร์ตรวจสอบได้ (ไม่ใช่ Logo อ้างเอง)|
+|  [ ] 8. โปรเจกต์เปิดมามากกว่า 6 เดือน              |
+|                                                    |
+|  === TECHNICAL/SECURITY (8 ข้อ) ===                |
+|  [ ] 9. Smart Contract ถูก Audit จาก Big Firm     |
+|       (CertiK, Quantstamp, OpenZeppelin)          |
+|  [ ] 10. ไม่มี Mint Function ที่เจ้าของเรียกได้     |
+|  [ ] 11. ไม่มี Pause/Blacklist Function ที่เป็นพิษ |
+|  [ ] 12. Liquidity Locked &gt; 1 ปี                   |
+|  [ ] 13. ผ่าน Honeypot Test                        |
+|  [ ] 14. Token Distribution: Top 10 ถือ &lt; 30%      |
+|  [ ] 15. ทีมมี Vesting Schedule (Lock 1-2 ปี)      |
+|  [ ] 16. Multi-sig Wallet สำหรับ Treasury          |
+|                                                    |
+|  === MARKET METRICS (5 ข้อ) ===                    |
+|  [ ] 17. Market Cap &gt; $50M (เริ่มต้น)              |
+|  [ ] 18. Daily Volume / Market Cap &gt; 5%            |
+|  [ ] 19. Listed บน 3+ Exchange ที่น่าเชื่อถือ       |
+|  [ ] 20. ราคาไม่วิ่ง &gt; 100% ใน 7 วันที่ผ่านมา       |
+|  [ ] 21. มีผู้ถือเกิน 10,000 Wallets               |
+|                                                    |
+|  === COMMUNITY/SENTIMENT (4 ข้อ) ===               |
+|  [ ] 22. Twitter Followers Real (ตรวจกับ HypeAuditor)|
+|  [ ] 23. Telegram/Discord มีคนถามคำถามเชิงเทคนิค    |
+|  [ ] 24. ไม่ใช่กระแสจาก Influencer คนเดียว         |
+|  [ ] 25. หาคำวิจารณ์/ข้อสงสัยใน Reddit ได้          |
+|                                                    |
++--------------------------------------------------+
+
+เกณฑ์ผ่าน:
+- ผ่าน 23/25 ข้อขึ้นไป → พิจารณาลงทุน
+- ผ่าน 18-22 ข้อ → ทดลองลงทุนเล็กน้อย (&lt; 1% ของพอร์ต)
+- ผ่าน &lt; 18 ข้อ → ไม่ควรลงทุน
+</code></pre>
+<hr />
+<h2 id="34-position-sizing-crypto">บทที่ 34: Position Sizing สำหรับ Crypto</h2>
+<h3 id="_2">ความผันผวนสูง = ขนาดต้องเล็กลง</h3>
+<pre><code>Asset Class       Position Sizing Guideline
+───────────────────────────────────────────
+หุ้น Blue-chip    5-15% ของพอร์ต
+หุ้น Mid-cap      3-8%
+หุ้นเล็ก/IPO      1-3%
+BTC/ETH          5-15% (ของพอร์ต Crypto)
+Top 20 Altcoins  2-5%
+Mid-cap Alt      1-3%
+Small-cap Alt    0.5-1%
+Memecoin/IDO     0.1-0.5% (เงินที่พร้อมเสีย)
+</code></pre>
+<h3 id="crypto-portfolio">กฎความเสี่ยงสำหรับ Crypto Portfolio</h3>
+<pre><code>1. Crypto ไม่ควรเกิน 5-15% ของ Net Worth ทั้งหมด
+   (สำหรับคนทั่วไป — ถ้ารับความเสี่ยงสูงได้ อาจถึง 25%)
+
+2. ภายใน Crypto Portfolio:
+   ├── 60-70% ใน BTC + ETH
+   ├── 20-30% ใน Top 20 Altcoins  
+   ├── 5-10% ใน High-conviction Plays
+   └── 0-5% ใน Speculative (Memecoin, New Launch)
+
+3. ห้ามใช้ Leverage &gt; 3x — แม้แต่ใน BTC
+   (Leverage 10x + ราคาขยับ 10% = Liquidation)
+
+4. Stop Loss ต้องตั้งไกลกว่าหุ้น (15-25%) เพราะ Volatility สูง
+
+5. ห้ามถัวเฉลี่ยขาลงในเหรียญที่ลง &gt; 50%
+</code></pre>
+<hr />
+<h2 id="35-15-crypto">บทที่ 35: กฎ 15 ข้อสำหรับนักลงทุน Crypto</h2>
+<pre><code>1. ไม่ลงทุนในสิ่งที่อธิบายให้คนอื่นไม่ได้
+2. Custody is King — Not Your Keys, Not Your Coins
+3. ไม่เก็บ Crypto บน Exchange เกิน 6 เดือน
+4. ใช้ Hardware Wallet สำหรับยอด &gt; $1,000
+5. ห้ามเชื่อ Influencer 100% — ทุกคนมี Bag
+6. กระจายความเสี่ยง — ไม่ทุ่ม All-in กับ Token เดียว
+7. รู้จัก Security Risk: Phishing, Scam, Hack
+8. ไม่ Approve Smart Contract ที่ไม่รู้จัก
+9. ตั้ง 2FA ทุกบัญชี (ใช้ Authenticator App ไม่ใช่ SMS)
+10. ห้าม Click Link จาก DM
+11. ห้าม Share Seed Phrase กับใคร — แม้แต่ Customer Service
+12. ระวัง Romance Scam (Pig Butchering)
+13. มี Exit Strategy ก่อนเข้า — รู้ว่าจะขายเมื่อไหร่
+14. Take Profit เป็นระยะ — ไม่รอ Top
+15. พักจาก Crypto บ้าง — มันไม่ได้สำคัญที่สุดในชีวิต
+</code></pre>
+<hr />
+<h2 id="crypto_1">บทส่งท้าย: ทำไมคนส่วนใหญ่ขาดทุนใน Crypto</h2>
+<p>จากการศึกษาของ Bank of International Settlements (BIS) ปี 2022:</p>
+<blockquote>
+<p><strong>73% ของ Retail Investor ขาดทุนใน Crypto ตั้งแต่ปี 2015-2022</strong></p>
+</blockquote>
+<p>เหตุผล 5 ข้อหลัก:<br />
+1. <strong>เข้าตอนกระแสร้อน</strong> — ซื้อใกล้จุดสูงสุด ขายใกล้จุดต่ำสุด<br />
+2. <strong>ไม่เข้าใจสิ่งที่ลงทุน</strong> — ซื้อตามที่คนอื่นบอก<br />
+3. <strong>ใช้ Leverage มากเกินไป</strong> — Liquidation บ่อย<br />
+4. <strong>ตกเป็นเหยื่อ Scam</strong> — Rug Pull, Phishing, Hack<br />
+5. <strong>ไม่มีระบบการลงทุน</strong> — ตัดสินใจตามอารมณ์</p>
+<blockquote>
+<p><strong>คำพูดสุดท้าย:</strong> Crypto คือเทคโนโลยีที่ทรงพลังและเปลี่ยนโลกได้ — แต่ตลาด Crypto คือสนามที่ไม่ปราณี ใครก็ตามที่เข้ามาโดยไม่มีความรู้และวินัย จะออกไปด้วยกระเป๋าที่เบากว่าตอนเข้ามา หนังสือเล่มนี้ไม่ได้บอกให้คุณห่าง Crypto — มันบอกให้คุณ <strong>เคารพ</strong> Crypto</p>
+</blockquote>
+<hr />
+<p><em>"ในตลาดหุ้น คุณต่อสู้กับเจ้ามือ ในตลาด Crypto คุณต่อสู้กับเจ้ามือ Bot Hacker และตัวเอง — พร้อมกัน"</em></p>
+<hr>
+<p style="text-align:center; color:#9ca3af; font-size:0.85rem; margin-top:2rem;">
+  เกมปั่นหุ้น: รู้ทัน สังเกต และรอดตาย — <a href="index.html">หน้าหลัก</a>
+</p>
+</main>
+
+<script src="/guide-base.js"></script>
+<script src="/theme.js"></script>
+</body>
+</html>

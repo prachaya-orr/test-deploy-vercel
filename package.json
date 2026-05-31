@@ -1,0 +1,11 @@
+{
+  "name": "stock-manipulation-book",
+  "version": "1.0.0",
+  "description": "เกมปั่นหุ้น: รู้ทัน สังเกต และรอดตาย — คู่มือเอาตัวรอดในตลาดหุ้นสำหรับนักลงทุนรายย่อย",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Static site - no build needed'",
+    "start": "npx serve ."
+  },
+  "license": "CC-BY-NC-ND-4.0"
+}
