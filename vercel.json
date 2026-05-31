@@ -1,6 +1,123 @@
 {
-  "version": 2,
-  "public": true,
-  "buildCommand": "",
-  "outputDirectory": "."
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(js|css|woff|woff2|ttf|otf)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/preface",
+      "destination": "/00-preface.html",
+      "permanent": true
+    },
+    {
+      "source": "/part1",
+      "destination": "/01-stock-manipulation-guide.html",
+      "permanent": true
+    },
+    {
+      "source": "/part2",
+      "destination": "/02-stock-signals-guide.html",
+      "permanent": true
+    },
+    {
+      "source": "/part3",
+      "destination": "/03-money-management-guide.html",
+      "permanent": true
+    },
+    {
+      "source": "/part4",
+      "destination": "/04-valuation-guide.html",
+      "permanent": true
+    },
+    {
+      "source": "/part5",
+      "destination": "/05-advanced-lessons-guide.html",
+      "permanent": true
+    },
+    {
+      "source": "/part6",
+      "destination": "/06-daily-routine-guide.html",
+      "permanent": true
+    },
+    {
+      "source": "/part6a",
+      "destination": "/06A-futures-commodity-gold-guide.html",
+      "permanent": true
+    },
+    {
+      "source": "/part6b",
+      "destination": "/06B-international-investor-guide.html",
+      "permanent": true
+    },
+    {
+      "source": "/part7",
+      "destination": "/07-intermarket-analysis-guide.html",
+      "permanent": true
+    },
+    {
+      "source": "/part8",
+      "destination": "/08-crypto-defi-guide.html",
+      "permanent": true
+    },
+    {
+      "source": "/part9",
+      "destination": "/09-dw-derivatives-guide.html",
+      "permanent": true
+    },
+    {
+      "source": "/part10",
+      "destination": "/10-tax-cost-guide.html",
+      "permanent": true
+    },
+    {
+      "source": "/supercycles",
+      "destination": "/Next_Supercycles_Research.html",
+      "permanent": true
+    },
+    {
+      "source": "/stpi",
+      "destination": "/STPI-Valuation-Analysis.html",
+      "permanent": true
+    }
+  ]
 }
