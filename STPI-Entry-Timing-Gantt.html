@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STPI — Entry Timing Gantt Chart | ราแผนเข้าซื้อตาม Catalyst</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap');
+  :root{
+    --bg:#0a0e1a; --bg2:#111827; --card:#1a2235; --code:#0d1321;
+    --border:#2a3550; --text:#e8edf5; --text2:#94a3b8; --muted:#64748b;
+    --blue:#3b82f6; --cyan:#22d3ee; --green:#34d399; --emerald:#10b981;
+    --yellow:#fbbf24; --orange:#f97316; --red:#ef4444; --purple:#a78bfa;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'IBM Plex Sans Thai','Noto Sans Thai',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:0 0 5rem;}
+  .top{position:sticky;top:0;z-index:10;background:rgba(10,14,26,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:.8rem 2rem;display:flex;align-items:center;justify-content:space-between;}
+  .top a{color:var(--cyan);text-decoration:none;font-size:.85rem;font-weight:600;}
+  .top .brand{font-weight:800;background:linear-gradient(135deg,#10b981,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .wrap{max-width:1150px;margin:0 auto;padding:2rem 1.5rem;}
+  h1{font-family:'Noto Sans Thai';font-size:1.9rem;font-weight:800;margin-bottom:.4rem;}
+  h1 .g{background:linear-gradient(135deg,#10b981,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .sub{color:var(--text2);margin-bottom:1.5rem;}
+  h2{font-family:'Noto Sans Thai';font-size:1.3rem;font-weight:700;margin:2.5rem 0 1rem;padding-left:.7rem;border-left:4px solid var(--emerald);}
+  h3{font-size:1.05rem;font-weight:700;color:var(--cyan);margin:1.5rem 0 .7rem;}
+  p{color:var(--text2);margin-bottom:.8rem;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem 1.4rem;margin:1rem 0;}
+  .note{border-radius:10px;padding:1rem 1.2rem;margin:1rem 0;font-size:.92rem;}
+  .note.info{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.25);color:#93c5fd;}
+  .note.tip{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);color:var(--green);}
+  .note.warn{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.25);color:var(--orange);}
+  .note.danger{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);color:#fca5a5;}
+  .note b{color:var(--text);}
+
+  /* ===== GANTT ===== */
+  .gantt-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:14px;background:var(--code);}
+  .gantt{min-width:820px;display:grid;grid-template-columns:210px repeat(10,1fr);font-size:.8rem;}
+  .g-head{position:sticky;top:0;padding:.6rem .4rem;text-align:center;font-weight:700;color:var(--text2);border-bottom:2px solid var(--border);border-left:1px solid rgba(42,53,80,.5);}
+  .g-head.corner{text-align:left;border-left:none;color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:1px;}
+  .g-head .yr{display:block;font-size:.68rem;color:var(--muted);font-weight:500;}
+  .g-label{padding:.55rem .6rem;display:flex;align-items:center;gap:.4rem;border-bottom:1px solid rgba(42,53,80,.4);color:var(--text);font-weight:500;font-size:.82rem;}
+  .g-track{grid-column:2 / -1;position:relative;height:100%;min-height:38px;border-bottom:1px solid rgba(42,53,80,.4);background:repeating-linear-gradient(to right,transparent 0,transparent calc(10% - 1px),rgba(42,53,80,.5) calc(10% - 1px),rgba(42,53,80,.5) 10%);}
+  .bar{position:absolute;top:50%;transform:translateY(-50%);height:22px;border-radius:6px;display:flex;align-items:center;padding:0 .5rem;font-size:.68rem;font-weight:600;color:#04121a;white-space:nowrap;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.3);}
+  .bar.event{border-radius:50%;width:22px!important;padding:0;justify-content:center;color:#fff;}
+  .b-blue{background:linear-gradient(90deg,#3b82f6,#60a5fa);}
+  .b-green{background:linear-gradient(90deg,#10b981,#34d399);}
+  .b-cyan{background:linear-gradient(90deg,#06b6d4,#22d3ee);}
+  .b-purple{background:linear-gradient(90deg,#8b5cf6,#a78bfa);color:#fff;}
+  .b-orange{background:linear-gradient(90deg,#f97316,#fbbf24);}
+  .b-red{background:linear-gradient(90deg,#ef4444,#f87171);color:#fff;}
+  .b-yellow{background:linear-gradient(90deg,#eab308,#fbbf24);}
+  .today{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--yellow);z-index:5;}
+  .today::after{content:'NOW';position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:.6rem;font-weight:700;color:var(--yellow);}
+  .entry-band{position:absolute;top:0;bottom:0;background:rgba(16,185,129,.10);border-left:2px dashed rgba(16,185,129,.5);border-right:2px dashed rgba(16,185,129,.5);z-index:1;}
+
+  .legend{display:flex;flex-wrap:wrap;gap:1rem;margin:1rem 0;font-size:.8rem;color:var(--text2);}
+  .legend span{display:inline-flex;align-items:center;gap:.4rem;}
+  .dot{width:14px;height:14px;border-radius:4px;display:inline-block;}
+
+  table{width:100%;border-collapse:collapse;font-size:.85rem;margin:1rem 0;}
+  th{background:rgba(16,185,129,.1);color:var(--green);text-align:left;padding:.7rem;border-bottom:2px solid var(--border);font-weight:600;}
+  td{padding:.65rem .7rem;border-bottom:1px solid rgba(42,53,80,.5);color:var(--text2);vertical-align:top;}
+  td b,td strong{color:var(--text);}
+  .price{font-family:'JetBrains Mono',monospace;font-weight:600;}
+  .tag{display:inline-block;padding:.15rem .55rem;border-radius:5px;font-size:.7rem;font-weight:700;}
+  .t-buy{background:rgba(16,185,129,.15);color:var(--green);}
+  .t-watch{background:rgba(251,191,36,.15);color:var(--yellow);}
+  .t-avoid{background:rgba(239,68,68,.15);color:#fca5a5;}
+
+  /* price ladder */
+  .ladder{display:flex;flex-direction:column;gap:.5rem;margin:1rem 0;}
+  .rung{display:grid;grid-template-columns:130px 1fr;gap:1rem;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.7rem 1rem;}
+  .rung .lvl{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:.95rem;}
+  .rung.buy1{border-left:4px solid var(--emerald);}
+  .rung.buy2{border-left:4px solid var(--cyan);}
+  .rung.buy3{border-left:4px solid var(--blue);}
+  .rung.stop{border-left:4px solid var(--red);}
+  .rung .desc{font-size:.82rem;color:var(--text2);}
+  @media(max-width:640px){.rung{grid-template-columns:1fr;gap:.3rem;}}
+</style>
+</head>
+<body>
+<div class="top">
+  <a href="index.html">← HOME</a>
+  <span class="brand">📊 STPI Entry Timing</span>
+  <a href="STPI_Monsoon_Wind_HiddenAsset_Valuation.html">Valuation →</a>
+</div>
+
+<div class="wrap">
+  <h1>STPI — <span class="g">Entry Timing Gantt Chart</span></h1>
+  <p class="sub">แผนจังหวะเข้าซื้อตาม Catalyst | อ้างอิงจากไฟล์ Valuation (SOTP + 7-Method) | อัปเดต ก.ค. 2569<br>
+  <span style="color:var(--yellow);font-weight:600;">ราคาปัจจุบัน ~6.30 บาท (ย่อจากไฮล่าสุด 7.10) · ต่ำกว่า SOTP base 6.88 เล็กน้อย ≈ MoS +8%</span></p>
+
+  <div class="note danger">
+    ⚠️ <b>Disclaimer:</b> เอกสารนี้เพื่อการศึกษาเท่านั้น ไม่ใช่คำแนะนำการลงทุน — ราคาและกรอบเวลาเป็นการประมาณจากสมมติฐานในไฟล์ valuation ผู้ลงทุนต้องตัดสินใจเองและบริหารความเสี่ยง
+  </div>
+
+  <div class="note warn">
+    📍 <b>สถานะราคาปัจจุบัน ~6.30 บาท (ย่อจากไฮ 7.10):</b> หุ้นเทรด <b>ต่ำกว่า SOTP base fair value (6.88)</b> เล็กน้อย →
+    <b>Margin of Safety ~+8%</b> (บาง ไม่ใช่ deep value). Upside หลักขึ้นกับ <b>bull case 11.03</b> (Phase 2 confirmed + Data Center 100MW/26%, +75% จาก 6.30).
+    กลยุทธ์เปลี่ยนจาก "โซนถูก" เป็น <b>"ซื้อตอนย่อ (buy the dip)"</b> หรือ <b>"ซื้อตามเมื่อ breakout &gt;7.10 พร้อม volume"</b>.<br>
+    <span style="color:var(--muted);font-size:.85rem;">Fib retracement ขาขึ้น (4.50→7.10): 38.2%=6.11 · 50%=5.80 · 61.8%=5.49 (ใกล้ราคาจอง 5.55)</span>
+  </div>
+
+  <!-- ============ GANTT 1: CATALYSTS ============ -->
+  <h2>🗓️ Timeline: Catalyst & จังหวะเข้าซื้อ</h2>
+  <p>แถบสีเขียวจาง = <b>หน้าต่างสะสมที่แนะนำ (Accumulation Windows)</b> | แถบสี = ช่วงเวลาที่คาดว่า catalyst จะเกิด | เส้นเหลือง = ปัจจุบัน</p>
+
+  <div class="gantt-scroll">
+    <div class="gantt">
+      <!-- Header -->
+      <div class="g-head corner">Catalyst / Event</div>
+      <div class="g-head">Q3<span class="yr">2026</span></div>
+      <div class="g-head">Q4<span class="yr">2026</span></div>
+      <div class="g-head">Q1<span class="yr">2027</span></div>
+      <div class="g-head">Q2<span class="yr">2027</span></div>
+      <div class="g-head">Q3<span class="yr">2027</span></div>
+      <div class="g-head">Q4<span class="yr">2027</span></div>
+      <div class="g-head">Q1<span class="yr">2028</span></div>
+      <div class="g-head">Q2<span class="yr">2028</span></div>
+      <div class="g-head">Q3<span class="yr">2028</span></div>
+      <div class="g-head">Q4<span class="yr">2028</span></div>
+
+      <!-- Row: Capital Increase -->
+      <div class="g-label">💵 เพิ่มทุน @5.55 (จองซื้อ)</div>
+      <div class="g-track">
+        <div class="today" style="left:5%;"></div>
+        <div class="bar b-purple event" style="left:2%;" title="Capital increase subscription">฿</div>
+      </div>
+
+      <!-- Row: Phase 1 earnings -->
+      <div class="g-label">🌬️ Phase 1 กำไรเต็มปี (FY26)</div>
+      <div class="g-track"><div class="bar b-green" style="left:0%;width:20%;">Full-year earnings</div></div>
+
+      <!-- Row: Phase 2 feasibility -->
+      <div class="g-label">📐 Phase 2 Feasibility</div>
+      <div class="g-track"><div class="bar b-cyan" style="left:10%;width:20%;">Feasibility study</div></div>
+
+      <!-- Row: Envision x IES Phase 2 -->
+      <div class="g-label">🚀 Envision×IES Phase 2 ประกาศ</div>
+      <div class="g-track"><div class="bar b-blue" style="left:0%;width:40%;">Announcement / de-risk</div></div>
+
+      <!-- Row: Data Center -->
+      <div class="g-label">🏢 Data Center Deal / JV</div>
+      <div class="g-track"><div class="bar b-purple" style="left:0%;width:60%;">DC land / JV (option)</div></div>
+
+      <!-- Row: PPA -->
+      <div class="g-label">📝 PPA Negotiations (Ph2)</div>
+      <div class="g-track"><div class="bar b-cyan" style="left:20%;width:40%;">PPA Vietnam/Thai/Laos</div></div>
+
+      <!-- Row: Deleveraging -->
+      <div class="g-label">🛡️ ลดหนี้ Net Debt/EBITDA &lt;3x</div>
+      <div class="g-track"><div class="bar b-green" style="left:20%;width:40%;">Deleveraging → rating up</div></div>
+
+      <!-- Row: Dividend -->
+      <div class="g-label">💰 ปันผลกลับมาจ่าย</div>
+      <div class="g-track"><div class="bar b-yellow" style="left:30%;width:30%;">Dividend reinstatement</div></div>
+
+      <!-- Row: Financial Close -->
+      <div class="g-label">🏦 Phase 2 Financial Close</div>
+      <div class="g-track"><div class="bar b-orange" style="left:40%;width:40%;">Debt arrangement</div></div>
+
+      <!-- Row: Construction -->
+      <div class="g-label">🏗️ Phase 2 เริ่มก่อสร้าง (EPC)</div>
+      <div class="g-track"><div class="bar b-orange" style="left:60%;width:40%;">Construction + EPC rev.</div></div>
+
+      <!-- Row: Entry windows overlay -->
+      <div class="g-label" style="color:var(--green);font-weight:700;">✅ จังหวะซื้อ (ตามราคาย่อ)</div>
+      <div class="g-track">
+        <div class="entry-band" style="left:0%;width:20%;" title="Buy the dip pre-earnings"></div>
+        <div class="entry-band" style="left:30%;width:30%;" title="Re-rating confirmation"></div>
+        <div class="bar b-green" style="left:0%;width:20%;font-size:.6rem;">ย่อ→ซื้อ ก่อนงบ</div>
+        <div class="bar b-green" style="left:30%;width:30%;font-size:.6rem;">ยืนยัน re-rating</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note info" style="margin-top:.8rem;">
+    📌 <b>สำคัญ:</b> ราคา 6.30 อยู่ <b>เหนือโซนสะสมเดิม</b> แล้ว — จังหวะซื้อจึงเป็นแบบ <b>price-based (ซื้อเมื่อย่อ)</b> ไม่ใช่ตามปฏิทิน.
+    ใช้แถบเวลาข้างบนดู catalyst ที่จะดันราคา ส่วนโซนราคาเข้าซื้อดูตารางถัดไป
+  </div>
+
+  <div class="legend">
+    <span><i class="dot" style="background:#10b981;"></i> พลังงาน/กำไร</span>
+    <span><i class="dot" style="background:#3b82f6;"></i> Phase 2</span>
+    <span><i class="dot" style="background:#8b5cf6;"></i> Data Center</span>
+    <span><i class="dot" style="background:#f97316;"></i> ก่อสร้าง/Finance</span>
+    <span><i class="dot" style="background:#fbbf24;"></i> ปันผล</span>
+    <span><i class="dot" style="background:rgba(16,185,129,.4);"></i> หน้าต่างสะสม</span>
+  </div>
+  <p style="font-size:.78rem;color:var(--muted);">หมายเหตุ: COD Phase 2 คาดปี 2030–2031 (นอกกรอบชาร์ต) — เป็น catalyst ระยะยาวที่จะรับรู้ equity earnings เต็มที่</p>
+
+  <!-- ============ ENTRY WINDOWS DETAIL ============ -->
+  <h2>🎯 หน้าต่างเข้าซื้อ (Entry Windows) — รายละเอียด</h2>
+
+  <div class="card">
+    <table>
+      <thead><tr><th>หน้าต่าง</th><th>ช่วงเวลา</th><th>โซนราคา</th><th>Trigger / เหตุผล</th><th>สัญญาณ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>ราคาปัจจุบัน 6.30</b></td>
+          <td>Q3 2026 (now)</td>
+          <td class="price">~6.30</td>
+          <td>เทรดต่ำกว่า SOTP base 6.88 เล็กน้อย — MoS ~+8% (บาง) ไม่ใช่ deep value. ถือได้ถ้ามีอยู่แล้ว แต่ซื้อใหม่ก้อนใหญ่ที่ราคานี้ = เดิมพัน bull case</td>
+          <td><span class="tag t-watch">ถือ/รอย่อ</span></td>
+        </tr>
+        <tr>
+          <td><b>D1 — ย่อตื้น</b></td>
+          <td>เมื่อย่อ</td>
+          <td class="price">5.80–6.10</td>
+          <td>Fib 38.2–50% ของขาขึ้น — จุดซื้อไม้แรกสำหรับคนตกรถ ถ้าแนวโน้มยังขึ้น (เหนือ EMA)</td>
+          <td><span class="tag t-buy">ทยอยซื้อ</span></td>
+        </tr>
+        <tr>
+          <td><b>D2 — ย่อลึก (ดีสุด)</b></td>
+          <td>เมื่อย่อ</td>
+          <td class="price">5.30–5.60</td>
+          <td>Fib 61.8% + ใกล้ราคาจองเพิ่มทุน 5.55 = แนวรับสำคัญ · MoS ~12–15% เทียบ base · โซนสะสมหลัก</td>
+          <td><span class="tag t-buy">ซื้อหลัก</span></td>
+        </tr>
+        <tr>
+          <td><b>D3 — value zone</b></td>
+          <td>ถ้าแก้ตัวแรง</td>
+          <td class="price">4.50–5.00</td>
+          <td>MoS 20–30% เทียบ SOTP base — เข้าเชิงรุกได้ถ้าปัจจัยพื้นฐานไม่เปลี่ยน (Backlog/กำไร Phase 1 ยังดี)</td>
+          <td><span class="tag t-buy">ซื้อหนัก</span></td>
+        </tr>
+        <tr>
+          <td><b>Breakout play</b></td>
+          <td>เมื่อผ่านไฮ</td>
+          <td class="price">&gt; 7.10</td>
+          <td>ทะลุไฮเดิมพร้อม volume + มี catalyst ยืนยัน (Phase 2 / DC deal) → เล่นตามเทรนด์ เป้า bull 11.03 · ตั้ง stop ชิด</td>
+          <td><span class="tag t-watch">ซื้อตามเทรนด์</span></td>
+        </tr>
+        <tr>
+          <td><b>โซนแพงเกิน</b></td>
+          <td>—</td>
+          <td class="price">&gt; 11.03</td>
+          <td>เกิน SOTP bull — ทยอยขายทำกำไร เว้นแต่มี catalyst ใหม่ (COD Phase 2 / DC revenue จริง)</td>
+          <td><span class="tag t-avoid">ขายทำกำไร</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ============ STAGED BUY LADDER ============ -->
+  <h2>🪜 แผนซื้อแบบขั้นบันได (Staged Entry / DCA)</h2>
+  <p>ราคาปัจจุบัน 6.30 อยู่ต่ำกว่า SOTP base เล็กน้อย — <b>ไม่ไล่ราคา</b> แต่ตั้งไม้รอซื้อตอนย่อ (buy the dip) · อ้างอิง SOTP base 6.88, bull 11.03, ราคาจอง 5.55, conservative 4.49</p>
+
+  <div class="ladder">
+    <div class="rung buy1">
+      <div class="lvl" style="color:var(--emerald);">5.80 – 6.10</div>
+      <div class="desc"><b>ไม้ที่ 1 — 25%</b> · ย่อตื้น Fib 38–50% · จุดเริ่มเก็บสำหรับคนตกรถ ถ้าเทรนด์ยังขึ้น</div>
+    </div>
+    <div class="rung buy2">
+      <div class="lvl" style="color:var(--cyan);">5.30 – 5.60</div>
+      <div class="desc"><b>ไม้ที่ 2 — 35%</b> · Fib 61.8% + แนวรับราคาจอง 5.55 · โซนสะสมหลัก MoS ~12–15%</div>
+    </div>
+    <div class="rung buy3">
+      <div class="lvl" style="color:var(--blue);">4.50 – 5.00</div>
+      <div class="desc"><b>ไม้ที่ 3 — 40%</b> · value zone MoS 20–30% เทียบ base · เข้าหนักถ้าแก้ตัวแรงแต่พื้นฐานไม่เปลี่ยน</div>
+    </div>
+    <div class="rung stop">
+      <div class="lvl" style="color:var(--red);">Stop &lt; 4.30</div>
+      <div class="desc"><b>Stop Loss (นักลงทุน)</b> · หลุดแนวรับใหญ่ · ทบทวน thesis (Backlog หด / Interest Coverage &lt;1.0 / เพิ่มทุนซ้ำ) — เทรดสั้นใช้ stop ชิดกว่าใต้ไฮที่เพิ่งเบรก</div>
+    </div>
+  </div>
+
+  <div class="note tip">
+    💡 <b>สรุปกลยุทธ์ (ที่ราคา 6.30):</b> หุ้น re-rated ขึ้นมาที่ fair value แล้ว —
+    <b>อย่าไล่ราคา</b>. ถ้ายังไม่มีของ ให้ <b>ทยอยเก็บตอนย่อ 5.80–6.10 และเติมหนักโซน 5.30–5.60</b> (ใกล้ราคาจอง 5.55).
+    ถ้ามีของอยู่แล้วต้นทุนต่ำ = <b>ถือรอ catalyst</b> (กำไร Phase 1 เต็มปี Q3–Q4'26, ทิศทาง Phase 2).
+    เล่น breakout เหนือ 7.10 ได้เฉพาะสายเทรนด์ที่ตั้ง stop ชิด เป้า bull 11.03 · เริ่มทยอยขายเมื่อเข้าใกล้/เกิน 11.03 หากไม่มี catalyst ใหม่.
+  </div>
+
+  <div class="note info">
+    🔗 อ้างอิงสมมติฐานจาก: <b>STPI_Monsoon_Wind_HiddenAsset_Valuation</b> (SOTP base 6.88 หลังเพิ่มทุน) และ
+    <b>STPI-Valuation-Analysis</b> (7-method conservative 4.49 หลังเพิ่มทุน) — ราคา entry จริงควรปรับตามงบล่าสุดและ Backlog
+  </div>
+</div>
+</body>
+</html>
